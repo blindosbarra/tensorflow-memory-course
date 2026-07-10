@@ -2,13 +2,24 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 import sys
+
 import nbformat
 from nbclient import NotebookClient
 
 
 def execute_notebook(path: Path) -> None:
+    runtime_root = Path(".notebook-runtime").resolve()
+    runtime_root.mkdir(exist_ok=True)
+    for child in ("ipython", "jupyter_config", "jupyter_data", "jupyter_runtime"):
+        (runtime_root / child).mkdir(exist_ok=True)
+    os.environ.setdefault("IPYTHONDIR", str(runtime_root / "ipython"))
+    os.environ.setdefault("JUPYTER_CONFIG_DIR", str(runtime_root / "jupyter_config"))
+    os.environ.setdefault("JUPYTER_DATA_DIR", str(runtime_root / "jupyter_data"))
+    os.environ.setdefault("JUPYTER_RUNTIME_DIR", str(runtime_root / "jupyter_runtime"))
+
     notebook = nbformat.read(path, as_version=4)
     client = NotebookClient(
         notebook,
