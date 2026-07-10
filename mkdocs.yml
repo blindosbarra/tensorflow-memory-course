@@ -4,7 +4,9 @@ theme:
   name: material
 nav:
   - Home: index.md
-  - Corso: modules/index.md
+  - Corso:
+      - Panoramica: modules/index.md
+      - Missing values: modules/data-cleaning-01-missing-values.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

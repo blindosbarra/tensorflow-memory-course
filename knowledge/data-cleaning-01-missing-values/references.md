@@ -1,4 +1,4 @@
-# Riferimenti
+# References
 
 - pandas documentation, "Working with missing data":
   https://pandas.pydata.org/docs/user_guide/missing_data.html

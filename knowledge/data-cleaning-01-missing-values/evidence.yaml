@@ -1,0 +1,63 @@
+lesson_id: data-cleaning-01-missing-values
+reviewed_at: 2026-07-10
+claims:
+  - id: pandas-missing-sentinels
+    claim: "pandas represents missing values with different sentinels depending on dtype, including NaN, NaT and NA."
+    importance: major
+    source_url: "https://pandas.pydata.org/docs/user_guide/missing_data.html"
+    source_title: "Working with missing data"
+    publisher: "pandas"
+    published_or_updated: "3.0.4 documentation"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The pandas user guide documents values considered missing and dtype-dependent sentinels."
+    status: verified
+  - id: pandas-use-isna
+    claim: "Missing values in pandas should be detected with isna() or notna(), not equality comparisons."
+    importance: critical
+    source_url: "https://pandas.pydata.org/docs/user_guide/missing_data.html"
+    source_title: "Working with missing data"
+    publisher: "pandas"
+    published_or_updated: "3.0.4 documentation"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The guide states that isna()/notna() detect missing values and warns that equality comparisons are not equivalent."
+    status: verified
+  - id: sklearn-imputation-purpose
+    claim: "scikit-learn estimators generally expect numeric arrays where values have meaning, so incomplete datasets are commonly discarded or imputed."
+    importance: major
+    source_url: "https://scikit-learn.org/stable/modules/impute.html"
+    source_title: "Imputation of missing values"
+    publisher: "scikit-learn"
+    published_or_updated: "1.9.0 documentation"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The scikit-learn user guide explains why missing values need handling before estimators and contrasts dropping with imputation."
+    status: verified
+  - id: sklearn-simple-imputer
+    claim: "SimpleImputer supports basic strategies such as constant values and statistics like mean, median or most frequent."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/impute.html"
+    source_title: "Imputation of missing values"
+    publisher: "scikit-learn"
+    published_or_updated: "1.9.0 documentation"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The SimpleImputer section lists constant, mean, median and most-frequent strategies."
+    status: verified
+  - id: tensorflow-structured-data-context
+    claim: "TensorFlow structured-data examples convert tabular feature values to tensors before model inference."
+    importance: supporting
+    source_url: "https://www.tensorflow.org/tutorials/structured_data/preprocessing_layers"
+    source_title: "Classify structured data using Keras preprocessing layers"
+    publisher: "TensorFlow"
+    published_or_updated: "Last updated 2024-09-05 UTC"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The tutorial wraps scalar feature values in lists and calls tf.convert_to_tensor for inference input."
+    status: verified
+review:
+  reviewer: codex
+  decision: pass
+  notes:
+    - "Research pack intentionally excludes advanced missingness mechanisms."
