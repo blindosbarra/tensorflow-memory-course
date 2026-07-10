@@ -1,0 +1,29 @@
+{
+  "rows_before": 6,
+  "rows_after": 4,
+  "dropped_rows": 2,
+  "dropped_memory_ids": [
+    "mem_004",
+    "mem_005"
+  ],
+  "missing_before": {
+    "memory_id": 0,
+    "text": 1,
+    "timestamp": 1,
+    "type": 1,
+    "importance": 1
+  },
+  "missing_after": {
+    "memory_id": 0,
+    "text": 0,
+    "timestamp": 0,
+    "type": 0,
+    "importance": 0,
+    "type_was_missing": 0,
+    "importance_was_missing": 0
+  },
+  "imputed": {
+    "type": 1,
+    "importance": 1
+  }
+}
