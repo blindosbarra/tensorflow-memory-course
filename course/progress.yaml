@@ -1,6 +1,34 @@
-course_status: bootstrap
+course_status: vertical_slice_ready_for_learner_review
 current_milestone: milestone-0
-modules: {}
-last_updated: null
+modules:
+  data-engineering:
+    status: in_progress
+    lessons:
+      data-cleaning-01-missing-values:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/data-cleaning-01-missing-values/
+          lesson: docs/modules/data-cleaning-01-missing-values.md
+          notebook: notebooks/data-cleaning-01-missing-values.ipynb
+          exercise: exercises/data-cleaning-01-missing-values.md
+          solution: solutions/data-cleaning-01-missing-values.md
+          tests: tests/test_data_cleaning.py
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+last_updated: 2026-07-10
 notes:
   - Complete the vertical slice before scaling course generation.
+  - Learner review requires human validation after local quality gates pass.
