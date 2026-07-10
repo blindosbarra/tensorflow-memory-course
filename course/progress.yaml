@@ -1,0 +1,6 @@
+course_status: bootstrap
+current_milestone: milestone-0
+modules: {}
+last_updated: null
+notes:
+  - Complete the vertical slice before scaling course generation.

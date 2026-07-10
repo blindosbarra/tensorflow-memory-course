@@ -1,0 +1,15 @@
+site_name: TensorFlow Memory AI Lab
+site_description: Corso pratico incrementale su TensorFlow, Keras, modelli open e sistemi di memoria.
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Corso: modules/index.md
+  - Glossario: glossary.md
+  - Riferimenti: references.md
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true

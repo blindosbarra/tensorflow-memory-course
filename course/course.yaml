@@ -1,0 +1,135 @@
+course:
+  id: tensorflow-memory-ai
+  title: TensorFlow Memory AI Lab
+  language: it
+  audience: beginner_to_intermediate
+  lesson_duration_minutes: [15, 30]
+  final_project: memory_ai_lab
+
+modules:
+  - id: foundations
+    title: Fondamenti minimi
+    status: planned
+    lessons:
+      - python-numpy-refresh
+      - vectors-matrices-tensors
+      - derivatives-gradients-chain-rule
+      - probability-loss-functions
+
+  - id: data-engineering
+    title: Pulizia e pipeline dei dati
+    status: planned
+    lessons:
+      - data-cleaning-01-missing-values
+      - duplicates-types-outliers
+      - train-validation-test
+      - data-leakage
+      - categorical-encoding-scaling
+      - tfdata-basics
+      - tfdata-performance
+      - data-validation
+
+  - id: keras-dnn
+    title: Keras e reti neurali dense
+    status: planned
+    lessons:
+      - perceptron-dense-layer
+      - forward-pass
+      - losses-optimizers
+      - backprop-autodiff
+      - sequential-functional-api
+      - model-fit-under-the-hood
+      - regularization-dropout
+      - callbacks-checkpoints
+      - evaluation-calibration
+
+  - id: text-embeddings
+    title: Testo, embedding e visualizzazione
+    status: planned
+    lessons:
+      - tokenization-vocabulary
+      - embedding-layer
+      - sentence-embeddings
+      - cosine-similarity
+      - pca-umap
+      - clustering-memories
+      - retrieval-metrics
+
+  - id: memory-representation
+    title: Rappresentare le memorie
+    status: planned
+    lessons:
+      - memory-schema
+      - episodic-semantic-preference
+      - time-recency-decay
+      - importance-scoring
+      - entity-event-relations
+      - graph-memory-networkx
+      - hybrid-retrieval
+      - contradiction-and-update
+
+  - id: transformers-gemma
+    title: Transformer e modello open
+    status: planned
+    lessons:
+      - attention-intuition
+      - self-attention-math
+      - transformer-block
+      - tokenizer-generation
+      - keras-hub
+      - gemma-inference
+      - structured-output
+      - evaluation-generative
+
+  - id: lora
+    title: LoRA e adattamento efficiente
+    status: planned
+    lessons:
+      - transfer-learning-freezing
+      - lora-math
+      - lora-from-scratch
+      - gemma-lora
+      - qlora-concepts
+      - baseline-comparison
+      - adapter-packaging
+
+  - id: mlops
+    title: Pipeline, deploy e monitoring
+    status: planned
+    lessons:
+      - reproducible-project
+      - containers-artifacts
+      - local-training-pipeline
+      - vertex-ai-training
+      - vertex-ai-pipelines
+      - registry-deployment
+      - batch-online-inference
+      - model-evaluation
+      - monitoring-drift
+      - cost-cleanup-security
+
+  - id: preference-learning
+    title: Feedback e preference training
+    status: planned
+    lessons:
+      - feedback-schema
+      - chosen-rejected-data
+      - reward-functions
+      - dpo-intuition
+      - preference-tuning
+      - rlhf-rlaif-overview
+      - online-learning-risks
+
+  - id: capstone
+    title: Memory AI Lab completo
+    status: planned
+    lessons:
+      - capstone-architecture
+      - capstone-dataset
+      - capstone-classifier
+      - capstone-embedding-graph
+      - capstone-gemma-lora
+      - capstone-evaluation
+      - capstone-pipeline
+      - capstone-monitoring
+      - capstone-demo

@@ -1,0 +1,18 @@
+lesson_id: string
+reviewed_at: date
+claims:
+  - id: string
+    claim: string
+    importance: critical|major|supporting
+    source_url: string
+    source_title: string
+    publisher: string
+    published_or_updated: string|null
+    accessed_at: string
+    primary_source: true|false
+    evidence_note: string
+    status: verified|conflicting|insufficient
+review:
+  reviewer: string
+  decision: pass|fail
+  notes: []
