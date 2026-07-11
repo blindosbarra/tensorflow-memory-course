@@ -4,9 +4,11 @@ theme:
   name: material
 nav:
   - Home: index.md
+  - Syllabus: syllabus.md
   - Corso:
       - Panoramica: modules/index.md
       - Missing values: modules/data-cleaning-01-missing-values.md
+      - Duplicati, tipi e outlier: modules/duplicates-types-outliers.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

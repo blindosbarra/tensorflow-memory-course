@@ -1,0 +1,6 @@
+memory_id,text,timestamp,type,importance,importance_was_invalid_type,importance_was_outlier
+mem_001,Marco visited Glasgow with his son.,2026-07-03,episodic,0.72,False,False
+mem_002,The user prefers concise summaries.,2026-07-04,preference,0.4,False,False
+mem_003,The user likes walking meetings.,2026-07-05,preference,0.0,True,False
+mem_004,A trip lasted 400 days.,2026-07-06,episodic,1.0,False,True
+mem_005,The sky is blue.,2026-07-07,semantic,0.0,False,True

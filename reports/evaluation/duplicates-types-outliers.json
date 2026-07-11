@@ -1,0 +1,13 @@
+{
+  "rows_before": 7,
+  "rows_after": 5,
+  "duplicates_removed": 2,
+  "duplicate_memory_ids": [
+    "mem_001",
+    "mem_006"
+  ],
+  "invalid_importance_values": 1,
+  "importance_outliers": 2,
+  "importance_min": 0.0,
+  "importance_max": 1.0
+}

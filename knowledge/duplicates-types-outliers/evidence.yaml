@@ -1,0 +1,53 @@
+lesson_id: duplicates-types-outliers
+reviewed_at: 2026-07-10
+claims:
+  - id: pandas-duplicated-subset
+    claim: "pandas DataFrame.duplicated can mark duplicated rows using a subset of columns and a keep policy."
+    importance: critical
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html"
+    source_title: "pandas.DataFrame.duplicated"
+    publisher: "pandas"
+    published_or_updated: "3.0.4 documentation"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The API reference documents subset and keep parameters for identifying duplicate rows."
+    status: verified
+  - id: pandas-to-numeric-coerce
+    claim: "pandas.to_numeric converts values to numeric dtype and can coerce invalid parsing to missing values."
+    importance: critical
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html"
+    source_title: "pandas.to_numeric"
+    publisher: "pandas"
+    published_or_updated: "3.0.4 documentation"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The API reference documents numeric conversion and the errors='coerce' behavior."
+    status: verified
+  - id: pandas-series-clip
+    claim: "pandas Series.clip trims values outside lower and upper thresholds to those thresholds."
+    importance: critical
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.Series.clip.html"
+    source_title: "pandas.Series.clip"
+    publisher: "pandas"
+    published_or_updated: "3.0.4 documentation"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The API reference documents assigning values outside boundaries to boundary values."
+    status: verified
+  - id: local-importance-domain
+    claim: "In this repository's Memory AI Lab policy, importance is a local score represented as a numeric value from 0.0 to 1.0."
+    importance: major
+    source_url: "course/DATA_AND_ARTIFACT_POLICY.md"
+    source_title: "Data and artifact policy"
+    publisher: "repository"
+    published_or_updated: "2026-07-10 repository state"
+    accessed_at: "2026-07-10"
+    primary_source: true
+    evidence_note: "The repository policy defines the canonical memory record with importance: 0.0."
+    status: verified
+review:
+  reviewer: codex
+  decision: pass
+  notes:
+    - "Research scope is intentionally limited to pandas APIs and local domain rules."
+    - "No statistical outlier method is introduced in this lesson."
