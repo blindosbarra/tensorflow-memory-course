@@ -1,11 +1,11 @@
-course_status: milestone_1_duplicates_types_outliers_ready_for_learner_review
+course_status: milestone_1_content_rework_ready_for_learner_review
 current_milestone: milestone-1
 modules:
   data-engineering:
     status: in_progress
     lessons:
       data-cleaning-01-missing-values:
-        status: done
+        status: learner_review
         state_machine:
           planned: done
           researching: done
@@ -13,15 +13,15 @@ modules:
           writing: done
           lab_build: done
           technical_review: done
-          learner_review: done
-          done: done
+          learner_review: in_progress
+          done: pending
         artifacts:
           research_pack: knowledge/data-cleaning-01-missing-values/
           lesson: docs/modules/data-cleaning-01-missing-values.md
           notebook: notebooks/data-cleaning-01-missing-values.ipynb
-          exercise: exercises/data-cleaning-01-missing-values.md
+          exercise: exercises/data-cleaning-01-missing-values_starter.py
           solution: solutions/data-cleaning-01-missing-values.md
-          tests: tests/test_data_cleaning.py
+          learner_tests: tests/exercises/test_data_cleaning_01_missing_values.py
         quality_gates:
           research: pass
           lesson: pass
@@ -43,9 +43,9 @@ modules:
           research_pack: knowledge/duplicates-types-outliers/
           lesson: docs/modules/duplicates-types-outliers.md
           notebook: notebooks/duplicates-types-outliers.ipynb
-          exercise: exercises/duplicates-types-outliers.md
+          exercise: exercises/duplicates-types-outliers_starter.py
           solution: solutions/duplicates-types-outliers.md
-          tests: tests/test_data_quality.py
+          learner_tests: tests/exercises/test_duplicates_types_outliers.py
         quality_gates:
           research: pass
           lesson: pass
@@ -59,3 +59,6 @@ notes:
   - 2026-07-10 learner feedback failed the slice for clarity and learner focus.
   - 2026-07-10 corrected slice accepted by learner; proceed with syllabus and next lesson.
   - 2026-07-11 duplicates-types-outliers passed local gates; keep learner_review until human review.
+  - 2026-07-11 learner review failed course content; both existing lessons were reworked.
+  - Both lessons traversed writing, lab_build and technical_review again and stop at learner_review in_progress.
+  - Only a learner human may mark either lesson done after completing the required review template.
