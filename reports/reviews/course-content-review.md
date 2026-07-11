@@ -85,6 +85,27 @@ puramente mnemonico") non è di fatto superato.
   verificare di saper fare.
 - Nessuna fase ha obiettivi misurabili per lezione (il yaml ha solo id).
 
+### B4. Il dominio dell'esempio è invertito (feedback learner 2026-07-11, secondo giro)
+
+Le lezioni partono dal contesto "memoria AI" come se fosse il caso standard
+del problema, invece di partire dal problema generico. Valutazione del
+learner: 2/10.
+
+Il punto didattico: missing values, duplicati e outlier sono problemi
+generici di data engineering, e vanno insegnati prima su un dominio in cui
+nascono **naturalmente** — letture di sensori con buchi e valori fuori scala,
+log duplicati, form compilati a metà. Il record di memoria testuale non è
+quel dominio: una "memoria" con `importance` pari a `"high"` o con timestamp
+mancante è un difetto fabbricato ad hoc per l'esercizio, e lo studente lo
+percepisce. Il risultato è doppio danno: non impara il problema generico
+(mai posto) e non crede al caso specifico (implausibile).
+
+La struttura corretta è: (1) problema generico con dataset realistico dove il
+difetto è naturale; (2) teoria e tecnica sul caso generico; (3) sezione di
+trasferimento "Nel Memory AI Lab" che spiega *perché* anche lì compaiono
+difetti simili (es. record prodotti da una pipeline di estrazione che
+fallisce su alcuni campi) — con la motivazione, non per assunzione.
+
 ## Major
 
 ### M1. Il corso si chiama "TensorFlow" ma TensorFlow non compare
@@ -182,6 +203,10 @@ uv run python scripts/execute_notebooks.py
 
 ## Azioni raccomandate (in ordine)
 
+0. **Invertire il dominio degli esempi** (B4): ogni lezione della fase dati
+   parte da un dataset generico e realistico dove il difetto è naturale
+   (sensori, log, form), e il Memory AI Lab diventa la sezione di
+   trasferimento finale, motivata, non il punto di partenza.
 1. **Riscrivere il template di lezione** prima di produrre altro contenuto:
    sezione di teoria reale (concetti e trade-off, non solo API; le API vanno
    in "Esempio guidato"), esercizio a completamento con test sul codice dello

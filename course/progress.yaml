@@ -63,3 +63,4 @@ notes:
   - "Findings: lessons only explain pre-written code, no learner-written code, no real theory, quiz without answers, syllabus inconsistent with course.yaml (foundations skipped)."
   - Block new lesson production until lesson template, exercises, and syllabus are reworked.
   - data-cleaning-01-missing-values stays done formally but is flagged for rework with the same findings.
+  - "2026-07-11 second learner feedback (quality 2/10): example domain is inverted - lessons treat the memory context as the standard case instead of starting from the generic data problem on a realistic domain (sensors, logs) and transferring to the project at the end. Recorded as finding B4."
