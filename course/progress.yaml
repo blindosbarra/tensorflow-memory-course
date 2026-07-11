@@ -1,4 +1,4 @@
-course_status: milestone_1_duplicates_types_outliers_ready_for_learner_review
+course_status: milestone_1_blocked_on_content_rework
 current_milestone: milestone-1
 modules:
   data-engineering:
@@ -29,15 +29,15 @@ modules:
           didactics: pass
           publish: pass
       duplicates-types-outliers:
-        status: learner_review
+        status: writing
         state_machine:
           planned: done
           researching: done
           evidence_review: done
-          writing: done
-          lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          writing: in_progress
+          lab_build: pending
+          technical_review: pending
+          learner_review: failed
           done: pending
         artifacts:
           research_pack: knowledge/duplicates-types-outliers/
@@ -48,9 +48,9 @@ modules:
           tests: tests/test_data_quality.py
         quality_gates:
           research: pass
-          lesson: pass
+          lesson: fail
           code: pass
-          didactics: pass
+          didactics: fail
           publish: pass
 last_updated: 2026-07-11
 notes:
@@ -59,3 +59,7 @@ notes:
   - 2026-07-10 learner feedback failed the slice for clarity and learner focus.
   - 2026-07-10 corrected slice accepted by learner; proceed with syllabus and next lesson.
   - 2026-07-11 duplicates-types-outliers passed local gates; keep learner_review until human review.
+  - 2026-07-11 learner review FAILED the course content (see reports/reviews/course-content-review.md).
+  - "Findings: lessons only explain pre-written code, no learner-written code, no real theory, quiz without answers, syllabus inconsistent with course.yaml (foundations skipped)."
+  - Block new lesson production until lesson template, exercises, and syllabus are reworked.
+  - data-cleaning-01-missing-values stays done formally but is flagged for rework with the same findings.
