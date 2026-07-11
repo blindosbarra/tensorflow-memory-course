@@ -1,5 +1,6 @@
 site_name: TensorFlow Memory AI Lab
 site_description: Corso pratico incrementale su TensorFlow, Keras, modelli open e sistemi di memoria.
+site_url: https://blindosbarra.github.io/tensorflow-memory-course/
 theme:
   name: material
 nav:
