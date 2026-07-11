@@ -1,259 +1,137 @@
 # Syllabus
 
-Questa e' la mappa del corso. Non e' una lista di tecnologie da spuntare: e' il
-percorso con cui costruirai, un pezzo alla volta, un piccolo sistema di memoria
-AI.
+TensorFlow arriva dopo la fase dati per una ragione metodologica: un modello
+trasforma gli input che riceve, ma non corregge definizioni ambigue, record
+duplicati o split contaminati. Prima impari a rendere osservabili le decisioni
+sui dati; poi trasformi quei dati in tensori e alleni modelli.
 
-L'idea e' semplice:
+Questa mappa e' allineata 1:1 ai moduli e alle lezioni di
+`course/course.yaml`. Il modulo `foundations`, prima saltato, e' reintegrato
+come Fase 0: e' la scelta conservativa prevista dalla progressione obbligatoria
+della spec. Non vengono create nuove lezioni da questo syllabus.
 
-> prima impari a trattare dati piccoli e comprensibili, poi costruisci modelli,
-> poi aggiungi retrieval, grafi, modelli linguistici e infine valutazione.
+Ogni lezione dura 15-30 minuti. Le ore includono lettura, codice, quiz ed
+esercizio; sono stime da validare con learner review.
 
-## Come studiare
+## Percorso minimo prioritario
 
-Ogni lezione dovrebbe durare 15-30 minuti.
+Il percorso minimo mantiene le lezioni necessarie a produrre e valutare il
+Memory AI Lab locale: `python-numpy-refresh`, `vectors-matrices-tensors`, tutte
+le lezioni `data-engineering`, `perceptron-dense-layer`, `losses-optimizers`,
+`backprop-autodiff`, `sequential-functional-api`, `evaluation-calibration`,
+`tokenization-vocabulary`, `sentence-embeddings`, `cosine-similarity`,
+`retrieval-metrics`, `memory-schema`, `importance-scoring`,
+`entity-event-relations`, `graph-memory-networkx`, `hybrid-retrieval`,
+`attention-intuition`, `keras-hub`, `gemma-inference`, `structured-output`,
+`evaluation-generative`, `transfer-learning-freezing`, `lora-math`,
+`gemma-lora`, `baseline-comparison`, `reproducible-project`,
+`local-training-pipeline`, `model-evaluation`, `monitoring-drift`, tutte le
+lezioni `preference-learning` e tutte le lezioni `capstone`.
 
-Per ogni lezione farai sempre almeno una cosa concreta:
+Si tagliano dal percorso minimo solo approfondimenti ridondanti, visualizzazioni
+opzionali e varianti cloud/hardware. Non si tagliano prerequisiti, controlli di
+leakage, metriche, sicurezza, evaluation o artifact necessari al capstone.
 
-- leggere un piccolo dataset;
-- scrivere o capire poche righe di codice;
-- eseguire un notebook;
-- completare un esercizio;
-- vedere un output.
+## Fase 0 — Fondamenti minimi (2 ore)
 
-Se una lezione sembra solo teoria o solo comandi, va migliorata.
+Lezioni: `python-numpy-refresh`, `vectors-matrices-tensors`,
+`derivatives-gradients-chain-rule`, `probability-loss-functions`.
 
-## Fase 1: dati prima dei modelli
+Obiettivi misurabili: scrivere trasformazioni NumPy testate; prevedere shape e
+broadcasting; calcolare un gradiente semplice; confrontare MSE e cross-entropy
+su esempi piccoli. Assessment: implementare e testare una mini pipeline numerica
+con controllo di shape, loss e gradiente.
 
-Prima di TensorFlow serve una base molto pratica: sapere cosa c'e' dentro una
-tabella.
+## Fase 1 — Pulizia e pipeline dei dati (4 ore)
 
-Vedrai:
+Lezioni: `data-cleaning-01-missing-values`, `duplicates-types-outliers`,
+`train-validation-test`, `data-leakage`, `categorical-encoding-scaling`,
+`tfdata-basics`, `tfdata-performance`, `data-validation`.
 
-1. **Missing values**
-   - cosa sono i valori mancanti;
-   - come leggerli con pandas;
-   - quando scartare una riga;
-   - quando riempire un valore.
+Obiettivi misurabili: diagnosticare e pulire dati senza nascondere modifiche;
+creare split disgiunti; prevenire leakage; costruire e misurare una pipeline
+`tf.data`. Assessment: consegnare dataset pulito, split verificati, pipeline
+eseguibile e report delle decisioni.
 
-2. **Duplicati, tipi e outlier**
-   - righe ripetute;
-   - numeri letti come testo;
-   - valori troppo strani per essere ignorati.
+## Fase 2 — Keras e reti neurali dense (4,5 ore)
 
-3. **Train, validation e test**
-   - perche' non si valuta un modello sui dati usati per costruirlo;
-   - come dividere un dataset senza confondersi.
+Lezioni: `perceptron-dense-layer`, `forward-pass`, `losses-optimizers`,
+`backprop-autodiff`, `sequential-functional-api`, `model-fit-under-the-hood`,
+`regularization-dropout`, `callbacks-checkpoints`, `evaluation-calibration`.
 
-4. **Data leakage**
-   - il modo piu' subdolo per ottenere risultati belli ma falsi;
-   - esempi piccoli per riconoscerlo.
+Obiettivi misurabili: costruire una DNN, spiegare forward/backward pass,
+confrontare loss e optimizer, diagnosticare overfitting e calibrazione.
+Assessment: addestrare una DNN sintetica riproducibile e produrre metriche,
+checkpoint e analisi degli errori.
 
-5. **Encoding e scaling**
-   - come trasformare categorie e numeri in input adatti a un modello.
+## Fase 3 — Testo, embedding e visualizzazione (3,5 ore)
 
-Risultato della fase: saprai preparare una tabella piccola senza barare e senza
-perdere traccia delle decisioni.
+Lezioni: `tokenization-vocabulary`, `embedding-layer`, `sentence-embeddings`,
+`cosine-similarity`, `pca-umap`, `clustering-memories`, `retrieval-metrics`.
 
-## Fase 2: tensori, gradienti e Keras
+Obiettivi misurabili: trasformare testo in vettori, calcolare similarita',
+visualizzare cluster e misurare retrieval. Assessment: indice locale di memorie
+con Recall@K e MRR su query etichettate.
 
-Qui entri nel cuore del machine learning, ma senza saltare passaggi.
+## Fase 4 — Rappresentare le memorie (4 ore)
 
-Vedrai:
+Lezioni: `memory-schema`, `episodic-semantic-preference`,
+`time-recency-decay`, `importance-scoring`, `entity-event-relations`,
+`graph-memory-networkx`, `hybrid-retrieval`, `contradiction-and-update`.
 
-1. **Array, vettori, matrici e tensori**
-   - cosa cambia tra una lista, una matrice e un tensore;
-   - perche' le forme dei dati contano.
+Obiettivi misurabili: validare record, calcolare recency/importance, costruire
+un grafo e gestire conflitti. Assessment: pipeline locale che produce record,
+grafo, retrieval ibrido e report di consistenza.
 
-2. **Loss function**
-   - come misurare quanto un modello sta sbagliando.
+## Fase 5 — Transformer e modello open (4 ore)
 
-3. **Gradienti**
-   - l'idea dietro "aggiustare" un modello;
-   - prima intuizione, poi codice.
+Lezioni: `attention-intuition`, `self-attention-math`, `transformer-block`,
+`tokenizer-generation`, `keras-hub`, `gemma-inference`, `structured-output`,
+`evaluation-generative`.
 
-4. **Dense layer e prima rete neurale**
-   - cosa fa uno strato denso;
-   - come Keras organizza input, output e training.
+Obiettivi misurabili: spiegare attention, verificare un preset compatibile,
+generare output strutturato e misurarne gli errori. Assessment: estrazione JSON
+con valid rate, field accuracy e confronto con baseline.
 
-5. **Training ed evaluation**
-   - cosa succede durante `fit`;
-   - come leggere metriche semplici;
-   - come evitare overfitting evidente.
+## Fase 6 — LoRA e adattamento efficiente (3,5 ore)
 
-Risultato della fase: avrai una piccola rete Keras che classifica record di
-memoria sintetici.
+Lezioni: `transfer-learning-freezing`, `lora-math`, `lora-from-scratch`,
+`gemma-lora`, `qlora-concepts`, `baseline-comparison`, `adapter-packaging`.
 
-## Fase 3: testo ed embedding
+Obiettivi misurabili: distinguere pesi fissi/addestrabili, implementare LoRA,
+misurare baseline e impacchettare adapter. Assessment: esperimento riproducibile
+baseline/LoRA; QLoRA resta opzionale se l'hardware non e' adeguato.
 
-Una memoria e' soprattutto testo. A questo punto impari a trasformare frasi in
-numeri confrontabili.
+## Fase 7 — Pipeline, deploy e monitoring (5 ore)
 
-Vedrai:
+Lezioni: `reproducible-project`, `containers-artifacts`,
+`local-training-pipeline`, `vertex-ai-training`, `vertex-ai-pipelines`,
+`registry-deployment`, `batch-online-inference`, `model-evaluation`,
+`monitoring-drift`, `cost-cleanup-security`.
 
-1. **Tokenizzazione**
-   - come il testo viene spezzato in unita' piu' piccole.
+Obiettivi misurabili: versionare artifact, eseguire una pipeline locale,
+valutare, monitorare e documentare costi/cleanup cloud. Assessment: pipeline
+locale completa e piano Vertex AI opzionale con smoke test e cleanup.
 
-2. **Embedding**
-   - come rappresentare parole o frasi come vettori.
+## Fase 8 — Feedback e preference training (3,5 ore)
 
-3. **Similarita'**
-   - come capire se due memorie sono vicine.
+Lezioni: `feedback-schema`, `chosen-rejected-data`, `reward-functions`,
+`dpo-intuition`, `preference-tuning`, `rlhf-rlaif-overview`,
+`online-learning-risks`.
 
-4. **Visualizzazione**
-   - PCA o UMAP per vedere gruppi di memorie.
+Obiettivi misurabili: validare feedback, costruire coppie, definire reward,
+eseguire un confronto controllato e descrivere rischi. Assessment: dataset di
+preferenze validato e report baseline/tuning con limiti.
 
-5. **Metriche retrieval**
-   - Recall@K;
-   - MRR;
-   - perche' "sembra giusto" non basta.
+## Fase 9 — Memory AI Lab completo (4,5 ore)
 
-Risultato della fase: potrai cercare memorie simili a una domanda o a un ricordo.
+Lezioni: `capstone-architecture`, `capstone-dataset`, `capstone-classifier`,
+`capstone-embedding-graph`, `capstone-gemma-lora`, `capstone-evaluation`,
+`capstone-pipeline`, `capstone-monitoring`, `capstone-demo`.
 
-## Fase 4: rappresentare le memorie
+Obiettivi misurabili: integrare ingestion, modelli, retrieval, evaluation e
+monitoring in un sistema locale riproducibile. Assessment: demo end-to-end con
+test, report, artifact e limiti noti.
 
-Qui il progetto prende forma. Non stai piu' solo addestrando modelli: stai
-decidendo come una memoria deve essere salvata.
-
-Vedrai:
-
-1. **Schema della memoria**
-   - `memory_id`;
-   - `text`;
-   - `timestamp`;
-   - `type`;
-   - `entities`;
-   - `importance`;
-   - `relations`.
-
-2. **Tipi di memoria**
-   - episodic;
-   - semantic;
-   - preference.
-
-3. **Importance scoring**
-   - una baseline semplice per decidere cosa vale la pena conservare.
-
-4. **Entita' e relazioni**
-   - persone, luoghi, eventi e collegamenti.
-
-5. **Grafo delle memorie**
-   - non come decorazione;
-   - come modo per fare domande utili.
-
-Risultato della fase: avrai un piccolo Memory AI Lab locale con record
-strutturati, ricerca e relazioni.
-
-## Fase 5: Transformer, Gemma e output strutturato
-
-Solo ora arrivano i modelli linguistici. Arrivano tardi apposta: prima devi
-avere baseline e metriche.
-
-Vedrai:
-
-1. **Attention**
-   - intuizione dell'attenzione;
-   - perche' alcune parole contano piu' di altre.
-
-2. **Transformer block**
-   - i componenti principali, senza trasformarlo in un corso di algebra.
-
-3. **KerasHub e Gemma**
-   - come verificare quali preset sono disponibili;
-   - come non inventare compatibilita'.
-
-4. **Structured output**
-   - estrarre JSON;
-   - controllare se il JSON e' valido;
-   - misurare errori e allucinazioni.
-
-Risultato della fase: userai un modello open per aiutare a strutturare memorie,
-ma con controlli e limiti chiari.
-
-## Fase 6: LoRA e adattamento
-
-Qui impari ad adattare un modello senza riaddestrarlo da zero.
-
-Vedrai:
-
-1. **Freezing**
-   - cosa significa congelare pesi.
-
-2. **LoRA**
-   - intuizione;
-   - cosa viene addestrato;
-   - cosa resta fisso.
-
-3. **Confronto baseline**
-   - un adattamento serve solo se batte una baseline chiara.
-
-4. **Packaging adapter**
-   - come salvare e riusare l'adapter.
-
-Risultato della fase: un piccolo esperimento LoRA documentato e confrontato.
-
-## Fase 7: pipeline, deploy e monitoring
-
-Questa fase porta ordine nel progetto.
-
-Vedrai:
-
-1. **Pipeline locale**
-   - validare;
-   - trasformare;
-   - addestrare;
-   - valutare;
-   - salvare artifact.
-
-2. **Vertex AI opzionale**
-   - solo dopo una pipeline locale equivalente;
-   - con costi, cleanup e credenziali documentati.
-
-3. **Monitoring**
-   - data quality;
-   - drift;
-   - errori di serving;
-   - metriche proxy quando le label arrivano tardi.
-
-Risultato della fase: saprai distinguere un notebook che funziona da un sistema
-che puo' essere mantenuto.
-
-## Fase 8: preference learning e progetto finale
-
-La fase finale aggiunge feedback e rifinitura.
-
-Vedrai:
-
-1. **Feedback schema**
-   - come rappresentare preferenze umane.
-
-2. **Chosen / rejected**
-   - coppie di esempi preferiti e non preferiti.
-
-3. **Preference tuning**
-   - intuizione;
-   - rischi;
-   - limiti.
-
-4. **Capstone**
-   - ingestion;
-   - cleaning;
-   - schema;
-   - classification;
-   - embeddings;
-   - graph;
-   - retrieval;
-   - evaluation;
-   - monitoring report.
-
-Risultato finale: un Memory AI Lab locale, piccolo ma completo, che prende
-memorie testuali e produce record strutturati, ricerca e report.
-
-## Dove siamo ora
-
-Stato attuale:
-
-- prima lezione completata: **Missing values nei dati di memoria**;
-- lezione in learner review: **Duplicati, tipi e outlier**;
-- prossima lezione consigliata dopo review: **Train, validation e test**;
-- regola: una lezione alla volta, con review umana prima di scalare.
+Totale stimato: 38,5 ore. Stato corrente: le due lezioni esistenti sono in
+`learner_review`; `train-validation-test` resta bloccata e non viene generata.
