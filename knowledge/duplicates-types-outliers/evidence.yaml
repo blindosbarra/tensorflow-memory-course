@@ -1,6 +1,28 @@
 lesson_id: duplicates-types-outliers
 reviewed_at: 2026-07-10
 claims:
+  - id: nist-statistical-outlier-rule
+    claim: "A statistical outlier rule identifies observations relative to a sample distribution and a declared cutoff."
+    importance: major
+    source_url: "https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm"
+    source_title: "Detection of Outliers"
+    publisher: "NIST/SEMATECH"
+    published_or_updated: "e-Handbook"
+    accessed_at: "2026-07-11"
+    primary_source: true
+    evidence_note: "The handbook defines an IQR-based labeling rule and its cutoff."
+    status: verified
+  - id: fuzzy-record-matching-tradeoff
+    claim: "Approximate record matching must balance false matches and missed matches when records are noisy."
+    importance: major
+    source_url: "https://doi.org/10.1145/1008992.1009037"
+    source_title: "Robust and Efficient Fuzzy Match for Online Data Cleaning"
+    publisher: "ACM"
+    published_or_updated: "2003"
+    accessed_at: "2026-07-11"
+    primary_source: true
+    evidence_note: "The original paper treats fuzzy matching as approximate matching under noisy representations."
+    status: verified
   - id: pandas-duplicated-subset
     claim: "pandas DataFrame.duplicated can mark duplicated rows using a subset of columns and a keep policy."
     importance: critical
@@ -49,5 +71,4 @@ review:
   reviewer: codex
   decision: pass
   notes:
-    - "Research scope is intentionally limited to pandas APIs and local domain rules."
-    - "No statistical outlier method is introduced in this lesson."
+    - "Conceptual evidence for statistical outliers and approximate matching added for the rework."

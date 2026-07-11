@@ -2,123 +2,119 @@
 id: data-cleaning-01-missing-values
 title: Missing values nei dati di memoria
 module: data-engineering
-status: done
-estimated_minutes: 25
-prerequisites:
-  - Python base
-  - Tabelle CSV
-deliverables:
-  - datasets/processed/memory_events_clean.csv
-  - reports/evaluation/data-cleaning-01-missing-values.json
+status: learner_review
+estimated_minutes: 30
+prerequisites: [Python base, Tabelle CSV]
+deliverables: [exercises/data-cleaning-01-missing-values_starter.py]
 sources:
-  - https://pandas.pydata.org/docs/user_guide/missing_data.html
+  - https://doi.org/10.1093/biomet/63.3.581
+  - https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm
   - https://scikit-learn.org/stable/modules/impute.html
-  - https://www.tensorflow.org/tutorials/structured_data/preprocessing_layers
 ---
 
 # Missing values nei dati di memoria
 
 ## Cosa saprai fare
 
-Al termine saprai:
-
-- misurare quanti valori mancano in ogni colonna;
-- decidere quali righe scartare perche' mancano campi critici;
-- imputare feature non critiche e registrare cosa e' stato modificato.
+Scegliere e implementare una strategia tracciabile per campi mancanti critici e
+recuperabili, verificandone l'effetto sui dati.
 
 ## Perche' serve nel Memory AI Lab
 
-Il progetto finale usera' record di memoria con testo, timestamp, tipo e
-importanza. Una memoria senza testo o senza tempo non puo' essere recuperata in
-modo affidabile. Un tipo mancante o un punteggio di importanza mancante, invece,
-possono essere imputati se il report conserva l'informazione che il valore era
-assente.
-
-## Intuizione
-
-Non pulire i dati "per far sparire i buchi". Puliscili per rendere esplicite le
-decisioni. Prima misuri, poi decidi quali campi sono critici, poi applichi una
-regola semplice e verificabile.
+Assenza di testo, tempo o score non significa la stessa cosa. La pulizia decide
+quali memorie potranno raggiungere modelli e retrieval: e' una scelta sul
+significato dei dati, non un passaggio cosmetico.
 
 ## Teoria essenziale
 
-pandas rappresenta i valori mancanti con sentinelle diverse in base al tipo di
-dato, per esempio `NaN`, `NaT` e `NA`. Per questo si usa `isna()` o `notna()`
-invece di confronti di uguaglianza.
+### Il meccanismo viene prima della tecnica
 
-scikit-learn documenta due strategie di base per dataset incompleti: scartare
-righe o colonne, oppure imputare i valori mancanti. `SimpleImputer` copre
-strategie semplici come costante, media, mediana e valore piu' frequente.
+Rubin distingue processi in cui la probabilita' di assenza e' indipendente dai
+dati, dipende da valori osservati, oppure dipende anche dal valore non
+osservato. Questa distinzione conta: cancellare righe e imputare non eliminano
+automaticamente il bias quando l'assenza e' informativa [Rubin, 1976]. Qui non
+stimiamo il meccanismo da un piccolo CSV; dichiariamo invece le assunzioni.
 
-In questa lezione applichiamo una regola conservativa:
+Un campo e' **critico** quando senza di esso il record non soddisfa il contratto
+del sistema. Nel lab, una memoria senza testo o timestamp non puo' supportare
+retrieval testuale o temporale. Uno score ausiliario puo' essere imputato, purche'
+la sostituzione resti visibile.
 
-- `memory_id`, `text` e `timestamp` sono campi critici: se mancano, la riga esce;
-- `type` viene imputato con `unknown`;
-- `importance` viene imputato con la mediana dei record rimasti;
-- ogni imputazione lascia un flag booleano.
+### Media o mediana
+
+La media minimizza gli errori quadratici ma risente dei valori estremi. La
+mediana divide le osservazioni ordinate ed e' piu' robusta in distribuzioni
+asimmetriche [NIST, Measures of Location]. Nessuna delle due recupera
+l'informazione mancante. Ripetere un valore centrale crea massa artificiale,
+riduce spesso la variabilita' e puo' alterare relazioni tra colonne; scikit-learn
+presenta l'imputazione univariata come baseline, non come ricostruzione neutra.
+
+Per questo aggiungiamo un flag prima dell'imputazione: un modello futuro potra'
+distinguere valori osservati e sostituiti.
 
 ## Dentro TensorFlow/Keras
 
-Il tutorial TensorFlow sui dati strutturati mostra che le feature tabellari
-arrivano al modello come tensori. Questa lezione prepara una tabella coerente
-prima di arrivare a quel punto: niente credenziali, niente cloud, niente training
-prematuro.
+Questa lezione non usa ancora TensorFlow. Prepara il contratto tabellare che
+verra' convertito in `tf.data.Dataset` in `tfdata-basics`; TensorFlow arriva
+dopo split, leakage, encoding e scaling, quando le decisioni sui dati sono gia'
+esplicite.
 
 ## Esempio guidato
 
-Esegui:
+Sul piccolo dataset dimostrativo misuriamo, poi applichiamo una policy gia'
+testata:
 
-```bash
-uv run python examples/data_cleaning_missing_values.py
+```python
+import pandas as pd
+from memory_ai.data_cleaning import clean_memory_records, missing_summary
+
+raw = pd.read_csv("datasets/synthetic/memory_events_raw.csv")
+print(missing_summary(raw))
+result = clean_memory_records(raw)
+print(result.report)
 ```
 
-Il comando legge `datasets/synthetic/memory_events_raw.csv`, produce
-`datasets/processed/memory_events_clean.csv` e scrive il report JSON in
-`reports/evaluation/data-cleaning-01-missing-values.json`.
-
-Il comportamento importante e' testato in `tests/test_data_cleaning.py`.
+`isna` e `fillna` sono strumenti; la decisione e' aver definito campi critici,
+statistica di imputazione e flag di audit.
 
 ## Prova tu
 
-Apri `notebooks/data-cleaning-01-missing-values.ipynb` ed eseguilo dall'inizio
-alla fine, oppure usa il gate automatico:
-
-```bash
-uv run python scripts/execute_notebooks.py
-```
+Prima di aprire la soluzione, implementa i TODO sul dataset challenge e fai
+passare gli assert dedicati.
 
 ## Errori comuni
 
-- usare `== NaN` per cercare missing value;
-- imputare tutto senza distinguere campi critici e feature ausiliarie;
-- non salvare un report delle righe scartate;
-- calcolare statistiche di imputazione su dati che in futuro saranno test set.
+- Dedurre il meccanismo di missingness dalla sola cella vuota.
+- Calcolare l'imputazione prima di separare futuri train e test.
+- Usare la media su dati asimmetrici senza controllarne l'effetto.
+- Eliminare flag e report dopo aver riempito i buchi.
 
 ## Riepilogo
 
-- I missing value vanno misurati prima di essere corretti.
-- `isna()` e `notna()` sono le API pandas da usare per rilevarli.
-- Scartare righe puo' essere corretto quando manca un campo critico.
-- Imputare e' utile per feature non critiche.
-- `SimpleImputer` rende esplicita la strategia di imputazione.
-- I flag di imputazione conservano informazione utile per audit e modelli.
-- La pulizia deve produrre output riproducibili.
+- La causa dell'assenza orienta la strategia.
+- Criticita' significa violazione del contratto del record.
+- Media e mediana incorporano trade-off diversi.
+- Imputare altera la distribuzione e non ricrea informazione.
+- Un flag conserva la provenienza del valore.
 
 ## Quiz
 
-1. Perche' `isna()` e' piu' adatto di `== pd.NA`?
-2. Quale rischio introduci se imputi `importance` usando anche il test set?
-3. Perche' una memoria senza `timestamp` viene scartata in questa lezione?
+1. Perche' contare i mancanti non basta a dimostrare che cancellare righe sia sicuro?
+2. Quando preferiresti la mediana alla media per `importance`, e perche'?
+3. Quale effetto distributivo puo' avere l'imputazione con un valore centrale?
+
+Le risposte commentate sono in `solutions/data-cleaning-01-missing-values.md`.
 
 ## Esercizio
 
-Vedi `exercises/data-cleaning-01-missing-values.md`.
+Completa `exercises/data-cleaning-01-missing-values_starter.py`; istruzioni e
+test sono in `exercises/data-cleaning-01-missing-values.md`.
 
 ## Fonti
 
-- pandas, "Working with missing data":
-  https://pandas.pydata.org/docs/user_guide/missing_data.html
-- scikit-learn, "Imputation of missing values":
+- Rubin (1976), *Inference and Missing Data*: meccanismi e ignorabilita'.
+  https://doi.org/10.1093/biomet/63.3.581
+- NIST/SEMATECH, *Measures of Location*: sensibilita' di media e mediana.
+  https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm
+- scikit-learn, *Imputation of missing values*: strategie semplici e indicatori.
   https://scikit-learn.org/stable/modules/impute.html
-- TensorFlow Core, "Classify structured data using Keras preprocessing layers":
-  https://www.tensorflow.org/tutorials/structured_data/preprocessing_layers

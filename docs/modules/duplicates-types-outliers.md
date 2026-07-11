@@ -3,230 +3,114 @@ id: duplicates-types-outliers
 title: Duplicati, tipi e outlier nei dati di memoria
 module: data-engineering
 status: learner_review
-estimated_minutes: 25
-prerequisites:
-  - data-cleaning-01-missing-values
-  - Python base
-  - File CSV
-deliverables:
-  - datasets/processed/memory_events_quality_clean.csv
-  - reports/evaluation/duplicates-types-outliers.json
+estimated_minutes: 30
+prerequisites: [data-cleaning-01-missing-values, Python base]
+deliverables: [exercises/duplicates-types-outliers_starter.py]
 sources:
-  - https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html
-  - https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html
-  - https://pandas.pydata.org/docs/reference/api/pandas.Series.clip.html
+  - https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
+  - https://doi.org/10.1145/1008992.1009037
+  - https://pandas.pydata.org/docs/user_guide/duplicates.html
 ---
 
 # Duplicati, tipi e outlier nei dati di memoria
 
-## Il problema
+## Cosa saprai fare
 
-Nella lezione precedente hai visto i valori mancanti. Ora guardi altri tre
-problemi piccoli ma frequenti.
-
-| memory_id | text | timestamp | type | importance |
-|---|---|---|---|---|
-| mem_001 | Marco visited Glasgow with his son. | 2026-07-03 | episodic | 0.72 |
-| mem_001 | Marco visited Glasgow with his son. | 2026-07-03 | episodic | 0.72 |
-| mem_003 | The user likes walking meetings. | 2026-07-05 | preference | high |
-| mem_004 | A trip lasted 400 days. | 2026-07-06 | episodic | 1.70 |
-
-La seconda riga ripete la prima. Il valore `high` sembra informativo, ma non e'
-un numero. Il valore `1.70` e' numerico, ma non rispetta la regola locale:
-`importance` deve stare tra `0` e `1`.
-
-Questa lezione ha un obiettivo pratico: **pulire questi problemi senza
-nascondere cosa e' stato cambiato**.
-
-## Cosa impari
-
-Alla fine saprai fare tre cose:
-
-1. trovare duplicati con una chiave esplicita;
-2. convertire un campo numerico letto come testo;
-3. segnalare e correggere outlier di dominio.
+Implementare un audit che separa candidati duplicati, errori di tipo e valori
+fuori dominio senza nascondere le correzioni.
 
 ## Perche' serve nel Memory AI Lab
 
-Un sistema di memoria usa i record per decidere cosa salvare, cercare e valutare.
-Se una memoria appare due volte, puo' pesare troppo. Se `importance` e' testo,
-non puoi confrontarla con altri punteggi. Se `importance` esce dal range
-previsto, le regole successive diventano ambigue.
+Record ripetuti sovrappesano eventi nel training e nel retrieval. Correzioni
+silenziose cambiano la distribuzione degli score. Il lab deve poter spiegare
+quali record sono stati confrontati e quali valori sono stati limitati.
 
-Qui non stai ancora addestrando un modello. Stai proteggendo i dati che un
-modello usera' piu' avanti.
+## Teoria essenziale
 
-## Concetto 1: duplicati
+### Identita' e near-duplicates
 
-Un duplicato non e' sempre "una riga identica". Dipende dalla chiave che scegli.
+Un duplicato esatto dipende da una chiave dichiarata. Un **near-duplicate** puo'
+differire per maiuscole, spazi o piccole variazioni pur riferendosi allo stesso
+contenuto. Il record linkage confronta attributi imperfetti e comporta falsi
+positivi e falsi negativi; non trasforma automaticamente la somiglianza in
+identita' [Chaudhuri et al., 2003]. In questa lezione la normalizzazione genera
+candidati conservativi: la cancellazione reale richiede anche contesto.
 
-In questa lezione usiamo due controlli:
+### Outlier statistico e di dominio
 
-- stesso `memory_id`;
-- stessa coppia `text` e `timestamp`.
+Un outlier statistico e' insolito rispetto a una distribuzione e dipende dal
+metodo scelto; NIST mostra, per esempio, una regola basata su quartili e IQR. Un
+outlier di dominio viola invece un contratto indipendente dalla frequenza: se
+`importance` e' definita in `[0, 1]`, `1.2` e' invalido anche in un dataset
+piccolo. Un valore raro ma valido non va corretto solo perche' sorprende.
 
-Il primo caso e' forte: due righe con lo stesso identificatore dicono di essere
-la stessa memoria. Il secondo caso e' una regola semplice: stesso testo nello
-stesso giorno probabilmente descrive lo stesso evento.
+Il **clipping** conserva la riga ma sposta i valori oltre soglia sul confine.
+Questo crea accumuli a 0 o 1, cambia varianza e puo' cambiare correlazioni. Va
+quindi applicato solo con un vincolo di dominio e con un flag, non come cura
+generica degli outlier statistici.
 
-Il codice conserva la prima riga e marca le successive:
+## Dentro TensorFlow/Keras
 
-```python
-from memory_ai.data_quality import duplicate_memory_mask
-
-duplicate_mask = duplicate_memory_mask(raw)
-duplicates = raw.loc[duplicate_mask]
-```
-
-La maschera non cancella nulla. Prima ti fa vedere cosa verrebbe rimosso.
-
-## Concetto 2: tipi errati
-
-Un CSV e' testo. Anche quando vedi `0.40`, pandas puo' leggerlo insieme ad altri
-valori come una colonna non numerica, soprattutto se nella stessa colonna appare
-`high`.
-
-Per questo la conversione deve essere esplicita:
-
-```python
-import pandas as pd
-
-numeric_importance = pd.to_numeric(raw["importance"], errors="coerce")
-```
-
-Con `errors="coerce"`, i valori non convertibili diventano mancanti. Nel nostro
-codice non li lasciamo sparire: aggiungiamo il flag
-`importance_was_invalid_type` e usiamo un fallback conservativo.
-
-## Concetto 3: outlier di dominio
-
-Qui "outlier" non significa "valore raro". Significa "valore impossibile per la
-regola del campo".
-
-Nel repository `importance` e' un punteggio locale tra `0.0` e `1.0`. Quindi:
-
-- `-0.20` viola il limite inferiore;
-- `1.70` viola il limite superiore;
-- `0.72` e' nel range.
-
-La funzione della lezione fa due cose:
-
-- aggiunge `importance_was_outlier`;
-- porta il valore dentro il range con `clip`.
-
-Questo e' semplice, ma non e' neutro. Per questo il report deve dire quanti
-valori sono stati corretti.
-
-## Il dataset della lezione
-
-Userai:
-
-```text
-datasets/synthetic/memory_events_quality_issues.csv
-```
-
-Il file e' sintetico. Contiene solo sette righe e tre problemi intenzionali:
-
-- duplicati;
-- `importance` non numerica;
-- `importance` fuori range.
+TensorFlow non e' ancora usato. Questo audit prepara feature numeriche e record
+univoci per `tfdata-basics`; le preprocessing layer non possono decidere se due
+memorie rappresentino lo stesso evento.
 
 ## Esempio guidato
 
-Dal terminale, nella root del repository:
-
-```bash
-uv run python examples/duplicates_types_outliers.py
-```
-
-Il comando crea:
-
-```text
-datasets/processed/memory_events_quality_clean.csv
-reports/evaluation/duplicates-types-outliers.json
-```
-
-Il codice principale e':
+Il dataset dimostrativo mostra come ispezionare prima di correggere:
 
 ```python
-from pathlib import Path
-
 import pandas as pd
+from memory_ai.data_quality import duplicate_memory_mask, flag_and_clip_importance_outliers
 
-from memory_ai.data_quality import clean_memory_quality_issues
-
-raw_path = Path("datasets/synthetic/memory_events_quality_issues.csv")
-raw = pd.read_csv(raw_path)
-
-result = clean_memory_quality_issues(raw)
-cleaned = result.data
-report = result.report
+raw = pd.read_csv("datasets/synthetic/memory_events_quality_issues.csv")
+print(raw.loc[duplicate_memory_mask(raw)])
+numeric = raw.assign(importance=pd.to_numeric(raw["importance"], errors="coerce"))
+print(flag_and_clip_importance_outliers(numeric.fillna({"importance": 0.0})))
 ```
 
-`cleaned` contiene la tabella pulita. `report` contiene le decisioni:
+Le API sono confinate qui. Nell'esercizio dovrai progettare anche confronto
+normalizzato e fallback basato sui dati validi.
 
-- quante righe sono entrate;
-- quante sono uscite;
-- quanti duplicati sono stati rimossi;
-- quanti valori di `importance` non erano numerici;
-- quanti valori erano fuori range.
+## Prova tu
 
-## Notebook
-
-Puoi eseguire gli stessi passaggi in:
-
-```text
-notebooks/duplicates-types-outliers.ipynb
-```
-
-Il notebook include assert finali. Se una regola cambia senza essere aggiornata,
-il notebook fallisce.
-
-## Cosa deve restare chiaro
-
-La pulizia non deve far sembrare i dati migliori di quanto siano. Il punto non e'
-solo ottenere una tabella "ordinata". Il punto e' poter dire:
-
-> ho rimosso questi duplicati, ho convertito questi valori e ho corretto questi
-> outlier perche' violavano una regola dichiarata.
-
-Nel Memory AI Lab questa tracciabilita' evita decisioni nascoste prima dei
-modelli.
+Completa lo starter sul challenge senza conoscere in anticipo numero o posizione
+dei problemi; gli assert verificano contratto e audit flag.
 
 ## Errori comuni
 
-- Cercare duplicati senza decidere la chiave.
-- Usare `astype(float)` prima di controllare valori come `high`.
-- Correggere outlier senza lasciare un flag.
-- Chiamare outlier un valore solo perche' sembra grande.
-- Cancellare righe recuperabili senza salvare un report.
+- Usare una sola colonna non documentata come identita'.
+- Cancellare automaticamente ogni near-duplicate.
+- Chiamare invalido ogni valore raro.
+- Applicare clipping senza misurare quanti valori finiscono sui confini.
 
 ## Riepilogo
 
-- Un duplicato dipende dalla chiave scelta.
-- Qui controlli `memory_id` e la coppia `text`/`timestamp`.
-- Un CSV puo' contenere numeri letti come testo.
-- `pd.to_numeric(..., errors="coerce")` rende espliciti i valori non convertibili.
-- In questa lezione `importance` deve stare tra `0.0` e `1.0`.
-- Gli outlier di dominio vengono segnalati e portati nel range.
-- Ogni modifica importante deve apparire nel report.
+- L'identita' dipende da chiavi e contesto.
+- I near-duplicates sono candidati con errori possibili.
+- Gli outlier statistici dipendono dalla distribuzione.
+- Gli outlier di dominio violano un contratto.
+- Il clipping modifica forma e variabilita'.
+- Flag e report rendono le correzioni auditabili.
 
 ## Quiz
 
-1. Perche' due righe con lo stesso `memory_id` sono piu' sospette di due righe
-   con lo stesso `type`?
-2. Cosa rischi usando `astype(float)` su una colonna che contiene `"high"`?
-3. Nel Memory AI Lab, perche' e' utile sapere che `importance` e' stata corretta?
+1. In cosa differiscono un outlier statistico e uno di dominio?
+2. Perche' il clipping puo' alterare la distribuzione anche se conserva le righe?
+3. Perche' il testo normalizzato deve proporre candidati e non provare identita'?
+
+Le risposte commentate sono in `solutions/duplicates-types-outliers.md`.
 
 ## Esercizio
 
-Vai a `exercises/duplicates-types-outliers.md`.
+Completa `exercises/duplicates-types-outliers_starter.py`; istruzioni e test
+sono in `exercises/duplicates-types-outliers.md`.
 
 ## Fonti
 
-- pandas, `DataFrame.duplicated`:
-  https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html
-- pandas, `to_numeric`:
-  https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html
-- pandas, `Series.clip`:
-  https://pandas.pydata.org/docs/reference/api/pandas.Series.clip.html
+- NIST/SEMATECH, *Detection of Outliers*: criterio statistico IQR.
+  https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
+- Chaudhuri et al. (2003), *Robust and Efficient Fuzzy Match for Online Data Cleaning*:
+  matching approssimato e trade-off. https://doi.org/10.1145/1008992.1009037
+- pandas, *Duplicate Labels*: comportamento delle etichette duplicate.
+  https://pandas.pydata.org/docs/user_guide/duplicates.html

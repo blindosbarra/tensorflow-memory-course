@@ -1,75 +1,18 @@
-# Esercizio: trova duplicati, tipi errati e outlier
+# Esercizio: audit di duplicati, tipi e outlier
 
-Userai questo file:
+Completa tutti i TODO in `exercises/duplicates-types-outliers_starter.py` usando
+`datasets/synthetic/memory_events_quality_challenge.csv` (120 righe). Devi
+scoprire i problemi dal dataset; non sono elencati qui.
 
-```text
-datasets/synthetic/memory_events_quality_issues.csv
-```
-
-## Parte 1: guarda la tabella
-
-Apri Python o una cella notebook:
-
-```python
-import pandas as pd
-
-raw = pd.read_csv("datasets/synthetic/memory_events_quality_issues.csv")
-print(raw)
-```
-
-Domande:
-
-- quali righe sembrano ripetute?
-- quali valori di `importance` non sembrano numeri?
-- quali valori di `importance` sono fuori dal range `0`-`1`?
-
-## Parte 2: trova i duplicati
-
-Usa la funzione gia' pronta:
-
-```python
-from memory_ai.data_quality import duplicate_memory_mask
-
-duplicate_mask = duplicate_memory_mask(raw)
-print(raw.loc[duplicate_mask])
-```
-
-Domanda:
-
-- perche' una riga puo' essere duplicata anche se ha un `memory_id` diverso?
-
-## Parte 3: pulisci e leggi il report
-
-```python
-from memory_ai.data_quality import clean_memory_quality_issues
-
-result = clean_memory_quality_issues(raw)
-
-print(result.data)
-print(result.report)
-```
-
-## Criteri di successo
-
-Hai completato l'esercizio se riesci a spiegare:
-
-- quanti duplicati sono stati rimossi;
-- cosa e' successo al valore `"high"`;
-- cosa e' successo ai valori `1.70` e `-0.20`;
-- perche' i flag sono utili;
-- perche' la soluzione non introduce TensorFlow.
-
-## Controllo automatico
-
-Quando vuoi verificare che il codice del repository funzioni:
+Criteri: non mutare l'input; confrontare anche testo normalizzato; conservare la
+prima occorrenza; creare flag di audit; imputare testo numerico invalido con la
+mediana dei valori validi nel dominio; applicare il range di dominio `[0, 1]`.
 
 ```bash
-uv run pytest
+uv run pytest -o norecursedirs= tests/exercises/test_duplicates_types_outliers.py
 ```
 
-## Hint
-
-1. Un duplicato dipende dalla chiave scelta.
-2. `to_numeric` serve a convertire testo in numeri.
-3. Un valore non convertibile non e' uguale a un outlier.
-4. Qui un outlier e' un valore fuori dal range dichiarato per `importance`.
+Lo starter incompleto deve fallire. Hint: (1) `str.strip().str.casefold()`;
+(2) combina maschere `duplicated`; (3) `to_numeric(errors="coerce")`; (4)
+calcola la mediana solo sui valori gia' nel dominio; (5) crea il flag prima di
+`clip`.

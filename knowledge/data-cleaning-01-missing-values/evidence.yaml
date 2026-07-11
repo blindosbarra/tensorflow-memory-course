@@ -1,6 +1,28 @@
 lesson_id: data-cleaning-01-missing-values
 reviewed_at: 2026-07-10
 claims:
+  - id: rubin-missingness-mechanisms
+    claim: "The validity of inference with missing data depends on how missingness relates to observed and unobserved values."
+    importance: critical
+    source_url: "https://doi.org/10.1093/biomet/63.3.581"
+    source_title: "Inference and Missing Data"
+    publisher: "Biometrika"
+    published_or_updated: "1976"
+    accessed_at: "2026-07-11"
+    primary_source: true
+    evidence_note: "Rubin formalizes missing-data mechanisms and conditions under which they may be ignored."
+    status: verified
+  - id: nist-mean-median-robustness
+    claim: "The mean is sensitive to extreme values while the median is resistant."
+    importance: major
+    source_url: "https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm"
+    source_title: "Measures of Location"
+    publisher: "NIST/SEMATECH"
+    published_or_updated: "e-Handbook"
+    accessed_at: "2026-07-11"
+    primary_source: true
+    evidence_note: "The handbook contrasts mean and median sensitivity to extreme observations."
+    status: verified
   - id: pandas-missing-sentinels
     claim: "pandas represents missing values with different sentinels depending on dtype, including NaN, NaT and NA."
     importance: major
@@ -60,4 +82,4 @@ review:
   reviewer: codex
   decision: pass
   notes:
-    - "Research pack intentionally excludes advanced missingness mechanisms."
+    - "Re-review required after learner-review rework; conceptual sources added."

@@ -1,21 +1,21 @@
-# Esercizio: missing values
+# Esercizio: missing values su dati non anticipati
 
-Parti da `datasets/synthetic/memory_events_raw.csv`.
+Completa tutti i TODO in
+`exercises/data-cleaning-01-missing-values_starter.py` usando
+`datasets/synthetic/memory_events_missing_challenge.csv` (120 righe). La lezione
+non rivela quali celle siano problematiche: la diagnosi fa parte dell'esercizio.
 
-Obiettivo: usa `memory_ai.data_cleaning.clean_memory_records` per ottenere una
-tabella senza missing value e un report con le decisioni applicate.
+Criteri: non mutare l'input; calcolare tassi per colonna; scartare soltanto i
+record senza campi critici; creare i flag prima di imputare; usare `unknown` e
+la mediana dei record sopravvissuti.
 
-## Criteri di successo
+Esegui soltanto i test learner con:
 
-- Le righe senza `text` o `timestamp` non sono presenti nel risultato.
-- `type` mancante diventa `unknown`.
-- `importance` mancante viene imputata con la mediana.
-- Il report contiene `rows_before`, `rows_after`, `dropped_rows` e `imputed`.
-- I test passano con `uv run pytest`.
+```bash
+uv run pytest -o norecursedirs= tests/exercises/test_data_cleaning_01_missing_values.py
+```
 
-## Hint
+Lo starter incompleto deve fallire. `uv run pytest` lo esclude intenzionalmente.
 
-1. Carica il CSV con pandas.
-2. Prima guarda `missing_summary`.
-3. Poi chiama `clean_memory_records`.
-4. Controlla i flag `type_was_missing` e `importance_was_missing`.
+Hint: (1) parti da `frame.isna().mean()`; (2) usa `dropna(subset=...)` su una
+copia; (3) crea i flag prima di `fillna`; (4) calcola la mediana dopo i drop.
