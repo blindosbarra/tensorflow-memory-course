@@ -13,51 +13,57 @@ sources: []
 
 ## Cosa saprai fare
 
-Al termine saprai:
+Un solo risultato pratico, osservabile e verificabile.
 
-- ...
-- ...
+## Perche' serve nel Memory AI Lab
 
-## Perché serve nel Memory AI Lab
-
-...
-
-## Intuizione
-
-...
+Collega la decisione della lezione a un comportamento del progetto.
 
 ## Teoria essenziale
 
-...
+Spiega concetti, assunzioni e trade-off: il *perche'* prima del *come*. Ogni
+claim tecnico rilevante deve avere una citazione primaria vicina. Non descrivere
+qui le API.
+
+Per lezioni sui dati, quando pertinenti, distinguere: meccanismi di missingness;
+media e mediana; effetti di imputazione e clipping sulla distribuzione; outlier
+statistici e di dominio; duplicati esatti e near-duplicates.
 
 ## Dentro TensorFlow/Keras
 
-...
+Se la lezione usa TensorFlow/Keras, mostra il punto di contatto. Altrimenti
+dichiara esplicitamente cosa prepara e in quale lezione o fase arriva
+TensorFlow/Keras. Questa sezione non puo' essere omessa.
 
 ## Esempio guidato
 
-...
+Confina qui API e codice eseguito. L'esempio mostra il processo, ma non risolve
+lo stesso caso dell'esercizio.
 
 ## Prova tu
 
-...
+Indica una modifica breve che richieda allo studente di scrivere codice e renda
+verificabile l'output.
 
 ## Errori comuni
 
-...
+Elenca errori di decisione, non soltanto errori di sintassi.
 
 ## Riepilogo
 
-...
+Massimo 8 punti. Non deve contenere risposte copiabili al quiz.
 
 ## Quiz
 
-1. ...
+Domande di comprensione, rischio e applicazione basate solo su concetti gia'
+insegnati. Le risposte commentate sono in `solutions/<lesson-id>.md`.
 
 ## Esercizio
 
-Vedi `exercises/<lesson-id>.md`.
+Completa i TODO in `exercises/<lesson-id>_starter.py`. Il file
+`exercises/<lesson-id>.md` documenta input, criteri, hint e comando dei test
+dedicati. I test devono fallire finche' i TODO non sono completati.
 
 ## Fonti
 
-- ...
+- <fonte primaria e claim supportato>
