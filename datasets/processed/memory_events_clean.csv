@@ -1,5 +1,5 @@
 memory_id,text,timestamp,type,importance,type_was_missing,importance_was_missing
 mem_001,Marco visited Glasgow with his son.,2026-07-03,episodic,0.72,False,False
 mem_002,The user prefers concise morning summaries.,2026-07-04,preference,0.58,False,True
-mem_003,The office Wi-Fi password changed.,2026-07-05,semantic,0.44,False,False
+mem_003,The office Wi-Fi policy changed.,2026-07-05,semantic,0.44,False,False
 mem_006,Remember to ask about the TensorFlow lab.,2026-07-07,unknown,0.58,True,False

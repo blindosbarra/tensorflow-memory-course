@@ -1,7 +1,7 @@
 memory_id,text,timestamp,type,importance
 mem_001,Marco visited Glasgow with his son.,2026-07-03,episodic,0.72
 mem_002,The user prefers concise morning summaries.,2026-07-04,preference,
-mem_003,The office Wi-Fi password changed.,2026-07-05,semantic,0.44
+mem_003,The office Wi-Fi policy changed.,2026-07-05,semantic,0.44
 mem_004,,2026-07-06,episodic,0.51
 mem_005,Lucia booked a train to Milan.,,episodic,0.66
 mem_006,Remember to ask about the TensorFlow lab.,2026-07-07,,0.58
