@@ -1,6 +1,6 @@
 ---
 id: data-cleaning-01-missing-values
-title: Missing values nei dati di memoria
+title: Missing values nelle letture ambientali
 module: data-engineering
 status: learner_review
 estimated_minutes: 30
@@ -12,103 +12,112 @@ sources:
   - https://scikit-learn.org/stable/modules/impute.html
 ---
 
-# Missing values nei dati di memoria
+# Missing values nelle letture ambientali
 
 ## Cosa saprai fare
 
-Scegliere e implementare una strategia tracciabile per campi mancanti critici e
-recuperabili, verificandone l'effetto sui dati.
+Scegliere e implementare una policy tracciabile per letture mancanti,
+verificandone l'effetto sulla distribuzione.
 
-## Perche' serve nel Memory AI Lab
+## Il problema nel suo dominio naturale
 
-Assenza di testo, tempo o score non significa la stessa cosa. La pulizia decide
-quali memorie potranno raggiungere modelli e retrieval: e' una scelta sul
-significato dei dati, non un passaggio cosmetico.
+Una stazione ambientale registra temperatura e umidita' ogni ora. Un sensore
+puo' non rispondere, la rete puo' perdere un pacchetto o la stazione puo' essere
+offline. Il buco nasce quindi dal processo di misura. Prima di riempirlo devi
+chiederti quale causa lo ha prodotto e quale decisione analitica vuoi sostenere.
 
 ## Teoria essenziale
 
-### Il meccanismo viene prima della tecnica
+### La causa viene prima della tecnica
 
-Rubin distingue processi in cui la probabilita' di assenza e' indipendente dai
-dati, dipende da valori osservati, oppure dipende anche dal valore non
-osservato. Questa distinzione conta: cancellare righe e imputare non eliminano
-automaticamente il bias quando l'assenza e' informativa [Rubin, 1976]. Qui non
-stimiamo il meccanismo da un piccolo CSV; dichiariamo invece le assunzioni.
+Rubin distingue assenze indipendenti dai dati, dipendenti da valori osservati e
+dipendenti anche dal valore non osservato. Se un termometro smette di rispondere
+proprio alle temperature estreme, le righe visibili non sono un campione neutro:
+cancellare o imputare non rimuove automaticamente il bias [Rubin, 1976]. Da un
+CSV piccolo non puoi identificare con certezza il meccanismo; devi documentare
+le informazioni sul processo e l'assunzione adottata.
 
-Un campo e' **critico** quando senza di esso il record non soddisfa il contratto
-del sistema. Nel lab, una memoria senza testo o timestamp non puo' supportare
-retrieval testuale o temporale. Uno score ausiliario puo' essere imputato, purche'
-la sostituzione resti visibile.
+Un campo e' **critico** quando senza di esso la riga perde identita' o contesto:
+per una lettura servono id, stazione e istante. Una misura numerica assente puo'
+essere recuperabile, ma la sostituzione deve restare distinguibile dall'originale.
 
-### Media o mediana
+### Media, mediana ed effetto dell'imputazione
 
-La media minimizza gli errori quadratici ma risente dei valori estremi. La
-mediana divide le osservazioni ordinate ed e' piu' robusta in distribuzioni
-asimmetriche [NIST, Measures of Location]. Nessuna delle due recupera
-l'informazione mancante. Ripetere un valore centrale crea massa artificiale,
-riduce spesso la variabilita' e puo' alterare relazioni tra colonne; scikit-learn
-presenta l'imputazione univariata come baseline, non come ricostruzione neutra.
-
-Per questo aggiungiamo un flag prima dell'imputazione: un modello futuro potra'
-distinguere valori osservati e sostituiti.
+La media usa tutte le distanze e risente degli estremi; la mediana e' resistente
+a pochi valori molto lontani [NIST, Measures of Location]. Nessuna delle due
+ricrea la misura persa. Inserire ripetutamente un valore centrale crea un picco
+artificiale, tende a ridurre la variabilita' e puo' cambiare le relazioni tra
+colonne. L'imputazione univariata e' una baseline, non una trasformazione neutra
+[scikit-learn, Imputation]. Un flag creato prima dell'imputazione conserva la
+provenienza del valore.
 
 ## Dentro TensorFlow/Keras
 
-Questa lezione non usa ancora TensorFlow. Prepara il contratto tabellare che
-verra' convertito in `tf.data.Dataset` in `tfdata-basics`; TensorFlow arriva
-dopo split, leakage, encoding e scaling, quando le decisioni sui dati sono gia'
-esplicite.
+Questa lezione non usa TensorFlow. Prepara il contratto tabellare che verra'
+convertito in `tf.data.Dataset` in `tfdata-basics`; TensorFlow arriva dopo split,
+leakage, encoding e scaling, quando le decisioni sui dati sono esplicite.
 
 ## Esempio guidato
 
-Sul piccolo dataset dimostrativo misuriamo, poi applichiamo una policy gia'
-testata:
+Su quattro letture dimostrative misuriamo l'assenza e confrontiamo statistiche:
 
 ```python
 import pandas as pd
-from memory_ai.data_cleaning import clean_memory_records, missing_summary
 
-raw = pd.read_csv("datasets/synthetic/memory_events_raw.csv")
-print(missing_summary(raw))
-result = clean_memory_records(raw)
-print(result.report)
+demo = pd.DataFrame({"temperature_c": [18.2, 18.7, None, 41.0]})
+missing_rate = demo.isna().mean()
+mean_value = demo["temperature_c"].mean()
+median_value = demo["temperature_c"].median()
+demo["temperature_was_missing"] = demo["temperature_c"].isna()
+demo["temperature_c"] = demo["temperature_c"].fillna(median_value)
 ```
 
-`isna` e `fillna` sono strumenti; la decisione e' aver definito campi critici,
-statistica di imputazione e flag di audit.
+`isna` e `fillna` sono strumenti. La decisione e' usare una statistica coerente
+con la forma osservata, conservare il flag e dichiarare che non conosciamo la
+misura originale.
 
 ## Prova tu
 
-Prima di aprire la soluzione, implementa i TODO sul dataset challenge e fai
-passare gli assert dedicati.
+Nel notebook confronta media e mediana su una serie asimmetrica e fai passare
+gli assert dopo avere scritto la policy.
 
 ## Errori comuni
 
 - Dedurre il meccanismo di missingness dalla sola cella vuota.
 - Calcolare l'imputazione prima di separare futuri train e test.
-- Usare la media su dati asimmetrici senza controllarne l'effetto.
+- Usare la media su dati asimmetrici senza misurarne l'effetto.
 - Eliminare flag e report dopo aver riempito i buchi.
 
 ## Riepilogo
 
 - La causa dell'assenza orienta la strategia.
-- Criticita' significa violazione del contratto del record.
-- Media e mediana incorporano trade-off diversi.
-- Imputare altera la distribuzione e non ricrea informazione.
-- Un flag conserva la provenienza del valore.
+- I campi critici definiscono l'identita' della lettura.
+- Media e mediana hanno sensibilita' diverse agli estremi.
+- L'imputazione modifica la distribuzione.
+- Un flag distingue valori osservati e sostituiti.
 
 ## Quiz
 
-1. Perche' contare i mancanti non basta a dimostrare che cancellare righe sia sicuro?
-2. Quando preferiresti la mediana alla media per `importance`, e perche'?
-3. Quale effetto distributivo puo' avere l'imputazione con un valore centrale?
+1. Una stazione perde soprattutto misure durante picchi di calore. Perche'
+   cancellare le righe puo' distorcere l'analisi?
+2. Quale controllo faresti prima di scegliere media o mediana?
+3. Perche' il flag di imputazione va creato prima di `fillna`?
 
 Le risposte commentate sono in `solutions/data-cleaning-01-missing-values.md`.
 
 ## Esercizio
 
-Completa `exercises/data-cleaning-01-missing-values_starter.py`; istruzioni e
-test sono in `exercises/data-cleaning-01-missing-values.md`.
+Completa i TODO in `exercises/data-cleaning-01-missing-values_starter.py` sul
+dataset di sensori. I test dedicati devono fallire finche' non scrivi il codice.
+
+## Trasferimento al Memory AI Lab
+
+Nella pipeline finale un timeout di ingestion puo' perdere l'intero record;
+un'estrazione strutturata puo' invece produrre `text` e `timestamp` ma omettere
+`importance`. Il mapping e': id/testo/tempo identificano e rendono recuperabile
+la memoria, come id/stazione/tempo per la lettura; uno score derivato e' una
+misura recuperabile, come temperatura o umidita'. La policy non assume memorie
+difettose per natura: collega il difetto a ingestion ed estrazione parziale.
 
 ## Fonti
 
@@ -116,5 +125,5 @@ test sono in `exercises/data-cleaning-01-missing-values.md`.
   https://doi.org/10.1093/biomet/63.3.581
 - NIST/SEMATECH, *Measures of Location*: sensibilita' di media e mediana.
   https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm
-- scikit-learn, *Imputation of missing values*: strategie semplici e indicatori.
+- scikit-learn, *Imputation of missing values*: baseline e indicatori.
   https://scikit-learn.org/stable/modules/impute.html

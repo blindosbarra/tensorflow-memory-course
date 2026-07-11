@@ -11,15 +11,16 @@ SPEC.loader.exec_module(STARTER)
 
 
 def test_quality_cleaning_contract() -> None:
-    frame = pd.read_csv("datasets/synthetic/memory_events_quality_challenge.csv")
+    frame = pd.read_csv("datasets/synthetic/environmental_sensor_quality_challenge.csv")
     original = frame.copy(deep=True)
     mask = STARTER.duplicate_candidates(frame)
     cleaned = STARTER.clean_challenge(frame)
     pd.testing.assert_frame_equal(frame, original)
     assert mask.dtype == bool and mask.sum() >= 4
     assert len(cleaned) == len(frame) - int(mask.sum())
-    assert cleaned["memory_id"].is_unique
-    assert cleaned["importance"].between(0, 1).all()
-    assert {"importance_was_invalid_type", "importance_was_outlier"} <= set(cleaned.columns)
-    assert cleaned["importance_was_invalid_type"].sum() > 0
-    assert cleaned["importance_was_outlier"].sum() > 0
+    assert cleaned["reading_id"].is_unique
+    assert cleaned["temperature_c"].between(-50, 60).all()
+    flags = {"temperature_was_invalid_type", "temperature_was_domain_outlier"}
+    assert flags <= set(cleaned.columns)
+    assert cleaned["temperature_was_invalid_type"].sum() > 0
+    assert cleaned["temperature_was_domain_outlier"].sum() > 0

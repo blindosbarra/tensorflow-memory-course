@@ -1,6 +1,6 @@
 ---
 id: duplicates-types-outliers
-title: Duplicati, tipi e outlier nei dati di memoria
+title: Duplicati, tipi e outlier nelle letture ambientali
 module: data-engineering
 status: learner_review
 estimated_minutes: 30
@@ -9,85 +9,84 @@ deliverables: [exercises/duplicates-types-outliers_starter.py]
 sources:
   - https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
   - https://doi.org/10.1145/1008992.1009037
-  - https://pandas.pydata.org/docs/user_guide/duplicates.html
+  - https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html
 ---
 
-# Duplicati, tipi e outlier nei dati di memoria
+# Duplicati, tipi e outlier nelle letture ambientali
 
 ## Cosa saprai fare
 
-Implementare un audit che separa candidati duplicati, errori di tipo e valori
+Implementare un audit che separa candidati duplicati, errori di tipo e misure
 fuori dominio senza nascondere le correzioni.
 
-## Perche' serve nel Memory AI Lab
+## Il problema nel suo dominio naturale
 
-Record ripetuti sovrappesano eventi nel training e nel retrieval. Correzioni
-silenziose cambiano la distribuzione degli score. Il lab deve poter spiegare
-quali record sono stati confrontati e quali valori sono stati limitati.
+Una stazione ritenta l'invio dopo un timeout: il collector puo' ricevere due
+volte la stessa lettura. Firmware diversi possono inviare `18.4` oppure
+`"18.4"`; un sensore guasto puo' produrre una temperatura fisicamente
+impossibile. Sono difetti naturali di una pipeline di telemetria.
 
 ## Teoria essenziale
 
 ### Identita' e near-duplicates
 
-Un duplicato esatto dipende da una chiave dichiarata. Un **near-duplicate** puo'
-differire per maiuscole, spazi o piccole variazioni pur riferendosi allo stesso
-contenuto. Il record linkage confronta attributi imperfetti e comporta falsi
-positivi e falsi negativi; non trasforma automaticamente la somiglianza in
-identita' [Chaudhuri et al., 2003]. In questa lezione la normalizzazione genera
-candidati conservativi: la cancellazione reale richiede anche contesto.
+Un duplicato esatto dipende da una chiave dichiarata. Un near-duplicate puo'
+differire per spazi o maiuscole pur descrivendo la stessa stazione e lo stesso
+istante. Il record linkage bilancia falsi match e match mancati: la somiglianza
+propone candidati, non dimostra identita' [Chaudhuri et al., 2003]. Per questo
+normalizziamo etichette, ma conserviamo tempo e regole di dominio nel confronto.
 
 ### Outlier statistico e di dominio
 
-Un outlier statistico e' insolito rispetto a una distribuzione e dipende dal
-metodo scelto; NIST mostra, per esempio, una regola basata su quartili e IQR. Un
-outlier di dominio viola invece un contratto indipendente dalla frequenza: se
-`importance` e' definita in `[0, 1]`, `1.2` e' invalido anche in un dataset
-piccolo. Un valore raro ma valido non va corretto solo perche' sorprende.
+Un outlier statistico e' insolito rispetto alla distribuzione e dipende da una
+regola dichiarata, per esempio quartili e IQR [NIST, Detection of Outliers]. Un
+outlier di dominio viola invece un contratto esterno: se la stazione e'
+certificata da -50 a 60 gradi, 79 e' invalido anche se compare spesso. Un valore
+raro ma nel range non va corretto solo perche' sorprende.
 
-Il **clipping** conserva la riga ma sposta i valori oltre soglia sul confine.
-Questo crea accumuli a 0 o 1, cambia varianza e puo' cambiare correlazioni. Va
-quindi applicato solo con un vincolo di dominio e con un flag, non come cura
-generica degli outlier statistici.
+Il clipping conserva la riga ma accumula i valori oltre soglia sul confine.
+Cambia forma, varianza e potenzialmente correlazioni. Si applica soltanto con un
+vincolo motivato e un flag di audit; non e' una cura generica per gli outlier.
 
 ## Dentro TensorFlow/Keras
 
 TensorFlow non e' ancora usato. Questo audit prepara feature numeriche e record
-univoci per `tfdata-basics`; le preprocessing layer non possono decidere se due
-memorie rappresentino lo stesso evento.
+univoci per `tfdata-basics`; una preprocessing layer non puo' decidere se due
+letture rappresentano la stessa misura fisica.
 
 ## Esempio guidato
 
-Il dataset dimostrativo mostra come ispezionare prima di correggere:
-
 ```python
 import pandas as pd
-from memory_ai.data_quality import duplicate_memory_mask, flag_and_clip_importance_outliers
 
-raw = pd.read_csv("datasets/synthetic/memory_events_quality_issues.csv")
-print(raw.loc[duplicate_memory_mask(raw)])
-numeric = raw.assign(importance=pd.to_numeric(raw["importance"], errors="coerce"))
-print(flag_and_clip_importance_outliers(numeric.fillna({"importance": 0.0})))
+demo = pd.DataFrame({
+    "station_id": ["north", "north", "south"],
+    "recorded_at": ["10:00", "10:00", "10:00"],
+    "temperature_c": [18.4, "18.4", "sensor_error"],
+})
+duplicate = demo.duplicated(["station_id", "recorded_at"], keep="first")
+numeric = pd.to_numeric(demo["temperature_c"], errors="coerce")
 ```
 
-Le API sono confinate qui. Nell'esercizio dovrai progettare anche confronto
-normalizzato e fallback basato sui dati validi.
+Le API rendono visibile l'audit. Non stabiliscono da sole la chiave corretta,
+il range fisico o la policy per i parse falliti.
 
 ## Prova tu
 
-Completa lo starter sul challenge senza conoscere in anticipo numero o posizione
-dei problemi; gli assert verificano contratto e audit flag.
+Nel notebook scrivi la normalizzazione delle etichette e verifica con assert
+quali righe diventano candidate, senza cancellarle automaticamente.
 
 ## Errori comuni
 
 - Usare una sola colonna non documentata come identita'.
 - Cancellare automaticamente ogni near-duplicate.
 - Chiamare invalido ogni valore raro.
-- Applicare clipping senza misurare quanti valori finiscono sui confini.
+- Applicare clipping senza misurare l'accumulo sui confini.
 
 ## Riepilogo
 
 - L'identita' dipende da chiavi e contesto.
-- I near-duplicates sono candidati con errori possibili.
+- I near-duplicates sono candidati, non prove.
 - Gli outlier statistici dipendono dalla distribuzione.
 - Gli outlier di dominio violano un contratto.
 - Il clipping modifica forma e variabilita'.
@@ -95,22 +94,32 @@ dei problemi; gli assert verificano contratto e audit flag.
 
 ## Quiz
 
-1. In cosa differiscono un outlier statistico e uno di dominio?
-2. Perche' il clipping puo' alterare la distribuzione anche se conserva le righe?
-3. Perche' il testo normalizzato deve proporre candidati e non provare identita'?
+1. Una temperatura rara ma nel range certificato e' necessariamente invalida?
+2. Perche' normalizzare `station_id` senza confrontare l'istante puo' produrre
+   falsi duplicati?
+3. Quale traccia serve per valutare l'effetto del clipping?
 
 Le risposte commentate sono in `solutions/duplicates-types-outliers.md`.
 
 ## Esercizio
 
-Completa `exercises/duplicates-types-outliers_starter.py`; istruzioni e test
-sono in `exercises/duplicates-types-outliers.md`.
+Completa i TODO in `exercises/duplicates-types-outliers_starter.py` sul dataset
+di sensori. Problemi, quantita' e posizioni non sono anticipati.
+
+## Trasferimento al Memory AI Lab
+
+I retry di ingestion possono duplicare una memoria; estrattori diversi possono
+variare spazi o maiuscole; un parser puo' restituire testo invece di un numero.
+Il mapping e': `reading_id` diventa `memory_id`, stazione+istante diventa una
+chiave candidata evento+tempo, il range fisico diventa il contratto dello score.
+Il clipping di `importance` ha senso solo dopo che quel contratto e' definito:
+non assumiamo che una memoria nasca con uno score invalido.
 
 ## Fonti
 
 - NIST/SEMATECH, *Detection of Outliers*: criterio statistico IQR.
   https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
-- Chaudhuri et al. (2003), *Robust and Efficient Fuzzy Match for Online Data Cleaning*:
-  matching approssimato e trade-off. https://doi.org/10.1145/1008992.1009037
-- pandas, *Duplicate Labels*: comportamento delle etichette duplicate.
-  https://pandas.pydata.org/docs/user_guide/duplicates.html
+- Chaudhuri et al. (2003), *Robust and Efficient Fuzzy Match for Online Data
+  Cleaning*: trade-off del matching. https://doi.org/10.1145/1008992.1009037
+- pandas, `DataFrame.duplicated`: subset e keep policy.
+  https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html

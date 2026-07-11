@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 SEED = 20260711
-OUTPUT = Path("datasets/synthetic/memory_events_missing_challenge.csv")
+OUTPUT = Path("datasets/synthetic/environmental_sensor_missing_challenge.csv")
 
 
 def main() -> None:
@@ -14,14 +14,19 @@ def main() -> None:
     size = 120
     frame = pd.DataFrame(
         {
-            "memory_id": [f"challenge_{index:03d}" for index in range(size)],
-            "text": [f"Synthetic memory number {index}." for index in range(size)],
-            "timestamp": pd.date_range("2026-01-01", periods=size).astype(str),
-            "type": rng.choice(["episodic", "semantic", "preference"], size=size),
-            "importance": np.round(rng.beta(2.5, 4.0, size=size), 3),
+            "reading_id": [f"reading_{index:03d}" for index in range(size)],
+            "station_id": rng.choice(["north", "central", "south"], size=size),
+            "recorded_at": pd.date_range("2026-01-01", periods=size, freq="h").astype(str),
+            "temperature_c": np.round(rng.normal(18.0, 5.5, size=size), 1),
+            "humidity_pct": np.round(rng.normal(61.0, 12.0, size=size), 1),
         }
     )
-    for column, count in (("text", 5), ("timestamp", 4), ("type", 13), ("importance", 17)):
+    for column, count in (
+        ("station_id", 5),
+        ("recorded_at", 4),
+        ("temperature_c", 13),
+        ("humidity_pct", 17),
+    ):
         indices = rng.choice(size, size=count, replace=False)
         frame.loc[indices, column] = np.nan
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)

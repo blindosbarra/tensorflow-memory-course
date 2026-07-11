@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-CRITICAL_COLUMNS = ("memory_id", "text", "timestamp")
+CRITICAL_COLUMNS = ("reading_id", "station_id", "recorded_at")
 
 
 def missing_rates(frame: pd.DataFrame) -> pd.Series:
@@ -15,6 +15,6 @@ def clean_challenge(frame: pd.DataFrame) -> pd.DataFrame:
     """Drop rows missing critical fields and impute the remaining fields."""
     # TODO: work on a copy; do not mutate frame.
     # TODO: drop rows missing a critical field.
-    # TODO: add type_was_missing and importance_was_missing before imputation.
-    # TODO: fill type with "unknown" and importance with the survivors' median.
+    # TODO: add temperature_was_missing and humidity_was_missing before imputation.
+    # TODO: fill both measurements with the survivors' column median.
     raise NotImplementedError

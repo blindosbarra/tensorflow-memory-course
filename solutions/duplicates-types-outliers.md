@@ -1,17 +1,15 @@
 # Soluzione commentata: duplicati, tipi e outlier
 
-L'implementazione completa del challenge e' in
-`solutions/duplicates-types-outliers_starter.py`. Normalizza il testo soltanto
-per proporre candidati: in un sistema reale i near-duplicates richiedono review
-o regole di dominio prima della cancellazione.
+L'implementazione completa del challenge sui sensori e' in
+`solutions/duplicates-types-outliers_starter.py`. La normalizzazione propone
+candidati: una cancellazione reale richiede ancora la chiave di dominio.
 
 ## Risposte al quiz
 
-1. **Un outlier statistico e' insolito rispetto ai dati; uno di dominio viola un
-   vincolo dichiarato.** Un valore raro puo' essere valido, mentre `1.4` non e'
-   valido per uno score definito in `[0, 1]`.
-2. **Il clipping accumula osservazioni sui confini.** Conserva il numero di
-   righe, ma altera forma, varianza e relazioni; per questo serve un flag.
-3. **La normalizzazione genera candidati, non identita' certa.** Maiuscole e
-   spazi possono essere irrilevanti, ma due testi simili possono descrivere
-   eventi distinti; timestamp e regole di dominio riducono i falsi positivi.
+1. No. E' un outlier statistico possibile, ma non viola il contratto di
+   dominio. Va investigato, non corretto automaticamente.
+2. La stessa stazione produce molte letture valide. Senza l'istante, tutte
+   diventerebbero falsi duplicati; identita' e' una decisione sulla chiave.
+3. Serve almeno un flag per i valori modificati e il conteggio dei valori
+   spostati su ciascun confine. Confrontare distribuzione e variabilita' prima e
+   dopo rende osservabile l'effetto.

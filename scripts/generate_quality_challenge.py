@@ -6,27 +6,29 @@ import numpy as np
 import pandas as pd
 
 SEED = 20260711
-OUTPUT = Path("datasets/synthetic/memory_events_quality_challenge.csv")
+OUTPUT = Path("datasets/synthetic/environmental_sensor_quality_challenge.csv")
 
 
 def main() -> None:
     rng = np.random.default_rng(SEED)
     size = 120
-    topics = rng.choice(["travel", "food", "work", "family"], size=size)
+    stations = rng.choice(["north", "central", "south"], size=size)
     frame = pd.DataFrame(
         {
-            "memory_id": [f"quality_{index:03d}" for index in range(size)],
-            "text": [f"The user mentioned {topic} item {index}." for index, topic in enumerate(topics)],
-            "timestamp": pd.date_range("2026-02-01", periods=size).astype(str),
-            "type": rng.choice(["episodic", "semantic", "preference"], size=size),
-            "importance": np.round(rng.normal(0.55, 0.18, size=size), 3).astype(object),
+            "reading_id": [f"reading_{index:03d}" for index in range(size)],
+            "station_id": stations,
+            "recorded_at": pd.date_range("2026-02-01", periods=size, freq="h").astype(str),
+            "temperature_c": np.round(rng.normal(18.0, 5.0, size=size), 1).astype(object),
         }
     )
-    frame.loc[[7, 49], "memory_id"] = frame.loc[[6, 48], "memory_id"].to_numpy()
-    frame.loc[80, ["text", "timestamp"]] = frame.loc[79, ["text", "timestamp"]].to_numpy()
-    frame.loc[95, "text"] = "  " + str(frame.loc[94, "text"]).upper() + "  "
-    frame.loc[[14, 67], "importance"] = ["urgent", "unknown"]
-    frame.loc[[20, 88], "importance"] = [-0.4, 1.6]
+    frame.loc[[7, 49], "reading_id"] = frame.loc[[6, 48], "reading_id"].to_numpy()
+    frame.loc[80, ["station_id", "recorded_at"]] = frame.loc[
+        79, ["station_id", "recorded_at"]
+    ].to_numpy()
+    frame.loc[95, "station_id"] = "  " + str(frame.loc[94, "station_id"]).upper() + "  "
+    frame.loc[95, "recorded_at"] = frame.loc[94, "recorded_at"]
+    frame.loc[[14, 67], "temperature_c"] = ["sensor_error", "offline"]
+    frame.loc[[20, 88], "temperature_c"] = [-62.0, 79.0]
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     frame.to_csv(OUTPUT, index=False)
 

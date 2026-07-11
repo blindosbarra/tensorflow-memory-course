@@ -15,9 +15,12 @@ sources: []
 
 Un solo risultato pratico, osservabile e verificabile.
 
-## Perche' serve nel Memory AI Lab
+## Il problema nel suo dominio naturale
 
-Collega la decisione della lezione a un comportamento del progetto.
+Parti sempre da un caso generico e realistico in cui il difetto nasce senza
+forzature: sensori, log applicativi, form o un dominio equivalente. Teoria,
+esempio guidato ed esercizio restano su questo dominio. Non introdurre qui il
+Memory AI Lab.
 
 ## Teoria essenziale
 
@@ -63,6 +66,13 @@ insegnati. Le risposte commentate sono in `solutions/<lesson-id>.md`.
 Completa i TODO in `exercises/<lesson-id>_starter.py`. Il file
 `exercises/<lesson-id>.md` documenta input, criteri, hint e comando dei test
 dedicati. I test devono fallire finche' i TODO non sono completati.
+
+## Trasferimento al Memory AI Lab
+
+Solo in coda, mappa il problema generico sui record di memoria. Spiega il
+meccanismo reale che produce il difetto (per esempio timeout di ingestion,
+estrazione parziale o retry) e motiva quali concetti e decisioni restano uguali.
+Il progetto e' il punto di arrivo, non il dominio assunto in partenza.
 
 ## Fonti
 
