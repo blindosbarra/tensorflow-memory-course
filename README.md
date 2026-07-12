@@ -30,21 +30,33 @@ $env:UV_CACHE_DIR='.uv-cache'; uv sync --extra dev
 
 Leggi [`COURSE_FACTORY_SPEC.md`](COURSE_FACTORY_SPEC.md).
 
+## Come si studia
+
+Ogni lezione e' **un notebook autosufficiente** in `notebooks/`: teoria,
+esempi eseguibili, esercizio guidato con soluzione spiegata, quiz con
+risposte, e un passo del **progetto del corso** (Memory AI Lab), che cresce
+di lezione in lezione fino a diventare il sistema completo. Non servono
+terminale, pytest o altri strumenti: si apre il notebook e si esegue.
+
+Per aprire un notebook in locale:
+
+```bash
+uv sync --extra dev
+uv run jupyter lab notebooks/
+```
+
+(oppure aprilo con VS Code o caricalo su Google Colab).
+
 ## Lezioni disponibili (in learner review)
 
-Due lezioni della fase dati, riscritte dopo la learner review del 2026-07-11
-(report: `reports/reviews/course-content-review.md`; rework:
-`reports/reviews/content-rework.md`):
+1. `notebooks/data-cleaning-01-missing-values.ipynb` — dati mancanti:
+   teoria (meccanismi, strategie, effetti) + progetto passo 1 (ingestion).
+2. `notebooks/duplicates-types-outliers.ipynb` — duplicati, tipi errati e
+   outlier + progetto passo 2 (controllo qualita' del nuovo batch).
 
-- `data-cleaning-01-missing-values` e `duplicates-types-outliers`
-- Pagine: `docs/modules/<lesson-id>.md`
-- Esercizi da completare: `exercises/<lesson-id>_starter.py`
-- Test dell'esercizio (rossi finche' non scrivi il codice):
-  `uv run pytest -o norecursedirs= tests/exercises/`
-- Soluzioni e risposte al quiz: `solutions/<lesson-id>.md`
-
-I moduli `examples/` e `src/memory_ai/` sono l'implementazione di riferimento
-della pipeline memoria, usata dalle lezioni solo nel trasferimento finale.
+Le pagine in `docs/modules/` sono i riassunti di riferimento pubblicati sul
+sito. I moduli `examples/` e `src/memory_ai/` sono implementazione di
+riferimento della pipeline, non materiale di studio.
 
 Non generare nuove lezioni prima della learner review umana
-(`templates/learner-review.md`) delle due lezioni riscritte.
+(`templates/learner-review.md`) delle due lezioni esistenti.

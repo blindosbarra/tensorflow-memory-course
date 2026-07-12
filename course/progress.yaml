@@ -19,9 +19,8 @@ modules:
           research_pack: knowledge/data-cleaning-01-missing-values/
           lesson: docs/modules/data-cleaning-01-missing-values.md
           notebook: notebooks/data-cleaning-01-missing-values.ipynb
-          exercise: exercises/data-cleaning-01-missing-values_starter.py
-          solution: solutions/data-cleaning-01-missing-values.md
-          learner_tests: tests/exercises/test_data_cleaning_01_missing_values.py
+          exercise: notebooks/data-cleaning-01-missing-values.ipynb
+          solution: notebooks/data-cleaning-01-missing-values.ipynb
         quality_gates:
           research: pass
           lesson: pass
@@ -43,9 +42,8 @@ modules:
           research_pack: knowledge/duplicates-types-outliers/
           lesson: docs/modules/duplicates-types-outliers.md
           notebook: notebooks/duplicates-types-outliers.ipynb
-          exercise: exercises/duplicates-types-outliers_starter.py
-          solution: solutions/duplicates-types-outliers.md
-          learner_tests: tests/exercises/test_duplicates_types_outliers.py
+          exercise: notebooks/duplicates-types-outliers.ipynb
+          solution: notebooks/duplicates-types-outliers.ipynb
         quality_gates:
           research: pass
           lesson: pass
@@ -67,3 +65,5 @@ notes:
   - "2026-07-12 independent verification against the binding report: PASS with corrections (reports/reviews/content-rework-verification.md)."
   - "Corrections applied: Chaudhuri DOI fixed to 10.1145/872757.872796, phantom file references removed from evidence.yaml and TEAM_RUNBOOK, concepts.md realigned to the sensor domain, README and modules index updated."
   - Next after human learner PASS and Fase 0 validation, the next lesson is python-numpy-refresh.
+  - "2026-07-12 format change requested by the learner: each lesson is now a self-contained notebook (broad theory, runnable examples, guided exercise with visible explained solution, quiz with answers) plus one incremental project step (Memory AI Lab). The starter-file + hidden-pytest exercise flow was removed from the learner path."
+  - The project thread lives in datasets/processed/memory_events_clean.csv and grows one component per lesson.

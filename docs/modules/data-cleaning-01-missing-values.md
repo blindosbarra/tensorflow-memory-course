@@ -5,7 +5,7 @@ module: data-engineering
 status: learner_review
 estimated_minutes: 30
 prerequisites: [Python base, Tabelle CSV]
-deliverables: [exercises/data-cleaning-01-missing-values_starter.py]
+deliverables: [notebooks/data-cleaning-01-missing-values.ipynb]
 sources:
   - https://doi.org/10.1093/biomet/63.3.581
   - https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm
@@ -13,6 +13,11 @@ sources:
 ---
 
 # Missing values nelle letture ambientali
+
+> **La lezione si segue nel notebook** `notebooks/data-cleaning-01-missing-values.ipynb`:
+> teoria, esempi eseguibili, esercizio con soluzione spiegata e il primo passo
+> del progetto Memory AI Lab, tutto in un unico posto. Questa pagina e' il
+> riassunto di riferimento.
 
 ## Cosa saprai fare
 
@@ -78,8 +83,9 @@ misura originale.
 
 ## Prova tu
 
-Nel notebook confronta media e mediana su una serie asimmetrica e fai passare
-gli assert dopo avere scritto la policy.
+Apri il notebook della lezione: nella Parte 3 trovi la cella "Prova tu" con
+l'esercizio sul dataset dei sensori, e subito sotto la soluzione spiegata
+riga per riga. Nella Parte 4 applichi la stessa policy al progetto del corso.
 
 ## Errori comuni
 
@@ -107,8 +113,8 @@ Le risposte commentate sono in `solutions/data-cleaning-01-missing-values.md`.
 
 ## Esercizio
 
-Completa i TODO in `exercises/data-cleaning-01-missing-values_starter.py` sul
-dataset di sensori. I test dedicati devono fallire finche' non scrivi il codice.
+L'esercizio e la sua soluzione spiegata sono nel notebook della lezione
+(Parte 3). Non servono terminale ne' strumenti aggiuntivi.
 
 ## Trasferimento al Memory AI Lab
 

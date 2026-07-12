@@ -13,6 +13,16 @@ della spec. Non vengono create nuove lezioni da questo syllabus.
 Ogni lezione dura 15-30 minuti. Le ore includono lettura, codice, quiz ed
 esercizio; sono stime da validare con learner review.
 
+## Come funziona una lezione
+
+Ogni lezione e' un **notebook autosufficiente** in `notebooks/`: prima la
+teoria del concetto generale (valida per qualsiasi dataset, non solo per il
+corso), poi esempi eseguibili, poi un esercizio guidato con la soluzione
+spiegata subito sotto, e infine **il passo del progetto**: un'unica
+applicazione (il Memory AI Lab) che cresce di un componente a ogni lezione,
+fino a diventare il sistema completo del capstone. Le pagine di questo sito
+sono i riassunti di riferimento.
+
 ## Percorso minimo prioritario
 
 Il percorso minimo mantiene le lezioni necessarie a produrre e valutare il

@@ -1,14 +1,21 @@
-# Soluzione commentata: missing values
+# Soluzione: missing values
 
-L'implementazione completa del challenge sui sensori, diverso dall'esempio
-guidato, e' in `solutions/data-cleaning-01-missing-values_starter.py`.
+La soluzione completa, spiegata riga per riga, sta **dentro il notebook
+della lezione**, subito dopo la cella "Prova tu":
+
+```text
+notebooks/data-cleaning-01-missing-values.ipynb
+```
 
 ## Risposte al quiz
 
-1. Il guasto dipende dal valore non osservato: eliminare i picchi mancanti
-   sottorappresenta proprio le ore calde e puo' abbassare le stime.
+Anche queste sono nel notebook (sezione finale, blocco richiudibile "Apri le
+risposte"). Copia di riferimento:
+
+1. Il guasto dipende dal valore non osservato (MNAR): eliminare le righe
+   mancanti sottorappresenta proprio le ore calde e distorce le stime.
 2. Controllerei forma, asimmetria e valori estremi della distribuzione
-   osservata, oltre al significato operativo della misura. La mediana e' piu'
+   osservata, oltre al significato operativo della misura. La mediana e'
    resistente agli estremi; la media usa tutte le distanze.
-3. Dopo `fillna` non e' piu' possibile distinguere una misura originale da una
-   sostituita guardando il solo valore. Il flag preserva questa provenienza.
+3. Dopo `fillna` non e' piu' possibile distinguere una misura originale da
+   una sostituita guardando il solo valore. Il flag preserva la provenienza.

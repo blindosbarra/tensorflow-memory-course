@@ -5,7 +5,7 @@ module: data-engineering
 status: learner_review
 estimated_minutes: 30
 prerequisites: [data-cleaning-01-missing-values, Python base]
-deliverables: [exercises/duplicates-types-outliers_starter.py]
+deliverables: [notebooks/duplicates-types-outliers.ipynb]
 sources:
   - https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
   - https://doi.org/10.1145/872757.872796
@@ -13,6 +13,11 @@ sources:
 ---
 
 # Duplicati, tipi e outlier nelle letture ambientali
+
+> **La lezione si segue nel notebook** `notebooks/duplicates-types-outliers.ipynb`:
+> teoria, esempi eseguibili, esercizio con soluzione spiegata e il secondo passo
+> del progetto Memory AI Lab. Questa pagina e' il riassunto di riferimento.
+> Prerequisito: aver eseguito il notebook della Lezione 1.
 
 ## Cosa saprai fare
 
@@ -73,8 +78,9 @@ il range fisico o la policy per i parse falliti.
 
 ## Prova tu
 
-Nel notebook scrivi la normalizzazione delle etichette e verifica con assert
-quali righe diventano candidate, senza cancellarle automaticamente.
+Apri il notebook della lezione: nella Parte 3 trovi la cella "Prova tu" con
+l'audit completo del dataset dei sensori, e subito sotto la soluzione
+spiegata. Nella Parte 4 il progetto riceve un nuovo batch di memorie.
 
 ## Errori comuni
 
@@ -103,8 +109,8 @@ Le risposte commentate sono in `solutions/duplicates-types-outliers.md`.
 
 ## Esercizio
 
-Completa i TODO in `exercises/duplicates-types-outliers_starter.py` sul dataset
-di sensori. Problemi, quantita' e posizioni non sono anticipati.
+L'esercizio e la sua soluzione spiegata sono nel notebook della lezione
+(Parte 3). Problemi, quantita' e posizioni non sono anticipati.
 
 ## Trasferimento al Memory AI Lab
 

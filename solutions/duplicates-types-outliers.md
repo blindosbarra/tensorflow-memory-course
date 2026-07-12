@@ -1,15 +1,20 @@
-# Soluzione commentata: duplicati, tipi e outlier
+# Soluzione: duplicati, tipi e outlier
 
-L'implementazione completa del challenge sui sensori e' in
-`solutions/duplicates-types-outliers_starter.py`. La normalizzazione propone
-candidati: una cancellazione reale richiede ancora la chiave di dominio.
+La soluzione completa, spiegata riga per riga, sta **dentro il notebook
+della lezione**, subito dopo la cella "Prova tu":
+
+```text
+notebooks/duplicates-types-outliers.ipynb
+```
 
 ## Risposte al quiz
+
+Anche queste sono nel notebook (sezione finale, blocco richiudibile "Apri le
+risposte"). Copia di riferimento:
 
 1. No. E' un outlier statistico possibile, ma non viola il contratto di
    dominio. Va investigato, non corretto automaticamente.
 2. La stessa stazione produce molte letture valide. Senza l'istante, tutte
    diventerebbero falsi duplicati; identita' e' una decisione sulla chiave.
-3. Serve almeno un flag per i valori modificati e il conteggio dei valori
-   spostati su ciascun confine. Confrontare distribuzione e variabilita' prima e
-   dopo rende osservabile l'effetto.
+3. Serve un flag creato prima del `clip`: dopo, tutti i valori sono dentro il
+   contratto per costruzione e non si puo' piu' sapere quali erano fuori.

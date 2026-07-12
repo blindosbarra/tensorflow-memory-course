@@ -45,7 +45,6 @@ target-version = "py312"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-norecursedirs = ["tests/exercises"]
 
 [tool.mypy]
 python_version = "3.12"
