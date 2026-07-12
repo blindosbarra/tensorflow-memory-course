@@ -1,0 +1,26 @@
+lesson_id: tfdata-basics
+reviewed_at: 2026-07-12
+claims:
+  - id: shuffle-buffer-window
+    claim: "Dataset.shuffle fills a buffer and samples from it, so a buffer smaller than the dataset yields only local shuffling."
+    importance: critical
+    source_url: "https://www.tensorflow.org/guide/data"
+    source_title: "tf.data: Build TensorFlow input pipelines"
+    publisher: "TensorFlow"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The guide documents buffer-based shuffling semantics."
+    status: verified
+  - id: prefetch-overlap
+    claim: "prefetch overlaps input preparation with model computation."
+    importance: major
+    source_url: "https://www.tensorflow.org/guide/data_performance"
+    source_title: "Better performance with the tf.data API"
+    publisher: "TensorFlow"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The performance guide documents prefetching and AUTOTUNE."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

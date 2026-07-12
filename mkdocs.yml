@@ -20,6 +20,9 @@ nav:
       - "Lezione 10 — La prima rete neurale": modules/perceptron-dense-layer.md
       - "Lezione 11 — Dentro il training": modules/model-fit-under-the-hood.md
       - "Lezione 12 — Overfitting": modules/regularization-dropout.md
+      - "Lezione 13 — Valutare un classificatore": modules/evaluation-calibration.md
+      - "Lezione 14 — Pipeline tf.data": modules/tfdata-basics.md
+      - "Lezione 15 — Tokenizzazione": modules/tokenization-vocabulary.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

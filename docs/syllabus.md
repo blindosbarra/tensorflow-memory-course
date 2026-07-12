@@ -145,12 +145,12 @@ test, report, artifact e limiti noti.
 
 Totale stimato: 38,5 ore.
 
-Stato corrente: sono disponibili come notebook le lezioni 1-5 (Fase 1,
-parte pandas), 6-9 (Fase 0 completa) e 10-12 (primo blocco della Fase 2:
-prima rete Keras, training loop aperto, overfitting e valutazione finale).
-Il progetto ha un classificatore salvato (`models/`) valutato onestamente
-contro la baseline della Fase 0. Le lezioni 10-12 consolidano coppie di
-lezioni pianificate del modulo keras-dnn (perceptron+forward,
-fit+backprop-autodiff, regularization+callbacks). Prossimi blocchi: il
-resto della Fase 2 (functional API, evaluation/calibration), le lezioni
-`tf.data`, poi la Fase 3 (testo ed embedding).
+Stato corrente: 15 lezioni disponibili come notebook, tutte in
+`learner_review`. Fase 1 (parte pandas + tf.data), Fase 0 completa,
+Fase 2 completa nelle sue lezioni fondamentali (rete, training loop,
+overfitting, valutazione con precision/recall/calibrazione), e Fase 3
+aperta con la tokenizzazione: leggendo il testo delle memorie il
+classificatore passa dal ~60-65% al ~95% su validation, confermando la
+diagnosi delle Lezioni 10-12. Le lezioni consolidano coppie di lezioni
+pianificate affini (vedi note in progress.yaml). Prossimo blocco: embedding
+layer, sentence embeddings e similarita' — il cuore del Memory AI Lab.

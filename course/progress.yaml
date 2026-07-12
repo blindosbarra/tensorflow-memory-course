@@ -119,6 +119,29 @@ modules:
           code: pass
           didactics: pass
           publish: pass
+      tfdata-basics:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/tfdata-basics/
+          lesson: docs/modules/tfdata-basics.md
+          notebook: notebooks/lezione-14-tf-data.ipynb
+          exercise: notebooks/lezione-14-tf-data.ipynb
+          solution: notebooks/lezione-14-tf-data.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
   foundations:
     status: in_progress
     lessons:
@@ -286,6 +309,55 @@ modules:
           code: pass
           didactics: pass
           publish: pass
+      evaluation-calibration:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/evaluation-calibration/
+          lesson: docs/modules/evaluation-calibration.md
+          notebook: notebooks/lezione-13-valutare-un-classificatore.ipynb
+          exercise: notebooks/lezione-13-valutare-un-classificatore.ipynb
+          solution: notebooks/lezione-13-valutare-un-classificatore.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+  text-embeddings:
+    status: in_progress
+    lessons:
+      tokenization-vocabulary:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/tokenization-vocabulary/
+          lesson: docs/modules/tokenization-vocabulary.md
+          notebook: notebooks/lezione-15-tokenizzazione.ipynb
+          exercise: notebooks/lezione-15-tokenizzazione.ipynb
+          solution: notebooks/lezione-15-tokenizzazione.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
 last_updated: 2026-07-12
 notes:
   - Complete the vertical slice before scaling course generation.
@@ -312,3 +384,6 @@ notes:
   - "2026-07-12 Fase 2 first block delivered (lessons 10-12): first Keras network vs the Fase 0 baseline, the training loop rewritten by hand with GradientTape, overfitting curves with early stopping and dropout, final honest test evaluation and the first saved model (models/, gitignored because Keras files are not byte-stable)."
   - "Lessons 10-12 consolidate planned keras-dnn pairs: perceptron+forward+sequential, fit+backprop-autodiff, regularization+callbacks. Remaining keras-dnn lessons: losses-optimizers deep dive, functional API, evaluation-calibration."
   - "CI now installs the ml extra (TensorFlow) to execute notebooks 10-12."
+  - "2026-07-12 lessons 13-15 delivered: classifier report card (precision/recall/F1, confusion matrix, calibration check), tf.data input pipelines with the shuffle-buffer trap, and Fase 3 opened with tokenization."
+  - "Lesson 15 milestone: reading the memory text (train-only vocabulary, multi-hot bag of words) lifts validation accuracy from ~60-65% to ~95%, confirming the feature-bottleneck diagnosis of lessons 10-12."
+  - "Next block: embedding layer, sentence embeddings and cosine similarity."

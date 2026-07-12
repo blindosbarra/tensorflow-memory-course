@@ -1,0 +1,26 @@
+lesson_id: evaluation-calibration
+reviewed_at: 2026-07-12
+claims:
+  - id: precision-recall-f1
+    claim: "Precision measures the fraction of predicted positives that are correct, recall the fraction of real positives found; F1 is their harmonic mean."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/model_evaluation.html#precision-recall-f-measure-metrics"
+    source_title: "Precision, recall and F-measures"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The metrics guide defines the three measures used in the lesson."
+    status: verified
+  - id: modern-nets-overconfident
+    claim: "Modern neural networks tend to be overconfident: predicted confidence exceeds actual accuracy."
+    importance: major
+    source_url: "https://arxiv.org/abs/1706.04599"
+    source_title: "On Calibration of Modern Neural Networks"
+    publisher: "Guo, Pleiss, Sun, Weinberger (ICML 2017)"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The paper documents miscalibration of modern networks."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

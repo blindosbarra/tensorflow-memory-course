@@ -30,6 +30,12 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
     `notebooks/lezione-11-dentro-il-training.ipynb`
 12. [Overfitting, dropout ed early stopping](regularization-dropout.md) —
     `notebooks/lezione-12-overfitting.ipynb`
+13. [Valutare un classificatore](evaluation-calibration.md) —
+    `notebooks/lezione-13-valutare-un-classificatore.ipynb`
+14. [Pipeline di input con tf.data](tfdata-basics.md) —
+    `notebooks/lezione-14-tf-data.ipynb`
+15. [Tokenizzazione e vocabolario](tokenization-vocabulary.md) —
+    `notebooks/lezione-15-tokenizzazione.ipynb`
 
 ## Prossime lezioni previste
 
@@ -37,29 +43,19 @@ Queste lezioni verranno costruite una alla volta, nell'ordine del
 [syllabus](../syllabus.md). L'ordine puo' sembrare lento, ma serve a non
 arrivare ai modelli con basi fragili.
 
-### Fase 2 — Keras (continua)
+### Fase 3 — Testo ed embedding (continua)
 
-13. Functional API e modelli multi-input
-14. Evaluation e calibration
-
-### Fase 1 — Dati e pulizia (coda TensorFlow)
-
-15. `tf.data` base
-16. Performance con `tf.data`
-17. Validazione dati
-
-### Fase 3 — Testo ed embedding
-
-18. Tokenizzazione e vocabolario
-19. Embedding layer
-20. Sentence embeddings e similarita'
+16. Embedding layer
+17. Sentence embeddings e similarita'
+18. Visualizzazione (PCA/UMAP) e clustering
+19. Metriche di retrieval (Recall@K, MRR)
 
 ### E poi
 
-21. Rappresentazione delle memorie (schema, importance, grafi, retrieval)
-22. Transformer e Gemma
-23. LoRA
-24. Pipeline, monitoring e capstone
+20. Rappresentazione delle memorie (schema, importance, grafi, retrieval)
+21. Transformer e Gemma
+22. LoRA
+23. Pipeline, monitoring e capstone
 
 ## Come leggere una lezione
 

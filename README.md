@@ -76,6 +76,14 @@ uv run jupyter lab notebooks/
 12. `notebooks/lezione-12-overfitting.ipynb` — curve di apprendimento,
     early stopping, dropout + progetto passo 12 (valutazione finale sul
     test e primo modello salvato).
+13. `notebooks/lezione-13-valutare-un-classificatore.ipynb` — precision,
+    recall, F1, confusion matrix, calibrazione + progetto passo 13 (la
+    pagella del classificatore).
+14. `notebooks/lezione-14-tf-data.ipynb` — pipeline di input: shuffle (e la
+    trappola del buffer), batch, prefetch + progetto passo 14.
+15. `notebooks/lezione-15-tokenizzazione.ipynb` — il modello legge il
+    testo: vocabolario, OOV, bag of words + progetto passo 15 (il salto:
+    ~60% -> ~95% su validation).
 
 I notebook vanno eseguiti in ordine: ogni lezione riparte dagli artifact
 salvati dalla precedente. Le pagine in `docs/modules/` sono i riassunti di

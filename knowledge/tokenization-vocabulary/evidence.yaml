@@ -1,0 +1,26 @@
+lesson_id: tokenization-vocabulary
+reviewed_at: 2026-07-12
+claims:
+  - id: textvectorization-pipeline
+    claim: "TextVectorization standardizes, tokenizes, builds a vocabulary via adapt and maps text to ids or multi-hot vectors, with an OOV token for unseen words."
+    importance: critical
+    source_url: "https://keras.io/api/layers/preprocessing_layers/text/text_vectorization/"
+    source_title: "TextVectorization layer"
+    publisher: "Keras"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The API documents standardization, adapt, output modes and OOV handling."
+    status: verified
+  - id: bag-of-words-limits
+    claim: "Multi-hot/bag-of-words text representations discard word order."
+    importance: major
+    source_url: "https://www.tensorflow.org/tutorials/keras/text_classification"
+    source_title: "Basic text classification"
+    publisher: "TensorFlow"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The tutorial discusses vectorization modes and their trade-offs."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass
