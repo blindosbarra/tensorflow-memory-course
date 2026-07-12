@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://blindosbarra.github.io/tensorflow-memory-course/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://blindosbarra.github.io/tensorflow-memory-course/glossary/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://blindosbarra.github.io/tensorflow-memory-course/references/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://blindosbarra.github.io/tensorflow-memory-course/syllabus/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://blindosbarra.github.io/tensorflow-memory-course/architecture/MEMORY_AI_LAB_ARCHITECTURE/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://blindosbarra.github.io/tensorflow-memory-course/modules/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://blindosbarra.github.io/tensorflow-memory-course/modules/data-cleaning-01-missing-values/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://blindosbarra.github.io/tensorflow-memory-course/modules/duplicates-types-outliers/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+</urlset>
