@@ -145,9 +145,12 @@ test, report, artifact e limiti noti.
 
 Totale stimato: 38,5 ore.
 
-Stato corrente: sono disponibili come notebook le lezioni 1-5 (Fase 1: la
-parte pandas della fase dati) e 6-9 (Fase 0 completa: NumPy, tensori,
-gradienti, loss), tutte in `learner_review`. Il progetto ha una baseline
-addestrata a mano (softmax regression). Prossimo blocco: Fase 2
-(Keras e reti dense); le lezioni `tf.data` della Fase 1 vengono erogate
-insieme alla Fase 2, quando TensorFlow entra nello stack.
+Stato corrente: sono disponibili come notebook le lezioni 1-5 (Fase 1,
+parte pandas), 6-9 (Fase 0 completa) e 10-12 (primo blocco della Fase 2:
+prima rete Keras, training loop aperto, overfitting e valutazione finale).
+Il progetto ha un classificatore salvato (`models/`) valutato onestamente
+contro la baseline della Fase 0. Le lezioni 10-12 consolidano coppie di
+lezioni pianificate del modulo keras-dnn (perceptron+forward,
+fit+backprop-autodiff, regularization+callbacks). Prossimi blocchi: il
+resto della Fase 2 (functional API, evaluation/calibration), le lezioni
+`tf.data`, poi la Fase 3 (testo ed embedding).

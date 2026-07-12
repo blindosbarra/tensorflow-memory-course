@@ -24,6 +24,12 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
    `notebooks/lezione-08-gradienti.ipynb`
 9. [Loss function](probability-loss-functions.md) —
    `notebooks/lezione-09-loss.ipynb`
+10. [La prima rete neurale](perceptron-dense-layer.md) —
+    `notebooks/lezione-10-prima-rete-neurale.ipynb`
+11. [Dentro il training](model-fit-under-the-hood.md) —
+    `notebooks/lezione-11-dentro-il-training.ipynb`
+12. [Overfitting, dropout ed early stopping](regularization-dropout.md) —
+    `notebooks/lezione-12-overfitting.ipynb`
 
 ## Prossime lezioni previste
 
@@ -31,39 +37,29 @@ Queste lezioni verranno costruite una alla volta, nell'ordine del
 [syllabus](../syllabus.md). L'ordine puo' sembrare lento, ma serve a non
 arrivare ai modelli con basi fragili.
 
-### Fase 2 — Keras e reti neurali dense
+### Fase 2 — Keras (continua)
 
-10. Dense layer e prima rete
-11. Forward pass
-12. Loss e optimizer in Keras
-13. Autodiff e backprop
-14. Sequential e Functional API
+13. Functional API e modelli multi-input
+14. Evaluation e calibration
 
-### Fase 1 — Dati e pulizia (code TensorFlow, dopo l'introduzione di TF)
+### Fase 1 — Dati e pulizia (coda TensorFlow)
 
 15. `tf.data` base
 16. Performance con `tf.data`
 17. Validazione dati
 
-### Keras e DNN
+### Fase 3 — Testo ed embedding
 
-13. Dense layer
-14. Forward pass
-15. Loss e optimizer
-16. Autodiff e backprop
-17. Sequential e Functional API
-18. Cosa succede dentro `model.fit`
-19. Regularization e dropout
-20. Evaluation e calibration
+18. Tokenizzazione e vocabolario
+19. Embedding layer
+20. Sentence embeddings e similarita'
 
-### Memorie, retrieval e modelli open
+### E poi
 
-21. Testo ed embedding
-22. Rappresentazione delle memorie
-23. Grafi e retrieval
-24. Transformer e Gemma
-25. LoRA
-26. Pipeline, monitoring e capstone
+21. Rappresentazione delle memorie (schema, importance, grafi, retrieval)
+22. Transformer e Gemma
+23. LoRA
+24. Pipeline, monitoring e capstone
 
 ## Come leggere una lezione
 

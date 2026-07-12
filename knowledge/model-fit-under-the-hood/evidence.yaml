@@ -1,0 +1,26 @@
+lesson_id: model-fit-under-the-hood
+reviewed_at: 2026-07-12
+claims:
+  - id: gradienttape-autodiff
+    claim: "tf.GradientTape records operations and computes exact gradients via reverse-mode automatic differentiation."
+    importance: critical
+    source_url: "https://www.tensorflow.org/guide/autodiff"
+    source_title: "Introduction to gradients and automatic differentiation"
+    publisher: "TensorFlow"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The guide documents tape recording and gradient computation."
+    status: verified
+  - id: custom-training-loop
+    claim: "A training step is forward pass, loss, tape.gradient and optimizer.apply_gradients over batches."
+    importance: critical
+    source_url: "https://keras.io/guides/writing_a_custom_training_loop_in_tensorflow/"
+    source_title: "Writing a training loop from scratch in TensorFlow"
+    publisher: "Keras"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The guide shows the canonical custom loop replicated in the lesson."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

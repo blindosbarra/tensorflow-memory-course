@@ -17,6 +17,9 @@ nav:
       - "Lezione 7 — Vettori, matrici e tensori": modules/vectors-matrices-tensors.md
       - "Lezione 8 — Gradienti": modules/derivatives-gradients-chain-rule.md
       - "Lezione 9 — Loss function": modules/probability-loss-functions.md
+      - "Lezione 10 — La prima rete neurale": modules/perceptron-dense-layer.md
+      - "Lezione 11 — Dentro il training": modules/model-fit-under-the-hood.md
+      - "Lezione 12 — Overfitting": modules/regularization-dropout.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

@@ -1,0 +1,26 @@
+lesson_id: perceptron-dense-layer
+reviewed_at: 2026-07-12
+claims:
+  - id: dense-layer-semantics
+    claim: "A Dense layer computes activation(X @ W + b)."
+    importance: critical
+    source_url: "https://keras.io/api/layers/core_layers/dense/"
+    source_title: "Dense layer"
+    publisher: "Keras"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The API page documents output = activation(dot(input, kernel) + bias)."
+    status: verified
+  - id: sequential-composition
+    claim: "Sequential chains layers into a single composed model."
+    importance: major
+    source_url: "https://keras.io/guides/sequential_model/"
+    source_title: "The Sequential model"
+    publisher: "Keras"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The guide describes Sequential as a linear stack of layers."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

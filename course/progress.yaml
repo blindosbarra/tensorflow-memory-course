@@ -214,6 +214,78 @@ modules:
           code: pass
           didactics: pass
           publish: pass
+  keras-dnn:
+    status: in_progress
+    lessons:
+      perceptron-dense-layer:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/perceptron-dense-layer/
+          lesson: docs/modules/perceptron-dense-layer.md
+          notebook: notebooks/lezione-10-prima-rete-neurale.ipynb
+          exercise: notebooks/lezione-10-prima-rete-neurale.ipynb
+          solution: notebooks/lezione-10-prima-rete-neurale.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+      model-fit-under-the-hood:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/model-fit-under-the-hood/
+          lesson: docs/modules/model-fit-under-the-hood.md
+          notebook: notebooks/lezione-11-dentro-il-training.ipynb
+          exercise: notebooks/lezione-11-dentro-il-training.ipynb
+          solution: notebooks/lezione-11-dentro-il-training.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+      regularization-dropout:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/regularization-dropout/
+          lesson: docs/modules/regularization-dropout.md
+          notebook: notebooks/lezione-12-overfitting.ipynb
+          exercise: notebooks/lezione-12-overfitting.ipynb
+          solution: notebooks/lezione-12-overfitting.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
 last_updated: 2026-07-12
 notes:
   - Complete the vertical slice before scaling course generation.
@@ -237,3 +309,6 @@ notes:
   - "2026-07-12 acceleration requested by the learner: Fase 0 delivered complete (lessons 6-9, NumPy / tensors / gradients / loss) in the notebook format."
   - "Project steps 6-9: class signatures via masks, X @ W scores with random weights, first learned parameters via gradient descent, and a hand-built softmax regression baseline (60% val vs 51% majority class) saved to datasets/processed."
   - "Next block: Fase 2 (Keras dense networks); tf.data lessons of Fase 1 move alongside it."
+  - "2026-07-12 Fase 2 first block delivered (lessons 10-12): first Keras network vs the Fase 0 baseline, the training loop rewritten by hand with GradientTape, overfitting curves with early stopping and dropout, final honest test evaluation and the first saved model (models/, gitignored because Keras files are not byte-stable)."
+  - "Lessons 10-12 consolidate planned keras-dnn pairs: perceptron+forward+sequential, fit+backprop-autodiff, regularization+callbacks. Remaining keras-dnn lessons: losses-optimizers deep dive, functional API, evaluation-calibration."
+  - "CI now installs the ml extra (TensorFlow) to execute notebooks 10-12."

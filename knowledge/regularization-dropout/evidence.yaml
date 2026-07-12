@@ -1,0 +1,36 @@
+lesson_id: regularization-dropout
+reviewed_at: 2026-07-12
+claims:
+  - id: overfitting-curves
+    claim: "Overfitting shows as training loss decreasing while validation loss rises; capacity and stopping time are the levers."
+    importance: critical
+    source_url: "https://www.tensorflow.org/tutorials/keras/overfit_and_underfit"
+    source_title: "Overfit and underfit"
+    publisher: "TensorFlow"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The tutorial demonstrates diverging train/validation curves and mitigation."
+    status: verified
+  - id: earlystopping-restore
+    claim: "EarlyStopping monitors a metric with patience and can restore the best weights."
+    importance: critical
+    source_url: "https://keras.io/api/callbacks/early_stopping/"
+    source_title: "EarlyStopping"
+    publisher: "Keras"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "API documents monitor, patience and restore_best_weights."
+    status: verified
+  - id: dropout-semantics
+    claim: "Dropout randomly zeroes units during training only."
+    importance: major
+    source_url: "https://keras.io/api/layers/regularization_layers/dropout/"
+    source_title: "Dropout layer"
+    publisher: "Keras"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "API documents training-time random dropping of units."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

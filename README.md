@@ -68,6 +68,14 @@ uv run jupyter lab notebooks/
    discesa del gradiente + progetto passo 8 (i primi parametri imparati).
 9. `notebooks/lezione-09-loss.ipynb` — MSE, softmax e cross-entropy +
    progetto passo 9 (softmax regression a mano: la baseline della Fase 2).
+10. `notebooks/lezione-10-prima-rete-neurale.ipynb` — Keras: non-linearita'
+    e confini curvi (mezzelune) + progetto passo 10 (la rete sfida la
+    baseline). Da qui serve `uv sync --extra ml`.
+11. `notebooks/lezione-11-dentro-il-training.ipynb` — batch, epoche,
+    autodiff e il training loop scritto a mano + progetto passo 11.
+12. `notebooks/lezione-12-overfitting.ipynb` — curve di apprendimento,
+    early stopping, dropout + progetto passo 12 (valutazione finale sul
+    test e primo modello salvato).
 
 I notebook vanno eseguiti in ordine: ogni lezione riparte dagli artifact
 salvati dalla precedente. Le pagine in `docs/modules/` sono i riassunti di
