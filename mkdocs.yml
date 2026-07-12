@@ -8,8 +8,11 @@ nav:
   - Syllabus: syllabus.md
   - Corso:
       - Panoramica: modules/index.md
-      - Missing values: modules/data-cleaning-01-missing-values.md
-      - Duplicati, tipi e outlier: modules/duplicates-types-outliers.md
+      - "Lezione 1 — Missing values": modules/data-cleaning-01-missing-values.md
+      - "Lezione 2 — Duplicati, tipi e outlier": modules/duplicates-types-outliers.md
+      - "Lezione 3 — Train, validation e test": modules/train-validation-test.md
+      - "Lezione 4 — Data leakage": modules/data-leakage.md
+      - "Lezione 5 — Encoding e scaling": modules/categorical-encoding-scaling.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

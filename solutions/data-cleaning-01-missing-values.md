@@ -4,7 +4,7 @@ La soluzione completa, spiegata riga per riga, sta **dentro il notebook
 della lezione**, subito dopo la cella "Prova tu":
 
 ```text
-notebooks/data-cleaning-01-missing-values.ipynb
+notebooks/lezione-01-dati-mancanti.ipynb
 ```
 
 ## Risposte al quiz

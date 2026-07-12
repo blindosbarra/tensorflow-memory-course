@@ -5,7 +5,7 @@ module: data-engineering
 status: learner_review
 estimated_minutes: 30
 prerequisites: [data-cleaning-01-missing-values, Python base]
-deliverables: [notebooks/duplicates-types-outliers.ipynb]
+deliverables: [notebooks/lezione-02-duplicati-tipi-outlier.ipynb]
 sources:
   - https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
   - https://doi.org/10.1145/872757.872796
@@ -14,7 +14,7 @@ sources:
 
 # Duplicati, tipi e outlier nelle letture ambientali
 
-> **La lezione si segue nel notebook** `notebooks/duplicates-types-outliers.ipynb`:
+> **La lezione si segue nel notebook** `notebooks/lezione-02-duplicati-tipi-outlier.ipynb`:
 > teoria, esempi eseguibili, esercizio con soluzione spiegata e il secondo passo
 > del progetto Memory AI Lab. Questa pagina e' il riassunto di riferimento.
 > Prerequisito: aver eseguito il notebook della Lezione 1.

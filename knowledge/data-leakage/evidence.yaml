@@ -1,0 +1,26 @@
+lesson_id: data-leakage
+reviewed_at: 2026-07-12
+claims:
+  - id: leakage-definition
+    claim: "Data leakage is information about the target or evaluation data entering training, inflating offline metrics."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/common_pitfalls.html"
+    source_title: "Common pitfalls and recommended practices"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The pitfalls guide defines data leakage and the fit-on-train-only rule for preprocessing."
+    status: verified
+  - id: pipeline-prevents-leakage
+    claim: "Pipelines make the fit-on-train/transform-everywhere discipline structural."
+    importance: major
+    source_url: "https://scikit-learn.org/stable/modules/compose.html"
+    source_title: "Pipelines and composite estimators"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "Pipeline docs describe applying fitted transformations consistently across splits."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

@@ -1,9 +1,21 @@
 # Lezioni
 
-## Disponibile ora
+Ogni lezione e' un notebook autosufficiente in `notebooks/` (teoria, esempi
+eseguibili, esercizio con soluzione, passo del progetto); la pagina qui sul
+sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
 
-1. [Missing values nelle letture ambientali](data-cleaning-01-missing-values.md)
-2. [Duplicati, tipi e outlier nelle letture ambientali](duplicates-types-outliers.md)
+## Disponibili ora
+
+1. [Missing values](data-cleaning-01-missing-values.md) —
+   `notebooks/lezione-01-dati-mancanti.ipynb`
+2. [Duplicati, tipi e outlier](duplicates-types-outliers.md) —
+   `notebooks/lezione-02-duplicati-tipi-outlier.ipynb`
+3. [Train, validation e test](train-validation-test.md) —
+   `notebooks/lezione-03-train-validation-test.ipynb`
+4. [Data leakage](data-leakage.md) —
+   `notebooks/lezione-04-data-leakage.ipynb`
+5. [Encoding e scaling](categorical-encoding-scaling.md) —
+   `notebooks/lezione-05-encoding-scaling.ipynb`
 
 ## Prossime lezioni previste
 
@@ -13,16 +25,13 @@ arrivare ai modelli con basi fragili.
 
 ### Fase 0 — Fondamenti minimi
 
-3. Python e NumPy refresh
-4. Vettori, matrici e tensori
-5. Derivate, gradienti e chain rule
-6. Loss function e probabilita'
+6. Python e NumPy refresh
+7. Vettori, matrici e tensori
+8. Derivate, gradienti e chain rule
+9. Loss function e probabilita'
 
 ### Fase 1 — Dati e pulizia (continua)
 
-7. Train, validation e test
-8. Data leakage
-9. Encoding e scaling
 10. `tf.data` base
 11. Performance con `tf.data`
 12. Validazione dati

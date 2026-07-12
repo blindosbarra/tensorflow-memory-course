@@ -1,0 +1,36 @@
+lesson_id: categorical-encoding-scaling
+reviewed_at: 2026-07-12
+claims:
+  - id: onehot-vs-ordinal
+    claim: "Ordinal encoding imposes an order on categories; one-hot encoding avoids fictitious order at the cost of one column per category."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/preprocessing.html"
+    source_title: "Preprocessing data"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The preprocessing guide documents OrdinalEncoder and OneHotEncoder semantics."
+    status: verified
+  - id: scaling-standardization
+    claim: "Standardization rescales features to mean 0 and unit variance; statistics must come from the training set."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/preprocessing.html"
+    source_title: "Preprocessing data"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The guide documents StandardScaler and applying the fitted scaler to test data."
+    status: verified
+  - id: pandas-get-dummies
+    claim: "pandas.get_dummies converts categorical columns into indicator (one-hot) columns."
+    importance: major
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html"
+    source_title: "pandas.get_dummies"
+    publisher: "pandas"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "API reference documents dummy/indicator variable creation."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

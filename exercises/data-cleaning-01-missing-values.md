@@ -3,7 +3,7 @@
 L'esercizio vive dentro il notebook della lezione, insieme alla teoria:
 
 ```text
-notebooks/data-cleaning-01-missing-values.ipynb
+notebooks/lezione-01-dati-mancanti.ipynb
 ```
 
 Aprilo, leggilo dall'alto in basso ed esegui le celle. Nella "Parte 3" trovi

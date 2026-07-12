@@ -5,7 +5,7 @@ module: data-engineering
 status: learner_review
 estimated_minutes: 30
 prerequisites: [Python base, Tabelle CSV]
-deliverables: [notebooks/data-cleaning-01-missing-values.ipynb]
+deliverables: [notebooks/lezione-01-dati-mancanti.ipynb]
 sources:
   - https://doi.org/10.1093/biomet/63.3.581
   - https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm
@@ -14,7 +14,7 @@ sources:
 
 # Missing values nelle letture ambientali
 
-> **La lezione si segue nel notebook** `notebooks/data-cleaning-01-missing-values.ipynb`:
+> **La lezione si segue nel notebook** `notebooks/lezione-01-dati-mancanti.ipynb`:
 > teoria, esempi eseguibili, esercizio con soluzione spiegata e il primo passo
 > del progetto Memory AI Lab, tutto in un unico posto. Questa pagina e' il
 > riassunto di riferimento.

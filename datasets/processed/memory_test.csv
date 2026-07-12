@@ -1,0 +1,16 @@
+memory_id,text,timestamp,type,importance,type_was_missing,importance_was_missing,importance_was_invalid_type,importance_was_outlier
+hist_0265,Lucia met a friend in Torino.,2026-06-27 02:00:00,episodic,0.77,,,,
+hist_0268,Sara lives near Roma.,2026-06-27 13:00:00,semantic,0.56,,,,
+hist_0270,Sara finished a milestone of il progetto TensorFlow.,2026-06-28 10:00:00,episodic,0.72,,,,
+hist_0271,Elena finished a milestone of il colloquio.,2026-06-28 10:00:00,episodic,0.62,,,,
+hist_0276,Marco visited Bologna for the weekend.,2026-07-01 01:00:00,episodic,0.52,,,,
+hist_0280,Paolo booked a train to Napoli.,2026-07-01 14:00:00,episodic,0.29,,,,
+mem_001,Marco visited Glasgow with his son.,2026-07-03 00:00:00,episodic,0.72,False,False,False,False
+hist_0285,Marco lives near Bologna.,2026-07-03 18:00:00,semantic,0.67,,,,
+mem_002,The user prefers concise morning summaries.,2026-07-04 00:00:00,preference,0.58,False,True,False,False
+hist_0290,Marco works on il corso di cucina.,2026-07-04 06:00:00,semantic,0.33,,,,
+mem_003,The office Wi-Fi policy changed.,2026-07-05 00:00:00,semantic,0.44,False,False,False,False
+mem_004,A trip lasted 400 days.,2026-07-06 00:00:00,episodic,1.0,False,False,False,True
+mem_005,The sky is blue.,2026-07-07 00:00:00,semantic,0.0,False,False,False,True
+mem_006,Remember to ask about the TensorFlow lab.,2026-07-07 00:00:00,unknown,0.58,True,False,False,False
+hist_0297,Lucia met a friend in Torino.,2026-07-08 17:00:00,episodic,0.54,,,,

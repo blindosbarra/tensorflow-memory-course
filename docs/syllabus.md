@@ -143,5 +143,11 @@ Obiettivi misurabili: integrare ingestion, modelli, retrieval, evaluation e
 monitoring in un sistema locale riproducibile. Assessment: demo end-to-end con
 test, report, artifact e limiti noti.
 
-Totale stimato: 38,5 ore. Stato corrente: le due lezioni esistenti sono in
-`learner_review`; `train-validation-test` resta bloccata e non viene generata.
+Totale stimato: 38,5 ore.
+
+Stato corrente: le lezioni 1-5 della Fase 1 (missing values, duplicati/tipi/
+outlier, train/validation/test, data leakage, encoding/scaling) esistono come
+notebook e sono in `learner_review`. Il learner ha scelto di completare prima
+il percorso applicativo della fase dati; la Fase 0 (fondamenti: NumPy,
+tensori, gradienti, loss) viene erogata subito dopo, prima della Fase 2, dove
+quei concetti diventano indispensabili.

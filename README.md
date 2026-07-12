@@ -49,14 +49,19 @@ uv run jupyter lab notebooks/
 
 ## Lezioni disponibili (in learner review)
 
-1. `notebooks/data-cleaning-01-missing-values.ipynb` — dati mancanti:
+1. `notebooks/lezione-01-dati-mancanti.ipynb` — dati mancanti:
    teoria (meccanismi, strategie, effetti) + progetto passo 1 (ingestion).
-2. `notebooks/duplicates-types-outliers.ipynb` — duplicati, tipi errati e
-   outlier + progetto passo 2 (controllo qualita' del nuovo batch).
+2. `notebooks/lezione-02-duplicati-tipi-outlier.ipynb` — duplicati, tipi errati
+   e outlier + progetto passo 2 (controllo qualita' del nuovo batch).
+3. `notebooks/lezione-03-train-validation-test.ipynb` — valutare senza barare:
+   i tre insiemi e i tre tipi di divisione + progetto passo 3 (lo storico
+   viene diviso temporalmente).
+4. `notebooks/lezione-04-data-leakage.ipynb` — le tre forme di leakage, con
+   dimostrazioni numeriche + progetto passo 4 (audit anti-leakage degli split).
+5. `notebooks/lezione-05-encoding-scaling.ipynb` — encoding e scaling + progetto
+   passo 5 (la prima matrice di feature, pronta per la Fase 2).
 
-Le pagine in `docs/modules/` sono i riassunti di riferimento pubblicati sul
-sito. I moduli `examples/` e `src/memory_ai/` sono implementazione di
-riferimento della pipeline, non materiale di studio.
-
-Non generare nuove lezioni prima della learner review umana
-(`templates/learner-review.md`) delle due lezioni esistenti.
+I notebook vanno eseguiti in ordine: ogni lezione riparte dagli artifact
+salvati dalla precedente. Le pagine in `docs/modules/` sono i riassunti di
+riferimento pubblicati sul sito. I moduli `examples/` e `src/memory_ai/` sono
+implementazione di riferimento della pipeline, non materiale di studio.

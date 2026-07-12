@@ -18,9 +18,9 @@ modules:
         artifacts:
           research_pack: knowledge/data-cleaning-01-missing-values/
           lesson: docs/modules/data-cleaning-01-missing-values.md
-          notebook: notebooks/data-cleaning-01-missing-values.ipynb
-          exercise: notebooks/data-cleaning-01-missing-values.ipynb
-          solution: notebooks/data-cleaning-01-missing-values.ipynb
+          notebook: notebooks/lezione-01-dati-mancanti.ipynb
+          exercise: notebooks/lezione-01-dati-mancanti.ipynb
+          solution: notebooks/lezione-01-dati-mancanti.ipynb
         quality_gates:
           research: pass
           lesson: pass
@@ -41,9 +41,78 @@ modules:
         artifacts:
           research_pack: knowledge/duplicates-types-outliers/
           lesson: docs/modules/duplicates-types-outliers.md
-          notebook: notebooks/duplicates-types-outliers.ipynb
-          exercise: notebooks/duplicates-types-outliers.ipynb
-          solution: notebooks/duplicates-types-outliers.ipynb
+          notebook: notebooks/lezione-02-duplicati-tipi-outlier.ipynb
+          exercise: notebooks/lezione-02-duplicati-tipi-outlier.ipynb
+          solution: notebooks/lezione-02-duplicati-tipi-outlier.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+      train-validation-test:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/train-validation-test/
+          lesson: docs/modules/train-validation-test.md
+          notebook: notebooks/lezione-03-train-validation-test.ipynb
+          exercise: notebooks/lezione-03-train-validation-test.ipynb
+          solution: notebooks/lezione-03-train-validation-test.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+      data-leakage:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/data-leakage/
+          lesson: docs/modules/data-leakage.md
+          notebook: notebooks/lezione-04-data-leakage.ipynb
+          exercise: notebooks/lezione-04-data-leakage.ipynb
+          solution: notebooks/lezione-04-data-leakage.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+      categorical-encoding-scaling:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/categorical-encoding-scaling/
+          lesson: docs/modules/categorical-encoding-scaling.md
+          notebook: notebooks/lezione-05-encoding-scaling.ipynb
+          exercise: notebooks/lezione-05-encoding-scaling.ipynb
+          solution: notebooks/lezione-05-encoding-scaling.ipynb
         quality_gates:
           research: pass
           lesson: pass
@@ -67,3 +136,6 @@ notes:
   - Next after human learner PASS and Fase 0 validation, the next lesson is python-numpy-refresh.
   - "2026-07-12 format change requested by the learner: each lesson is now a self-contained notebook (broad theory, runnable examples, guided exercise with visible explained solution, quiz with answers) plus one incremental project step (Memory AI Lab). The starter-file + hidden-pytest exercise flow was removed from the learner path."
   - The project thread lives in datasets/processed/memory_events_clean.csv and grows one component per lesson.
+  - "2026-07-12 learner PASSED the notebook format on lesson 1; lessons 3-5 (train/validation/test, data leakage, encoding/scaling) produced in the same format with project steps 3-5."
+  - "Notebooks renamed with lezione-NN prefixes so execution order matches lesson order."
+  - "Learner chose to finish the applied data phase first; Fase 0 (foundations) is scheduled right before Fase 2."

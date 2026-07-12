@@ -1,0 +1,304 @@
+memory_id,text,timestamp,type,importance
+hist_0000,The user likes walking meetings.,2026-04-01 13:00,preference,0.68
+hist_0001,The user prefers morning sessions for il progetto TensorFlow.,2026-04-01 17:00,preference,0.43
+hist_0002,Lucia visited Bologna for the weekend.,2026-04-01 19:00,episodic,0.81
+hist_0003,Marco met a friend in Milano.,2026-04-02 03:00,episodic,0.64
+hist_0004,Elena visited Glasgow for the weekend.,2026-04-02 10:00,episodic,0.05
+hist_0005,The user likes walking meetings.,2026-04-02 11:00,preference,0.53
+hist_0006,The user dislikes late notifications.,2026-04-02 13:00,preference,0.21
+hist_0007,Lucia met a friend in Milano.,2026-04-03 00:00,episodic,0.41
+hist_0008,Elena met a friend in Torino.,2026-04-03 03:00,episodic,0.32
+hist_0009,The office in Napoli closes at 18:00.,2026-04-03 05:00,semantic,0.39
+hist_0010,The office in Torino closes at 18:00.,2026-04-03 09:00,semantic,0.72
+hist_0011,Elena had a long call about il colloquio.,2026-04-03 16:00,episodic,0.79
+hist_0012,Elena booked a train to Bologna.,2026-04-04 03:00,episodic,0.69
+hist_0013,Lucia booked a train to Roma.,2026-04-04 05:00,episodic,0.38
+hist_0014,Giorgio booked a train to Glasgow.,2026-04-04 09:00,episodic,0.61
+hist_0015,Lucia met a friend in Glasgow.,2026-04-04 09:00,episodic,0.44
+hist_0016,The user prefers morning sessions for il corso di cucina.,2026-04-04 12:00,preference,0.7
+hist_0017,Sara visited Napoli for the weekend.,2026-04-04 23:00,episodic,0.63
+hist_0018,Sara visited Bologna for the weekend.,2026-04-05 01:00,episodic,0.71
+hist_0019,The user prefers short updates about il corso di cucina.,2026-04-05 08:00,preference,0.54
+hist_0020,Elena booked a train to Napoli.,2026-04-05 21:00,episodic,0.54
+hist_0021,The user prefers short updates about la palestra.,2026-04-06 09:00,preference,0.79
+hist_0022,The user likes walking meetings.,2026-04-06 12:00,preference,0.3
+hist_0023,The user likes walking meetings.,2026-04-06 17:00,preference,0.43
+hist_0024,The user prefers short updates about il progetto TensorFlow.,2026-04-08 00:00,preference,0.39
+hist_0025,The office in Milano closes at 18:00.,2026-04-08 16:00,semantic,0.22
+hist_0026,la palestra happens every Tuesday.,2026-04-08 18:00,semantic,0.48
+hist_0027,The user prefers morning sessions for la riunione settimanale.,2026-04-08 20:00,preference,0.8
+hist_0028,The user dislikes late notifications.,2026-04-08 22:00,preference,0.98
+hist_0029,Sara booked a train to Glasgow.,2026-04-09 15:00,episodic,0.45
+hist_0030,The user likes walking meetings.,2026-04-09 19:00,preference,0.4
+hist_0031,Sara met a friend in Bologna.,2026-04-09 21:00,episodic,0.54
+hist_0032,The user likes walking meetings.,2026-04-10 12:00,preference,0.68
+hist_0033,The office in Glasgow closes at 18:00.,2026-04-10 13:00,semantic,0.4
+hist_0034,Lucia finished a milestone of la palestra.,2026-04-10 22:00,episodic,0.89
+hist_0035,Paolo had a long call about il progetto TensorFlow.,2026-04-12 06:00,episodic,0.63
+hist_0036,Paolo lives near Bologna.,2026-04-13 00:00,semantic,0.59
+hist_0037,The user dislikes late notifications.,2026-04-13 01:00,preference,0.6
+hist_0038,The user dislikes late notifications.,2026-04-13 12:00,preference,0.4
+hist_0039,Lucia visited Napoli for the weekend.,2026-04-13 18:00,episodic,0.55
+hist_0040,Paolo lives near Milano.,2026-04-13 22:00,semantic,
+hist_0041,Giorgio booked a train to Glasgow.,2026-04-14 20:00,episodic,0.35
+hist_0042,The user prefers morning sessions for la newsletter.,2026-04-15 01:00,preference,0.78
+hist_0043,Paolo visited Milano for the weekend.,2026-04-15 02:00,episodic,0.02
+hist_0044,The user prefers short updates about la newsletter.,2026-04-15 08:00,preference,0.75
+hist_0045,Giorgio lives near Glasgow.,2026-04-15 17:00,semantic,0.65
+hist_0046,Paolo visited Roma for the weekend.,2026-04-15 23:00,episodic,0.33
+hist_0047,Elena lives near Napoli.,2026-04-16 09:00,semantic,0.67
+hist_0048,The user likes walking meetings.,2026-04-16 11:00,preference,0.53
+hist_0049,Lucia visited Milano for the weekend.,2026-04-17 01:00,episodic,0.39
+hist_0050,The user dislikes late notifications.,2026-04-17 19:00,preference,0.47
+hist_0051,The user prefers short updates about il progetto TensorFlow.,2026-04-18 00:00,preference,0.5
+hist_0052,Marco visited Milano for the weekend.,2026-04-18 06:00,episodic,0.58
+hist_0053,The user prefers morning sessions for la riunione settimanale.,2026-04-18 22:00,preference,0.43
+hist_0054,la newsletter happens every Tuesday.,2026-04-19 01:00,semantic,0.56
+hist_0055,Elena lives near Glasgow.,2026-04-20 00:00,semantic,0.43
+hist_0056,The user dislikes late notifications.,2026-04-20 02:00,preference,0.6
+hist_0057,Sara finished a milestone of la newsletter.,2026-04-20 04:00,episodic,0.59
+hist_0058,The user prefers short updates about il colloquio.,2026-04-20 12:00,preference,0.67
+hist_0059,Sara booked a train to Napoli.,2026-04-21 13:00,episodic,0.37
+hist_0060,il progetto TensorFlow happens every Tuesday.,2026-04-21 17:00,semantic,0.31
+hist_0061,Lucia finished a milestone of il colloquio.,2026-04-21 18:00,episodic,0.67
+hist_0062,Lucia lives near Torino.,2026-04-21 20:00,semantic,0.59
+hist_0063,The user dislikes late notifications.,2026-04-22 02:00,preference,0.8
+hist_0064,Lucia had a long call about la palestra.,2026-04-22 12:00,episodic,0.49
+hist_0065,The office in Glasgow closes at 18:00.,2026-04-22 17:00,semantic,0.56
+hist_0066,The office in Torino closes at 18:00.,2026-04-22 20:00,semantic,0.67
+hist_0067,Giorgio met a friend in Roma.,2026-04-22 20:00,episodic,0.58
+hist_0068,The office in Torino closes at 18:00.,2026-04-24 00:00,semantic,0.64
+hist_0069,The user likes walking meetings.,2026-04-24 05:00,preference,0.67
+hist_0070,Elena works on la newsletter.,2026-04-24 07:00,semantic,0.6
+hist_0071,Elena finished a milestone of la newsletter.,2026-04-24 08:00,episodic,0.77
+hist_0072,Giorgio had a long call about la riunione settimanale.,2026-04-25 10:00,episodic,0.59
+hist_0073,The office in Roma closes at 18:00.,2026-04-25 13:00,semantic,0.7
+hist_0074,The user likes walking meetings.,2026-04-26 05:00,preference,0.64
+hist_0075,The user prefers short updates about la riunione settimanale.,2026-04-26 18:00,preference,0.7
+hist_0076,Giorgio finished a milestone of il progetto TensorFlow.,2026-04-26 22:00,episodic,0.87
+hist_0077,Giorgio met a friend in Glasgow.,2026-04-27 00:00,,0.22
+hist_0078,The user dislikes late notifications.,2026-04-27 07:00,preference,0.7
+hist_0079,il progetto TensorFlow happens every Tuesday.,2026-04-27 11:00,semantic,0.85
+hist_0080,Elena finished a milestone of il corso di cucina.,2026-04-27 14:00,episodic,0.26
+hist_0081,Giorgio works on il progetto TensorFlow.,2026-04-27 16:00,semantic,0.41
+hist_0082,The user prefers short updates about la riunione settimanale.,2026-04-28 02:00,preference,0.62
+hist_0083,Elena booked a train to Milano.,2026-04-28 15:00,episodic,0.59
+hist_0084,Sara had a long call about il colloquio.,2026-04-28 22:00,episodic,0.93
+hist_0085,The user dislikes late notifications.,2026-04-29 06:00,preference,0.52
+hist_0086,Giorgio visited Torino for the weekend.,2026-04-30 10:00,episodic,0.42
+hist_0087,Sara met a friend in Torino.,2026-04-30 12:00,episodic,0.92
+hist_0088,The user dislikes late notifications.,2026-04-30 12:00,preference,0.87
+hist_0089,The user prefers short updates about il corso di cucina.,2026-05-01 06:00,preference,0.57
+hist_0090,The user prefers morning sessions for la newsletter.,2026-05-01 14:00,preference,0.34
+hist_0091,The user prefers short updates about il colloquio.,2026-05-01 18:00,preference,0.4
+hist_0092,Paolo booked a train to Torino.,2026-05-02 12:00,episodic,0.54
+hist_0093,The office in Milano closes at 18:00.,2026-05-02 12:00,semantic,0.68
+hist_0094,Elena finished a milestone of la riunione settimanale.,2026-05-02 14:00,episodic,0.6
+hist_0095,Giorgio had a long call about la riunione settimanale.,2026-05-02 18:00,episodic,0.67
+hist_0096,Paolo visited Glasgow for the weekend.,2026-05-03 00:00,episodic,0.69
+hist_0097,The user prefers short updates about la riunione settimanale.,2026-05-03 06:00,preference,0.52
+hist_0098,The user prefers short updates about il colloquio.,2026-05-03 08:00,preference,0.54
+hist_0099,Lucia booked a train to Napoli.,2026-05-03 08:00,episodic,0.81
+hist_0100,Marco finished a milestone of il corso di cucina.,2026-05-03 18:00,episodic,0.54
+hist_0101,Marco visited Napoli for the weekend.,2026-05-03 19:00,episodic,0.61
+hist_0102,Marco booked a train to Glasgow.,2026-05-04 02:00,episodic,0.59
+hist_0103,Marco finished a milestone of la newsletter.,2026-05-04 23:00,episodic,0.73
+hist_0104,The user likes walking meetings.,2026-05-05 00:00,preference,0.39
+hist_0105,il progetto TensorFlow happens every Tuesday.,2026-05-05 04:00,semantic,0.71
+hist_0106,The user prefers short updates about la riunione settimanale.,2026-05-05 11:00,preference,0.79
+hist_0107,Marco had a long call about il corso di cucina.,2026-05-05 15:00,episodic,0.43
+hist_0108,la newsletter happens every Tuesday.,2026-05-05 17:00,semantic,0.17
+hist_0109,Marco booked a train to Glasgow.,2026-05-05 18:00,episodic,0.98
+hist_0110,Giorgio finished a milestone of la riunione settimanale.,2026-05-05 22:00,episodic,0.45
+hist_0111,Paolo met a friend in Roma.,2026-05-06 05:00,episodic,0.26
+hist_0112,Lucia had a long call about il corso di cucina.,2026-05-06 05:00,episodic,0.7
+hist_0113,Elena booked a train to Roma.,2026-05-07 05:00,episodic,0.19
+hist_0114,Giorgio had a long call about la palestra.,2026-05-07 15:00,episodic,0.5
+hist_0115,Paolo had a long call about la palestra.,2026-05-07 16:00,episodic,0.63
+hist_0116,Marco finished a milestone of la palestra.,2026-05-07 17:00,episodic,0.56
+hist_0117,Sara booked a train to Torino.,2026-05-07 20:00,episodic,0.58
+hist_0118,Paolo finished a milestone of la newsletter.,2026-05-07 20:00,episodic,0.19
+hist_0119,The user likes walking meetings.,2026-05-08 06:00,preference,0.43
+hist_0120,Sara booked a train to Napoli.,2026-05-08 18:00,episodic,0.27
+hist_0121,Lucia visited Glasgow for the weekend.,2026-05-08 22:00,episodic,0.98
+hist_0122,Giorgio visited Napoli for the weekend.,2026-05-08 23:00,episodic,0.69
+hist_0123,The user dislikes late notifications.,2026-05-09 05:00,preference,0.72
+hist_0124,il corso di cucina happens every Tuesday.,2026-05-09 07:00,semantic,0.83
+hist_0125,Marco visited Roma for the weekend.,2026-05-09 21:00,episodic,0.55
+hist_0126,Sara finished a milestone of la riunione settimanale.,2026-05-10 04:00,episodic,0.69
+hist_0127,Lucia visited Torino for the weekend.,2026-05-10 12:00,episodic,0.39
+hist_0128,Giorgio finished a milestone of la newsletter.,2026-05-10 21:00,episodic,0.45
+hist_0129,The user prefers short updates about il progetto TensorFlow.,2026-05-11 12:00,preference,0.46
+hist_0130,Lucia had a long call about il colloquio.,2026-05-11 17:00,episodic,0.47
+hist_0131,The user likes walking meetings.,2026-05-12 01:00,preference,0.37
+hist_0132,Sara visited Napoli for the weekend.,2026-05-12 13:00,episodic,0.29
+hist_0133,Lucia booked a train to Milano.,2026-05-12 13:00,episodic,
+hist_0134,Paolo met a friend in Napoli.,2026-05-12 15:00,episodic,0.29
+hist_0135,The office in Glasgow closes at 18:00.,2026-05-12 19:00,semantic,0.69
+hist_0136,Marco booked a train to Napoli.,2026-05-12 22:00,episodic,0.44
+hist_0137,The user prefers morning sessions for il corso di cucina.,2026-05-13 05:00,preference,0.49
+hist_0138,The user dislikes late notifications.,2026-05-13 18:00,preference,0.53
+hist_0139,Paolo visited Bologna for the weekend.,2026-05-13 22:00,episodic,0.12
+hist_0140,Sara visited Roma for the weekend.,2026-05-14 04:00,episodic,0.22
+hist_0141,The office in Torino closes at 18:00.,2026-05-14 05:00,semantic,0.79
+hist_0142,la riunione settimanale happens every Tuesday.,2026-05-14 07:00,semantic,0.52
+hist_0143,The user prefers morning sessions for la newsletter.,2026-05-14 19:00,preference,0.72
+hist_0144,Lucia finished a milestone of il corso di cucina.,2026-05-15 02:00,episodic,0.49
+hist_0145,Giorgio finished a milestone of il progetto TensorFlow.,2026-05-15 03:00,episodic,0.36
+hist_0146,Giorgio works on la palestra.,2026-05-15 04:00,semantic,0.51
+hist_0147,Lucia had a long call about il progetto TensorFlow.,2026-05-17 00:00,episodic,0.49
+hist_0148,Lucia met a friend in Roma.,2026-05-17 08:00,episodic,0.7
+hist_0149,Lucia booked a train to Torino.,2026-05-18 05:00,episodic,0.38
+hist_0150,The user prefers morning sessions for il progetto TensorFlow.,2026-05-19 00:00,preference,0.37
+hist_0151,la riunione settimanale happens every Tuesday.,2026-05-19 01:00,semantic,0.54
+hist_0152,Marco visited Napoli for the weekend.,2026-05-19 05:00,episodic,0.63
+hist_0153,Paolo visited Glasgow for the weekend.,2026-05-19 13:00,episodic,0.53
+hist_0154,Sara had a long call about il colloquio.,2026-05-19 13:00,episodic,0.98
+hist_0155,Sara visited Glasgow for the weekend.,2026-05-19 21:00,episodic,0.88
+hist_0156,Lucia lives near Glasgow.,2026-05-20 08:00,semantic,0.71
+hist_0157,The user dislikes late notifications.,2026-05-20 09:00,preference,0.68
+hist_0158,Paolo finished a milestone of la newsletter.,2026-05-20 16:00,episodic,0.42
+hist_0159,The office in Glasgow closes at 18:00.,2026-05-21 10:00,semantic,0.46
+hist_0160,Paolo visited Bologna for the weekend.,2026-05-21 12:00,episodic,0.31
+hist_0161,Elena met a friend in Bologna.,2026-05-21 23:00,episodic,0.73
+hist_0162,Lucia had a long call about la newsletter.,2026-05-22 05:00,episodic,0.45
+hist_0163,The user dislikes late notifications.,2026-05-22 06:00,preference,0.96
+hist_0164,Lucia had a long call about la riunione settimanale.,2026-05-23 01:00,episodic,0.8
+hist_0165,la palestra happens every Tuesday.,2026-05-23 06:00,semantic,0.33
+hist_0166,The user prefers short updates about la riunione settimanale.,2026-05-23 12:00,preference,0.66
+hist_0167,Marco booked a train to Milano.,2026-05-23 18:00,episodic,0.72
+hist_0168,The user prefers short updates about la riunione settimanale.,2026-05-24 14:00,preference,0.17
+hist_0169,Sara lives near Bologna.,2026-05-24 14:00,semantic,0.5
+hist_0170,The user prefers morning sessions for il colloquio.,2026-05-25 00:00,preference,0.63
+hist_0171,Elena finished a milestone of la riunione settimanale.,2026-05-25 02:00,episodic,0.51
+hist_0172,The user dislikes late notifications.,2026-05-26 02:00,preference,0.36
+hist_0173,Sara met a friend in Milano.,2026-05-27 02:00,episodic,0.2
+hist_0174,The user prefers short updates about il corso di cucina.,2026-05-27 14:00,preference,0.71
+hist_0175,Marco had a long call about il progetto TensorFlow.,2026-05-27 16:00,episodic,0.26
+hist_0176,The user prefers morning sessions for il colloquio.,2026-05-27 20:00,preference,0.32
+hist_0177,Lucia booked a train to Bologna.,2026-05-28 08:00,episodic,0.81
+hist_0178,The office in Glasgow closes at 18:00.,2026-05-28 16:00,semantic,0.5
+hist_0179,Sara booked a train to Glasgow.,2026-05-28 17:00,episodic,0.41
+hist_0180,The user prefers short updates about la palestra.,2026-05-28 18:00,preference,0.31
+hist_0181,The office in Napoli closes at 18:00.,2026-05-29 01:00,semantic,0.6
+hist_0182,The user likes walking meetings.,2026-05-29 07:00,preference,0.66
+hist_0183,Elena works on la palestra.,2026-05-29 10:00,semantic,0.75
+hist_0184,Elena had a long call about la newsletter.,2026-05-30 09:00,episodic,0.62
+hist_0185,Giorgio works on il colloquio.,2026-05-30 18:00,semantic,0.54
+hist_0186,The user dislikes late notifications.,2026-05-31 13:00,preference,0.23
+hist_0187,Sara booked a train to Napoli.,2026-06-01 02:00,episodic,0.53
+hist_0188,Paolo had a long call about il progetto TensorFlow.,2026-06-01 08:00,episodic,0.44
+hist_0189,Sara had a long call about la palestra.,2026-06-01 10:00,episodic,0.45
+hist_0190,Marco works on il progetto TensorFlow.,2026-06-01 11:00,semantic,0.72
+hist_0191,The user dislikes late notifications.,2026-06-02 07:00,preference,0.74
+hist_0192,Marco visited Napoli for the weekend.,2026-06-02 07:00,episodic,0.79
+hist_0193,Elena works on la riunione settimanale.,2026-06-02 15:00,semantic,0.54
+hist_0194,Giorgio finished a milestone of il progetto TensorFlow.,2026-06-02 16:00,episodic,0.89
+hist_0195,Lucia lives near Roma.,2026-06-03 01:00,semantic,0.32
+hist_0196,Giorgio finished a milestone of la newsletter.,2026-06-03 01:00,episodic,0.39
+hist_0197,Elena visited Glasgow for the weekend.,2026-06-03 12:00,episodic,0.98
+hist_0198,Paolo had a long call about il colloquio.,2026-06-03 16:00,episodic,0.39
+hist_0199,Giorgio booked a train to Bologna.,2026-06-04 00:00,episodic,0.55
+hist_0200,Lucia had a long call about la riunione settimanale.,2026-06-04 00:00,episodic,0.66
+hist_0201,Giorgio met a friend in Napoli.,2026-06-04 07:00,episodic,0.83
+hist_0202,Giorgio finished a milestone of il corso di cucina.,2026-06-04 08:00,episodic,0.38
+hist_0203,la riunione settimanale happens every Tuesday.,2026-06-04 08:00,semantic,0.39
+hist_0204,The office in Milano closes at 18:00.,2026-06-05 13:00,semantic,0.35
+hist_0205,Paolo finished a milestone of il progetto TensorFlow.,2026-06-06 13:00,episodic,0.42
+hist_0206,The user prefers morning sessions for la riunione settimanale.,2026-06-06 15:00,preference,0.66
+hist_0207,The user prefers short updates about il colloquio.,2026-06-06 20:00,preference,0.56
+hist_0208,The user prefers short updates about il colloquio.,2026-06-06 20:00,preference,0.6
+hist_0209,Lucia works on la palestra.,2026-06-07 02:00,semantic,0.89
+hist_0210,Sara had a long call about il corso di cucina.,2026-06-07 06:00,episodic,
+hist_0211,Lucia finished a milestone of la palestra.,2026-06-07 06:00,episodic,0.27
+hist_0212,Sara finished a milestone of la riunione settimanale.,2026-06-08 04:00,episodic,0.54
+hist_0213,Giorgio finished a milestone of il colloquio.,2026-06-08 11:00,episodic,0.52
+hist_0214,The user likes walking meetings.,2026-06-08 18:00,preference,0.37
+hist_0215,Lucia works on la riunione settimanale.,2026-06-08 22:00,semantic,0.45
+hist_0216,Giorgio finished a milestone of la riunione settimanale.,2026-06-09 06:00,episodic,0.64
+hist_0217,Sara finished a milestone of la riunione settimanale.,2026-06-10 02:00,episodic,0.42
+hist_0218,Lucia booked a train to Torino.,2026-06-10 03:00,episodic,0.67
+hist_0219,Elena met a friend in Roma.,2026-06-10 05:00,episodic,0.93
+hist_0220,Marco visited Glasgow for the weekend.,2026-06-10 06:00,episodic,0.51
+hist_0221,il corso di cucina happens every Tuesday.,2026-06-10 10:00,semantic,0.7
+hist_0222,The user likes walking meetings.,2026-06-10 11:00,preference,0.53
+hist_0223,Sara met a friend in Napoli.,2026-06-10 13:00,episodic,0.68
+hist_0224,Marco had a long call about il progetto TensorFlow.,2026-06-10 23:00,episodic,0.7
+hist_0225,Marco had a long call about la palestra.,2026-06-11 03:00,episodic,0.61
+hist_0226,Elena had a long call about il progetto TensorFlow.,2026-06-13 05:00,episodic,0.72
+hist_0227,Lucia booked a train to Napoli.,2026-06-13 12:00,episodic,0.54
+hist_0228,Lucia booked a train to Torino.,2026-06-14 09:00,episodic,0.19
+hist_0229,Marco finished a milestone of la palestra.,2026-06-14 11:00,episodic,0.43
+hist_0230,Sara works on la riunione settimanale.,2026-06-15 04:00,semantic,0.85
+hist_0231,Marco finished a milestone of il colloquio.,2026-06-15 07:00,episodic,0.65
+hist_0232,The office in Glasgow closes at 18:00.,2026-06-15 08:00,semantic,0.73
+hist_0233,Lucia met a friend in Roma.,2026-06-15 10:00,episodic,0.31
+hist_0234,Giorgio visited Milano for the weekend.,2026-06-15 10:00,episodic,0.82
+hist_0235,The user dislikes late notifications.,2026-06-16 03:00,preference,0.52
+hist_0236,Giorgio works on il progetto TensorFlow.,2026-06-16 11:00,semantic,0.57
+hist_0237,la newsletter happens every Tuesday.,2026-06-16 22:00,semantic,0.85
+hist_0238,The user prefers short updates about la palestra.,2026-06-17 01:00,preference,0.41
+hist_0239,The office in Bologna closes at 18:00.,2026-06-17 02:00,semantic,0.87
+hist_0240,la riunione settimanale happens every Tuesday.,2026-06-17 11:00,semantic,0.42
+hist_0241,Sara visited Glasgow for the weekend.,2026-06-18 14:00,episodic,0.34
+hist_0242,Giorgio visited Bologna for the weekend.,2026-06-19 19:00,episodic,0.49
+hist_0243,Sara met a friend in Napoli.,2026-06-20 05:00,episodic,0.22
+hist_0244,Lucia lives near Milano.,2026-06-20 13:00,semantic,0.46
+hist_0245,Sara booked a train to Milano.,2026-06-21 03:00,episodic,0.5
+hist_0246,Elena met a friend in Bologna.,2026-06-21 04:00,episodic,0.53
+hist_0247,Giorgio booked a train to Torino.,2026-06-21 05:00,episodic,0.39
+hist_0248,Marco visited Torino for the weekend.,2026-06-22 06:00,episodic,0.68
+hist_0249,The user likes walking meetings.,2026-06-22 20:00,preference,0.77
+hist_0250,Lucia works on il colloquio.,2026-06-23 04:00,,0.53
+hist_0251,il progetto TensorFlow happens every Tuesday.,2026-06-23 16:00,semantic,0.58
+hist_0252,Elena finished a milestone of il progetto TensorFlow.,2026-06-24 01:00,episodic,0.48
+hist_0253,Elena works on il progetto TensorFlow.,2026-06-24 02:00,semantic,0.82
+hist_0254,The user prefers morning sessions for la palestra.,2026-06-24 08:00,preference,0.65
+hist_0255,The office in Roma closes at 18:00.,2026-06-24 09:00,semantic,0.63
+hist_0256,Giorgio met a friend in Roma.,2026-06-24 17:00,episodic,0.43
+hist_0257,The user dislikes late notifications.,2026-06-24 21:00,preference,0.57
+hist_0258,The user prefers short updates about la palestra.,2026-06-25 11:00,preference,0.38
+hist_0259,The user prefers morning sessions for la riunione settimanale.,2026-06-25 15:00,preference,0.73
+hist_0260,The user prefers short updates about la newsletter.,2026-06-26 06:00,preference,0.33
+hist_0261,The user dislikes late notifications.,2026-06-26 15:00,preference,0.9
+hist_0262,Marco finished a milestone of la palestra.,2026-06-26 17:00,episodic,0.85
+hist_0263,The user likes walking meetings.,2026-06-26 22:00,preference,0.33
+hist_0264,Marco booked a train to Napoli.,2026-06-26 22:00,episodic,0.77
+hist_0265,Lucia met a friend in Torino.,2026-06-27 02:00,episodic,0.57
+hist_0266,Marco visited Glasgow for the weekend.,2026-06-27 04:00,episodic,0.02
+hist_0267,Paolo met a friend in Roma.,2026-06-27 05:00,episodic,0.56
+hist_0268,Sara lives near Roma.,2026-06-27 13:00,semantic,0.73
+hist_0269,The user prefers short updates about il corso di cucina.,2026-06-28 05:00,preference,0.72
+hist_0270,Sara finished a milestone of il progetto TensorFlow.,2026-06-28 10:00,episodic,0.62
+hist_0271,Elena finished a milestone of il colloquio.,2026-06-28 10:00,episodic,0.49
+hist_0272,Lucia had a long call about il progetto TensorFlow.,2026-06-28 11:00,episodic,0.75
+hist_0273,Lucia works on la palestra.,2026-06-29 19:00,semantic,0.52
+hist_0274,The user prefers short updates about la riunione settimanale.,2026-06-30 03:00,preference,0.88
+hist_0275,The user likes walking meetings.,2026-06-30 22:00,preference,0.52
+hist_0276,Marco visited Bologna for the weekend.,2026-07-01 01:00,episodic,0.67
+hist_0277,Giorgio visited Torino for the weekend.,2026-07-01 05:00,episodic,0.27
+hist_0278,The user prefers morning sessions for la riunione settimanale.,2026-07-01 08:00,preference,0.42
+hist_0279,The user likes walking meetings.,2026-07-01 14:00,preference,0.29
+hist_0280,Paolo booked a train to Napoli.,2026-07-01 14:00,episodic,0.39
+hist_0281,The user likes walking meetings.,2026-07-02 02:00,preference,0.98
+hist_0282,Lucia met a friend in Glasgow.,2026-07-02 17:00,episodic,0.59
+hist_0283,The user prefers short updates about il progetto TensorFlow.,2026-07-02 19:00,preference,0.5
+hist_0284,Lucia had a long call about la riunione settimanale.,2026-07-02 22:00,episodic,0.67
+hist_0285,Marco lives near Bologna.,2026-07-03 18:00,semantic,0.61
+hist_0286,The user prefers short updates about la newsletter.,2026-07-03 18:00,preference,0.39
+hist_0287,The user prefers morning sessions for il progetto TensorFlow.,2026-07-03 20:00,preference,0.51
+hist_0288,il progetto TensorFlow happens every Tuesday.,2026-07-04 01:00,semantic,0.8
+hist_0289,Sara had a long call about la palestra.,2026-07-04 02:00,episodic,0.33
+hist_0290,Marco works on il corso di cucina.,2026-07-04 06:00,semantic,0.58
+hist_0291,Lucia visited Milano for the weekend.,2026-07-04 06:00,episodic,0.61
+hist_0292,la palestra happens every Tuesday.,2026-07-05 14:00,semantic,0.45
+hist_0293,Sara booked a train to Glasgow.,2026-07-05 16:00,episodic,0.57
+hist_0294,The user prefers morning sessions for il progetto TensorFlow.,2026-07-06 03:00,preference,0.84
+hist_0295,la newsletter happens every Tuesday.,2026-07-06 15:00,semantic,0.88
+hist_0296,The office in Bologna closes at 18:00.,2026-07-07 18:00,semantic,0.54
+hist_0297,Lucia met a friend in Torino.,2026-07-08 17:00,episodic,0.4
+hist_0298,Lucia finished a milestone of la palestra.,2026-07-09 18:00,episodic,0.54
+hist_0299,The user dislikes late notifications.,2026-07-09 22:00,preference,0.5
+hist_0025,The office in Milano closes at 18:00.,2026-04-08 16:00,semantic,0.22
+hist_0090,The user prefers morning sessions for la newsletter.,2026-05-01 14:00,preference,0.34
+hist_0180,The user prefers short updates about la palestra.,2026-05-28 18:00,preference,0.31

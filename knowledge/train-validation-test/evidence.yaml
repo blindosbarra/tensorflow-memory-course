@@ -1,0 +1,26 @@
+lesson_id: train-validation-test
+reviewed_at: 2026-07-12
+claims:
+  - id: heldout-evaluation
+    claim: "Evaluating on the training data measures memorization; honest estimates require held-out data."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/cross_validation.html"
+    source_title: "Cross-validation: evaluating estimator performance"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The guide motivates held-out sets and warns that testing on training data overfits the estimate."
+    status: verified
+  - id: stratify-and-seed
+    claim: "train_test_split supports stratified splits and a random_state seed for reproducibility."
+    importance: major
+    source_url: "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html"
+    source_title: "sklearn.model_selection.train_test_split"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "API documents the stratify and random_state parameters."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

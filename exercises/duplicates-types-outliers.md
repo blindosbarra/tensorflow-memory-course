@@ -3,7 +3,7 @@
 L'esercizio vive dentro il notebook della lezione, insieme alla teoria:
 
 ```text
-notebooks/duplicates-types-outliers.ipynb
+notebooks/lezione-02-duplicati-tipi-outlier.ipynb
 ```
 
 Prerequisito: aver eseguito prima il notebook della Lezione 1 (il progetto
