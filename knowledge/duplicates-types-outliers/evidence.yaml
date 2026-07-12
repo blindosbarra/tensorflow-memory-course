@@ -15,13 +15,13 @@ claims:
   - id: fuzzy-record-matching-tradeoff
     claim: "Approximate record matching must balance false matches and missed matches when records are noisy."
     importance: major
-    source_url: "https://doi.org/10.1145/1008992.1009037"
+    source_url: "https://doi.org/10.1145/872757.872796"
     source_title: "Robust and Efficient Fuzzy Match for Online Data Cleaning"
-    publisher: "ACM"
+    publisher: "ACM SIGMOD 2003"
     published_or_updated: "2003"
-    accessed_at: "2026-07-11"
+    accessed_at: "2026-07-12"
     primary_source: true
-    evidence_note: "The original paper treats fuzzy matching as approximate matching under noisy representations."
+    evidence_note: "The original paper treats fuzzy matching as approximate matching under noisy representations. DOI corrected on 2026-07-12: the previous entry cited 10.1145/1008992.1009037, which does not resolve to this paper."
     status: verified
   - id: pandas-duplicated-subset
     claim: "pandas DataFrame.duplicated can mark duplicated rows using a subset of columns and a keep policy."
@@ -59,13 +59,13 @@ claims:
   - id: local-importance-domain
     claim: "In this repository's Memory AI Lab policy, importance is a local score represented as a numeric value from 0.0 to 1.0."
     importance: major
-    source_url: "course/DATA_AND_ARTIFACT_POLICY.md"
-    source_title: "Data and artifact policy"
+    source_url: "COURSE_FACTORY_SPEC.md"
+    source_title: "TensorFlow Memory AI Course Factory, sezione 4"
     publisher: "repository"
-    published_or_updated: "2026-07-10 repository state"
-    accessed_at: "2026-07-10"
+    published_or_updated: "2026-07-12 repository state"
+    accessed_at: "2026-07-12"
     primary_source: true
-    evidence_note: "The repository policy defines the canonical memory record with importance: 0.0."
+    evidence_note: "The canonical memory record in the spec uses a numeric importance (0.72); the 0.0-1.0 range is the local contract declared by the lessons. Source corrected on 2026-07-12: the previous entry cited course/DATA_AND_ARTIFACT_POLICY.md, which does not exist in this repository."
     status: verified
 review:
   reviewer: codex

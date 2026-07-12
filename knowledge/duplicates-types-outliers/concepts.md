@@ -1,50 +1,48 @@
 # Concepts: duplicates-types-outliers
 
+Decisione research: `READY_FOR_WRITING`.
+Aggiornato 2026-07-12 per il rework B4: il dominio didattico della lezione e'
+la telemetria ambientale; il Memory AI Lab compare solo nel trasferimento.
+
 ## Scope didattico
 
-La lezione introduce tre controlli di qualita' prima dei modelli:
+La lezione introduce tre controlli di qualita' prima dei modelli, su letture
+di sensori dove i difetti nascono naturalmente (retry di rete, firmware
+diversi, sensori guasti):
 
-1. duplicati;
-2. tipi errati;
-3. outlier di dominio.
+1. duplicati esatti e near-duplicates;
+2. tipi errati (numeri arrivati come testo);
+3. outlier statistici vs outlier di dominio.
 
 Non introduce TensorFlow. Non introduce split train/test. Non usa dati reali.
 
-## Duplicati
+## Duplicati e near-duplicates
 
-Un duplicato e' una riga che rischia di contare due volte lo stesso evento.
-
-Nel Memory AI Lab usiamo due regole conservative:
-
-- stesso `memory_id`: duplicato forte;
-- stessa coppia `text` e `timestamp`: possibile duplicato semantico semplice.
-
-La regola conserva la prima occorrenza e registra quante righe rimuove.
+Un duplicato esatto dipende da una chiave dichiarata (stesso `reading_id`;
+stessa coppia stazione+istante). Un near-duplicate differisce per dettagli di
+rappresentazione (spazi, maiuscole) pur descrivendo lo stesso evento. Il
+record linkage bilancia falsi match e match mancati (Chaudhuri et al., 2003):
+la normalizzazione propone candidati, non dimostra identita'. Si conserva la
+prima occorrenza e si registra quante righe escono.
 
 ## Tipi errati
 
-Un CSV contiene testo. Alcune colonne devono pero' diventare numeriche prima di
-essere usate come feature o metriche.
+Un CSV contiene testo: la conversione numerica deve essere esplicita con
+`to_numeric(errors="coerce")`, e i parse falliti vanno flaggati, non fatti
+sparire nel fallback.
 
-Per `importance` la conversione deve essere esplicita:
+## Outlier statistici e di dominio
 
-- valori come `"0.72"` diventano numeri;
-- valori come `"high"` non sono numeri e vanno segnalati.
-
-## Outlier di dominio
-
-In questa lezione `importance` e' definita localmente come punteggio tra `0` e
-`1`. Un valore minore di `0` o maggiore di `1` non e' solo "strano": viola la
-regola del campo.
-
-La lezione usa una correzione semplice e tracciabile:
-
-- valori sotto `0` vengono portati a `0`;
-- valori sopra `1` vengono portati a `1`;
-- ogni correzione lascia un flag.
+Un outlier statistico e' insolito rispetto alla distribuzione secondo una
+regola dichiarata, per esempio quartili e IQR (NIST, Detection of Outliers).
+Un outlier di dominio viola un contratto esterno (range certificato della
+stazione, `[-50, 60]` gradi). Un valore raro ma nel range non va corretto.
+Il clipping conserva la riga ma accumula massa sui confini e cambia forma e
+varianza: si applica solo con un vincolo motivato e un flag di audit.
 
 ## Collegamento al Memory AI Lab
 
-Un sistema di memoria deve evitare che la stessa memoria pesi due volte. Deve
-anche sapere se un punteggio di importanza e' davvero numerico e dentro il range
-atteso.
+I retry di ingestion possono duplicare una memoria; estrattori diversi
+variano la rappresentazione; un parser puo' restituire testo al posto di un
+numero. Il contratto dello score `importance` (0.0-1.0) gioca il ruolo del
+range certificato della stazione.

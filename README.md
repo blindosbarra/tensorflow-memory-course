@@ -30,13 +30,21 @@ $env:UV_CACHE_DIR='.uv-cache'; uv sync --extra dev
 
 Leggi [`COURSE_FACTORY_SPEC.md`](COURSE_FACTORY_SPEC.md).
 
-## Vertical slice disponibile
+## Lezioni disponibili (in learner review)
 
-- Lezione: `data-cleaning-01-missing-values`
-- Pagina: `docs/modules/data-cleaning-01-missing-values.md`
-- Notebook: `notebooks/data-cleaning-01-missing-values.ipynb`
-- Esempio: `examples/data_cleaning_missing_values.py`
-- Test: `tests/test_data_cleaning.py`
-- Review: `reports/reviews/bootstrap-review.md`
+Due lezioni della fase dati, riscritte dopo la learner review del 2026-07-11
+(report: `reports/reviews/course-content-review.md`; rework:
+`reports/reviews/content-rework.md`):
 
-Non generare altri moduli prima della learner review umana della vertical slice.
+- `data-cleaning-01-missing-values` e `duplicates-types-outliers`
+- Pagine: `docs/modules/<lesson-id>.md`
+- Esercizi da completare: `exercises/<lesson-id>_starter.py`
+- Test dell'esercizio (rossi finche' non scrivi il codice):
+  `uv run pytest -o norecursedirs= tests/exercises/`
+- Soluzioni e risposte al quiz: `solutions/<lesson-id>.md`
+
+I moduli `examples/` e `src/memory_ai/` sono l'implementazione di riferimento
+della pipeline memoria, usata dalle lezioni solo nel trasferimento finale.
+
+Non generare nuove lezioni prima della learner review umana
+(`templates/learner-review.md`) delle due lezioni riscritte.

@@ -10,15 +10,18 @@ Leggere in questo ordine:
 1. `AGENTS.md`
 2. `COURSE_FACTORY_SPEC.md`
 3. `course/TEAM_RUNBOOK.md`
-4. `course/IMPLEMENTATION_ROADMAP.md`
-5. `course/QUALITY_GATE_MATRIX.md`
-6. `course/RESEARCH_AND_EVIDENCE_PROTOCOL.md`
-7. `course/INSTRUCTIONAL_DESIGN_GUIDE.md`
-8. `course/DATA_AND_ARTIFACT_POLICY.md`
-9. `course/CLOUD_AND_COST_POLICY.md`
-10. `docs/architecture/MEMORY_AI_LAB_ARCHITECTURE.md`
-11. `course/course.yaml`
-12. `course/progress.yaml`
+4. `course/QUALITY_GATE_MATRIX.md`
+5. `course/INSTRUCTIONAL_DESIGN_GUIDE.md`
+6. `course/course.yaml`
+7. `course/progress.yaml`
+8. `templates/` (lesson, review, learner-review)
+
+Nota 2026-07-12: la lista precedente citava cinque documenti mai creati
+(IMPLEMENTATION_ROADMAP, RESEARCH_AND_EVIDENCE_PROTOCOL,
+DATA_AND_ARTIFACT_POLICY, CLOUD_AND_COST_POLICY,
+docs/architecture/MEMORY_AI_LAB_ARCHITECTURE). Se uno di questi diventa
+necessario, va scritto e aggiunto qui nello stesso commit; non citare
+documenti che non esistono.
 
 `COURSE_FACTORY_SPEC.md` contiene la visione. I documenti in `course/` rendono
 operativa quella visione.

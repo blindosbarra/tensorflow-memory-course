@@ -2,29 +2,30 @@
 
 ## Disponibile ora
 
-1. [Missing values nei dati di memoria](data-cleaning-01-missing-values.md)
-2. [Duplicati, tipi e outlier nei dati di memoria](duplicates-types-outliers.md)
+1. [Missing values nelle letture ambientali](data-cleaning-01-missing-values.md)
+2. [Duplicati, tipi e outlier nelle letture ambientali](duplicates-types-outliers.md)
 
 ## Prossime lezioni previste
 
-Queste lezioni verranno costruite una alla volta. L'ordine puo' sembrare lento,
-ma serve a non arrivare ai modelli con basi fragili.
+Queste lezioni verranno costruite una alla volta, nell'ordine del
+[syllabus](../syllabus.md). L'ordine puo' sembrare lento, ma serve a non
+arrivare ai modelli con basi fragili.
 
-### Dati e pulizia
+### Fase 0 — Fondamenti minimi
 
-3. Train, validation e test
-4. Data leakage
-5. Encoding e scaling
-6. `tf.data` base
-7. Performance con `tf.data`
-8. Validazione dati
+3. Python e NumPy refresh
+4. Vettori, matrici e tensori
+5. Derivate, gradienti e chain rule
+6. Loss function e probabilita'
 
-### Fondamenti ML
+### Fase 1 — Dati e pulizia (continua)
 
-9. Python e NumPy refresh
-10. Vettori, matrici e tensori
-11. Derivate, gradienti e chain rule
-12. Loss function e probabilita'
+7. Train, validation e test
+8. Data leakage
+9. Encoding e scaling
+10. `tf.data` base
+11. Performance con `tf.data`
+12. Validazione dati
 
 ### Keras e DNN
 

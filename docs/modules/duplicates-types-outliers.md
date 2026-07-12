@@ -8,7 +8,7 @@ prerequisites: [data-cleaning-01-missing-values, Python base]
 deliverables: [exercises/duplicates-types-outliers_starter.py]
 sources:
   - https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
-  - https://doi.org/10.1145/1008992.1009037
+  - https://doi.org/10.1145/872757.872796
   - https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html
 ---
 
@@ -120,6 +120,6 @@ non assumiamo che una memoria nasca con uno score invalido.
 - NIST/SEMATECH, *Detection of Outliers*: criterio statistico IQR.
   https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
 - Chaudhuri et al. (2003), *Robust and Efficient Fuzzy Match for Online Data
-  Cleaning*: trade-off del matching. https://doi.org/10.1145/1008992.1009037
+  Cleaning*: trade-off del matching. https://doi.org/10.1145/872757.872796
 - pandas, `DataFrame.duplicated`: subset e keep policy.
   https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html
