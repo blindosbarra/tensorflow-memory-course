@@ -52,7 +52,7 @@ modules:
           code: pass
           didactics: pass
           publish: pass
-last_updated: 2026-07-11
+last_updated: 2026-07-12
 notes:
   - Complete the vertical slice before scaling course generation.
   - Learner review requires human validation after local quality gates pass.
@@ -62,4 +62,5 @@ notes:
   - 2026-07-11 learner review failed course content; both existing lessons were reworked.
   - Both lessons traversed writing, lab_build and technical_review again and stop at learner_review in_progress.
   - 2026-07-11 B4 correction moved both lesson domains to environmental sensors; Memory AI remains a final motivated transfer.
+  - 2026-07-12 notebook learner cells were made genuinely incomplete and excluded only from the automated execution copy.
   - Only a learner human may mark either lesson done after completing the required review template.

@@ -1,4 +1,4 @@
-"""Execute every notebook in an isolated copy and fail on errors."""
+"""Execute taught notebook cells in an isolated copy and fail on errors."""
 
 from __future__ import annotations
 
@@ -8,6 +8,16 @@ import sys
 
 import nbformat
 from nbclient import NotebookClient
+
+
+def without_learner_exercises(notebook: nbformat.NotebookNode) -> nbformat.NotebookNode:
+    """Remove deliberately incomplete learner cells from the execution copy."""
+    notebook.cells = [
+        cell
+        for cell in notebook.cells
+        if "learner-exercise" not in cell.get("metadata", {}).get("tags", [])
+    ]
+    return notebook
 
 
 def execute_notebook(path: Path) -> None:
@@ -20,7 +30,7 @@ def execute_notebook(path: Path) -> None:
     os.environ.setdefault("JUPYTER_DATA_DIR", str(runtime_root / "jupyter_data"))
     os.environ.setdefault("JUPYTER_RUNTIME_DIR", str(runtime_root / "jupyter_runtime"))
 
-    notebook = nbformat.read(path, as_version=4)
+    notebook = without_learner_exercises(nbformat.read(path, as_version=4))
     client = NotebookClient(
         notebook,
         timeout=600,

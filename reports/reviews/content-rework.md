@@ -1,6 +1,6 @@
 # Content rework review
 
-Data: 2026-07-11  
+Data: 2026-07-12
 Decisione tecnica: **PASS**  
 Decisione learner: **PENDING**
 
@@ -23,7 +23,7 @@ questo verra' ripristinato.
 | M1 | Syllabus incoerente con manifest | `foundations` e' reintegrato conservativamente come Fase 0; le dieci fasi mappano 1:1 i dieci moduli YAML. |
 | M2 | Obiettivi e assessment vaghi | Ogni fase dichiara obiettivi misurabili, assessment concreto e ore totali; aggiunto percorso minimo con criteri di taglio. |
 | M3 | Dataset didattici anticipano la diagnosi | Aggiunti due challenge ambientali da 120 righe, generati con seed `20260711`; le lezioni non elencano problemi, quantita' o posizioni. |
-| M4 | Notebook ed esercizi sono copie dell'esempio | Celle finali “Prova tu” con assert; challenge, normalizzazione e fallback differiscono dall'esempio. Soluzioni Python complete separate. |
+| M4 | Notebook ed esercizi sono copie dell'esempio | Celle finali “Prova tu” con TODO e assert inizialmente rossi; sono marcate `learner-exercise`, cosi' il gate esegue le celle didattiche senza completare il lavoro del learner. Challenge, normalizzazione e fallback differiscono dall'esempio. Soluzioni Python complete separate. |
 | M5 | Learner review/state machine non verificabile | Nuova rubrica obbligatoria con tempo, quiz, autonomia, risposta libera, chiarezza 1-5 e PASS/FAIL; runbook e gate impediscono l'avanzamento senza file umano completo. |
 
 ## Evidenza che il learner deve scrivere codice
@@ -44,11 +44,13 @@ posto del learner.
 - `uv sync --extra dev`: PASS; 136 package risolti, 86 controllati.
 - `ruff check .`: PASS, `All checks passed!`.
 - `mypy src`: PASS, nessun problema in 3 file sorgente.
-- `pytest`: PASS, 8 test raccolti e passati; un warning non bloccante per cache
-  `.pytest_cache` non scrivibile nel profilo sandbox.
+- `pytest`: un primo tentativo dopo l'aggiunta del test del notebook executor e'
+  FALLITO in collection (`ModuleNotFoundError: scripts`); corretto il caricamento
+  per percorso, il rerun e' PASS con 9 test raccolti e passati.
 - `python scripts/execute_notebooks.py`: PASS, eseguiti entrambi i notebook;
-  warning runtime Windows/ZeroMQ non bloccanti.
-- `mkdocs build --strict`: PASS, build in 5,45 s; informativa non bloccante per
+  le sole celle incomplete marcate `learner-exercise` sono escluse dalla copia
+  di esecuzione. Warning runtime Windows/ZeroMQ non bloccanti.
+- `mkdocs build --strict`: PASS, build finale in 2,14 s; informativa non bloccante per
   una pagina architecture fuori nav e warning upstream Material/MkDocs 2.0.
 
 ## Stato finale
