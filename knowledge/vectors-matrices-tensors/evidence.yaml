@@ -1,0 +1,26 @@
+lesson_id: vectors-matrices-tensors
+reviewed_at: 2026-07-12
+claims:
+  - id: matmul-shape-rule
+    claim: "matmul requires inner dimensions to match: (n,k) @ (k,m) yields (n,m); matrix product is not commutative."
+    importance: critical
+    source_url: "https://numpy.org/doc/stable/reference/generated/numpy.matmul.html"
+    source_title: "numpy.matmul"
+    publisher: "NumPy"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "API reference documents shape semantics of the @ operator."
+    status: verified
+  - id: broadcasting-rule
+    claim: "Broadcasting stretches compatible shapes, e.g. (n,k) minus (k,) applies the vector to every row."
+    importance: critical
+    source_url: "https://numpy.org/doc/stable/user/basics.broadcasting.html"
+    source_title: "Broadcasting"
+    publisher: "NumPy"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The broadcasting guide defines the compatibility rules used in the lesson."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

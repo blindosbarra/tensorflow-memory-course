@@ -1,0 +1,26 @@
+lesson_id: probability-loss-functions
+reviewed_at: 2026-07-12
+claims:
+  - id: softmax-crossentropy
+    claim: "Softmax turns scores into a probability distribution and cross-entropy penalizes the probability of the true class with -log(p)."
+    importance: critical
+    source_url: "https://www.deeplearningbook.org/"
+    source_title: "Deep Learning, chapters 5-6 (maximum likelihood, softmax)"
+    publisher: "Goodfellow, Bengio, Courville (MIT Press)"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The book motivates cross-entropy as negative log-likelihood with softmax outputs."
+    status: verified
+  - id: log-loss-definition
+    claim: "Log loss evaluates probability quality and can disagree with accuracy on the same predictions."
+    importance: major
+    source_url: "https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss"
+    source_title: "Model evaluation: log loss"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The metrics guide defines log loss on predicted probabilities."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

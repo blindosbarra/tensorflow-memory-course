@@ -145,9 +145,9 @@ test, report, artifact e limiti noti.
 
 Totale stimato: 38,5 ore.
 
-Stato corrente: le lezioni 1-5 della Fase 1 (missing values, duplicati/tipi/
-outlier, train/validation/test, data leakage, encoding/scaling) esistono come
-notebook e sono in `learner_review`. Il learner ha scelto di completare prima
-il percorso applicativo della fase dati; la Fase 0 (fondamenti: NumPy,
-tensori, gradienti, loss) viene erogata subito dopo, prima della Fase 2, dove
-quei concetti diventano indispensabili.
+Stato corrente: sono disponibili come notebook le lezioni 1-5 (Fase 1: la
+parte pandas della fase dati) e 6-9 (Fase 0 completa: NumPy, tensori,
+gradienti, loss), tutte in `learner_review`. Il progetto ha una baseline
+addestrata a mano (softmax regression). Prossimo blocco: Fase 2
+(Keras e reti dense); le lezioni `tf.data` della Fase 1 vengono erogate
+insieme alla Fase 2, quando TensorFlow entra nello stack.

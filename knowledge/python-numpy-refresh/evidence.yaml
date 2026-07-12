@@ -1,0 +1,26 @@
+lesson_id: python-numpy-refresh
+reviewed_at: 2026-07-12
+claims:
+  - id: vectorization-performance
+    claim: "NumPy arrays are typed contiguous blocks and vectorized operations avoid per-element interpreter overhead."
+    importance: critical
+    source_url: "https://numpy.org/doc/stable/user/whatisnumpy.html"
+    source_title: "What is NumPy?"
+    publisher: "NumPy"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The guide explains vectorization and why element-wise loops in Python are slower."
+    status: verified
+  - id: axis-reductions-masks
+    claim: "Reductions accept an axis argument and boolean comparisons produce mask arrays usable for selection."
+    importance: major
+    source_url: "https://numpy.org/doc/stable/user/absolute_beginners.html"
+    source_title: "NumPy: the absolute basics for beginners"
+    publisher: "NumPy"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "The beginners guide documents axis-based aggregation, boolean indexing and slicing."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

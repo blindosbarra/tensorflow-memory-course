@@ -1,0 +1,26 @@
+lesson_id: derivatives-gradients-chain-rule
+reviewed_at: 2026-07-12
+claims:
+  - id: gradient-descent
+    claim: "Gradient descent updates parameters against the gradient with a step size; too large a step diverges."
+    importance: critical
+    source_url: "https://www.deeplearningbook.org/"
+    source_title: "Deep Learning, chapter 4 (Numerical Computation)"
+    publisher: "Goodfellow, Bengio, Courville (MIT Press)"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "Chapter 4 covers gradient-based optimization and step-size behavior."
+    status: verified
+  - id: chain-rule-backprop
+    claim: "The derivative of composed functions is the product of the step derivatives; backpropagation applies this through layers."
+    importance: critical
+    source_url: "https://www.deeplearningbook.org/"
+    source_title: "Deep Learning, chapter 6 (back-propagation)"
+    publisher: "Goodfellow, Bengio, Courville (MIT Press)"
+    accessed_at: "2026-07-12"
+    primary_source: true
+    evidence_note: "Chapter 6 derives backpropagation from the chain rule."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass

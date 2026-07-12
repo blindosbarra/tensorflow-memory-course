@@ -13,6 +13,10 @@ nav:
       - "Lezione 3 — Train, validation e test": modules/train-validation-test.md
       - "Lezione 4 — Data leakage": modules/data-leakage.md
       - "Lezione 5 — Encoding e scaling": modules/categorical-encoding-scaling.md
+      - "Lezione 6 — NumPy": modules/python-numpy-refresh.md
+      - "Lezione 7 — Vettori, matrici e tensori": modules/vectors-matrices-tensors.md
+      - "Lezione 8 — Gradienti": modules/derivatives-gradients-chain-rule.md
+      - "Lezione 9 — Loss function": modules/probability-loss-functions.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

@@ -119,6 +119,101 @@ modules:
           code: pass
           didactics: pass
           publish: pass
+  foundations:
+    status: in_progress
+    lessons:
+      python-numpy-refresh:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/python-numpy-refresh/
+          lesson: docs/modules/python-numpy-refresh.md
+          notebook: notebooks/lezione-06-numpy.ipynb
+          exercise: notebooks/lezione-06-numpy.ipynb
+          solution: notebooks/lezione-06-numpy.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+      vectors-matrices-tensors:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/vectors-matrices-tensors/
+          lesson: docs/modules/vectors-matrices-tensors.md
+          notebook: notebooks/lezione-07-tensori.ipynb
+          exercise: notebooks/lezione-07-tensori.ipynb
+          solution: notebooks/lezione-07-tensori.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+      derivatives-gradients-chain-rule:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/derivatives-gradients-chain-rule/
+          lesson: docs/modules/derivatives-gradients-chain-rule.md
+          notebook: notebooks/lezione-08-gradienti.ipynb
+          exercise: notebooks/lezione-08-gradienti.ipynb
+          solution: notebooks/lezione-08-gradienti.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+      probability-loss-functions:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/probability-loss-functions/
+          lesson: docs/modules/probability-loss-functions.md
+          notebook: notebooks/lezione-09-loss.ipynb
+          exercise: notebooks/lezione-09-loss.ipynb
+          solution: notebooks/lezione-09-loss.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
 last_updated: 2026-07-12
 notes:
   - Complete the vertical slice before scaling course generation.
@@ -139,3 +234,6 @@ notes:
   - "2026-07-12 learner PASSED the notebook format on lesson 1; lessons 3-5 (train/validation/test, data leakage, encoding/scaling) produced in the same format with project steps 3-5."
   - "Notebooks renamed with lezione-NN prefixes so execution order matches lesson order."
   - "Learner chose to finish the applied data phase first; Fase 0 (foundations) is scheduled right before Fase 2."
+  - "2026-07-12 acceleration requested by the learner: Fase 0 delivered complete (lessons 6-9, NumPy / tensors / gradients / loss) in the notebook format."
+  - "Project steps 6-9: class signatures via masks, X @ W scores with random weights, first learned parameters via gradient descent, and a hand-built softmax regression baseline (60% val vs 51% majority class) saved to datasets/processed."
+  - "Next block: Fase 2 (Keras dense networks); tf.data lessons of Fase 1 move alongside it."

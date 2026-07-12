@@ -16,6 +16,14 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
    `notebooks/lezione-04-data-leakage.ipynb`
 5. [Encoding e scaling](categorical-encoding-scaling.md) —
    `notebooks/lezione-05-encoding-scaling.ipynb`
+6. [NumPy, pensare per array](python-numpy-refresh.md) —
+   `notebooks/lezione-06-numpy.ipynb`
+7. [Vettori, matrici e tensori](vectors-matrices-tensors.md) —
+   `notebooks/lezione-07-tensori.ipynb`
+8. [Derivate, gradienti e chain rule](derivatives-gradients-chain-rule.md) —
+   `notebooks/lezione-08-gradienti.ipynb`
+9. [Loss function](probability-loss-functions.md) —
+   `notebooks/lezione-09-loss.ipynb`
 
 ## Prossime lezioni previste
 
@@ -23,18 +31,19 @@ Queste lezioni verranno costruite una alla volta, nell'ordine del
 [syllabus](../syllabus.md). L'ordine puo' sembrare lento, ma serve a non
 arrivare ai modelli con basi fragili.
 
-### Fase 0 — Fondamenti minimi
+### Fase 2 — Keras e reti neurali dense
 
-6. Python e NumPy refresh
-7. Vettori, matrici e tensori
-8. Derivate, gradienti e chain rule
-9. Loss function e probabilita'
+10. Dense layer e prima rete
+11. Forward pass
+12. Loss e optimizer in Keras
+13. Autodiff e backprop
+14. Sequential e Functional API
 
-### Fase 1 — Dati e pulizia (continua)
+### Fase 1 — Dati e pulizia (code TensorFlow, dopo l'introduzione di TF)
 
-10. `tf.data` base
-11. Performance con `tf.data`
-12. Validazione dati
+15. `tf.data` base
+16. Performance con `tf.data`
+17. Validazione dati
 
 ### Keras e DNN
 

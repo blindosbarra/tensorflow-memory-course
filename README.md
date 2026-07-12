@@ -60,6 +60,14 @@ uv run jupyter lab notebooks/
    dimostrazioni numeriche + progetto passo 4 (audit anti-leakage degli split).
 5. `notebooks/lezione-05-encoding-scaling.ipynb` — encoding e scaling + progetto
    passo 5 (la prima matrice di feature, pronta per la Fase 2).
+6. `notebooks/lezione-06-numpy.ipynb` — pensare per array: vettorizzazione,
+   riduzioni, maschere + progetto passo 6 (le firme delle classi).
+7. `notebooks/lezione-07-tensori.ipynb` — forme, prodotto scalare come somma
+   pesata, `X @ W` + progetto passo 7 (i punteggi di classe, pesi casuali).
+8. `notebooks/lezione-08-gradienti.ipynb` — derivate come sensibilita',
+   discesa del gradiente + progetto passo 8 (i primi parametri imparati).
+9. `notebooks/lezione-09-loss.ipynb` — MSE, softmax e cross-entropy +
+   progetto passo 9 (softmax regression a mano: la baseline della Fase 2).
 
 I notebook vanno eseguiti in ordine: ogni lezione riparte dagli artifact
 salvati dalla precedente. Le pagine in `docs/modules/` sono i riassunti di
