@@ -31,6 +31,19 @@ Confermato dal testo primario:
 Il PDF caricato dall'utente e' trattato come fonte primaria unica per il
 contenuto della exam guide in tutte le lezioni `pmle-0X-*`.
 
+## Aggiunto su richiesta dello studente: AutoSxS (pmle-02)
+
+Lo studente ha chiesto esplicitamente se concetti come "AutoSxS" fossero
+coperti. Il nome non compare nel testo verbatim della exam guide (la
+guida nomina solo "LLM-as-a-judge" genericamente, sottosezione 2.3).
+Aggiunto in `knowledge/pmle-02-collaborate-manage-data-models/apis.md`
+come dettaglio supplementare esplicitamente marcato
+`needs_reverification`, con conoscenza generale pre-addestramento sulla
+famiglia di prodotti Vertex AI, non verificata su `docs.cloud.google.com`
+(bloccato in questa sessione). Nessun URL di documentazione prodotto
+generato per questo dettaglio, per evitare di citare un link non
+verificato.
+
 ## Residuo aperto: dettagli di sintassi prodotto non nella exam guide
 
 La exam guide elenca **argomenti** (es. "Generating predictions using

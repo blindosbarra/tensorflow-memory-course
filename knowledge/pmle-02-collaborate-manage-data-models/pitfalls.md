@@ -15,3 +15,8 @@
 - Ignorare la gestione delle informazioni sensibili (PII) durante
   l'esplorazione dei dati, trattandola come un passo successivo anziché
   parte della sottosezione 2.1 stessa.
+- Citare "AutoSxS" come se fosse terminologia della exam guide: il nome
+  non compare nel testo verbatim, è un dettaglio supplementare aggiunto
+  come esempio concreto di "LLM-as-a-judge" — utile per capire il
+  concetto, ma non materiale da esame verificato allo stesso modo del
+  resto della lezione (vedi apis.md).

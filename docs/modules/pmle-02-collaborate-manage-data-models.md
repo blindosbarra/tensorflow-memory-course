@@ -15,10 +15,11 @@ sources:
 
 !!! note "Stato: contenuto verificato su fonte primaria"
     Contenuto verificato parola per parola contro la exam guide ufficiale
-    Google Cloud, fornita direttamente dallo studente. Nessun claim
-    supplementare non verificato in questa lezione — a differenza del
-    Dominio 1, qui non sono stati aggiunti dettagli di sintassi di
-    prodotto oltre a quanto la guida stessa afferma.
+    Google Cloud, fornita direttamente dallo studente. Un solo dettaglio
+    supplementare — AutoSxS, come esempio concreto di "LLM-as-a-judge" —
+    è stato aggiunto su richiesta dello studente con conoscenza generale
+    pre-addestramento, non dalla guida stessa: resta da riverificare,
+    segnalato dove compare.
 
 ## Cosa copre questo dominio
 
@@ -69,6 +70,14 @@ con metriche appropriate — incluso "LLM-as-a-judge", una tecnica per
 valutare output generativi difficili da misurare con metriche numeriche
 classiche; tracciare e confrontare artefatti, versioni e lineage dei
 modelli (Experiments su Agent Platform, Agent Platform ML Metadata).
+
+Un esempio concreto di "LLM-as-a-judge" (**non nominato dalla exam
+guide**, aggiunto qui come dettaglio supplementare da riverificare) è
+**AutoSxS** ("Auto side-by-side"): uno strumento della famiglia Vertex AI
+/ Gemini Enterprise Agent Platform che confronta automaticamente gli
+output di due modelli sugli stessi prompt, usando un autorater per
+scegliere la risposta preferita e produrre metriche tipo win-rate, senza
+bisogno di un valutatore umano per ogni esempio.
 
 Il filo conduttore delle tre sottosezioni segue l'ordine reale di un
 progetto: prepari i dati (2.1), prototipi velocemente (2.2), tieni
@@ -126,6 +135,8 @@ scala, non il principio.
    due autori ricorda esattamente quale configurazione ha usato. Quale
    sottosezione del Dominio 2 indirizza direttamente questo problema, e
    come?
+4. Cos'è AutoSxS, e perché non è materiale garantito dalla exam guide
+   nello stesso modo degli altri concetti di questa lezione?
 
 <details>
 <summary><b>Apri le risposte</b></summary>
@@ -141,6 +152,13 @@ scala, non il principio.
    confrontare artefatti, versioni e lineage dei modelli (con strumenti
    come Experiments o ML Metadata) è la condizione per poter confrontare
    due esperimenti in modo affidabile, invece di affidarsi alla memoria.
+4. AutoSxS è uno strumento che confronta automaticamente gli output di
+   due modelli usando un autorater (LLM-as-a-judge) per produrre metriche
+   tipo win-rate. Non è materiale garantito dalla guida come gli altri
+   concetti perché il nome "AutoSxS" non compare nel testo verbatim della
+   exam guide: è stato aggiunto come esempio concreto della tecnica
+   "LLM-as-a-judge" che la guida nomina genericamente, usando conoscenza
+   generale pre-addestramento non riverificata in questa sessione.
 
 </details>
 

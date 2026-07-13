@@ -1,8 +1,10 @@
 # Concepts: pmle-02-collaborate-manage-data-models
 
 Decisione research: contenuto `VERIFIED` contro il testo verbatim della
-exam guide ufficiale (vedi evidence.yaml). Nessun claim supplementare non
-verificato in questa lezione.
+exam guide ufficiale (vedi evidence.yaml). Un solo claim supplementare
+(AutoSxS, aggiunto su richiesta esplicita dello studente come esempio
+concreto di "LLM-as-a-judge") resta `needs_reverification`, vedi
+apis.md.
 
 ## Concetti coperti
 
@@ -32,8 +34,10 @@ verificato in questa lezione.
    usato (Experiments su Agent Platform, Agent Platform Pipelines,
    Kubeflow Pipelines); valutare soluzioni predittive e generative con
    metriche appropriate (incluso "LLM-as-a-judge" per output generativi
-   difficili da valutare con metriche numeriche classiche); tracciare e
-   confrontare artefatti, versioni e lineage dei modelli.
+   difficili da valutare con metriche numeriche classiche — **AutoSxS** è
+   un esempio concreto di strumento che implementa questa tecnica, non
+   nominato dalla guida stessa, vedi apis.md); tracciare e confrontare
+   artefatti, versioni e lineage dei modelli.
 
 ## Il filo conduttore del dominio
 
@@ -61,4 +65,6 @@ la sintassi di Dataflow/Apache Spark, o i dettagli di un Workbench
 notebook: la exam guide elenca queste come **attività da saper
 riconoscere**, non fornisce dettagli implementativi da riportare qui (e
 questo modulo non include notebook eseguibili né credenziali cloud, per
-policy del corso).
+policy del corso). AutoSxS è spiegato con conoscenza generale
+pre-addestramento sulla famiglia di prodotti Vertex AI, non verificata
+contro documentazione live in questa sessione (vedi evidence.yaml).

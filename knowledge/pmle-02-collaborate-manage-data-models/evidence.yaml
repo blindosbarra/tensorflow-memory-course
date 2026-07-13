@@ -42,8 +42,18 @@ claims:
     primary_source: true
     evidence_note: "Verbatim bullets read from the learner-supplied PDF, pages 2-3."
     status: verified
+  - id: pmle-autosxs-general
+    claim: "AutoSxS ('Auto side-by-side') is a Vertex AI / Gemini Enterprise Agent Platform evaluation tool that automatically compares the outputs of two models (or two versions of the same model) on the same prompts, using an autorater (an LLM-as-a-judge) to pick a preferred response and produce win-rate style metrics — without a human rater for every example."
+    importance: minor
+    source_url: "general pre-training knowledge of the Vertex AI product line, not from the exam guide"
+    source_title: "General knowledge of Vertex AI evaluation tooling"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "The exam guide's Section 2.3 names 'LLM-as-a-judge' as a technique but does not name AutoSxS specifically. This claim is added at the learner's explicit request as a named example of that technique, using the assistant's general knowledge of the product line rather than the primary source used for the rest of this lesson. Not re-verified against docs.cloud.google.com this session (blocked, see course/research_gaps.md); the tool's current name, availability, or exact mechanics could have changed."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
-    - "All Section 2 content verified against the primary exam guide document itself, supplied by the learner. No supplementary technical claims added in this lesson beyond what the guide states — unlike pmle-01, this lesson does not introduce unverified SQL/API syntax."
+    - "All Section 2 content verified against the primary exam guide document itself, supplied by the learner. One supplementary claim (AutoSxS) added at the learner's request as a concrete example of the guide's own 'LLM-as-a-judge' term, clearly marked as general knowledge rather than primary-source-verified — unlike the rest of this lesson."

@@ -50,3 +50,19 @@ vedi evidence.yaml).
   generative, oltre alle metriche di valutazione classiche. **Stato:
   verified** (termine testuale, nessun dettaglio implementativo affermato
   dalla guida oltre al nome).
+
+## Dettaglio supplementare (non nella exam guide)
+
+- **AutoSxS ("Auto side-by-side")**: strumento di valutazione di Vertex AI
+  / Gemini Enterprise Agent Platform che confronta automaticamente gli
+  output di due modelli (o due versioni dello stesso modello) sugli stessi
+  prompt, usando un autorater (un LLM-as-a-judge) per scegliere la
+  risposta preferita e produrre metriche tipo win-rate — senza bisogno di
+  un valutatore umano per ogni esempio. È un esempio concreto della
+  tecnica "LLM-as-a-judge" che la guida nomina genericamente in 2.3, ma il
+  nome "AutoSxS" **non compare** nel testo della exam guide stessa.
+  **Stato: needs_reverification** — conoscenza generale pre-addestramento
+  sulla famiglia di prodotti Vertex AI, non verificata su
+  `docs.cloud.google.com` in questa sessione (bloccato, vedi
+  `course/research_gaps.md`); nome, disponibilità o meccanica esatta
+  potrebbero essere cambiati.

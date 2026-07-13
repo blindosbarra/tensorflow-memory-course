@@ -10,6 +10,12 @@
   (pagina ufficiale, contesto generale sull'esame):
   https://cloud.google.com/learn/certification/machine-learning-engineer
 
-Nessuna fonte di prodotto supplementare citata in questa lezione: a
-differenza di pmle-01, il contenuto qui è interamente coperto dai nomi
-testuali della exam guide, senza aggiunte di sintassi non verificata.
+Un dettaglio supplementare (AutoSxS) è stato aggiunto su richiesta
+esplicita dello studente, con conoscenza generale pre-addestramento sulla
+famiglia di prodotti Vertex AI, non da una fonte di prodotto specifica
+verificata in questa sessione — vedi evidence.yaml e apis.md. Nessun URL
+di documentazione prodotto è citato per questo dettaglio: `docs.cloud.
+google.com` è bloccato in questa sessione (vedi `course/research_gaps.md`)
+e l'assistente non genera URL non verificati direttamente. Prima di uno
+studio d'esame definitivo, cercare "AutoSxS" o "side-by-side evaluation"
+sulla documentazione Vertex AI corrente.
