@@ -9,8 +9,12 @@
   bene tra BigQuery ML, AutoML e un modello fondazionale richiede comunque
   capire il tipo di problema (classificazione vs forecasting vs
   generazione) e i vincoli di costo/latenza.
-- Trattare "Gemini Enterprise Agent Platform" e "Vertex AI" come sinonimi
-  certi senza verifica: la relazione esatta tra i due nomi non e'
-  confermata in questo repository (vedi `course/research_gaps.md`) e va
-  controllata sulla documentazione ufficiale corrente prima di un esame
-  reale.
+- Dare per scontata la sintassi esatta di BigQuery ML (`CREATE MODEL`,
+  `ML.PREDICT`) come materiale d'esame: la guida valuta la scelta dello
+  strumento e l'attivita' svolta, non la sintassi SQL precisa, che qui
+  resta comunque `needs_reverification` (vedi apis.md).
+- Assumere che "Gemini Enterprise Agent Platform" sia sinonimo
+  intercambiabile del vecchio nome "Vertex AI" usato in materiale piu'
+  datato: il nome attuale e' verificato sulla exam guide primaria, ma la
+  guida stessa non definisce il rapporto storico tra i due nomi — non va
+  quindi assunto senza controllo sulla documentazione prodotto corrente.

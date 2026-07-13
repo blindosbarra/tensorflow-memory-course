@@ -1,0 +1,49 @@
+lesson_id: pmle-06-monitor-ai-solutions
+reviewed_at: 2026-07-13
+claims:
+  - id: pmle-domain6-weight
+    claim: "Section 6, 'Monitoring AI solutions', is approximately 13% of the exam."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide"
+    publisher: "Google Cloud"
+    published_or_updated: "post 2026-06-01 edition (references Gemini Enterprise Agent Platform)"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim exam guide PDF supplied directly by the learner (uploaded file), read in full by the assistant."
+    status: verified
+  - id: pmle-domain6-6-1-content
+    claim: "Subsection 6.1 covers identifying risks to AI solutions: building secure AI systems by protecting against unintentional exploitation and leaks of data or models (data exfiltration, malicious prompting, sharing sensitive data with LLMs) using appropriate security tools (Regex, safety filters, Model Armor), aligning with responsible AI practices (e.g., monitoring for bias), and model explainability on Agent Platform (e.g., Agent Platform Inference)."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 6.1"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 5."
+    status: verified
+  - id: pmle-domain6-6-2-content
+    claim: "Subsection 6.2 covers monitoring, testing, and troubleshooting AI solutions: configuring and using Model Monitoring on Gemini Enterprise Agent Platform for continuous evaluation metrics on production models, monitoring for common issues (training-serving skew, data drift, concept drift, feature attribution drift), and monitoring/testing/evaluating gen AI solutions."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 6.2"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 5."
+    status: verified
+  - id: pmle-drift-definitions-general
+    claim: "Data drift: the statistical distribution of input features in production diverges from what the model was trained on. Concept drift: the relationship between inputs and the true target changes over time, even if input distribution stays the same. Feature attribution drift: the relative importance of features to the model's predictions shifts over time."
+    importance: minor
+    source_url: "general ML monitoring knowledge, not from the exam guide"
+    source_title: "General drift-type definitions"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "The exam guide names these four monitoring issues without defining them; these are standard ML monitoring concepts used here only to explain the guide's own terms, not Google-Cloud-specific implementation detail."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Core exam-guide content (claims 1-3) verified against the primary document. General drift-type definitions used only to explain guide terminology, clearly separated as general knowledge. 'Model Armor' and 'Agent Platform Inference' cited exactly as the guide names them, no implementation detail added (too recent for reliable pre-training knowledge, see research_gaps.md)."

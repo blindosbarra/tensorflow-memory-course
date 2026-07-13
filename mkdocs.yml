@@ -25,6 +25,11 @@ nav:
       - "Lezione 15 — Tokenizzazione": modules/tokenization-vocabulary.md
   - "Certificazione GCP PMLE (facoltativo)":
       - "Dominio 1 — Architetture low-code": modules/pmle-01-architect-low-code-ai-solutions.md
+      - "Dominio 2 — Collaborare su dati e modelli": modules/pmle-02-collaborate-manage-data-models.md
+      - "Dominio 3 — Scalare i prototipi": modules/pmle-03-scale-prototypes-into-ml-models.md
+      - "Dominio 4 — Servire e scalare i modelli": modules/pmle-04-serve-and-scale-models.md
+      - "Dominio 5 — Automatizzare le pipeline": modules/pmle-05-automate-orchestrate-ml-pipelines.md
+      - "Dominio 6 — Monitorare le soluzioni AI": modules/pmle-06-monitor-ai-solutions.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

@@ -2,51 +2,47 @@
 id: pmle-01-architect-low-code-ai-solutions
 title: "Certificazione PMLE - Dominio 1: architettare soluzioni AI low-code"
 module: gcp-ml-certification
-status: evidence_review
+status: writing
 estimated_minutes: 25
 prerequisites: []
 deliverables: []
 sources:
+  - https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf
   - https://cloud.google.com/learn/certification/machine-learning-engineer
   - https://cloud.google.com/bigquery/docs/bqml-introduction
-  - https://cloud.google.com/vertex-ai/docs/beginner/beginners-guide
 ---
 
 # Certificazione PMLE — Dominio 1: architettare soluzioni AI low-code
 
-!!! warning "Stato: evidence_review, non done"
-    Questa lezione copre solo i claim verificati su fonte ufficiale in
-    questa sessione di lavoro. Due claim tecnici (sintassi BigQuery ML,
-    meccanica AutoML) sono marcati "da riverificare": sono meccaniche
-    stabili e ben documentate storicamente, ma non riletti sulla
-    documentazione live in questa sessione (un blocco di rete
-    dell'ambiente ha impedito l'accesso a `docs.cloud.google.com`). Il
-    dettaglio è in `course/research_gaps.md`. Non è materiale sufficiente
-    per affrontare l'esame da solo: è un punto di partenza verificabile,
-    non una guida completa.
+!!! note "Stato: contenuto principale verificato su fonte primaria"
+    Il contenuto di questa lezione (pesi dei domini, sottosezioni 1.1 e
+    1.2, terminologia "Gemini Enterprise Agent Platform") è verificato
+    parola per parola contro il testo della exam guide ufficiale Google
+    Cloud, fornito direttamente dallo studente. Un solo dettaglio
+    supplementare — la sintassi SQL esatta di BigQuery ML (`CREATE
+    MODEL`, `ML.PREDICT`) — resta da riverificare sulla documentazione di
+    prodotto corrente, non raggiungibile da questa sessione di lavoro; è
+    segnalato dove compare. Dettaglio in `course/research_gaps.md`.
 
 ## Cosa copre questo modulo
 
 Un blocco **supplementare e facoltativo**, fuori dalla progressione
 obbligatoria del corso (che resta: dati → tensori → Keras → embedding →
-memoria → Transformer → LoRA → pipeline → capstone). Copre letteratura di
-prodotto Google Cloud per la certificazione *Professional Machine Learning
-Engineer* (PMLE): teoria pura, **nessun notebook, nessuna credenziale
-cloud**, coerente con il principio del corso di non richiedere mai
-accesso a servizi a pagamento per progredire.
+memoria → Transformer → LoRA → pipeline → capstone). Copre la letteratura
+ufficiale della certificazione *Professional Machine Learning Engineer*
+(PMLE) di Google Cloud: teoria pura, **nessun notebook, nessuna
+credenziale cloud**, coerente con il principio del corso di non richiedere
+mai accesso a servizi a pagamento per progredire.
 
-L'esame valuta sei domini (fonte: pagina di certificazione ufficiale
-Google Cloud):
+L'esame valuta sei domini (fonte: exam guide ufficiale, pesi verificati
+verbatim):
 
-1. **Architect low-code AI solutions** — questo modulo;
-2. Collaborate within and across teams to manage data and models;
-3. Scale prototypes into ML models;
-4. Serve and scale models;
-5. Automate and orchestrate ML pipelines;
-6. Monitor AI solutions.
-
-I domini 2-6 non sono ancora coperti in questo repository (vedi
-`course.yaml`, stato `planned`).
+1. **Architecting low-code AI solutions** (~13%) — questo modulo;
+2. Collaborating within and across teams to manage data and models (~16%);
+3. Scaling prototypes into ML models (~21%);
+4. Serving and scaling models (~20%);
+5. Automating and orchestrating ML pipelines (~18%);
+6. Monitoring AI solutions (~13%).
 
 ## Teoria essenziale
 
@@ -60,34 +56,60 @@ valuta la competenza complementare: scegliere lo strumento gestito giusto
 quando il problema è già coperto da un servizio, per non spendere tempo di
 sviluppo dove non serve.
 
-Tre famiglie di strumenti, con criteri di scelta diversi:
+### Sottosezione 1.1 — Sviluppare modelli con BigQuery ML o AutoML
 
-**BigQuery ML.** Addestri e servi modelli con istruzioni SQL, dentro lo
-stesso data warehouse dove i dati già vivono — senza spostarli in un
-notebook o in una pipeline separata. Indicato quando: i dati sono già in
-BigQuery, il problema è tabellare o una serie storica (classificazione,
-regressione, forecasting, clustering), e il team ha competenze SQL più che
-Python. Il vantaggio non è "meno matematica", è **meno movimento di
-dati e meno infrastruttura da gestire**.
+La exam guide elenca cinque attività per questa sottosezione: costruire
+modelli in BigQuery ML o Agent Platform AutoML (classificazione,
+regressione, forecasting, clustering) in base al problema di business;
+fare feature engineering o selezione con BigQuery ML; generare predizioni
+con BigQuery ML; addestrare modelli con Agent Platform AutoML; fare
+fine-tuning di modelli Gemini con BigQuery.
 
-**AutoML.** Addestri modelli su dati tabellari, immagini, testo o video
-senza definire tu l'architettura: il servizio gestisce ricerca
-dell'architettura e tuning degli iperparametri. Indicato quando serve un
-modello di produzione e il team non ha (o non vuole investire) competenze
-specialistiche di deep learning per quel compito specifico. È il punto
-esatto in cui il Dominio 1 tocca ciò che il corso principale insegna a
-mano: le Lezioni 6-15 costruiscono un classificatore Keras passo per passo
-per capire *come* funziona un modello; qui la domanda è *quando* quella
-costruzione manuale non è la scelta giusta per il contesto aziendale.
+Il filo conduttore: **BigQuery ML** addestra e serve modelli con
+istruzioni SQL, dentro lo stesso data warehouse dove i dati già vivono —
+senza spostarli in un notebook o in una pipeline separata. Indicato
+quando i dati sono già in BigQuery, il problema è tabellare o una serie
+storica, e il team ha competenze SQL più che Python. Il vantaggio non è
+"meno matematica", è **meno movimento di dati e meno infrastruttura da
+gestire**.
 
-**API o modelli fondazionali già pronti.** Quando il compito rientra in
-capacità generiche già coperte da un modello esistente (comprensione del
-linguaggio, visione, generazione), la scelta a minimo codice è integrare,
-non addestrare. Qui il vincolo di progettazione non è più solo
-"funziona?", ma **costo, latenza e disponibilità**: un'integrazione che
-chiama un modello enorme per un compito semplice può essere corretta
-funzionalmente e sbagliata economicamente. L'esame valuta esplicitamente
-questo trade-off, non solo la correttezza dell'integrazione.
+**AutoML** (su Agent Platform) addestra modelli su dati tabellari,
+immagini, testo o video senza che tu definisca l'architettura: il
+servizio gestisce ricerca dell'architettura e tuning degli iperparametri.
+Indicato quando serve un modello di produzione e il team non ha (o non
+vuole investire) competenze specialistiche di deep learning per quel
+compito specifico. È il punto esatto in cui il Dominio 1 tocca ciò che il
+corso principale insegna a mano: le Lezioni 6-15 costruiscono un
+classificatore Keras passo per passo per capire *come* funziona un
+modello; qui la domanda è *quando* quella costruzione manuale non è la
+scelta giusta per il contesto aziendale.
+
+### Sottosezione 1.2 — Soluzioni AI con API o modelli fondazionali
+
+Quattro attività verificate: valutare e scegliere il modello giusto da
+**Gemini Enterprise Agent Platform Model Garden**; costruire applicazioni
+con API di settore (Document AI, Vision, Translate); costruire soluzioni
+e fare tuning di modelli per casi d'uso specifici (Gemini, Imagen, Veo, o
+modelli come servizio in Model Garden); ottimizzare applicazioni basate
+su Gemini per **costo, latenza e disponibilità**.
+
+Quando il compito rientra in capacità generiche già coperte da un modello
+esistente (comprensione del linguaggio, visione, generazione), la scelta
+a minimo codice è integrare, non addestrare. Qui il vincolo di
+progettazione non è più solo "funziona?", ma costo, latenza e
+disponibilità: un'integrazione che chiama un modello enorme per un
+compito semplice può essere corretta funzionalmente e sbagliata
+economicamente. L'esame valuta esplicitamente questo trade-off, non solo
+la correttezza dell'integrazione.
+
+### Una nota sulla terminologia
+
+La exam guide usa sistematicamente "Gemini Enterprise Agent Platform"
+(spesso abbreviato "Agent Platform" nei singoli bullet) come nome della
+piattaforma gestita — il nome usato in edizioni precedenti della guida per
+lo stesso ambito era "Vertex AI". Questa lezione usa la terminologia
+esatta della guida attuale. Il rapporto storico preciso tra i due nomi non
+è affermato dalla guida stessa e non viene quindi affermato qui.
 
 ### Il criterio di scelta, in una frase
 
@@ -107,8 +129,8 @@ per arrivarci.
   di computer vision, poche migliaia di immagini etichettate → AutoML per
   immagini, non una rete convoluzionale scritta da zero.
 - Riassunto di ticket di supporto, compito generico di linguaggio →
-  integrazione di un modello fondazionale esistente, valutando
-  costo/latenza, non addestramento dedicato.
+  integrazione di un modello fondazionale esistente da Model Garden,
+  valutando costo/latenza, non addestramento dedicato.
 
 ## Errori comuni
 
@@ -117,8 +139,9 @@ per arrivarci.
 - Confondere "basso codice" con "nessuna competenza richiesta": scegliere
   bene richiede comunque capire il tipo di problema e i vincoli di
   costo/latenza.
-- Dare per scontata l'equivalenza tra nomi di prodotto non verificati (vedi
-  il riquadro di avvertenza in cima alla pagina).
+- Trattare la sintassi SQL esatta di BigQuery ML come materiale d'esame
+  verificato: la guida valuta l'attività svolta, non i nomi di istruzione
+  precisi (vedi riquadro in cima alla pagina).
 
 ## Quiz
 
@@ -134,25 +157,29 @@ per arrivarci.
 <summary><b>Apri le risposte</b></summary>
 
 1. BigQuery ML: i dati non devono uscire dal warehouse, e il problema
-   (serie storica tabellare) è esattamente il caso d'uso per cui BigQuery
-   ML è indicato.
+   (serie storica tabellare) è esattamente il caso d'uso elencato nella
+   sottosezione 1.1 della exam guide.
 2. Perché scegliere tra BigQuery ML, AutoML e un modello fondazionale
    richiede comunque capire il tipo di problema (classificazione vs
    forecasting vs compito generico di linguaggio) e i vincoli operativi
    (dove sono i dati, costo, latenza): il "basso codice" riduce lo sforzo
    di implementazione, non la necessità di capire il problema.
-3. No: il Dominio 1 valuta esplicitamente costo, latenza e disponibilità
-   come vincoli di progettazione, non solo la correttezza funzionale. Una
-   soluzione che funziona ma costa troppo per il compito non è la scelta
-   giusta.
+3. No: la sottosezione 1.2 valuta esplicitamente costo, latenza e
+   disponibilità come vincoli di progettazione, non solo la correttezza
+   funzionale. Una soluzione che funziona ma costa troppo per il compito
+   non è la scelta giusta.
 
 </details>
 
 ## Fonti
 
-- Google Cloud, *Professional Machine Learning Engineer Certification*:
+- Google Cloud, *Professional Machine Learning Engineer Certification exam
+  guide* (fonte primaria verbatim, fornita dallo studente in questa
+  sessione):
+  https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf
+- Google Cloud, *Professional Machine Learning Engineer Certification*
+  (pagina ufficiale, contesto generale sull'esame):
   https://cloud.google.com/learn/certification/machine-learning-engineer
-- Google Cloud, *BigQuery ML introduction* (da riverificare, vedi avviso
-  in cima alla pagina): https://cloud.google.com/bigquery/docs/bqml-introduction
-- Google Cloud, *Vertex AI beginner's guide* (da riverificare, vedi avviso
-  in cima alla pagina): https://cloud.google.com/vertex-ai/docs/beginner/beginners-guide
+- Google Cloud, *BigQuery ML introduction* (da riverificare per i
+  dettagli di sintassi supplementari, vedi riquadro in cima alla pagina):
+  https://cloud.google.com/bigquery/docs/bqml-introduction

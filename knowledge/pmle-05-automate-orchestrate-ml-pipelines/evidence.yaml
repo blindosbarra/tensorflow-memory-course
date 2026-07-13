@@ -1,0 +1,49 @@
+lesson_id: pmle-05-automate-orchestrate-ml-pipelines
+reviewed_at: 2026-07-13
+claims:
+  - id: pmle-domain5-weight
+    claim: "Section 5, 'Automating and orchestrating ML pipelines', is approximately 18% of the exam."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide"
+    publisher: "Google Cloud"
+    published_or_updated: "post 2026-06-01 edition (references Gemini Enterprise Agent Platform)"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim exam guide PDF supplied directly by the learner (uploaded file), read in full by the assistant."
+    status: verified
+  - id: pmle-domain5-5-1-content
+    claim: "Subsection 5.1 covers developing end-to-end ML pipelines: validating data and models, building and orchestrating pipelines using managed or unmanaged services from templates or custom solutions (Agent Platform Pipelines, Managed Service for Apache Airflow, Ray on Gemini Enterprise Agent Platform), and ensuring consistent data preprocessing between training and serving."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 5.1"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 4."
+    status: verified
+  - id: pmle-domain5-5-2-content
+    claim: "Subsection 5.2 covers automating model retraining: determining an appropriate retraining policy, and deploying models in continuous integration, continuous delivery, and continuous training (CI/CD/CT) pipelines (e.g., Cloud Build)."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 5.2"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 4."
+    status: verified
+  - id: pmle-cicd-general
+    claim: "CI/CD/CT is an extension of standard software CI/CD (automatically testing and integrating code changes, then automatically delivering them) with a third phase, continuous training, specific to ML: automatically retraining a model when new data or a trigger condition warrants it."
+    importance: minor
+    source_url: "general MLOps knowledge, not from the exam guide"
+    source_title: "General CI/CD/CT concept"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "The exam guide names 'CI/CD/CT pipelines' and cites Cloud Build as an example, without defining the acronym in detail; this is standard MLOps terminology used here only to explain the guide's own term."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Core exam-guide content (claims 1-3) verified against the primary document. One general MLOps concept (CI/CD/CT) used only to explain guide terminology, clearly separated as general knowledge."

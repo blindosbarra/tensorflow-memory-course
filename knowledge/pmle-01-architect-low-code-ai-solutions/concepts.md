@@ -1,27 +1,42 @@
 # Concepts: pmle-01-architect-low-code-ai-solutions
 
-Decisione research: `NEEDS_REVERIFICATION` (vedi evidence.yaml e
-`course/research_gaps.md`). Il testo sotto e' costruito solo sui claim
-`verified`; i due claim `needs_reverification` sono usati con nota
-esplicita nella lezione, non nascosti.
+Decisione research: contenuto principale `VERIFIED` contro il testo
+verbatim della exam guide ufficiale (vedi evidence.yaml). Un solo claim
+supplementare (sintassi SQL di BigQuery ML) resta `needs_reverification`
+ed e' segnalato esplicitamente dove usato.
 
 ## Concetti coperti
 
-1. Il Dominio 1 dell'esame ("architect low-code AI solutions", ~13% del
-   peso secondo fonti secondarie corroboranti, percentuale non confermata
-   sulla exam guide primaria) valuta la capacita' di **scegliere lo
-   strumento con il minimo codice necessario** per un problema di ML dato,
-   non di scrivere quel codice a mano.
-2. Due famiglie di strumenti low-code distinte, con casi d'uso diversi:
+1. Il Dominio 1 dell'esame ("Architecting low-code AI solutions", **~13%
+   del peso, dato ufficiale dalla exam guide**) valuta la capacita' di
+   **scegliere lo strumento con il minimo codice necessario** per un
+   problema di ML dato, non di scrivere quel codice a mano.
+2. La sottosezione 1.1 (sviluppo modelli con BigQuery ML o AutoML su
+   Gemini Enterprise Agent Platform) copre cinque attivita' verificate
+   testualmente sulla guida: costruire modelli in BigQuery ML o Agent
+   Platform AutoML per classificazione/regressione/forecasting/clustering
+   in base al problema di business; feature engineering/selezione con
+   BigQuery ML; generare predizioni con BigQuery ML; addestrare modelli
+   con Agent Platform AutoML; fare fine-tuning di modelli Gemini con
+   BigQuery.
+3. La sottosezione 1.2 (soluzioni AI con API Google Cloud o modelli
+   fondazionali) copre quattro attivita': valutare e scegliere il modello
+   giusto da Gemini Enterprise Agent Platform Model Garden; costruire
+   applicazioni con API di settore (Document AI, Vision, Translate);
+   costruire soluzioni e fare tuning di modelli per casi d'uso specifici
+   (Gemini, Imagen, Veo, modelli come servizio in Model Garden);
+   ottimizzare applicazioni basate su Gemini per costo, latenza e
+   disponibilita'.
+4. Due famiglie di strumenti low-code con casi d'uso distinti:
    - **BigQuery ML**: addestri e servi modelli con SQL, dentro il
      data warehouse dove i dati gia' vivono. Adatto quando i dati sono
      gia' in BigQuery e il problema e' tabellare/serie storiche.
-   - **AutoML**: addestri modelli su dati tabellari, immagini, testo,
-     video, senza scrivere l'architettura del modello. Adatto quando serve
-     un modello di produzione senza competenze di deep learning
-     specializzate.
-3. Una terza famiglia: usare **API o modelli fondazionali gia' pronti**
-   (non addestrare nulla, solo integrare) quando il compito rientra in
+   - **AutoML (su Agent Platform)**: addestri modelli su dati
+     tabellari, immagini, testo, video, senza scrivere l'architettura del
+     modello. Adatto quando serve un modello di produzione senza
+     competenze di deep learning specializzate.
+5. Una terza via: usare **API o modelli fondazionali gia' pronti** (non
+   addestrare nulla, solo integrare) quando il compito rientra in
    capacita' generiche (visione, linguaggio, generazione), valutando
    costo/latenza/disponibilita' come vincoli di progettazione, non solo
    come dettagli implementativi.
@@ -38,8 +53,11 @@ il contesto aziendale (questo modulo).
 
 ## Limiti
 
-Questa lezione non tratta la sintassi SQL completa di BigQuery ML ne' la
-configurazione dettagliata di un job AutoML: sono meccaniche stabili ma
-non riverificate in questa sessione (vedi evidence.yaml). Non tratta
-"Gemini Enterprise Agent Platform" come prodotto specifico, perche' il suo
-rapporto esatto con Vertex AI non e' verificato (vedi research_gaps.md).
+Questa lezione non tratta la sintassi SQL completa di BigQuery ML (i nomi
+esatti di istruzione come `CREATE MODEL`/`ML.PREDICT` restano
+`needs_reverification`, vedi evidence.yaml e apis.md): la exam guide
+elenca l'attivita' ("generating predictions using BigQuery ML"), non la
+sintassi. Il nome "Gemini Enterprise Agent Platform" e' invece verificato
+testualmente come terminologia della guida stessa; il suo rapporto storico
+esatto con il nome precedente "Vertex AI" non e' affermato dalla guida e
+non viene quindi affermato qui.

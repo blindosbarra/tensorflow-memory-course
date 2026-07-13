@@ -362,12 +362,12 @@ modules:
     status: in_progress
     lessons:
       pmle-01-architect-low-code-ai-solutions:
-        status: evidence_review
+        status: writing
         state_machine:
           planned: done
           researching: done
-          evidence_review: in_progress
-          writing: pending
+          evidence_review: done
+          writing: in_progress
           lab_build: not_applicable
           technical_review: pending
           learner_review: pending
@@ -379,15 +379,139 @@ modules:
           exercise: null
           solution: null
         quality_gates:
-          research: fail
+          research: pass
           lesson: pass
           code: not_applicable
           didactics: pass
           publish: pending
         notes:
-          - "Blocking gap: primary exam guide PDF unreachable this session (network policy denies services.google.com; docs.cloud.google.com returns 403 to automated fetch). See course/research_gaps.md."
-          - "Two technical claims (BigQuery ML CREATE MODEL/ML.PREDICT syntax, AutoML mechanics) are marked needs_reverification in evidence.yaml: stable long-standing GCP mechanics, not re-fetched from live docs this session."
-          - "Do not advance to writing/done until either the user supplies the verbatim exam guide text, or a session with different network access re-verifies the product docs."
+          - "2026-07-13: primary gap closed — learner supplied the verbatim exam guide PDF directly. Core Section 1 content (1.1, 1.2, domain weight, Gemini Enterprise Agent Platform naming) verified against the primary source itself. research gate flipped fail -> pass."
+          - "One supplementary claim (BigQuery ML CREATE MODEL/ML.PREDICT syntax) remains needs_reverification in evidence.yaml: not itself part of the exam guide's topic list, and docs.cloud.google.com remains unreachable this session. Non-blocking for Gate A."
+      pmle-02-collaborate-manage-data-models:
+        status: writing
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: in_progress
+          lab_build: not_applicable
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/pmle-02-collaborate-manage-data-models/
+          lesson: docs/modules/pmle-02-collaborate-manage-data-models.md
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: not_applicable
+          didactics: pass
+          publish: pending
+        notes:
+          - "2026-07-13: built from the verbatim exam guide PDF supplied by the learner. Section 2 content (2.1, 2.2, 2.3, domain weight) fully verified. No supplementary unverified technical claims introduced in this lesson."
+      pmle-03-scale-prototypes-into-ml-models:
+        status: writing
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: in_progress
+          lab_build: not_applicable
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/pmle-03-scale-prototypes-into-ml-models/
+          lesson: docs/modules/pmle-03-scale-prototypes-into-ml-models.md
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: not_applicable
+          didactics: pass
+          publish: pending
+        notes:
+          - "2026-07-13: built from the verbatim exam guide PDF. Section 3 content (3.1, 3.2, 3.3, domain weight) fully verified. Data-vs-model-parallelism explanation is general ML-systems knowledge, not Google Cloud product documentation — marked needs_reverification in evidence.yaml."
+      pmle-04-serve-and-scale-models:
+        status: writing
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: in_progress
+          lab_build: not_applicable
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/pmle-04-serve-and-scale-models/
+          lesson: docs/modules/pmle-04-serve-and-scale-models.md
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: not_applicable
+          didactics: pass
+          publish: pending
+        notes:
+          - "2026-07-13: built from the verbatim exam guide PDF. Section 4 content (4.1, 4.2, domain weight) fully verified. A/B-testing-vs-canary explanation is general deployment knowledge, marked needs_reverification. 'Gemini Enterprise Agent Platform Inference' cited only by name, no invented implementation detail (too recent for reliable pre-training knowledge)."
+      pmle-05-automate-orchestrate-ml-pipelines:
+        status: writing
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: in_progress
+          lab_build: not_applicable
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/pmle-05-automate-orchestrate-ml-pipelines/
+          lesson: docs/modules/pmle-05-automate-orchestrate-ml-pipelines.md
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: not_applicable
+          didactics: pass
+          publish: pending
+        notes:
+          - "2026-07-13: built from the verbatim exam guide PDF. Section 5 content (5.1, 5.2, domain weight) fully verified. CI/CD/CT explanation is general MLOps knowledge, marked needs_reverification. 'Ray on Gemini Enterprise Agent Platform' cited only by name, no invented implementation detail."
+      pmle-06-monitor-ai-solutions:
+        status: writing
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: in_progress
+          lab_build: not_applicable
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/pmle-06-monitor-ai-solutions/
+          lesson: docs/modules/pmle-06-monitor-ai-solutions.md
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: not_applicable
+          didactics: pass
+          publish: pending
+        notes:
+          - "2026-07-13: built from the verbatim exam guide PDF. Section 6 content (6.1, 6.2, domain weight) fully verified, closing all six domains. Drift-type definitions (data/concept/feature attribution) are general ML monitoring knowledge, marked needs_reverification. 'Model Armor' and 'Agent Platform Inference' cited only by name, no invented implementation detail."
 last_updated: 2026-07-13
 notes:
   - Complete the vertical slice before scaling course generation.
@@ -420,3 +544,4 @@ notes:
   - "2026-07-13 learner asked to add a theory-only (no notebook) track covering the GCP Professional ML Engineer certification exam guide updated after 2026-06-01."
   - "Verified via official cloud.google.com/learn certification page: exam restructured into 6 domains, Vertex AI references replaced by 'Gemini Enterprise Agent Platform' in places. Primary exam guide PDF and docs.cloud.google.com product docs unreachable from this sandbox this session (see research_gaps.md)."
   - "Added optional module gcp-ml-certification to course.yaml (outside the mandatory progression, spec section 3.4), theory-only lessons pmle-01..06 mapped 1:1 to the six official domains. Built pilot lesson pmle-01 only; kept in evidence_review per Gate A until gaps close."
+  - "2026-07-13: learner uploaded the verbatim official exam guide PDF directly, closing the primary sourcing gap for the whole gcp-ml-certification module. Read in full (6 sections, all subsections and bullets). Rewrote pmle-01's evidence.yaml/concepts/apis/pitfalls/references and its docs page to remove pre-PDF hedging; research gate flipped fail -> pass for core content. Built the five remaining lessons (pmle-02..06), each with a full knowledge pack and docs page grounded in the verbatim guide text, following the same pattern. All six domains of the exam guide are now covered. Module status moved planned -> in_progress; each lesson is in state_machine writing (technical_review and learner_review still pending, per the spec's quality-gate process)."

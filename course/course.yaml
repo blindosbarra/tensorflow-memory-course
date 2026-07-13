@@ -136,7 +136,7 @@ modules:
 
   - id: gcp-ml-certification
     title: Preparazione certificazione Google Cloud Professional ML Engineer
-    status: planned
+    status: in_progress
     optional: true
     note: >
       Modulo supplementare, fuori dalla progressione obbligatoria (sezione

@@ -1,0 +1,59 @@
+lesson_id: pmle-03-scale-prototypes-into-ml-models
+reviewed_at: 2026-07-13
+claims:
+  - id: pmle-domain3-weight
+    claim: "Section 3, 'Scaling prototypes into ML models', is approximately 21% of the exam — the single largest domain."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide"
+    publisher: "Google Cloud"
+    published_or_updated: "post 2026-06-01 edition (references Gemini Enterprise Agent Platform)"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim exam guide PDF supplied directly by the learner (uploaded file), read in full by the assistant."
+    status: verified
+  - id: pmle-domain3-3-1-content
+    claim: "Subsection 3.1 covers building models given the task considering cost, complexity, latency, and scalability: choosing the model type (e.g., ARIMA, DNN, LLM), choosing the product (e.g., Agent Platform AutoML, BigQuery ML, Agent Platform Pipelines), choosing the deployment strategy, and modeling techniques given interpretability requirements."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 3.1"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 3."
+    status: verified
+  - id: pmle-domain3-3-2-content
+    claim: "Subsection 3.2 covers training models: organizing training data (tabular, text, speech, images, video) on Cloud Storage/BigQuery, ingesting structured and unstructured data into training pipelines, model training with different SDKs (Agent Platform custom training, Kubeflow on GKE, Agent Platform AutoML, Tabular Workflows), troubleshooting training failures, hyperparameter tuning, and fine-tuning foundational models from Agent Platform/Model Garden and when tuning should be considered."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 3.2"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 3."
+    status: verified
+  - id: pmle-domain3-3-3-content
+    claim: "Subsection 3.3 covers choosing appropriate hardware for training: evaluating compute/accelerator options (CPU, GPU, TPU) and understanding distributed training options on GPUs/TPUs using data and model parallelism strategies."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 3.3"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 3."
+    status: verified
+  - id: pmle-data-model-parallelism-general
+    claim: "Data parallelism splits a batch of training data across devices that each hold a full copy of the model; model parallelism splits the model itself across devices when it does not fit on one. This is a general distributed-training concept, not specific product mechanics."
+    importance: minor
+    source_url: "general ML knowledge, not from the exam guide"
+    source_title: "General distributed training concept"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "The exam guide names 'data and model parallelism strategies' without defining them; this is a standard ML systems concept used here only to explain the guide's own terms, not to add Google-Cloud-specific implementation detail."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Core exam-guide content (claims 1-4) verified against the primary document. One general ML-systems concept (data vs model parallelism) is used only to explain guide terminology, clearly separated as general knowledge rather than Google Cloud product documentation."

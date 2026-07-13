@@ -64,10 +64,18 @@ nessuna credenziale cloud — copre letteratura di prodotto Google Cloud per
 la certificazione *Professional Machine Learning Engineer*, mappata 1:1
 sui sei domini della exam guide ufficiale.
 
-- [Dominio 1 — Architetture low-code](pmle-01-architect-low-code-ai-solutions.md)
-  — in `evidence_review`: alcuni claim tecnici sono in attesa di
-  riverifica, vedi `course/research_gaps.md`.
-- Domini 2-6: non ancora scritti (`planned` in `course/course.yaml`).
+Tutti e sei i domini sono coperti, con contenuto verificato parola per
+parola contro la exam guide ufficiale (fornita dallo studente in questa
+sessione). Alcuni dettagli supplementari di sintassi/prodotto (non parte
+della exam guide stessa) restano `needs_reverification`, segnalati in
+ogni pagina — vedi `course/research_gaps.md`.
+
+- [Dominio 1 — Architetture low-code](pmle-01-architect-low-code-ai-solutions.md) (~13%)
+- [Dominio 2 — Collaborare su dati e modelli](pmle-02-collaborate-manage-data-models.md) (~16%)
+- [Dominio 3 — Scalare i prototipi](pmle-03-scale-prototypes-into-ml-models.md) (~21%)
+- [Dominio 4 — Servire e scalare i modelli](pmle-04-serve-and-scale-models.md) (~20%)
+- [Dominio 5 — Automatizzare le pipeline](pmle-05-automate-orchestrate-ml-pipelines.md) (~18%)
+- [Dominio 6 — Monitorare le soluzioni AI](pmle-06-monitor-ai-solutions.md) (~13%)
 
 ## Come leggere una lezione
 

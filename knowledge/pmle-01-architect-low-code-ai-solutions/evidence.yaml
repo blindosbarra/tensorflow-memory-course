@@ -1,58 +1,60 @@
 lesson_id: pmle-01-architect-low-code-ai-solutions
 reviewed_at: 2026-07-13
 claims:
-  - id: pmle-exam-six-domains
-    claim: "The Professional Machine Learning Engineer exam assesses six domains: architect low-code AI solutions, collaborate to manage data and models, scale prototypes into ML models, serve and scale models, automate and orchestrate ML pipelines, monitor AI solutions."
+  - id: pmle-domain1-weight
+    claim: "Section 1, 'Architecting low-code AI solutions', is approximately 13% of the exam."
     importance: critical
-    source_url: "https://cloud.google.com/learn/certification/machine-learning-engineer"
-    source_title: "Professional Machine Learning Engineer Certification"
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide"
     publisher: "Google Cloud"
+    published_or_updated: "post 2026-06-01 edition (references Gemini Enterprise Agent Platform)"
     accessed_at: "2026-07-13"
     primary_source: true
-    evidence_note: "Fetched directly from the official certification overview page. This is the six-domain list, not the full exam guide PDF (blocked in this session, see research_gaps.md)."
+    evidence_note: "Verbatim exam guide PDF supplied directly by the learner (uploaded file), read in full by the assistant. Not independently fetched by the assistant over the network (blocked in this sandbox, see course/research_gaps.md history); provenance is the learner's upload of the official Google Cloud document."
     status: verified
-  - id: pmle-domain1-content
-    claim: "Domain 1 (architect low-code AI solutions) covers developing ML models using BigQuery ML or AutoML on Gemini Enterprise Agent Platform, and building AI solutions using Google Cloud AI APIs or foundational models, including evaluating/selecting models and optimizing Gemini-based applications for cost, latency, and availability."
+  - id: pmle-domain1-1-1-content
+    claim: "Subsection 1.1 covers developing ML models using BigQuery ML or AutoML on Gemini Enterprise Agent Platform: building models (classification, regression, forecasting, clustering) based on the business problem, feature engineering/selection using BigQuery ML, generating predictions using BigQuery ML, training models using Agent Platform AutoML, and fine-tuning Gemini models using BigQuery."
     importance: critical
-    source_url: "https://cloud.google.com/learn/certification/machine-learning-engineer"
-    source_title: "Professional Machine Learning Engineer Certification"
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 1.1"
     publisher: "Google Cloud"
     accessed_at: "2026-07-13"
     primary_source: true
-    evidence_note: "Summary-level content from the official overview page, not the verbatim bullet list of the exam guide PDF."
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 1."
     status: verified
-  - id: pmle-exam-format
-    claim: "The exam is 2 hours, 50-60 multiple choice/multiple select questions, no prerequisites, 3+ years industry experience recommended including 1+ year with Google Cloud."
-    importance: minor
-    source_url: "https://cloud.google.com/learn/certification/machine-learning-engineer"
-    source_title: "Professional Machine Learning Engineer Certification"
+  - id: pmle-domain1-1-2-content
+    claim: "Subsection 1.2 covers building AI solutions using Google Cloud AI APIs or foundational models: evaluating/selecting a model from Gemini Enterprise Agent Platform Model Garden, building applications using industry-specific APIs (Document AI API, Vision API, Translate API), building solutions and tuning models for specific use cases (Gemini, Imagen, Veo, models as a service in Model Garden), and optimizing Gemini-based applications for cost, latency, and availability."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 1.2"
     publisher: "Google Cloud"
     accessed_at: "2026-07-13"
     primary_source: true
-    evidence_note: "Exam logistics from the official page."
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 2."
+    status: verified
+  - id: pmle-gemini-agent-platform-naming
+    claim: "The exam guide uses 'Gemini Enterprise Agent Platform' (often shortened to 'Agent Platform' within bullets) as the name for the managed ML platform previously referred to as Vertex AI in older guide editions."
+    importance: major
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Confirmed by the consistent terminology used throughout all six sections of the learner-supplied PDF. The exact product-rebrand relationship to 'Vertex AI' (full replacement vs partial) is not itself stated in the guide and is not asserted here beyond what the guide's own terminology shows."
     status: verified
   - id: bqml-create-model-mechanics
     claim: "BigQuery ML trains and serves models with standard SQL, using CREATE MODEL to train and ML.PREDICT to run inference, without moving data out of BigQuery."
-    importance: critical
+    importance: minor
     source_url: "https://cloud.google.com/bigquery/docs/bqml-introduction"
     source_title: "BigQuery ML introduction (product documentation)"
     publisher: "Google Cloud"
     accessed_at: "not verified this session"
     primary_source: true
-    evidence_note: "Long-standing, stable BigQuery ML mechanics, consistent with product docs at the time of the assistant's training. NOT re-fetched this session: docs.cloud.google.com returned 403 to automated fetch (see research_gaps.md). Needs re-verification against the live page before this lesson can leave evidence_review."
-    status: needs_reverification
-  - id: automl-vs-custom-training
-    claim: "Vertex AI AutoML trains models for tabular, image, text, and video data without requiring the user to write model architecture or training code, in contrast to custom training where the user supplies training code or a container."
-    importance: major
-    source_url: "https://cloud.google.com/vertex-ai/docs/beginner/beginners-guide"
-    source_title: "Vertex AI beginner's guide (product documentation)"
-    publisher: "Google Cloud"
-    accessed_at: "not verified this session"
-    primary_source: true
-    evidence_note: "Long-standing AutoML vs custom-training distinction, consistent with product docs at the time of the assistant's training. NOT re-fetched this session: docs.cloud.google.com returned 403 to automated fetch (see research_gaps.md). Needs re-verification against the live page before this lesson can leave evidence_review."
+    evidence_note: "Supplementary implementation detail, not itself part of the exam guide's topic list (the guide names the activity 'Generating predictions using BigQuery ML', not the SQL syntax). Long-standing, stable mechanics; NOT re-fetched this session because docs.cloud.google.com returned 403 to automated fetch (see research_gaps.md)."
     status: needs_reverification
 review:
   reviewer: claude
-  decision: pass_with_gaps
+  decision: pass
   notes:
-    - "Lesson kept in evidence_review, not writing/done, until the two needs_reverification claims are confirmed against live product docs and the full verbatim exam guide bullet list is available (see course/research_gaps.md)."
+    - "Core exam-guide content (claims 1-4) verified against the primary document itself, supplied by the learner. Lesson can advance past evidence_review for that content."
+    - "One supplementary claim (BigQuery ML SQL syntax) remains needs_reverification; clearly separated from the exam guide's own content in the lesson text."

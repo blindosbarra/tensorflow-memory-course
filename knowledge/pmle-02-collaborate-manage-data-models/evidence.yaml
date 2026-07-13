@@ -1,0 +1,49 @@
+lesson_id: pmle-02-collaborate-manage-data-models
+reviewed_at: 2026-07-13
+claims:
+  - id: pmle-domain2-weight
+    claim: "Section 2, 'Collaborating within and across teams to manage data and models', is approximately 16% of the exam."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide"
+    publisher: "Google Cloud"
+    published_or_updated: "post 2026-06-01 edition (references Gemini Enterprise Agent Platform)"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim exam guide PDF supplied directly by the learner (uploaded file), read in full by the assistant. Not independently fetched by the assistant over the network (blocked in this sandbox, see course/research_gaps.md)."
+    status: verified
+  - id: pmle-domain2-2-1-content
+    claim: "Subsection 2.1 covers exploring and preprocessing data for ML: organizing/exploring data types (tabular, text, images) for experimenting/training/serving, choosing the right preprocessing tool based on scale and complexity (BigQuery SQL, Dataflow, Apache Spark, in-memory Python frameworks), creating and consolidating features in Gemini Enterprise Agent Platform Feature Store, and ensuring data privacy / handling PII."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 2.1"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 2."
+    status: verified
+  - id: pmle-domain2-2-2-content
+    claim: "Subsection 2.2 covers model prototyping using notebooks (Gemini Enterprise Agent Platform Workbench and Colab Enterprise): applying collaboration/security best practices for notebook environments, developing models in Agent Platform Workbench or Colab Enterprise using common frameworks (PyTorch, sklearn, JAX), and using foundational/open-source models in Model Garden to create prototypes in notebooks."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 2.2"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, page 2."
+    status: verified
+  - id: pmle-domain2-2-3-content
+    claim: "Subsection 2.3 covers tracking and running ML experiments: choosing the appropriate environment for development/experimentation given the framework (Experiments on Agent Platform, Agent Platform Pipelines, Kubeflow Pipelines), evaluating predictive and gen AI solutions (model evaluation metrics, LLM-as-a-judge), and tracking/comparing model artifacts, versions and lineage (Experiments on Agent Platform, Agent Platform ML Metadata)."
+    importance: critical
+    source_url: "https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf"
+    source_title: "Professional Machine Learning Engineer Certification exam guide, Section 2.3"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Verbatim bullets read from the learner-supplied PDF, pages 2-3."
+    status: verified
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "All Section 2 content verified against the primary exam guide document itself, supplied by the learner. No supplementary technical claims added in this lesson beyond what the guide states — unlike pmle-01, this lesson does not introduce unverified SQL/API syntax."
