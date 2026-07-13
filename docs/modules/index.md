@@ -57,6 +57,18 @@ arrivare ai modelli con basi fragili.
 22. LoRA
 23. Pipeline, monitoring e capstone
 
+## Modulo facoltativo: certificazione GCP PMLE
+
+Fuori dalla progressione obbligatoria sopra. Teoria pura, nessun notebook,
+nessuna credenziale cloud — copre letteratura di prodotto Google Cloud per
+la certificazione *Professional Machine Learning Engineer*, mappata 1:1
+sui sei domini della exam guide ufficiale.
+
+- [Dominio 1 — Architetture low-code](pmle-01-architect-low-code-ai-solutions.md)
+  — in `evidence_review`: alcuni claim tecnici sono in attesa di
+  riverifica, vedi `course/research_gaps.md`.
+- Domini 2-6: non ancora scritti (`planned` in `course/course.yaml`).
+
 ## Come leggere una lezione
 
 Ogni lezione dovrebbe rispondere a quattro domande:

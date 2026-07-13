@@ -358,7 +358,37 @@ modules:
           code: pass
           didactics: pass
           publish: pass
-last_updated: 2026-07-12
+  gcp-ml-certification:
+    status: in_progress
+    lessons:
+      pmle-01-architect-low-code-ai-solutions:
+        status: evidence_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: in_progress
+          writing: pending
+          lab_build: not_applicable
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/pmle-01-architect-low-code-ai-solutions/
+          lesson: docs/modules/pmle-01-architect-low-code-ai-solutions.md
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: fail
+          lesson: pass
+          code: not_applicable
+          didactics: pass
+          publish: pending
+        notes:
+          - "Blocking gap: primary exam guide PDF unreachable this session (network policy denies services.google.com; docs.cloud.google.com returns 403 to automated fetch). See course/research_gaps.md."
+          - "Two technical claims (BigQuery ML CREATE MODEL/ML.PREDICT syntax, AutoML mechanics) are marked needs_reverification in evidence.yaml: stable long-standing GCP mechanics, not re-fetched from live docs this session."
+          - "Do not advance to writing/done until either the user supplies the verbatim exam guide text, or a session with different network access re-verifies the product docs."
+last_updated: 2026-07-13
 notes:
   - Complete the vertical slice before scaling course generation.
   - Learner review requires human validation after local quality gates pass.
@@ -387,3 +417,6 @@ notes:
   - "2026-07-12 lessons 13-15 delivered: classifier report card (precision/recall/F1, confusion matrix, calibration check), tf.data input pipelines with the shuffle-buffer trap, and Fase 3 opened with tokenization."
   - "Lesson 15 milestone: reading the memory text (train-only vocabulary, multi-hot bag of words) lifts validation accuracy from ~60-65% to ~95%, confirming the feature-bottleneck diagnosis of lessons 10-12."
   - "Next block: embedding layer, sentence embeddings and cosine similarity."
+  - "2026-07-13 learner asked to add a theory-only (no notebook) track covering the GCP Professional ML Engineer certification exam guide updated after 2026-06-01."
+  - "Verified via official cloud.google.com/learn certification page: exam restructured into 6 domains, Vertex AI references replaced by 'Gemini Enterprise Agent Platform' in places. Primary exam guide PDF and docs.cloud.google.com product docs unreachable from this sandbox this session (see research_gaps.md)."
+  - "Added optional module gcp-ml-certification to course.yaml (outside the mandatory progression, spec section 3.4), theory-only lessons pmle-01..06 mapped 1:1 to the six official domains. Built pilot lesson pmle-01 only; kept in evidence_review per Gate A until gaps close."

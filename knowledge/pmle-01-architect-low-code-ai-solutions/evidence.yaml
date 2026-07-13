@@ -1,0 +1,58 @@
+lesson_id: pmle-01-architect-low-code-ai-solutions
+reviewed_at: 2026-07-13
+claims:
+  - id: pmle-exam-six-domains
+    claim: "The Professional Machine Learning Engineer exam assesses six domains: architect low-code AI solutions, collaborate to manage data and models, scale prototypes into ML models, serve and scale models, automate and orchestrate ML pipelines, monitor AI solutions."
+    importance: critical
+    source_url: "https://cloud.google.com/learn/certification/machine-learning-engineer"
+    source_title: "Professional Machine Learning Engineer Certification"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Fetched directly from the official certification overview page. This is the six-domain list, not the full exam guide PDF (blocked in this session, see research_gaps.md)."
+    status: verified
+  - id: pmle-domain1-content
+    claim: "Domain 1 (architect low-code AI solutions) covers developing ML models using BigQuery ML or AutoML on Gemini Enterprise Agent Platform, and building AI solutions using Google Cloud AI APIs or foundational models, including evaluating/selecting models and optimizing Gemini-based applications for cost, latency, and availability."
+    importance: critical
+    source_url: "https://cloud.google.com/learn/certification/machine-learning-engineer"
+    source_title: "Professional Machine Learning Engineer Certification"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Summary-level content from the official overview page, not the verbatim bullet list of the exam guide PDF."
+    status: verified
+  - id: pmle-exam-format
+    claim: "The exam is 2 hours, 50-60 multiple choice/multiple select questions, no prerequisites, 3+ years industry experience recommended including 1+ year with Google Cloud."
+    importance: minor
+    source_url: "https://cloud.google.com/learn/certification/machine-learning-engineer"
+    source_title: "Professional Machine Learning Engineer Certification"
+    publisher: "Google Cloud"
+    accessed_at: "2026-07-13"
+    primary_source: true
+    evidence_note: "Exam logistics from the official page."
+    status: verified
+  - id: bqml-create-model-mechanics
+    claim: "BigQuery ML trains and serves models with standard SQL, using CREATE MODEL to train and ML.PREDICT to run inference, without moving data out of BigQuery."
+    importance: critical
+    source_url: "https://cloud.google.com/bigquery/docs/bqml-introduction"
+    source_title: "BigQuery ML introduction (product documentation)"
+    publisher: "Google Cloud"
+    accessed_at: "not verified this session"
+    primary_source: true
+    evidence_note: "Long-standing, stable BigQuery ML mechanics, consistent with product docs at the time of the assistant's training. NOT re-fetched this session: docs.cloud.google.com returned 403 to automated fetch (see research_gaps.md). Needs re-verification against the live page before this lesson can leave evidence_review."
+    status: needs_reverification
+  - id: automl-vs-custom-training
+    claim: "Vertex AI AutoML trains models for tabular, image, text, and video data without requiring the user to write model architecture or training code, in contrast to custom training where the user supplies training code or a container."
+    importance: major
+    source_url: "https://cloud.google.com/vertex-ai/docs/beginner/beginners-guide"
+    source_title: "Vertex AI beginner's guide (product documentation)"
+    publisher: "Google Cloud"
+    accessed_at: "not verified this session"
+    primary_source: true
+    evidence_note: "Long-standing AutoML vs custom-training distinction, consistent with product docs at the time of the assistant's training. NOT re-fetched this session: docs.cloud.google.com returned 403 to automated fetch (see research_gaps.md). Needs re-verification against the live page before this lesson can leave evidence_review."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass_with_gaps
+  notes:
+    - "Lesson kept in evidence_review, not writing/done, until the two needs_reverification claims are confirmed against live product docs and the full verbatim exam guide bullet list is available (see course/research_gaps.md)."

@@ -133,3 +133,20 @@ modules:
       - capstone-pipeline
       - capstone-monitoring
       - capstone-demo
+
+  - id: gcp-ml-certification
+    title: Preparazione certificazione Google Cloud Professional ML Engineer
+    status: planned
+    optional: true
+    note: >
+      Modulo supplementare, fuori dalla progressione obbligatoria (sezione
+      3.4 della spec). Copre letteratura di prodotto Google Cloud, non
+      fondamenti trasferibili: teoria pura, nessun notebook, nessuna
+      credenziale cloud. Mappato 1:1 sui domini ufficiali della exam guide.
+    lessons:
+      - pmle-01-architect-low-code-ai-solutions
+      - pmle-02-collaborate-manage-data-models
+      - pmle-03-scale-prototypes-into-ml-models
+      - pmle-04-serve-and-scale-models
+      - pmle-05-automate-orchestrate-ml-pipelines
+      - pmle-06-monitor-ai-solutions
