@@ -1,9 +1,12 @@
 # Concepts: pmle-01-architect-low-code-ai-solutions
 
-Decisione research: contenuto principale `VERIFIED` contro il testo
-verbatim della exam guide ufficiale (vedi evidence.yaml). Un solo claim
-supplementare (sintassi SQL di BigQuery ML) resta `needs_reverification`
-ed e' segnalato esplicitamente dove usato.
+Decisione research: contenuto principale (pesi, sottosezioni 1.1/1.2,
+terminologia) `VERIFIED` contro il testo verbatim della exam guide
+ufficiale (vedi evidence.yaml). Cinque claim supplementari sui meccanismi
+reali (sintassi/TRANSFORM/ML.EVALUATE di BigQuery ML, ricerca
+architetturale di AutoML, framework prompting-vs-tuning) restano
+`needs_reverification` e sono segnalati esplicitamente dove usati — vedi
+apis.md per il dettaglio.
 
 ## Concetti coperti
 
@@ -51,13 +54,29 @@ risolve lo stesso problema piu' in fretta. Sono competenze diverse:
 capire il modello (corso principale) vs scegliere lo strumento giusto per
 il contesto aziendale (questo modulo).
 
+## Come funzionano davvero gli strumenti (meccaniche, non solo nomi)
+
+Aggiunto dopo un primo giro in cui la lezione elencava le attivita' della
+exam guide senza spiegare il meccanismo sottostante — feedback diretto
+dello studente ("non e' un corso, e' un syllabus"). Vedi apis.md per il
+dettaglio completo, marcato `needs_reverification` come conoscenza
+generale non riverificata su documentazione live:
+
+- BigQuery ML: `CREATE MODEL` con un `model_type` che sceglie
+  l'algoritmo, una clausola `TRANSFORM` opzionale che rende il
+  preprocessing riproducibile automaticamente tra training e predizione,
+  `ML.PREDICT`/`ML.EVALUATE`/`ML.CONFUSION_MATRIX` per predire e valutare.
+- AutoML: ricerca automatica di architettura e iperparametri dentro un
+  budget di calcolo, spesso con transfer learning da backbone
+  pre-addestrati per immagini/testo.
+- Tuning di modelli fondazionali: prompting/RAG (nessun peso aggiornato)
+  < tuning efficiente come LoRA (poche matrici aggiuntive) < fine-tuning
+  completo (tutti i pesi) — in ordine di costo crescente, e il
+  fine-tuning si sceglie solo quando i primi due non bastano.
+
 ## Limiti
 
-Questa lezione non tratta la sintassi SQL completa di BigQuery ML (i nomi
-esatti di istruzione come `CREATE MODEL`/`ML.PREDICT` restano
-`needs_reverification`, vedi evidence.yaml e apis.md): la exam guide
-elenca l'attivita' ("generating predictions using BigQuery ML"), non la
-sintassi. Il nome "Gemini Enterprise Agent Platform" e' invece verificato
-testualmente come terminologia della guida stessa; il suo rapporto storico
-esatto con il nome precedente "Vertex AI" non e' affermato dalla guida e
-non viene quindi affermato qui.
+Il nome "Gemini Enterprise Agent Platform" e' verificato testualmente
+come terminologia della guida stessa; il suo rapporto storico esatto con
+il nome precedente "Vertex AI" non e' affermato dalla guida e non viene
+quindi affermato qui.

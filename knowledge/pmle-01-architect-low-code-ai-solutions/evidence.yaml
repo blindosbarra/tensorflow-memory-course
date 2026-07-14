@@ -52,9 +52,49 @@ claims:
     primary_source: true
     evidence_note: "Supplementary implementation detail, not itself part of the exam guide's topic list (the guide names the activity 'Generating predictions using BigQuery ML', not the SQL syntax). Long-standing, stable mechanics; NOT re-fetched this session because docs.cloud.google.com returned 403 to automated fetch (see research_gaps.md)."
     status: needs_reverification
+  - id: bqml-model-types-and-transform
+    claim: "CREATE MODEL takes a model_type option selecting the algorithm (e.g. LINEAR_REG, LOGISTIC_REG, KMEANS, MATRIX_FACTORIZATION, ARIMA_PLUS for time series, BOOSTED_TREE_CLASSIFIER/REGRESSOR for gradient-boosted trees, DNN_CLASSIFIER/REGRESSOR, and AUTOML_CLASSIFIER/REGRESSOR which hands the problem to AutoML's search instead of a fixed algorithm). An optional TRANSFORM clause lets feature engineering (scaling, bucketizing, one-hot encoding) be declared once inside CREATE MODEL so BigQuery ML reapplies the identical transformation automatically at ML.PREDICT time, without the caller repeating that logic."
+    importance: major
+    source_url: "general pre-training knowledge of BigQuery ML, not from the exam guide"
+    source_title: "General knowledge of BigQuery ML mechanics"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for actual mechanism depth instead of only naming the activity. Long-standing, stable BigQuery ML feature (TRANSFORM clause) from general pre-training knowledge, not re-verified against docs.cloud.google.com this session (blocked, see research_gaps.md). Exact current list of supported model_type values may have grown since training."
+    status: needs_reverification
+  - id: bqml-evaluate-metrics
+    claim: "ML.EVALUATE returns metrics appropriate to the model type: precision, recall, accuracy, F1 score, log loss and ROC AUC for classification models; mean absolute error, mean squared error and R-squared for regression models. A separate ML.CONFUSION_MATRIX function returns the confusion matrix for classification models."
+    importance: major
+    source_url: "general pre-training knowledge of BigQuery ML, not from the exam guide"
+    source_title: "General knowledge of BigQuery ML evaluation functions"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request; not re-verified against docs.cloud.google.com this session (blocked, see research_gaps.md)."
+    status: needs_reverification
+  - id: automl-nas-hpo-mechanics
+    claim: "AutoML trains models by combining neural architecture search with automated hyperparameter tuning inside a compute/time budget the caller sets (historically expressed as node-hours), searching many candidate architectures or pipelines in parallel — often building on transfer learning from pretrained backbones for image and text tasks — and selecting the best performer on a held-out validation split."
+    importance: major
+    source_url: "general pre-training knowledge of Vertex AI AutoML, not from the exam guide"
+    source_title: "General knowledge of AutoML mechanics"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for mechanism depth. General/product-family knowledge of how AutoML-style services work, not re-verified against docs.cloud.google.com this session (blocked, see research_gaps.md). Any specific budget numbers or current minimum dataset-size recommendations are NOT asserted here and would need live verification."
+    status: needs_reverification
+  - id: finetuning-vs-prompting-general
+    claim: "General ML decision framework for adapting a foundational model: prompting or retrieval-augmented generation requires no weight updates and is the fastest, cheapest way to iterate; full fine-tuning updates all of a model's weights on a task-specific labeled dataset and is the most expensive option; parameter-efficient tuning methods such as LoRA train small additional adapter matrices instead of the full weight matrices, adapting behavior beyond what prompting alone achieves at a fraction of full fine-tuning's cost. This ordering (prompting first, parameter-efficient tuning next, full fine-tuning last) is the standard reasoning for 'when tuning should be considered', a phrase the exam guide itself uses in Section 3.2 without defining it."
+    importance: major
+    source_url: "general pre-training ML knowledge, not from the exam guide"
+    source_title: "General knowledge of fine-tuning vs prompting trade-offs"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "General ML knowledge, not specific to a Google Cloud product surface or API. Added at the learner's request to explain the mechanics behind the exam guide's 'fine-tuning Gemini models using BigQuery' and 'tuning models for specific use cases' bullets in Section 1."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Core exam-guide content (claims 1-4) verified against the primary document itself, supplied by the learner. Lesson can advance past evidence_review for that content."
-    - "One supplementary claim (BigQuery ML SQL syntax) remains needs_reverification; clearly separated from the exam guide's own content in the lesson text."
+    - "2026-07-14: learner feedback was that the lesson named tools without explaining how they work — 'quality is zero, just a brief explanation of concepts'. Added five mechanism-level claims (BigQuery ML model types/TRANSFORM, ML.EVALUATE metrics, AutoML NAS+HPO mechanics, fine-tuning-vs-prompting framework), all needs_reverification general knowledge, clearly separated from the exam-guide-verified claims in the lesson text — same sourcing discipline as the pre-existing BigQuery ML syntax claim, applied more thoroughly this time instead of stopping at naming the activity."

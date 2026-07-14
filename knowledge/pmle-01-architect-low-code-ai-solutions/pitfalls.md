@@ -18,3 +18,12 @@
   datato: il nome attuale e' verificato sulla exam guide primaria, ma la
   guida stessa non definisce il rapporto storico tra i due nomi — non va
   quindi assunto senza controllo sulla documentazione prodotto corrente.
+- Dimenticare la clausola `TRANSFORM` in BigQuery ML e riscrivere a mano
+  la stessa logica di preprocessing sia prima del training sia prima di
+  ogni chiamata a `ML.PREDICT`: è esattamente il tipo di duplicazione che
+  causa training-serving skew (vedi Domini 4-5), e `TRANSFORM` esiste per
+  evitarla.
+- Scegliere il fine-tuning completo di un modello fondazionale come prima
+  opzione, senza prima provare prompting/RAG o un tuning efficiente in
+  parametri: è l'opzione più costosa delle tre, da riservare ai casi in
+  cui le altre due non bastano.
