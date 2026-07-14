@@ -31,6 +31,14 @@ nav:
       - "Dominio 5 — Automatizzare le pipeline": modules/pmle-05-automate-orchestrate-ml-pipelines.md
       - "Dominio 6 — Monitorare le soluzioni AI": modules/pmle-06-monitor-ai-solutions.md
       - "Sintesi — Architetture end-to-end e MLOps": modules/pmle-07-architetture-end-to-end.md
+  - "GCP PMLE Certification (English)":
+      - "Domain 1 — Low-code architectures": modules/en/pmle-01-architect-low-code-ai-solutions.md
+      - "Domain 2 — Collaborate on data and models": modules/en/pmle-02-collaborate-manage-data-models.md
+      - "Domain 3 — Scale prototypes": modules/en/pmle-03-scale-prototypes-into-ml-models.md
+      - "Domain 4 — Serve and scale models": modules/en/pmle-04-serve-and-scale-models.md
+      - "Domain 5 — Automate pipelines": modules/en/pmle-05-automate-orchestrate-ml-pipelines.md
+      - "Domain 6 — Monitor AI solutions": modules/en/pmle-06-monitor-ai-solutions.md
+      - "Synthesis — End-to-end architectures and MLOps": modules/en/pmle-07-architetture-end-to-end.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

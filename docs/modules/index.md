@@ -77,9 +77,12 @@ ogni pagina — vedi `course/research_gaps.md`.
 - [Dominio 5 — Automatizzare le pipeline](pmle-05-automate-orchestrate-ml-pipelines.md) (~18%)
 - [Dominio 6 — Monitorare le soluzioni AI](pmle-06-monitor-ai-solutions.md) (~13%)
 - [Sintesi — Architetture end-to-end e MLOps](pmle-07-architetture-end-to-end.md)
-  (non è un dominio dell'esame: collega la teoria dei sei domini in tre
-  architetture complete, con troubleshooting e confronto MLOps
-  tradizionale/generativo)
+  (non è un dominio dell'esame: collega la teoria dei sei domini in
+  quattro architetture complete, con diagrammi, troubleshooting e
+  confronto MLOps tradizionale/generativo)
+
+Disponibile anche in inglese: [GCP PMLE Certification (English)](en/pmle-01-architect-low-code-ai-solutions.md),
+una traduzione fedele delle stesse sette lezioni.
 
 ## Come leggere una lezione
 

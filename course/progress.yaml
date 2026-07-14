@@ -538,6 +538,31 @@ modules:
         notes:
           - "2026-07-14: added in response to learner feedback asking for concrete GCP product usage (Feature Store setup, AutoSxS setup theory, Kubeflow-vs-Agent-Platform-Pipelines choice, a concrete pipeline with feature extraction) plus a synthesis section building complete worked architectures end-to-end (purchase prediction, weather prediction, AutoML flower classification), applying troubleshooting (overfitting/underfitting diagnosis with worked numeric tables) and a traditional-ML-vs-generative-AI MLOps comparison. Explicitly marked as NOT a domain of the exam guide (research gate not_applicable) -- a synthesis add-on outside the guide's six-section structure, reusing only product names already verified/needs_reverification in pmle-01..06."
           - "2026-07-14 (second round): learner asked for architecture diagrams following GCP/TensorFlow best practice and the Well-Architected Framework, plus more scenarios. Enabled Mermaid in mkdocs.yml (previously off) and added a diagram + Well-Architected-pillar callout to each of the three existing architectures, added a fourth worked architecture (RAG customer support chatbot, the only online/real-time one of the four), and extended the troubleshooting table and quiz to match. Live diagram rendering not verified in-session (unpkg.com CDN blocked by sandbox proxy); mkdocs build --strict passes and diagram syntax was manually reviewed."
+      pmle-en-translations:
+        status: writing
+        state_machine:
+          planned: done
+          researching: not_applicable
+          evidence_review: not_applicable
+          writing: done
+          lab_build: not_applicable
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/pmle-01-architect-low-code-ai-solutions/ (shared with IT lessons, no separate EN knowledge pack)
+          lesson: docs/modules/en/pmle-01..07-*.md (7 files)
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: not_applicable
+          lesson: pass
+          code: not_applicable
+          didactics: pass
+          publish: pending
+        notes:
+          - "2026-07-14: learner asked whether the PMLE module could be bilingual (IT/EN). Learner chose PMLE-module-only scope over whole-course translation via a clarifying question (main course's 15 lessons stay Italian-only for now). Translated all 7 pmle-*.md lessons (including pmle-07's four Mermaid diagrams, with node labels translated too) into docs/modules/en/, added as a parallel 'GCP PMLE Certification (English)' nav section in mkdocs.yml, no new mkdocs plugin dependency added (plain parallel directory instead of an i18n plugin, to avoid a new dependency for a first pass). Front matter ids suffixed -en to avoid colliding with the Italian originals. No separate English knowledge pack: EN lessons are 1:1 translations of already-reviewed IT content, same verified/needs_reverification status per claim, no new claims introduced in translation."
 last_updated: 2026-07-14
 notes:
   - Complete the vertical slice before scaling course generation.

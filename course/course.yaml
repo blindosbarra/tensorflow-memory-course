@@ -146,6 +146,12 @@ modules:
       domini ufficiali della exam guide; pmle-07 è una sintesi aggiuntiva
       (non un dominio dell'esame) che collega la teoria in architetture
       end-to-end complete, richiesta esplicitamente dallo studente.
+      Le sette lezioni sono disponibili anche in inglese
+      (docs/modules/en/), traduzione fedele su richiesta dello studente:
+      contenuto e stato di verifica (verified/needs_reverification)
+      identici alla versione italiana, nessuna nuova affermazione
+      introdotta in traduzione. Il corso principale (fasi 0-9) resta
+      solo in italiano.
     lessons:
       - pmle-01-architect-low-code-ai-solutions
       - pmle-02-collaborate-manage-data-models
