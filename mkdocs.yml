@@ -30,6 +30,7 @@ nav:
       - "Dominio 4 — Servire e scalare i modelli": modules/pmle-04-serve-and-scale-models.md
       - "Dominio 5 — Automatizzare le pipeline": modules/pmle-05-automate-orchestrate-ml-pipelines.md
       - "Dominio 6 — Monitorare le soluzioni AI": modules/pmle-06-monitor-ai-solutions.md
+      - "Sintesi — Architetture end-to-end e MLOps": modules/pmle-07-architetture-end-to-end.md
   - Glossario: glossary.md
   - Riferimenti: references.md
 markdown_extensions:

@@ -1,0 +1,38 @@
+lesson_id: pmle-07-architetture-end-to-end
+reviewed_at: 2026-07-14
+claims:
+  - id: pmle07-not-exam-domain
+    claim: "This lesson is a synthesis add-on requested by the learner, not one of the exam guide's six official domains. Its three worked architectures do not correspond to any specific verbatim text in the exam guide PDF; they are constructed illustrations that reuse product names and concepts already verified (or marked needs_reverification) in lessons pmle-01 through pmle-06."
+    importance: critical
+    source_url: "n/a — explicit statement about this lesson's own scope, not a sourced factual claim"
+    source_title: "n/a"
+    publisher: "n/a"
+    accessed_at: "n/a"
+    primary_source: false
+    evidence_note: "Learner explicitly requested a section that 'takes all this theory and builds step by step a complex architecture using all elements of theory and GCP'. This claim documents that the resulting lesson is deliberately outside the exam guide's domain structure, per the course's no-invention sourcing discipline (course/COURSE_FACTORY_SPEC.md section 3.1/3.2): nothing here should be read as exam-guide-verified."
+    status: verified
+  - id: pmle07-worked-architectures
+    claim: "Three constructed worked examples: (1) a tabular purchase-propensity classifier (BOOSTED_TREE_CLASSIFIER, one-hot + standardized features, batch inference, recall-based retraining policy) illustrating an overfitting diagnosis via a constructed ML.TRAINING_INFO-style train/validation AUC table; (2) a weather forecasting regression (lag features, ARIMA_PLUS vs BOOSTED_TREE_REGRESSOR trade-off) illustrating an underfitting diagnosis via a constructed LINEAR_REG vs BOOSTED_TREE_REGRESSOR MAE comparison, plus a note on seasonal drift being expected rather than anomalous; (3) an AutoML Vision flower classifier illustrating class-imbalance troubleshooting via a constructed per-class confusion matrix, and an edge-vs-cloud deployment decision for an offline-capable mobile use case."
+    importance: major
+    source_url: "general pre-training ML/MLOps knowledge (gradient-boosted trees, time-series feature engineering, transfer learning, edge deployment trade-offs), not from the exam guide"
+    source_title: "General ML engineering knowledge, applied to constructed teaching scenarios"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "All numeric tables (AUC by iteration, MAE comparison, per-class precision/recall) are invented teaching illustrations built to be internally consistent, not real BigQuery ML or AutoML output. The underlying mechanisms (gradient descent overfitting/underfitting signatures, transfer learning reducing data requirements, edge/cloud latency trade-offs) are standard ML engineering knowledge, not re-verified against docs.cloud.google.com this session (blocked, see course/research_gaps.md)."
+    status: needs_reverification
+  - id: pmle07-mlops-traditional-vs-genai
+    claim: "Comparison table contrasting traditional-ML MLOps (train on labeled data, evaluate with fixed numeric metrics, version data/code/weights, retrain on a metric-degradation policy, monitor for skew/drift) against generative-AI LLMOps (often no training from scratch — prompting/RAG/tuning ladder instead, evaluate via LLM-as-a-judge/AutoSxS calibrated against human judgment, version prompts/RAG context in addition to weights, iterate on prompts/context before considering a new tuning round, additionally monitor for prompt injection/data leakage/toxicity via tools like Model Armor)."
+    importance: major
+    source_url: "general pre-training MLOps/LLMOps knowledge, not from the exam guide"
+    source_title: "General knowledge of MLOps vs LLMOps lifecycle differences"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's explicit request ('how to build mlops for generative ai and traditional ai'). Synthesizes concepts already introduced across pmle-01 (tuning ladder), pmle-02 (LLM-as-a-judge/AutoSxS), pmle-05 (CI/CD/CT), and pmle-06 (Model Armor, drift types) into a single comparison; no new product names introduced beyond what those lessons already cite. Not re-verified against docs.cloud.google.com this session."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "2026-07-14: created in response to learner feedback asking for concrete usage examples of GCP products, a Kubeflow-vs-Agent-Platform-Pipelines decision framework, Feature Store setup, AutoSxS setup theory, and — the largest ask — a section building complete worked architectures (purchase prediction, weather prediction, AutoML flower classification) that apply the theory end to end, including troubleshooting (overfitting/underfitting) and a traditional-ML-vs-generative-AI MLOps comparison. Explicitly out-of-scope for Gate A's exam-guide-verbatim requirement since it is synthesis, not domain content; all claims here are needs_reverification general knowledge or explicit statements about the lesson's own non-exam-guide scope."

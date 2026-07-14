@@ -65,3 +65,18 @@ Platform", "Model Armor"): le lezioni li citano **esattamente come li
 nomina la exam guide**, senza aggiungere dettagli implementativi non
 verificabili. Se lo studio d'esame richiede il dettaglio, va cercato dallo
 studente sulla documentazione prodotto corrente.
+
+## Nuovo gap: lezione pmle-07, sintesi non verbatim exam guide
+
+`pmle-07-architetture-end-to-end` (aggiunta 2026-07-14 su richiesta
+esplicita dello studente) non è mappata su alcuna sezione della exam
+guide: è una sintesi didattica che applica concetti già verificati (o
+già marcati `needs_reverification`) nelle lezioni pmle-01..06 a tre
+architetture costruite (previsione acquisto, previsione meteo,
+classificazione fiori con AutoML), con tabelle numeriche di
+overfitting/underfitting/matrice di confusione multi-classe costruite
+per essere didatticamente coerenti, non output reali. Nessun nome di
+prodotto nuovo introdotto rispetto a quelli già citati nelle lezioni di
+dominio. Gate A (research) è `not_applicable` per questa lezione, non
+`pass`, proprio perché non c'è un testo primario da verificare — vedi
+`course/progress.yaml` e `knowledge/pmle-07-architetture-end-to-end/evidence.yaml`.

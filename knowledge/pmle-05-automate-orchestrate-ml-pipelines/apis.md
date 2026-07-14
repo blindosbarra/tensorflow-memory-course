@@ -18,6 +18,28 @@ guide ufficiale (fonte primaria, vedi evidence.yaml).
   prodotto troppo recente per conoscenza pre-addestramento affidabile
   (vedi `course/research_gaps.md`).
 
+## Dettaglio supplementare: come si scrive una pipeline, e quale motore scegliere
+
+- **Definizione di una pipeline con l'SDK Kubeflow**: componenti scritti
+  come funzioni decorate (`@dsl.component`), collegate in un grafo
+  passando l'output di una come input della successiva
+  (`@dsl.pipeline`); un passo condizionale (`dsl.If`) può bloccare il
+  deploy se una metrica di valutazione non supera una soglia. Vedi
+  esempio completo (validazione dati → estrazione feature → training →
+  valutazione → deploy condizionale) nella pagina della lezione. **Stato:
+  needs_reverification** (sintassi semplificata a scopo didattico, non
+  testata contro una versione reale della libreria).
+- **Kubeflow Pipelines su GKE vs Agent Platform Pipelines, criterio di
+  scelta**: stessa sintassi di pipeline (SDK Kubeflow), motore di
+  esecuzione diverso. Agent Platform Pipelines è gestito (nessun cluster
+  da amministrare, integrazione nativa con Feature Store/Model
+  Registry/Experiments) — scelta di default per un team già su Google
+  Cloud. Kubeflow su GKE serve quando conta la portabilità multi-cloud/
+  on-premise, il controllo fine sulla configurazione del cluster, o
+  competenze Kubernetes già presenti in azienda. **Stato:
+  needs_reverification** (ragionamento generale sul trade-off
+  gestito-vs-self-managed, non verificato su documentazione live).
+
 ## Retraining automatico (5.2)
 
 - **CI/CD/CT (continuous integration, continuous delivery, continuous

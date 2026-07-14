@@ -76,6 +76,10 @@ ogni pagina — vedi `course/research_gaps.md`.
 - [Dominio 4 — Servire e scalare i modelli](pmle-04-serve-and-scale-models.md) (~20%)
 - [Dominio 5 — Automatizzare le pipeline](pmle-05-automate-orchestrate-ml-pipelines.md) (~18%)
 - [Dominio 6 — Monitorare le soluzioni AI](pmle-06-monitor-ai-solutions.md) (~13%)
+- [Sintesi — Architetture end-to-end e MLOps](pmle-07-architetture-end-to-end.md)
+  (non è un dominio dell'esame: collega la teoria dei sei domini in tre
+  architetture complete, con troubleshooting e confronto MLOps
+  tradizionale/generativo)
 
 ## Come leggere una lezione
 

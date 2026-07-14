@@ -15,11 +15,14 @@ sources:
 
 !!! note "Stato: contenuto verificato su fonte primaria"
     Contenuto verificato parola per parola contro la exam guide ufficiale
-    Google Cloud, fornita direttamente dallo studente. Un solo dettaglio
-    supplementare — AutoSxS, come esempio concreto di "LLM-as-a-judge" —
-    è stato aggiunto su richiesta dello studente con conoscenza generale
-    pre-addestramento, non dalla guida stessa: resta da riverificare,
-    segnalato dove compare.
+    Google Cloud, fornita direttamente dallo studente. Alcuni dettagli
+    supplementari — meccanica del Feature Store (entity type, lettura
+    online/offline, correttezza point-in-time) e meccanica di un
+    confronto SxS (AutoSxS come esempio concreto di "LLM-as-a-judge",
+    inclusa la calibrazione autorater-umano) — sono stati aggiunti su
+    richiesta dello studente con conoscenza generale pre-addestramento,
+    non dalla guida stessa: restano da riverificare, segnalati dove
+    compaiono.
 
 ## Cosa copre questo dominio
 
@@ -69,6 +72,47 @@ strumento. In più, quei ticket contengono nomi e indirizzi email dei
 clienti — la fase di preprocessing è anche il punto in cui va applicata
 la gestione delle informazioni sensibili (PII), non un passo da rimandare
 a dopo l'addestramento.
+
+!!! info "Come funziona davvero un Feature Store, concretamente (non solo il nome)"
+    La guida nomina il Feature Store come luogo dove "creare e consolidare
+    feature riutilizzabili", senza spiegare la meccanica. Ecco cosa
+    significa in pratica, usando le feature del modello di rinnovo
+    contratti già viste nel Dominio 1 (`spesa_mensile_eur`,
+    `ticket_aperti_90gg`, `mesi_da_attivazione`):
+
+    1. **Entity type**: la "cosa" a cui le feature si riferiscono — qui
+       `cliente_b2b`, identificato da un ID cliente univoco. Ogni feature
+       nel Feature Store appartiene a un entity type.
+    2. **Feature**: un attributo nominato e tipizzato di un entity type,
+       calcolato da una pipeline separata (es. un job giornaliero che
+       conta i ticket aperti negli ultimi 90 giorni per ciascun cliente) e
+       scritto nel Feature Store con un timestamp — non calcolato al volo
+       ogni volta che serve.
+    3. **Due percorsi di lettura, per due scopi diversi**: lettura
+       **online**, a bassa latenza, per una singola entità alla volta —
+       usata in fase di serving (Dominio 4) quando arriva una richiesta di
+       predizione in tempo reale; lettura **offline/batch**, per
+       costruire un intero dataset di training unendo le feature storiche
+       di molti clienti insieme alle rispettive etichette.
+
+    **Il punto tecnico che la guida non spiega ma è la ragione d'essere
+    del Feature Store**: la lettura offline deve essere *point-in-time
+    correct*. Se Nordica addestra il modello su un'etichetta "rinnovato/
+    non rinnovato" registrata sei mesi fa, il valore di
+    `ticket_aperti_90gg` usato per quella riga di training deve essere
+    quello **calcolato a quella data**, non il valore odierno (che
+    includerebbe ticket aperti nei sei mesi successivi — informazione che
+    il modello non avrebbe mai potuto conoscere al momento della
+    predizione reale). Usare il valore odierno per errore è una forma
+    concreta di data leakage, la stessa categoria di errore vista nella
+    Lezione 4 del corso principale, qui applicata a un sistema con
+    feature che cambiano nel tempo invece che a uno split train/test
+    statico. Il Feature Store risolve questo tenendo traccia dei valori
+    storici con timestamp, non solo del valore corrente. **Stato:
+    needs_reverification** (meccanica generale di un feature store,
+    inclusa la distinzione online/offline e la correttezza point-in-time;
+    non riverificata su documentazione live del prodotto specifico in
+    questa sessione).
 
 ### 2.2 — Prototipare modelli in notebook
 
@@ -129,6 +173,43 @@ ticket originale, e l'autorater sceglie quale dei due riassunti è
 migliore — ripetuto su molti ticket produce una metrica di win-rate
 ("la versione B è preferita nel 68% dei casi") senza che una persona
 debba leggere e giudicare ogni singolo confronto a mano.
+
+!!! info "Cosa serve davvero per impostare un confronto SxS, e perché fidarsene"
+    Un confronto side-by-side non è un singolo pulsante: ha tre
+    ingredienti, e capire cosa sono aiuta a capire anche i suoi limiti.
+
+    1. **Un dataset di valutazione**: un insieme di input rappresentativi
+       (qui, ticket di assistenza reali, non inventati) su cui generare le
+       risposte da confrontare — se il dataset non copre i casi che
+       contano (es. ticket molto tecnici vs ticket generici), il risultato
+       del confronto non generalizza a quei casi.
+    2. **Le due risposte da confrontare**: tipicamente l'output del
+       modello attuale in produzione (baseline) contro l'output di un
+       candidato (es. dopo un tuning con LoRA, vedi Dominio 1) sugli
+       stessi identici input — la coppia deve condividere l'input, non
+       basta confrontare metriche aggregate calcolate separatamente.
+    3. **Un template di valutazione per l'autorater**: le istruzioni che
+       dicono al modello valutatore *su cosa* giudicare — per il
+       riassunto ticket, potrebbe essere "quale dei due riassunti è più
+       accurato rispetto al ticket originale e più conciso, a parità di
+       informazione importante conservata". Cambiare questo template
+       cambia cosa "vince" il confronto: un template che pesa solo la
+       concisione premierebbe un riassunto troppo breve che perde
+       dettagli importanti.
+
+    **Perché fidarsi (con cautela) del giudizio automatico.** L'autorater
+    è a sua volta un modello, quindi può sbagliare o avere bias sistematici
+    (es. preferire risposte più lunghe a prescindere dalla qualità). La
+    pratica di allineamento è calibrare l'autorater su un piccolo campione
+    di confronti **giudicati anche da persone**, e verificare che
+    l'accordo autorater-umano sia alto prima di fidarsi del risultato su
+    larga scala — un confronto SxS senza questo passo di calibrazione è
+    un giudizio automatico non verificato, non una metrica affidabile.
+    **Stato: needs_reverification** (meccanica generale di valutazione
+    pairwise con autorater, inclusa la pratica di calibrazione
+    umano-autorater; nomi di prodotto specifici e dettagli di
+    configurazione non riverificati su documentazione live in questa
+    sessione).
 
 Il filo conduttore delle tre sottosezioni segue l'ordine reale del
 progetto di Nordica: preparare i dati (2.1), prototipare velocemente

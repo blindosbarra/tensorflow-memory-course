@@ -52,8 +52,29 @@ claims:
     primary_source: false
     evidence_note: "The exam guide's Section 2.3 names 'LLM-as-a-judge' as a technique but does not name AutoSxS specifically. This claim is added at the learner's explicit request as a named example of that technique, using the assistant's general knowledge of the product line rather than the primary source used for the rest of this lesson. Not re-verified against docs.cloud.google.com this session (blocked, see course/research_gaps.md); the tool's current name, availability, or exact mechanics could have changed."
     status: needs_reverification
+  - id: feature-store-mechanics
+    claim: "A Feature Store organizes features under entity types (e.g. a customer entity), stores features with timestamps computed by a separate pipeline rather than on the fly, and exposes two read paths: low-latency online reads for a single entity at serving time, and offline/batch reads for building training datasets. The offline path must be point-in-time correct — for a training label recorded at time T, the feature values joined in must be the values as they existed at time T, not current values, to avoid leaking future information into training (a time-varying-feature form of the same data-leakage category covered in the main course's Lesson 4)."
+    importance: major
+    source_url: "general pre-training knowledge of feature store architecture, not from the exam guide"
+    source_title: "General knowledge of feature store mechanics (entity types, online/offline serving, point-in-time correctness)"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request ('how setup feature store'); the exam guide names the Feature Store as a tool for consolidating reusable features but does not explain online/offline serving or point-in-time correctness. General feature-store architecture knowledge, not specific product documentation, not re-verified against docs.cloud.google.com this session."
+    status: needs_reverification
+  - id: autosxs-setup-mechanics
+    claim: "Setting up a side-by-side (SxS) comparison requires three ingredients: an evaluation dataset of representative inputs, two candidate responses generated on the same inputs (e.g. baseline model vs a tuned candidate), and an evaluation prompt template that tells the autorater what criteria to judge (e.g. accuracy and conciseness). Because the autorater is itself a model and can carry systematic biases (e.g. length bias), best practice is to calibrate/validate it against a small human-labeled sample before trusting its judgments at scale."
+    importance: minor
+    source_url: "general pre-training knowledge of LLM-as-a-judge / pairwise evaluation practice, not from the exam guide"
+    source_title: "General knowledge of pairwise (side-by-side) LLM evaluation setup"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for the mechanics of setting up an SxS comparison, not just naming it. General LLM-evaluation practice knowledge, not specific product documentation for AutoSxS, not re-verified against docs.cloud.google.com this session."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "All Section 2 content verified against the primary exam guide document itself, supplied by the learner. One supplementary claim (AutoSxS) added at the learner's request as a concrete example of the guide's own 'LLM-as-a-judge' term, clearly marked as general knowledge rather than primary-source-verified — unlike the rest of this lesson."
+    - "2026-07-14: learner asked for concrete usage examples of GCP products instead of generic naming — specifically how to set up a Feature Store and the theory/setup behind SxS comparisons. Added feature-store-mechanics (entity types, online/offline serving, point-in-time correctness, tied to the main course's data-leakage lesson) and autosxs-setup-mechanics (the three ingredients of an SxS comparison, autorater calibration against human judgments). Both needs_reverification general knowledge, clearly separated from exam-guide-verified content."

@@ -42,8 +42,19 @@ claims:
     primary_source: false
     evidence_note: "The exam guide names 'CI/CD/CT pipelines' and cites Cloud Build as an example, without defining the acronym in detail; this is standard MLOps terminology used here only to explain the guide's own term."
     status: needs_reverification
+  - id: kfp-pipeline-definition-example
+    claim: "Worked illustration of a Kubeflow Pipelines SDK pipeline definition (@dsl.component / @dsl.pipeline decorators) with four components (validate data, extract features, train, evaluate) wired into a DAG by passing outputs as inputs, plus a conditional deploy step gated on an evaluation metric threshold. The same SDK/pipeline code can run on either a self-managed Kubeflow-on-GKE cluster or on the managed Agent Platform Pipelines execution engine; the choice between the two is an infrastructure trade-off (managed/no cluster to administer/tight integration with other Agent Platform services vs self-managed/portable across clouds or on-prem/fine-grained cluster control), not a difference in how the pipeline itself is authored."
+    importance: major
+    source_url: "general pre-training knowledge of Kubeflow Pipelines SDK conventions, not from the exam guide"
+    source_title: "General knowledge of Kubeflow Pipelines SDK and managed-vs-self-managed pipeline execution trade-offs"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for a concrete pipeline example with feature extraction and explicit Kubeflow-vs-Agent-Platform-Pipelines selection criteria, instead of naming both tools without explaining when to pick one over the other. The Python code is simplified for teaching purposes and not tested against a real Kubeflow Pipelines SDK version; the selection criteria are general managed-vs-self-managed infrastructure reasoning, not verified against current product documentation this session."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Core exam-guide content (claims 1-3) verified against the primary document. One general MLOps concept (CI/CD/CT) used only to explain guide terminology, clearly separated as general knowledge."
+    - "2026-07-14: learner asked how to actually build a pipeline (with feature extraction) and how to choose between Kubeflow and Agent Platform Pipelines/training, instead of just naming both tools. Added kfp-pipeline-definition-example: a worked pipeline DAG (validate -> extract features -> train -> evaluate -> conditional deploy) and explicit managed-vs-self-managed selection criteria. needs_reverification general knowledge, clearly separated from exam-guide-verified content."

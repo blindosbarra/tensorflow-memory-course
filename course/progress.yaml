@@ -512,6 +512,31 @@ modules:
           publish: pending
         notes:
           - "2026-07-13: built from the verbatim exam guide PDF. Section 6 content (6.1, 6.2, domain weight) fully verified, closing all six domains. Drift-type definitions (data/concept/feature attribution) are general ML monitoring knowledge, marked needs_reverification. 'Model Armor' and 'Agent Platform Inference' cited only by name, no invented implementation detail."
+      pmle-07-architetture-end-to-end:
+        status: writing
+        state_machine:
+          planned: done
+          researching: not_applicable
+          evidence_review: done
+          writing: in_progress
+          lab_build: not_applicable
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: knowledge/pmle-07-architetture-end-to-end/
+          lesson: docs/modules/pmle-07-architetture-end-to-end.md
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: not_applicable
+          lesson: pass
+          code: not_applicable
+          didactics: pass
+          publish: pending
+        notes:
+          - "2026-07-14: added in response to learner feedback asking for concrete GCP product usage (Feature Store setup, AutoSxS setup theory, Kubeflow-vs-Agent-Platform-Pipelines choice, a concrete pipeline with feature extraction) plus a synthesis section building complete worked architectures end-to-end (purchase prediction, weather prediction, AutoML flower classification), applying troubleshooting (overfitting/underfitting diagnosis with worked numeric tables) and a traditional-ML-vs-generative-AI MLOps comparison. Explicitly marked as NOT a domain of the exam guide (research gate not_applicable) -- a synthesis add-on outside the guide's six-section structure, reusing only product names already verified/needs_reverification in pmle-01..06."
 last_updated: 2026-07-14
 notes:
   - Complete the vertical slice before scaling course generation.
@@ -547,3 +572,5 @@ notes:
   - "2026-07-13: learner uploaded the verbatim official exam guide PDF directly, closing the primary sourcing gap for the whole gcp-ml-certification module. Read in full (6 sections, all subsections and bullets). Rewrote pmle-01's evidence.yaml/concepts/apis/pitfalls/references and its docs page to remove pre-PDF hedging; research gate flipped fail -> pass for core content. Built the five remaining lessons (pmle-02..06), each with a full knowledge pack and docs page grounded in the verbatim guide text, following the same pattern. All six domains of the exam guide are now covered. Module status moved planned -> in_progress; each lesson is in state_machine writing (technical_review and learner_review still pending, per the spec's quality-gate process)."
   - "2026-07-14 learner feedback: pmle track read as a syllabus, not a course (no mechanism explanations for BigQuery ML, AutoML, model evaluation, LLM tuning/pipelines/drift). Deepened pmle-01 with real BigQuery ML SQL/TRANSFORM/ML.EVALUATE mechanics, AutoML NAS+HPO explanation, and the prompting->LoRA->full-fine-tuning cost ladder, all needs_reverification general knowledge clearly separated from exam-guide-verified content. Learner also flagged that the BigQuery ML model_type list assumed prior knowledge of each algorithm (LINEAR_REG, LOGISTIC_REG, BOOSTED_TREE_*, KMEANS, DNN_*) -- added a callout in pmle-01 explaining what each one actually is and when to use it."
   - "2026-07-14: learner flagged that every pmle-02..06 docs page had a 'Scenari di ragionamento' section pointing to `knowledge/.../examples.md` -- a repo file path meaningless to a reader on the published docs site, with no indication of what it was or that they needed to go find it in the git repo. Fixed across all five lessons: removed the dangling section and folded its worked scenarios inline into the 'Teoria essenziale' subsections instead, continuing the same 'Nordica Commerce' running example from pmle-01 through the rest of the certification track (data preprocessing, notebook prototyping, experiment tracking/AutoSxS in pmle-02; interpretability, fine-tuning-vs-prompting, data/model parallelism in pmle-03; batch-vs-online serving, canary/A-B rollout, Feature Store skew in pmle-04; pipeline components, data validation, retraining policy in pmle-05; prompt injection/Model Armor, data/concept/feature-attribution drift in pmle-06)."
+  - "2026-07-14: learner feedback that pmle-01 still lacked a normalization section and evaluation metrics worked with real numbers ('still just a syllabus'). Added a worked z-score normalization example (why LOGISTIC_REG/DNN_CLASSIFIER need it, why BOOSTED_TREE_CLASSIFIER doesn't, with TRANSFORM/ML.STANDARD_SCALER SQL) and a full 200-case confusion-matrix walkthrough computing precision/recall/F1/accuracy by hand, with the business reasoning for favoring recall over precision by lowering the decision threshold. All numbers explicitly labeled as constructed teaching illustrations, not real data."
+  - "2026-07-14: learner asked for concrete GCP product usage (not just names), specifically Feature Store setup, AutoSxS setup theory, Kubeflow-vs-Agent-Platform-Pipelines choice criteria with a concrete pipeline definition including feature extraction, and — the largest ask — a synthesis section building complete worked architectures end-to-end (an app to predict purchase, one to predict weather, AutoML flower classification), showing how to apply the theory including troubleshooting (overfitting/underfitting) and MLOps for both traditional and generative AI. Deepened pmle-02 (Feature Store entity-type/online-offline/point-in-time-correctness mechanics; AutoSxS setup ingredients and autorater calibration) and pmle-05 (Kubeflow Pipelines SDK worked pipeline definition with a validate/extract-features/train/evaluate/conditional-deploy DAG; explicit Kubeflow-vs-Agent-Platform-Pipelines selection criteria). Added a new lesson pmle-07-architetture-end-to-end, explicitly marked as a synthesis add-on outside the exam guide's six-domain structure (not a literal exam section, research gate not_applicable): three worked architectures (tabular purchase-propensity classifier with an overfitting diagnosis via a constructed AUC-by-iteration table; weather-forecasting regression with lag features and an underfitting diagnosis via a constructed MAE comparison, plus a note on expected seasonal drift; AutoML flower image classifier with a per-class confusion matrix exposing class-imbalance and an edge-vs-cloud deployment decision), a consolidated troubleshooting playbook table, and a traditional-ML-vs-generative-AI (LLMOps) MLOps comparison table. Registered in course.yaml/mkdocs.yml/docs/modules/index.md with a full knowledge pack (evidence.yaml/concepts/apis/pitfalls/examples/references), all needs_reverification general knowledge reusing only product names already verified in pmle-01..06."
