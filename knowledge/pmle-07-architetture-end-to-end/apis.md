@@ -32,6 +32,30 @@ riutilizza senza riverificarlo una seconda volta.
   come è trattato in `knowledge/pmle-06-monitor-ai-solutions/apis.md`
   (nome troppo recente per dettaglio implementativo affidabile).
 
+## Diagrammi e Well-Architected Framework (dettaglio supplementare)
+
+- **Diagrammi Mermaid**: le quattro architetture sono illustrate con un
+  diagramma di flusso (sintassi Mermaid `flowchart`), reso dal supporto
+  nativo di mkdocs-material (`pymdownx.superfences` con fence custom
+  `mermaid`), abilitato in `mkdocs.yml` come parte di questa modifica —
+  non era attivo prima. **Stato: needs_reverification** per il rendering
+  live (non verificabile in questa sessione: Material recupera
+  `mermaid.js` da `unpkg.com` a runtime, CDN bloccato dal proxy di questa
+  sandbox — vedi `course/research_gaps.md`); sintassi verificata
+  manualmente contro la grammatica standard di Mermaid.
+- **Google Cloud Architecture Framework, cinque pilastri**: eccellenza
+  operativa, sicurezza/privacy/conformità, affidabilità, ottimizzazione
+  dei costi, ottimizzazione delle prestazioni. Ogni architettura è
+  annotata con quali pilastri applica. **Stato: needs_reverification**
+  (struttura generale del framework pubblico, non riverificata su
+  documentazione live in questa sessione; il conteggio/nome esatto dei
+  pilastri nella versione corrente del framework non è confermato).
+- **RAG (retrieval-augmented generation), meccanica di base**: query
+  utente → ricerca nell'indice vettoriale dei documenti pertinenti →
+  contesto recuperato assemblato nel prompt → generazione dal modello
+  fondazionale. **Stato: needs_reverification** (pattern architetturale
+  generale, non specifico di un prodotto Google Cloud nominato).
+
 ## Dettaglio supplementare specifico di questa lezione
 
 - **`ML.TRAINING_INFO`**: funzione ipotizzata per illustrare come si

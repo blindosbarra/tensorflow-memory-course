@@ -31,8 +31,39 @@ claims:
     primary_source: false
     evidence_note: "Added at the learner's explicit request ('how to build mlops for generative ai and traditional ai'). Synthesizes concepts already introduced across pmle-01 (tuning ladder), pmle-02 (LLM-as-a-judge/AutoSxS), pmle-05 (CI/CD/CT), and pmle-06 (Model Armor, drift types) into a single comparison; no new product names introduced beyond what those lessons already cite. Not re-verified against docs.cloud.google.com this session."
     status: needs_reverification
+  - id: pmle07-well-architected-pillars
+    claim: "The Google Cloud Architecture Framework ('Well-Architected Framework') is commonly described around five pillars: operational excellence, security/privacy/compliance, reliability, cost optimization, and performance optimization. Each of the four worked architectures in this lesson is annotated with which of these pillars the described design decisions apply."
+    importance: major
+    source_url: "general pre-training knowledge of Google Cloud's publicly documented Architecture Framework, not from the exam guide"
+    source_title: "General knowledge of the Google Cloud Architecture Framework's pillar structure"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's explicit request ('graphical architecture ensuring you follow ... well architected framework'). The five-pillar structure is general pre-training knowledge of Google Cloud's public framework, not verified against current cloud.google.com/architecture/framework documentation this session (blocked, see course/research_gaps.md). The framework's exact current pillar count/naming (e.g. a sixth 'sustainability' pillar in some formulations) is not asserted here beyond the general five-pillar framing used in the lesson text."
+    status: needs_reverification
+  - id: pmle07-architecture-diagrams
+    claim: "Four Mermaid flowchart diagrams (one per worked architecture) illustrating data flow, decision points (quality gates, guardrails), and feedback loops (retraining triggers, retrieval-index refresh). Rendered via mkdocs-material's built-in Mermaid support (pymdownx.superfences custom fence), which was not previously enabled in this project's mkdocs.yml and was turned on as part of this change."
+    importance: minor
+    source_url: "n/a — diagrams are original illustrations of content already described in this lesson's prose, not sourced claims"
+    source_title: "n/a"
+    publisher: "n/a"
+    accessed_at: "n/a"
+    primary_source: false
+    evidence_note: "Diagram rendering was verified via `mkdocs build --strict` (passes) and inspection of the built HTML (four `pre.mermaid` blocks present, Material's JS bundle contains mermaid initialization code). Live visual rendering could not be confirmed in this sandbox because Material fetches mermaid.js from the unpkg.com CDN at runtime, which this session's outbound proxy blocks (ERR_TUNNEL_CONNECTION_FAILED) -- the same class of restriction that has blocked other external fetches all session (see research_gaps.md). Diagram syntax was manually reviewed against standard Mermaid flowchart grammar."
+    status: needs_reverification
+  - id: pmle07-architecture-4-rag-chatbot
+    claim: "A fourth worked architecture: a RAG-based customer support chatbot (online serving, the only one of the four in real time), covering why no training-from-scratch is needed (prompting/RAG per the Domain 1 tuning ladder), a guardrail step (Model Armor) against prompt injection, evaluation via AutoSxS instead of a fixed numeric metric, and a troubleshooting scenario (stale retrieval index serving outdated policy text) framed as a RAG-specific analogue of training-serving skew."
+    importance: major
+    source_url: "general pre-training knowledge of RAG architecture patterns and LLMOps practice, not from the exam guide"
+    source_title: "General knowledge of retrieval-augmented generation system design"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added because the learner asked for 'more scenarios' beyond the original three, and the lesson's MLOps-for-generative-AI comparison table previously had no worked architecture example to anchor it -- this fills that gap. Standard RAG pattern knowledge (retrieval -> prompt assembly -> generation -> guardrail), not specific to a named Google Cloud product architecture, not re-verified against docs.cloud.google.com this session."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "2026-07-14: created in response to learner feedback asking for concrete usage examples of GCP products, a Kubeflow-vs-Agent-Platform-Pipelines decision framework, Feature Store setup, AutoSxS setup theory, and — the largest ask — a section building complete worked architectures (purchase prediction, weather prediction, AutoML flower classification) that apply the theory end to end, including troubleshooting (overfitting/underfitting) and a traditional-ML-vs-generative-AI MLOps comparison. Explicitly out-of-scope for Gate A's exam-guide-verbatim requirement since it is synthesis, not domain content; all claims here are needs_reverification general knowledge or explicit statements about the lesson's own non-exam-guide scope."
+    - "2026-07-14 (second round): learner asked to (1) add graphical architecture diagrams following TensorFlow/GCP/Well-Architected Framework best practice and to create more scenarios, and (2) make the PMLE module bilingual (IT/EN) -- learner chose PMLE-module-only scope for bilingual and 'existing 3 + new scenarios' for diagrams via clarifying questions. Enabled Mermaid support in mkdocs.yml (previously off). Added a Mermaid diagram plus a Well-Architected-pillar callout to each of the three existing architectures, added a Well-Architected Framework primer (five pillars, needs_reverification), and added a fourth worked architecture (RAG customer support chatbot) with its own diagram, filling the previously-unillustrated generative-AI side of the MLOps comparison table. Bilingual translation tracked separately (see docs/modules/pmle-*-en.md artifacts once added)."

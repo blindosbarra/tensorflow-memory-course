@@ -3,7 +3,7 @@ id: pmle-07-architetture-end-to-end
 title: "Certificazione PMLE - Sintesi: architetture end-to-end e MLOps"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 50
+estimated_minutes: 65
 prerequisites:
   - pmle-01-architect-low-code-ai-solutions
   - pmle-02-collaborate-manage-data-models
@@ -27,23 +27,55 @@ sources:
     architetture concrete e complete, perché le domande d'esame reali
     sono spesso basate su scenari che attraversano più domini insieme,
     non su un singolo dominio isolato. Non esiste un testo verbatim della
-    exam guide da citare per queste tre architetture: sono sintesi
+    exam guide da citare per queste quattro architetture: sono sintesi
     didattiche costruite applicando i concetti già visti (e marcati
     `needs_reverification`) nelle lezioni precedenti. Ogni nome di
     prodotto Google Cloud usato qui è già stato verificato nelle lezioni
     di dominio corrispondenti; qui non viene riverificato una seconda
-    volta.
+    volta. I diagrammi e il richiamo ai pilastri del Google Cloud
+    Architecture Framework sono anch'essi sintesi didattica, non testo
+    verbatim di quel framework.
 
-## Tre architetture, tre problemi diversi
+## Quattro architetture, quattro problemi diversi
 
-Non un solo esempio esteso all'infinito, ma tre problemi realistici che
-insieme coprono i tipi di dato e le decisioni più comuni: dati tabellari
-per una decisione di business (previsione acquisto), serie temporali con
-feature esterne (previsione meteo), immagini con un team senza
-competenze ML (classificazione fiori con AutoML). Per ciascuno: dati e
-feature, scelta del modello, training e troubleshooting, pipeline,
-deploy, monitoraggio — le stesse sette domande che un vero progetto ML
-deve rispondere in un ordine o nell'altro.
+Non un solo esempio esteso all'infinito, ma quattro problemi realistici
+che insieme coprono i tipi di dato, i pattern di serving e le decisioni
+più comuni: dati tabellari per una decisione di business interna
+(previsione acquisto, batch), serie temporali con feature esterne
+(previsione meteo, batch), immagini con un team senza competenze ML
+(classificazione fiori con AutoML, edge), e un'applicazione di AI
+generativa (assistente clienti con RAG, online) — l'unica delle quattro
+in tempo reale, apposta per mostrare un pattern di serving diverso dagli
+altri tre. Per ciascuna: dati e feature, scelta del modello, training e
+troubleshooting, pipeline, deploy, monitoraggio — le stesse sette
+domande che un vero progetto ML deve rispondere in un ordine o
+nell'altro.
+
+!!! info "Come leggere i diagrammi: il Google Cloud Architecture Framework"
+    Ogni architettura sotto include un diagramma e un breve richiamo a
+    quali **pilastri** del Google Cloud Architecture Framework (il
+    "Well-Architected Framework" di Google Cloud) la decisione descritta
+    sta applicando — non per introdurre nuovi concetti, ma per dare un
+    nome esplicito a ragionamenti già fatti nelle lezioni precedenti.
+    I cinque pilastri richiamati qui:
+
+    - **Eccellenza operativa**: automatizzare, validare, tracciare invece
+      di eseguire a mano (Dominio 5).
+    - **Sicurezza, privacy e conformità**: gestione PII, guardrail su
+      input/output generativi (Domini 2, 6).
+    - **Affidabilità**: rollout controllati, gestione del degrado nel
+      tempo (Domini 4, 6).
+    - **Ottimizzazione dei costi**: scegliere batch vs online, la scala
+      di intervento più economica che basta (Domini 1, 4).
+    - **Ottimizzazione delle prestazioni**: scegliere l'hardware e il
+      pattern di serving giusti per il carico reale (Domini 3, 4).
+
+    **Stato: needs_reverification** — la struttura a cinque pilastri è
+    conoscenza generale pre-addestramento sul framework pubblico di
+    Google Cloud, non riverificata su documentazione live in questa
+    sessione (bloccato, vedi `course/research_gaps.md`); il framework
+    reale potrebbe includere pilastri aggiuntivi (es. sostenibilità) o
+    una formulazione leggermente diversa nella sua versione corrente.
 
 ## Architettura 1: prevedere se un cliente comprerà ancora (dati tabellari)
 
@@ -51,6 +83,28 @@ deve rispondere in un ordine o nell'altro.
 lezioni precedenti) vuole dare priorità agli account manager: prevedere
 quali clienti business faranno un nuovo ordine nei prossimi 30 giorni,
 così il team commerciale contatta prima chi rischia di restare inattivo.
+
+```mermaid
+flowchart LR
+    BQ[("BigQuery<br/>storico ordini")] --> FS["Feature Store<br/>entity: cliente_b2b"]
+    FS --> VAL["Validazione dati"]
+    VAL --> TR["CREATE MODEL<br/>BOOSTED_TREE_CLASSIFIER"]
+    TR --> EV{"ML.EVALUATE<br/>recall > 0.65?"}
+    EV -->|si| DEPLOY["Deploy: inferenza batch notturna"]
+    EV -->|no| TUNE["Ritocca iperparametri<br/>max_tree_depth, l2_reg"]
+    TUNE --> TR
+    DEPLOY --> TBL[("Tabella punteggi")]
+    TBL --> DASH["Dashboard account manager"]
+    TBL --> MON["Model Monitoring<br/>data drift + recall reale"]
+    MON -->|soglia superata| VAL
+```
+
+**Principi Well-Architected applicati qui.** Eccellenza operativa: la
+pipeline valida e riaddestra da sola, senza intervento manuale a ogni
+ciclo. Ottimizzazione dei costi: inferenza batch invece di un endpoint
+online sempre acceso, perché nessuno aspetta una risposta immediata.
+Affidabilità: il deploy è condizionato al superamento della soglia di
+qualità su `ML.EVALUATE`, non automatico a prescindere dal risultato.
 
 **Dati e feature.** Le stesse tabelle BigQuery e lo stesso Feature Store
 del Dominio 2, con feature diverse per questo problema specifico:
@@ -127,6 +181,26 @@ giorni successivi (per decidere se attivare il retraining).
 prevedere la pioggia nei prossimi 3 giorni per zona di consegna, per
 ripianificare le rotte in caso di maltempo.
 
+```mermaid
+flowchart LR
+    WS[("Stazioni meteo<br/>storico letture")] --> LAG["Feature di lag<br/>pioggia_media_7gg, pressione_trend_3gg"]
+    LAG --> TR["BOOSTED_TREE_REGRESSOR"]
+    TR --> EV{"ML.EVALUATE<br/>MAE accettabile?"}
+    EV -->|no| FIX["Aggiungi feature /<br/>aumenta capacità del modello"]
+    FIX --> TR
+    EV -->|si| DEPLOY["Deploy: inferenza batch mattutina"]
+    DEPLOY --> FCST[("Previsione 3gg per zona")]
+    FCST --> ROUTE["Dashboard pianificazione rotte"]
+    FCST --> MON["Model Monitoring<br/>confronto vs stesso periodo anno precedente"]
+```
+
+**Principi Well-Architected applicati qui.** Ottimizzazione delle
+prestazioni: la scelta tra `ARIMA_PLUS` e `BOOSTED_TREE_REGRESSOR` è
+guidata da quale modello usa meglio i driver esterni disponibili, non
+dal modello "più potente" in astratto. Affidabilità: il monitoraggio
+confronta contro lo stesso periodo dell'anno precedente, non contro il
+mese scorso, per non scambiare un ciclo stagionale atteso per un guasto.
+
 **Dati e feature.** Letture storiche di stazioni meteo per zona: pioggia
 giornaliera, umidità, pressione atmosferica. Per un problema di
 forecasting, le feature più informative spesso non sono i valori del
@@ -193,6 +267,26 @@ vuole una funzione nella sua app: il cliente punta il telefono su un
 fiore e l'app suggerisce la specie e i consigli di cura. Nessuno in
 azienda ha competenze di visione artificiale.
 
+```mermaid
+flowchart LR
+    IMG[("Foto etichettate<br/>per specie")] --> AUG["Augmentation<br/>classi rare"]
+    AUG --> AUTOML["AutoML Vision<br/>NAS + transfer learning"]
+    AUTOML --> CM["Matrice di confusione<br/>per classe"]
+    CM -->|classe debole| AUG
+    CM -->|ok| EXPORT["Export modello compatto<br/>per edge"]
+    EXPORT --> APP["App mobile:<br/>inferenza on-device"]
+    APP --> SAMPLE["Campione periodico<br/>rivisto da operatore"]
+    SAMPLE -->|drift negli input| AUG
+```
+
+**Principi Well-Architected applicati qui.** Ottimizzazione delle
+prestazioni: l'inferenza on-device elimina la latenza di rete per un
+caso d'uso che deve rispondere istantaneamente in negozio. Affidabilità:
+funziona anche offline, dove un endpoint cloud fallirebbe. Sicurezza e
+conformità: nessuna foto del cliente lascia il telefono per
+l'inferenza, un vantaggio di privacy secondario ma reale della scelta
+edge.
+
 **Dati.** Qualche migliaio di foto etichettate per una ventina di
 specie, ma **non equamente distribuite**: rose (800 foto, la specie più
 venduta) contro varietà rare di orchidea (40 foto ciascuna) — uno
@@ -253,6 +347,77 @@ far rivedere periodicamente un campione di foto da un operatore umano
 per stimare l'accuratezza reale sul campo — un controllo a campione,
 non continuo, ma comunque sistematico.
 
+## Architettura 4: assistente clienti con RAG (AI generativa, online)
+
+**Problema di business.** Il servizio clienti di Nordica riceve molte
+domande ripetitive su policy di reso, tempi di consegna e stato ordini.
+Nordica vuole un assistente in chat che risponda subito usando la
+documentazione interna (policy, FAQ) e lo storico ordini del cliente
+specifico, lasciando agli operatori umani solo i casi che l'assistente
+non sa gestire.
+
+```mermaid
+flowchart LR
+    U["Cliente: domanda in chat"] --> R["Retrieval:<br/>ricerca vettoriale su policy/FAQ"]
+    KB[("Knowledge base:<br/>policy, FAQ, storico ordini")] --> R
+    R --> P["Prompt assemblato<br/>domanda + contesto recuperato"]
+    P --> LLM["Modello fondazionale<br/>Model Garden (es. Gemini)"]
+    LLM --> GR{"Guardrail<br/>Model Armor"}
+    GR -->|ok| RESP["Risposta al cliente"]
+    GR -->|blocca| ESC["Escalation a operatore umano"]
+    RESP --> MON["Monitoraggio:<br/>tasso escalation, AutoSxS periodico"]
+    MON -->|drift rilevato| UPD["Aggiorna prompt / contesto RAG"]
+    UPD --> P
+```
+
+**Perché questa è l'unica architettura online delle quattro.** Un
+cliente in chat aspetta una risposta in pochi secondi — l'esatto
+opposto delle Architetture 1 e 2, dove nessuno aspettava un risultato
+immediato. È anche l'unico caso qui in cui il pattern di serving
+(**online**, Dominio 4) è imposto dal problema stesso, non da una
+scelta di ottimizzazione dei costi.
+
+**Scelta dello strumento: perché non si addestra nulla da zero.** Le
+policy di reso e le FAQ cambiano periodicamente. Addestrare o fare
+fine-tuning di un modello ogni volta che una policy cambia sarebbe lento
+e costoso. La scelta a minimo intervento (Dominio 1, primo livello della
+scala di costo) è **prompting con RAG**: recuperare i documenti
+pertinenti alla domanda al momento della richiesta e passarli come
+contesto al modello fondazionale, così un aggiornamento di policy è un
+aggiornamento di documento nella knowledge base, non un nuovo
+addestramento.
+
+**Il rischio che non esisteva nelle prime tre architetture.** Un cliente
+potrebbe scrivere una domanda costruita per far rivelare all'assistente
+dati di un altro cliente, o per fargli ignorare le sue istruzioni
+originali (prompt injection, Dominio 6). Il guardrail (es. Model Armor)
+controlla l'output prima che raggiunga il cliente e, in caso di dubbio,
+smista la conversazione a un operatore umano invece di rispondere — un
+tipo di controllo che i primi tre esempi, senza input testuale libero da
+un utente esterno, non richiedevano.
+
+**Valutazione e troubleshooting: non esiste un'unica risposta
+corretta.** Non c'è un `ML.EVALUATE` con una metrica numerica netta: due
+riassunti diversi della stessa policy possono essere entrambi corretti.
+Si usa AutoSxS (Dominio 2) per confrontare periodicamente una nuova
+versione del prompt o del set di documenti recuperati contro la
+versione in produzione, calibrato su un campione giudicato da persone.
+Un sintomo specifico di questa architettura, diverso da overfitting e
+underfitting: l'assistente risponde con una policy **scaduta**. La causa
+tipica non è un problema di "modello" ma di **freschezza dell'indice di
+retrieval** — un documento di policy è stato aggiornato ma non
+re-indicizzato, quindi il retrieval continua a recuperare la versione
+vecchia. È l'equivalente, per un sistema RAG, del training-serving skew
+di un modello tradizionale: l'informazione usata in produzione non
+corrisponde più a quella corrente.
+
+**Monitoraggio.** Oltre al guardrail sull'input/output, si tracciano il
+**tasso di escalation** a un operatore umano (se sale, l'assistente sta
+faticando su un tipo di domanda nuovo) e, periodicamente, un nuovo
+confronto AutoSxS contro un set di domande di test aggiornato — non
+un'unica valutazione una tantum, ma un ciclo ricorrente, più leggero di
+un retraining ma comunque continuo.
+
 ## Playbook di troubleshooting
 
 Le due architetture sopra hanno mostrato overfitting e underfitting con
@@ -268,6 +433,7 @@ Lezioni 10-13 del corso principale).
 | Il modello valutato bene in training/validation performa peggio in produzione, con lo stesso codice e gli stessi pesi | **Training-serving skew** | Preprocessing calcolato diversamente in training e serving; feature lette da fonti diverse | Usare `TRANSFORM` in BigQuery ML o un Feature Store condiviso (Domini 1-2) invece di duplicare la logica |
 | Accuratezza in produzione stabile per mesi, poi degrada gradualmente | **Data drift o concept drift** (Dominio 6) | Cambia la distribuzione dei dati in ingresso (data drift) o la relazione input-target (concept drift) | Distinguere i due (Dominio 6) prima di scegliere se basta più training data recente o serve rivedere le feature; attenzione ai cambiamenti **stagionali attesi** (Architettura 2), che non sono un vero problema |
 | Una pipeline automatica distribuisce comunque un modello addestrato su dati palesemente rotti | **Manca un passo di validazione dati** (Dominio 5) | Nessuna soglia automatica su qualità/range dei dati prima del training | Aggiungere un componente di validazione dati nella pipeline, prima del training |
+| Un assistente basato su RAG risponde con informazioni scadute o sbagliate, pur senza aver cambiato il modello (Architettura 4) | **Indice di retrieval non aggiornato** — l'equivalente, per un sistema RAG, del training-serving skew | Un documento sorgente è stato aggiornato ma non re-indicizzato per la ricerca vettoriale | Automatizzare la re-indicizzazione quando i documenti sorgente cambiano; monitorare la freschezza dell'indice, non solo l'output del modello |
 
 ## MLOps per ML tradizionale e per AI generativa: cosa cambia davvero
 
@@ -308,6 +474,9 @@ funzionato", non la struttura del ciclo stesso.
 - Scegliere inferenza online per un problema che è in realtà batch (le
   Architetture 1 e 2 sono entrambe batch: nessuno aspetta una risposta
   immediata), pagando latenza e costo inutili.
+- In un sistema RAG (Architettura 4), aggiornare i documenti sorgente
+  senza re-indicizzarli per il retrieval: il modello continua a ricevere
+  come contesto la versione vecchia, anche se la policy è già cambiata.
 
 ## Quiz
 
@@ -325,6 +494,10 @@ funzionato", non la struttura del ciclo stesso.
 4. Perché il concetto di "retraining" nel ML tradizionale non si applica
    allo stesso modo a un'applicazione basata su un modello fondazionale
    con prompting/RAG?
+5. Nell'Architettura 4, l'assistente clienti risponde citando una policy
+   di reso che è già stata modificata due settimane fa. Il modello non è
+   stato toccato. Qual è la causa più probabile, e a quale problema
+   dell'ML tradizionale è concettualmente simile?
 
 <details>
 <summary><b>Apri le risposte</b></summary>
@@ -355,6 +528,13 @@ funzionato", non la struttura del ciclo stesso.
    iterazione più economico e più frequente di un retraining tradizionale,
    che invece richiede sempre nuovi dati etichettati e un nuovo
    addestramento.
+5. La causa più probabile è che il documento di policy sia stato
+   aggiornato ma non re-indicizzato per il retrieval: il sistema continua
+   a recuperare e passare al modello la versione vecchia come contesto.
+   È concettualmente simile al **training-serving skew** del ML
+   tradizionale: l'informazione usata "in produzione" (qui, il contesto
+   recuperato) non corrisponde più a quella corrente, anche se il resto
+   del sistema (il modello, il codice) non è cambiato.
 
 </details>
 
@@ -362,11 +542,14 @@ funzionato", non la struttura del ciclo stesso.
 
 - Google Cloud, *Professional Machine Learning Engineer Certification exam
   guide* (fonte primaria per la terminologia e i concetti di dominio
-  riutilizzati qui; le tre architetture stesse non sono contenuto
+  riutilizzati qui; le quattro architetture stesse non sono contenuto
   verbatim della guida — vedi il riquadro in cima alla pagina):
   https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english.pdf
 - Google Cloud, *Professional Machine Learning Engineer Certification*
   (pagina ufficiale, contesto generale sull'esame):
   https://cloud.google.com/learn/certification/machine-learning-engineer
 - Lezioni pmle-01..06 di questo stesso modulo, per il dettaglio verificato
-  di ciascun concetto riutilizzato qui.
+  di ciascun concetto riutilizzato qui. Il richiamo ai cinque pilastri del
+  Google Cloud Architecture Framework è conoscenza generale
+  pre-addestramento, non riverificata su documentazione live in questa
+  sessione — vedi `course/research_gaps.md`.

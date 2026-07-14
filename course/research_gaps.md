@@ -80,3 +80,18 @@ prodotto nuovo introdotto rispetto a quelli già citati nelle lezioni di
 dominio. Gate A (research) è `not_applicable` per questa lezione, non
 `pass`, proprio perché non c'è un testo primario da verificare — vedi
 `course/progress.yaml` e `knowledge/pmle-07-architetture-end-to-end/evidence.yaml`.
+
+## Nuovo gap: rendering live dei diagrammi Mermaid e struttura esatta del Well-Architected Framework
+
+I quattro diagrammi Mermaid aggiunti a `pmle-07-architetture-end-to-end`
+non sono stati verificati visivamente in questa sessione: Material for
+MkDocs recupera `mermaid.js` da `unpkg.com` a runtime nel browser, e
+quella richiesta esce bloccata dal proxy di questa sandbox
+(`ERR_TUNNEL_CONNECTION_FAILED`), la stessa classe di restrizione che ha
+bloccato altri fetch esterni in questa sessione. `mkdocs build --strict`
+passa e i blocchi `pre.mermaid` sono presenti nell'HTML generato con la
+sintassi corretta (verificata manualmente); il rendering visivo va
+controllato dallo studente sul sito pubblicato. La struttura a cinque
+pilastri del Google Cloud Architecture Framework citata nella stessa
+lezione è conoscenza generale pre-addestramento, non riverificata contro
+`cloud.google.com/architecture/framework` in questa sessione.

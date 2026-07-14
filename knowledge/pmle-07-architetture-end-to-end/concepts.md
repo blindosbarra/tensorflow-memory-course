@@ -8,28 +8,42 @@ con troubleshooting e un confronto MLOps tradizionale vs generativo.
 
 ## Concetti coperti
 
-1. Tre architetture end-to-end, ciascuna scelta per coprire un tipo di
-   dato/problema diverso: dati tabellari per una decisione di business
-   (previsione acquisto entro 30 giorni), serie temporali con feature
-   esterne (previsione pioggia), immagini con team senza competenze ML
-   (classificazione fiori via AutoML).
-2. Per ciascuna architettura, le stesse sette domande applicate in
+1. Quattro architetture end-to-end, ciascuna scelta per coprire un tipo
+   di dato/problema/pattern di serving diverso: dati tabellari per una
+   decisione di business interna (previsione acquisto entro 30 giorni,
+   batch), serie temporali con feature esterne (previsione pioggia,
+   batch), immagini con team senza competenze ML (classificazione fiori
+   via AutoML, edge), e un'applicazione di AI generativa (assistente
+   clienti con RAG, online — l'unica delle quattro in tempo reale).
+2. Un diagramma Mermaid per ciascuna architettura, con un richiamo
+   esplicito ai cinque pilastri del Google Cloud Architecture Framework
+   (eccellenza operativa, sicurezza/privacy/conformità, affidabilità,
+   ottimizzazione dei costi, ottimizzazione delle prestazioni) applicati
+   alle decisioni già descritte nel testo.
+3. Per la quarta architettura (RAG): perché non serve addestrare nulla
+   da zero (scala di costo del Dominio 1), un guardrail contro prompt
+   injection (Dominio 6), valutazione via AutoSxS invece di una metrica
+   fissa (Dominio 2), e un problema di troubleshooting specifico del RAG
+   (indice di retrieval non aggiornato) presentato come analogo al
+   training-serving skew del ML tradizionale.
+4. Per ciascuna architettura, le stesse sette domande applicate in
    sequenza: dati e feature, scelta del modello/strumento, training e
    troubleshooting, pipeline, deploy, monitoraggio.
-3. Overfitting e underfitting mostrati con tabelle numeriche costruite
+5. Overfitting e underfitting mostrati con tabelle numeriche costruite
    (non dati reali) per ciascuna delle due firme diagnostiche, invece di
    solo definirle a parole.
-4. Uno sbilanciamento di classi (rose vs orchidee rare) usato per
+6. Uno sbilanciamento di classi (rose vs orchidee rare) usato per
    mostrare perché l'accuratezza aggregata multi-classe può nascondere
    un problema serio su una classe minoritaria.
-5. Una tabella di troubleshooting generale (sintomo → diagnosi → cause →
+7. Una tabella di troubleshooting generale (sintomo → diagnosi → cause →
    rimedi) che consolida overfitting, underfitting, un possibile bug di
-   split train/validation, training-serving skew, drift, e fallimenti di
-   validazione dati in pipeline.
-6. Un confronto esplicito, punto per punto, tra il ciclo di vita MLOps
+   split train/validation, training-serving skew, drift, indice RAG
+   obsoleto, e fallimenti di validazione dati in pipeline.
+8. Un confronto esplicito, punto per punto, tra il ciclo di vita MLOps
    del ML tradizionale e quello dell'AI generativa (LLMOps): cosa si
    addestra/adatta, come si valuta, cosa si versiona, quando si
-   riaddestra, cosa si monitora.
+   riaddestra, cosa si monitora — ora ancorato a un'architettura
+   concreta (la 4) invece di restare solo teorico.
 
 ## Collegamento alle lezioni di dominio
 

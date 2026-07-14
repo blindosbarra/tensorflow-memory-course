@@ -23,3 +23,7 @@
 - Scegliere inferenza online per un problema che è strutturalmente
   batch (nessuno aspetta una risposta immediata), pagando costo e
   complessità di un endpoint in tempo reale senza bisogno.
+- In un sistema RAG, aggiornare i documenti sorgente senza
+  re-indicizzarli per il retrieval: il sintomo (risposte scadute) sembra
+  un problema del modello ma è un problema di freschezza dei dati
+  recuperati — l'equivalente RAG del training-serving skew.

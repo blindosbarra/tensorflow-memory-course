@@ -537,6 +537,7 @@ modules:
           publish: pending
         notes:
           - "2026-07-14: added in response to learner feedback asking for concrete GCP product usage (Feature Store setup, AutoSxS setup theory, Kubeflow-vs-Agent-Platform-Pipelines choice, a concrete pipeline with feature extraction) plus a synthesis section building complete worked architectures end-to-end (purchase prediction, weather prediction, AutoML flower classification), applying troubleshooting (overfitting/underfitting diagnosis with worked numeric tables) and a traditional-ML-vs-generative-AI MLOps comparison. Explicitly marked as NOT a domain of the exam guide (research gate not_applicable) -- a synthesis add-on outside the guide's six-section structure, reusing only product names already verified/needs_reverification in pmle-01..06."
+          - "2026-07-14 (second round): learner asked for architecture diagrams following GCP/TensorFlow best practice and the Well-Architected Framework, plus more scenarios. Enabled Mermaid in mkdocs.yml (previously off) and added a diagram + Well-Architected-pillar callout to each of the three existing architectures, added a fourth worked architecture (RAG customer support chatbot, the only online/real-time one of the four), and extended the troubleshooting table and quiz to match. Live diagram rendering not verified in-session (unpkg.com CDN blocked by sandbox proxy); mkdocs build --strict passes and diagram syntax was manually reviewed."
 last_updated: 2026-07-14
 notes:
   - Complete the vertical slice before scaling course generation.
