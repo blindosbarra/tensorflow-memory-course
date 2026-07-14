@@ -27,3 +27,17 @@
   opzione, senza prima provare prompting/RAG o un tuning efficiente in
   parametri: è l'opzione più costosa delle tre, da riservare ai casi in
   cui le altre due non bastano.
+- Non normalizzare le feature prima di addestrare un `LOGISTIC_REG` o un
+  `DNN_CLASSIFIER` (es. lasciare `spesa_mensile_eur` e
+  `ticket_aperti_90gg` sulle scale numeriche originali): il gradiente
+  della feature a scala maggiore domina l'aggiornamento e il modello
+  fatica a imparare dalle feature a scala più piccola. Applicare la
+  stessa normalizzazione a un `BOOSTED_TREE_CLASSIFIER` invece non serve
+  a nulla (gli alberi sono invarianti alla scala): sapere quale model_type
+  ne ha bisogno evita lavoro inutile o, peggio, la sua omissione dove
+  serve davvero.
+- Guardare solo l'accuracy di `ML.EVALUATE` su un problema con classi
+  sbilanciate (es. 20% di clienti che non rinnovano): un modello che
+  predicesse sempre la classe maggioritaria avrebbe comunque un'accuracy
+  alta senza essere utile — precision, recall e F1 vanno guardati insieme
+  all'accuracy, non al suo posto.

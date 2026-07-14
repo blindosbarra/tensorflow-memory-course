@@ -89,6 +89,53 @@ evidence.yaml.
   (per il significato di ciascuna metrica, vedi Lezione 13 del corso
   principale, che le tratta con codice eseguito).
 
+### Normalizzazione delle feature: perché serve per alcuni model_type e non per altri
+
+`LOGISTIC_REG` e `DNN_CLASSIFIER` si addestrano per discesa del
+gradiente: il peso di ciascuna feature si aggiorna in proporzione al
+valore della feature. Feature su scale molto diverse (es. spesa mensile
+in euro nell'ordine delle migliaia contro un conteggio di ticket
+nell'ordine delle decine) fanno sì che il gradiente della feature a
+scala maggiore domini l'aggiornamento, rallentando o degradando la
+convergenza sulle altre. La correzione standard è la standardizzazione
+z-score: `z = (x - media) / deviazione_standard`, calcolata sui dati di
+training. In BigQuery ML si applica con `ML.STANDARD_SCALER(...)`
+dentro la clausola `TRANSFORM`; media e deviazione standard usate sono
+salvate con il modello e riapplicate identiche a ogni `ML.PREDICT`, così
+il train/serve non diverge anche sulla normalizzazione stessa. I
+model_type ad albero (`BOOSTED_TREE_CLASSIFIER`/`_REGRESSOR`) non ne
+hanno bisogno: un albero decide i tagli confrontando l'ordine dei valori
+di una feature, non la loro grandezza assoluta, quindi la scala non
+influisce sull'addestramento. **Stato: needs_reverification** (meccanismo
+di discesa del gradiente e formula z-score sono conoscenza ML generale;
+`ML.STANDARD_SCALER` come nome di funzione specifico non riverificato su
+documentazione live in questa sessione).
+
+### Valutare un classificatore con numeri veri: dalla matrice di confusione alle metriche
+
+`ML.CONFUSION_MATRIX` restituisce conteggi di veri/falsi positivi/
+negativi; `ML.EVALUATE` li trasforma in metriche leggibili. Su un esempio
+costruito (200 casi, 40 positivi reali, matrice 28 TP / 12 FN / 18 FP /
+142 TN): `precision = TP/(TP+FP) = 28/46 ≈ 0.61`, `recall = TP/(TP+FN) =
+28/40 = 0.70`, `F1 = 2·precision·recall/(precision+recall) ≈ 0.65`,
+`accuracy = (TP+TN)/totale = 170/200 = 0.85`. L'accuracy da sola è
+fuorviante quando le classi sono sbilanciate: un modello che predicesse
+sempre la classe maggioritaria otterrebbe comunque l'80% di accuracy in
+questo esempio (160/200), senza intercettare un solo caso positivo — è
+il motivo per cui `ML.EVALUATE` restituisce anche precision/recall/F1.
+Quale metrica pesa di più dipende dal costo relativo di falsi positivi e
+falsi negativi nel problema di business: se un falso negativo (mancare
+un caso positivo) costa più di un falso positivo (un falso allarme), si
+preferisce un modello con recall più alto, ottenibile abbassando la
+soglia di decisione sulla probabilità restituita da `ML.PREDICT`. **ROC
+AUC** misura la capacità del modello di ordinare correttamente i casi
+positivi sopra i negativi, indipendentemente dalla soglia scelta (0.5 =
+casuale, 1.0 = separazione perfetta) — utile per confrontare modelli
+prima di scegliere dove mettere la soglia. **Stato: needs_reverification**
+(formule standard di conoscenza ML generale, stesse della Lezione 13 del
+corso principale; la matrice di confusione e i numeri sono un esempio
+didattico costruito, non un output reale).
+
 ### AutoML: cosa fa davvero durante il training
 
 AutoML non prova "un" modello: cerca, all'interno di un budget di

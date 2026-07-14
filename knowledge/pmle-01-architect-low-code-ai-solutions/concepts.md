@@ -66,6 +66,16 @@ generale non riverificata su documentazione live:
   l'algoritmo, una clausola `TRANSFORM` opzionale che rende il
   preprocessing riproducibile automaticamente tra training e predizione,
   `ML.PREDICT`/`ML.EVALUATE`/`ML.CONFUSION_MATRIX` per predire e valutare.
+- Normalizzazione delle feature (z-score via `ML.STANDARD_SCALER` dentro
+  `TRANSFORM`): necessaria per model_type che si addestrano per discesa
+  del gradiente (`LOGISTIC_REG`, `DNN_CLASSIFIER`), inutile per model_type
+  ad albero (`BOOSTED_TREE_*`). Spiegata con un esempio numerico
+  costruito (media/deviazione standard/valori cliente), non dati reali.
+- Lettura di `ML.EVALUATE` con una matrice di confusione calcolata a
+  mano su un esempio costruito: precision/recall/F1/accuracy/ROC AUC,
+  perché l'accuracy da sola è fuorviante su classi sbilanciate, e come il
+  costo relativo di falsi positivi/negativi guida la scelta della soglia
+  di decisione su `ML.PREDICT`.
 - AutoML: ricerca automatica di architettura e iperparametri dentro un
   budget di calcolo, spesso con transfer learning da backbone
   pre-addestrati per immagini/testo.

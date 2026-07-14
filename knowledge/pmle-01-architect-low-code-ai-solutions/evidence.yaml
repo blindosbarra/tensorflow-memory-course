@@ -92,9 +92,30 @@ claims:
     primary_source: false
     evidence_note: "General ML knowledge, not specific to a Google Cloud product surface or API. Added at the learner's request to explain the mechanics behind the exam guide's 'fine-tuning Gemini models using BigQuery' and 'tuning models for specific use cases' bullets in Section 1."
     status: needs_reverification
+  - id: feature-scaling-mechanics
+    claim: "LOGISTIC_REG and DNN_CLASSIFIER models in BigQuery ML train via gradient descent, so features on very different numeric scales cause the larger-scale feature's gradient to dominate training, slowing or degrading convergence on the other features. Standardization (z = (x - mean) / stddev), applied via ML.STANDARD_SCALER inside a TRANSFORM clause, corrects this; the mean/stddev are computed once on the training set and stored with the model so ML.PREDICT reapplies the identical values, avoiding train/serve drift in the scaling itself. Tree-based model types (e.g. BOOSTED_TREE_CLASSIFIER) split on value ordering per feature, not magnitude, so they do not require this normalization."
+    importance: major
+    source_url: "general pre-training ML knowledge (gradient descent, feature scaling), not from the exam guide"
+    source_title: "General knowledge of gradient-based training and feature normalization"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added after learner feedback that the lesson had no normalization content at all ('no section to explain normalization'). The gradient-descent mechanism and z-score formula are standard ML knowledge; ML.STANDARD_SCALER as a specific BigQuery ML function name is not re-verified against docs.cloud.google.com this session (blocked, see research_gaps.md). The worked numeric example (mean/stddev/customer values) is an invented teaching illustration, not real Nordica or Google data."
+    status: needs_reverification
+  - id: evaluation-metrics-worked-example
+    claim: "Worked numeric illustration of precision, recall, F1, accuracy and ROC AUC computed from a constructed 2x2 confusion matrix (200 total cases, 40 positive/'non rinnova', 28 TP / 12 FN / 18 FP / 142 TN), showing that accuracy (0.85) is misleading under class imbalance (a majority-class baseline would score 0.80) while precision (0.61) and recall (0.70) expose the false-positive/false-negative tradeoff, and that the cost asymmetry between a missed churner (FN) and a wasted retention offer (FP) is a business reason to favor recall by lowering the decision threshold on ML.PREDICT's output probability."
+    importance: major
+    source_url: "general pre-training ML knowledge (standard classification-metric formulas), not from the exam guide"
+    source_title: "General knowledge of classification evaluation metrics"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added after learner feedback that evaluation metrics were named but never worked through with concrete numbers. The metric formulas themselves are standard and match Lesson 13 of the main course; the confusion-matrix numbers are an invented teaching example explicitly labeled as such in the lesson text, not real data or a real ML.EVALUATE/ML.CONFUSION_MATRIX output."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Core exam-guide content (claims 1-4) verified against the primary document itself, supplied by the learner. Lesson can advance past evidence_review for that content."
     - "2026-07-14: learner feedback was that the lesson named tools without explaining how they work — 'quality is zero, just a brief explanation of concepts'. Added five mechanism-level claims (BigQuery ML model types/TRANSFORM, ML.EVALUATE metrics, AutoML NAS+HPO mechanics, fine-tuning-vs-prompting framework), all needs_reverification general knowledge, clearly separated from the exam-guide-verified claims in the lesson text — same sourcing discipline as the pre-existing BigQuery ML syntax claim, applied more thoroughly this time instead of stopping at naming the activity."
+    - "2026-07-14 (second round): learner feedback that the lesson still read as a syllabus — specifically no normalization section and no evaluation metrics worked with real examples. Added feature-scaling-mechanics (gradient descent + z-score, with a worked numeric example) and evaluation-metrics-worked-example (full confusion matrix -> precision/recall/F1/accuracy/ROC AUC computed by hand, with business interpretation of the precision/recall tradeoff). All example numbers explicitly labeled in the lesson text as invented teaching illustrations, not real data."

@@ -3,7 +3,7 @@ id: pmle-01-architect-low-code-ai-solutions
 title: "Certificazione PMLE - Dominio 1: architettare soluzioni AI low-code"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 35
+estimated_minutes: 45
 prerequisites: []
 deliverables: []
 sources:
@@ -20,11 +20,14 @@ sources:
     la exam guide ufficiale, fornita dallo studente. La exam guide però
     elenca **attività** ("generating predictions using BigQuery ML"), non
     spiega **come** funzionano gli strumenti. I meccanismi spiegati sotto
-    (sintassi `CREATE MODEL`, clausola `TRANSFORM`, metriche di
-    `ML.EVALUATE`, ricerca architetturale di AutoML, framework
-    prompting/tuning) sono conoscenza generale, non riverificata sulla
-    documentazione live in questa sessione: marcati esplicitamente dove
-    compaiono. Dettaglio in `course/research_gaps.md`.
+    (sintassi `CREATE MODEL`, clausola `TRANSFORM`, normalizzazione delle
+    feature con numeri d'esempio, metriche di `ML.EVALUATE` calcolate su
+    una matrice di confusione costruita, ricerca architetturale di
+    AutoML, framework prompting/tuning) sono conoscenza generale, non
+    riverificata sulla documentazione live in questa sessione: marcati
+    esplicitamente dove compaiono, con i numeri usati negli esempi
+    dichiarati come didattici e non come dati reali. Dettaglio in
+    `course/research_gaps.md`.
 
 ## Cosa copre questo modulo
 
@@ -127,9 +130,77 @@ genera le previsioni, e `ML.EVALUATE(MODEL nordica.previsione_domanda)`
 restituisce le metriche di errore sul modello — per un problema di
 regressione/forecasting, tipicamente errore assoluto medio ed errore
 quadratico medio; per un problema di classificazione (che Nordica
-incontrerà nel Problema 4 più sotto) invece precision, recall, accuracy,
-F1 e ROC AUC, gli stessi concetti che la Lezione 13 del corso principale
-tratta con codice eseguito riga per riga.
+incontrerà più sotto, nella sezione "Prova tu, risolto") invece
+precision, recall, accuracy, F1 e ROC AUC, gli stessi concetti che la
+Lezione 13 del corso principale tratta con codice eseguito riga per riga.
+
+!!! info "Perché (e quando) normalizzare le feature — con numeri veri"
+    Immagina che invece del solo `ARIMA_PLUS`, Nordica costruisca anche il
+    modello di rischio-rinnovo B2B (lo stesso della sezione "Prova tu" più
+    sotto) con `LOGISTIC_REG`, usando tre feature: `spesa_mensile_eur`
+    (range realistico 50–50.000), `mesi_da_attivazione` (range 1–120) e
+    `ticket_aperti_90gg` (range 0–30). Sono su scale radicalmente diverse.
+
+    **Perché è un problema per `LOGISTIC_REG` (e per `DNN_CLASSIFIER`).**
+    Questi due `model_type` imparano per discesa del gradiente: a ogni
+    passo, il peso di ciascuna feature viene aggiornato in proporzione al
+    valore della feature stessa. Con `spesa_mensile_eur` che arriva fino a
+    50.000 e `ticket_aperti_90gg` che arriva al massimo a 30, il gradiente
+    calcolato sulla prima feature domina completamente quello calcolato
+    sulla seconda: il modello impara quasi solo dalla spesa e converge
+    lentamente (o male) sul peso da dare ai ticket, non perché i ticket
+    contino davvero meno per prevedere il rinnovo, ma solo per un
+    artefatto della scala numerica.
+
+    **La correzione: standardizzazione (z-score).** Si trasforma ogni
+    valore con `z = (x - media) / deviazione_standard`, calcolati sui dati
+    di training. Con `spesa_mensile_eur` che ha media 5.000€ e deviazione
+    standard 8.000€ sui clienti di Nordica: un cliente che spende
+    50.000€/mese diventa `z = (50000 - 5000) / 8000 = 5,6`; un cliente che
+    spende 50€/mese diventa `z = (50 - 5000) / 8000 = -0,62`. Applicando
+    la stessa trasformazione a `mesi_da_attivazione`, tutte e due le
+    feature finiscono nello stesso ordine di grandezza (tipicamente tra
+    -3 e +3), e il gradiente non è più dominato da quale delle due ha i
+    numeri più grandi in valore assoluto.
+
+    **In BigQuery ML, con `TRANSFORM`:**
+
+    ```sql
+    CREATE MODEL nordica.rischio_rinnovo
+    TRANSFORM(
+      ML.STANDARD_SCALER(spesa_mensile_eur) OVER() AS spesa_norm,
+      ML.STANDARD_SCALER(mesi_da_attivazione) OVER() AS mesi_norm,
+      ticket_aperti_90gg,
+      rinnova
+    )
+    OPTIONS(model_type='LOGISTIC_REG', input_label_cols=['rinnova'])
+    AS SELECT spesa_mensile_eur, mesi_da_attivazione, ticket_aperti_90gg,
+              rinnova
+    FROM nordica.clienti_b2b;
+    ```
+
+    La media e la deviazione standard usate da `ML.STANDARD_SCALER`
+    vengono calcolate una volta sui dati di training e **salvate dentro il
+    modello**: ogni chiamata successiva a `ML.PREDICT` riapplica esattamente
+    quegli stessi due numeri ai nuovi clienti, invece di ricalcolarli sul
+    nuovo batch di dati (che avrebbe una media leggermente diversa) — è lo
+    stesso motivo tecnico, applicato alla normalizzazione, per cui
+    `TRANSFORM` evita il training-serving skew descritto più sotto.
+
+    **Quando invece non serve.** `BOOSTED_TREE_CLASSIFIER` (e gli alberi in
+    generale) non ne ha bisogno: un albero decide dove tagliare ogni
+    feature guardando solo l'ordine dei valori ("spesa maggiore di 12.000€?
+    sì/no"), non la loro grandezza assoluta, quindi il gradiente non è mai
+    coinvolto e la scala delle feature non altera l'addestramento. È una
+    ragione tecnica in più (oltre a quelle già viste sopra) per cui i due
+    `model_type` non sono intercambiabili senza conseguenze.
+
+    **Stato: needs_reverification** — meccanismo di ottimizzazione basato
+    su gradiente e formula dello z-score sono conoscenza ML generale;
+    `ML.STANDARD_SCALER` come nome di funzione BigQuery ML specifico non è
+    riverificato su documentazione live in questa sessione. I numeri di
+    Nordica (media, deviazione standard, range) sono un esempio didattico
+    costruito per illustrare il meccanismo, non dati reali.
 
 **Perché conviene rispetto al notebook.** Non per la matematica — un
 `ARIMA_PLUS` in BigQuery ML e un ARIMA allenato con statsmodels
@@ -245,6 +316,78 @@ Prima di leggere le risposte del quiz sotto, prova a rispondere: quale
 strumento useresti, quale `model_type` sceglieresti se fosse BigQuery ML,
 e quali metriche guarderesti su `ML.EVALUATE` per giudicare se il modello
 è abbastanza buono da usare?
+
+## Prova tu, risolto: leggere `ML.EVALUATE` con numeri veri
+
+La risposta rapida ("BigQuery ML, `LOGISTIC_REG` o
+`BOOSTED_TREE_CLASSIFIER`, guarda precision/recall/F1/ROC AUC") è
+corretta ma da sola non dice se il modello è **buono abbastanza da
+usare**. Serve leggere i numeri veri. Nordica addestra il modello sui
+dati storici e lo valuta su un trimestre tenuto da parte: 200 clienti
+B2B, di cui 40 non hanno rinnovato (classe positiva = "non rinnova",
+perché è il caso su cui il team vuole agire) e 160 hanno rinnovato.
+
+`ML.CONFUSION_MATRIX(MODEL nordica.rischio_rinnovo)` restituisce una
+tabella che incrociamo così (numeri costruiti per l'esempio, non dati
+reali):
+
+| | Predetto: non rinnova | Predetto: rinnova |
+|---|---|---|
+| **Reale: non rinnova** (40) | 28 (TP) | 12 (FN) |
+| **Reale: rinnova** (160) | 18 (FP) | 142 (TN) |
+
+Da questa tabella, `ML.EVALUATE` calcola:
+
+- **Precision** = TP / (TP + FP) = 28 / (28 + 18) = 28/46 ≈ **0,61**. Su
+  100 clienti che il modello segnala come "a rischio", circa 61
+  rinunciano davvero; gli altri 39 avrebbero rinnovato comunque — sono
+  falsi allarmi.
+- **Recall** = TP / (TP + FN) = 28 / (28 + 12) = 28/40 = **0,70**. Il
+  modello intercetta il 70% dei clienti che davvero non rinnoveranno; il
+  restante 30% (12 clienti su 40) sfugge senza che nessuno se ne accorga
+  in tempo.
+- **F1** = 2 × (precision × recall) / (precision + recall) = 2 × (0,61 ×
+  0,70) / (0,61 + 0,70) ≈ **0,65**. Una singola cifra che pesa precision
+  e recall insieme — utile per confrontare due modelli, ma da sola non
+  dice quale dei due errori (falsi allarmi o clienti persi) pesa di più
+  per Nordica.
+- **Accuracy** = (TP + TN) / totale = (28 + 142) / 200 = **0,85**. Qui è
+  un numero fuorviante da solo: un modello che dicesse sempre "rinnova"
+  otterrebbe comunque l'80% di accuracy (160 clienti su 200 rinnovano
+  davvero), senza intercettare un solo cliente a rischio. L'accuracy alta
+  nasconde un problema quando le classi sono sbilanciate, come qui (20%
+  di abbandono contro 80% di rinnovo) — è il motivo per cui `ML.EVALUATE`
+  restituisce anche precision/recall/F1 e non solo accuracy.
+
+**Quale numero conta di più, per Nordica.** Un falso negativo (un
+cliente che sta per abbandonare e il modello non lo segnala) costa a
+Nordica l'intero valore del contratto annuale perso, senza nessun
+tentativo di trattenerlo. Un falso positivo (un cliente segnalato "a
+rischio" che in realtà avrebbe rinnovato comunque) costa solo lo sconto
+di un'offerta di fidelizzazione inviata inutilmente. Con questa
+asimmetria di costo, Nordica preferisce un modello con **recall più
+alto anche a scapito della precision**: `ML.PREDICT` restituisce una
+probabilità continua, non solo un'etichetta sì/no, quindi il team può
+abbassare la soglia di decisione (es. da 0,5 a 0,3: "segnala come
+a rischio chiunque abbia probabilità di abbandono sopra il 30%, non solo
+sopra il 50%") per intercettare più clienti a rischio, accettando più
+falsi allarmi in cambio.
+
+**ROC AUC**, l'ultima metrica citata dalla guida per la classificazione,
+misura la qualità del modello **indipendentemente dalla soglia
+scelta**: è la probabilità che, presi a caso un cliente che non
+rinnoverà e uno che rinnoverà, il modello assegni al primo una
+probabilità di abbandono più alta. Un ROC AUC di 0,5 equivale a
+indovinare a caso; 1,0 è una separazione perfetta tra le due classi. È
+la metrica giusta per confrontare due modelli **prima** di decidere dove
+mettere la soglia di decisione, mentre precision/recall/F1 dipendono
+dalla soglia scelta.
+
+**Stato: needs_reverification** — le formule di precision/recall/F1/
+accuracy/ROC AUC sono definizioni matematiche standard (conoscenza ML
+generale, le stesse della Lezione 13 del corso principale); la tabella
+di confusione e tutti i numeri di Nordica sono un esempio didattico
+costruito per questa lezione, non un output reale di `ML.EVALUATE`.
 
 ## Errori comuni
 
