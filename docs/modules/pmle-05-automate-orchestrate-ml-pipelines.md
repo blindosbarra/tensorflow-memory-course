@@ -28,6 +28,12 @@ volta.
 
 ## Teoria essenziale
 
+Finora Nordica ha eseguito ogni passo a mano: un analista lancia la query
+di preprocessing, un altro avvia il training, un terzo controlla le
+metriche prima di aggiornare l'endpoint. Il Dominio 5 tratta cosa succede
+quando questo percorso deve ripetersi ogni settimana senza che nessuno lo
+esegua manualmente.
+
 ### 5.1 — Sviluppare pipeline end-to-end
 
 Tre considerazioni: **validare** dati e modelli — controllare
@@ -40,6 +46,23 @@ generale, Ray on Gemini Enterprise Agent Platform per carichi
 distribuiti); garantire preprocessing dei dati **coerente** tra training
 e serving — lo stesso tema del training-serving skew visto nel Dominio 4,
 qui affrontato a livello di pipeline.
+
+**Nordica, concretamente.** La pipeline che riaddestra il modello di
+rinnovo contratti ogni settimana è una sequenza di passi collegati (query
+di preprocessing su BigQuery → training → valutazione → deploy), ognuno
+rappresentato come un **componente** con input e output ben definiti —
+questo è ciò che uno strumento come Agent Platform Pipelines o Kubeflow
+Pipelines orchestra: esegue i componenti nell'ordine giusto, passa
+l'output di uno come input al successivo, e riprende da dove si era
+fermato se un passo fallisce, invece di dover far ripartire tutto a mano.
+Una notte, la fonte a monte dei dati ordini invia un file corrotto (metà
+delle righe con valori nulli dove non dovrebbero esserci). Senza un passo
+di **validazione dati** prima del training, la pipeline procederebbe
+comunque, addestrerebbe un modello su dati rotti, e lo distribuirebbe
+automaticamente in produzione — l'automazione avrebbe propagato l'errore
+invece di bloccarlo. Con un passo di validazione (soglie su percentuale
+di valori nulli, range atteso dei valori), la pipeline si ferma prima e
+avvisa il team.
 
 ### 5.2 — Automatizzare il retraining
 
@@ -56,6 +79,21 @@ integrare automaticamente le modifiche al codice, poi distribuirle) con
 una terza fase specifica di ML, il *continuous training*: riaddestrare
 automaticamente un modello quando arrivano nuovi dati o si verifica una
 condizione che lo giustifica.
+
+**Nordica, concretamente.** Riaddestrare ogni notte è uno spreco: il
+comportamento dei clienti business non cambia così in fretta, e ogni run
+di training ha un costo di calcolo. Riaddestrare una volta al trimestre a
+intervallo fisso rischia l'opposto: se l'accuratezza del modello crolla
+dopo un cambiamento improvviso nel mercato (es. una nuova politica di
+sconti dei concorrenti), il team lo scoprirebbe solo mesi dopo. La policy
+che la sottosezione 5.2 chiede di scegliere è quindi basata su una soglia
+di calo delle metriche in produzione (es. "riaddestra se l'AUC scende
+sotto 0.75"), non su un calendario arbitrario: il *quando* riaddestrare è
+una decisione a sé, distinta dal meccanismo tecnico di *come* farlo. Una
+volta deciso che serve un nuovo training, la pipeline CI/CD/CT lo
+esegue, valuta il nuovo modello, e lo distribuisce automaticamente solo
+se supera le soglie di qualità del passo di validazione (5.1) — la "CT"
+in più rispetto al CI/CD tradizionale del software.
 
 ### Il filo conduttore del dominio
 
@@ -75,21 +113,6 @@ esattamente la trasformazione di quel percorso manuale in una pipeline
 automatica e ripetibile — la stessa logica (split train/val/test,
 controllo di leakage, valutazione prima di accettare un modello) deve
 valere anche quando nessuno esegue i passi a mano.
-
-## Scenari di ragionamento
-
-(Dettagliati in `knowledge/pmle-05-automate-orchestrate-ml-pipelines/examples.md`.)
-
-- Una pipeline notturna riceve dati corrotti da una fonte a monte → senza
-  un passo di validazione dati prima del training, la pipeline
-  addestrerebbe e distribuirebbe automaticamente un modello su dati
-  rotti.
-- Un modello di raccomandazione perde accuratezza gradualmente → una
-  policy di retraining basata su una soglia di calo delle metriche, non
-  solo su un intervallo fisso.
-- Preprocessing scritto due volte (training e serving) con una media
-  diversa per la normalizzazione → il modello riceve in produzione input
-  sistematicamente diversi da quelli di training.
 
 ## Errori comuni
 

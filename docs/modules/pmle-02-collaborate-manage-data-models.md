@@ -32,6 +32,16 @@ sei.
 
 ## Teoria essenziale
 
+### Nordica Commerce, di nuovo — ora servono dati puliti, un prototipo e una memoria condivisa
+
+Riprendiamo "Nordica Commerce" dal Dominio 1: i due analisti hanno già in
+produzione il modello di previsione domanda (BigQuery ML) e il
+classificatore di foto difettose (AutoML). Ora il team cresce a cinque
+persone e affronta un problema più grande: un modello che predica quali
+clienti business rischiano di non rinnovare il contratto, usando anche il
+testo dei ticket di assistenza. Le tre sottosezioni del Dominio 2 sono
+esattamente le tre fasi che il team attraversa per arrivarci.
+
 ### 2.1 — Esplorare e preprocessare i dati
 
 Quattro attività: organizzare tipi di dato diversi (tabellare, testo,
@@ -47,6 +57,19 @@ Il criterio esplicito della guida è la **scala**: lo stesso problema di
 preprocessing richiede uno strumento diverso a seconda di quanti dati ci
 sono e di dove vivono già. Non esiste uno strumento "sempre giusto".
 
+**Nordica, concretamente.** I ticket di assistenza (lo stesso testo che il
+modello di riassunto del Dominio 1 elabora) sono 2 TB di log testuali su
+tre anni — non stanno in memoria su una singola macchina. Provare a
+caricarli in un notebook con pandas fallirebbe con un errore di memoria
+esaurita molto prima di arrivare al training. La scelta secondo 2.1 è uno
+strumento di elaborazione **distribuita** come Dataflow o Apache Spark,
+che processa i dati a pezzi su più macchine invece di caricarli tutti
+insieme: la scala del problema, non l'abitudine del team, determina lo
+strumento. In più, quei ticket contengono nomi e indirizzi email dei
+clienti — la fase di preprocessing è anche il punto in cui va applicata
+la gestione delle informazioni sensibili (PII), non un passo da rimandare
+a dopo l'addestramento.
+
 ### 2.2 — Prototipare modelli in notebook
 
 Prima di investire in una pipeline di training strutturata, si prototipa:
@@ -61,6 +84,17 @@ collaborazione vengono **prima** della scelta del framework. Un notebook
 prototipale condiviso male (credenziali nel codice, ambiente non isolato)
 è un rischio anche in fase di semplice esplorazione.
 
+**Nordica, concretamente.** Prima di impegnare settimane su una pipeline
+di training completa per il modello di rinnovo contratti, un data
+scientist vuole sapere in mezza giornata se un modello già pronto (da
+Model Garden) è anche solo ragionevolmente preciso su questo problema. La
+risposta della sottosezione 2.2 è: prototipa in un notebook **condiviso**
+(Workbench o Colab Enterprise), non in un file locale sul proprio laptop
+— così un collega può riprendere il lavoro, rivedere il codice, e nessuna
+credenziale finisce salvata solo sulla macchina di una persona. Se il
+prototipo è promettente, si passa a una pipeline strutturata; se non lo
+è, il team ha perso mezza giornata invece di due settimane.
+
 ### 2.3 — Tracciare ed eseguire esperimenti
 
 Tre attività: scegliere l'ambiente giusto per sviluppo/sperimentazione in
@@ -71,19 +105,36 @@ valutare output generativi difficili da misurare con metriche numeriche
 classiche; tracciare e confrontare artefatti, versioni e lineage dei
 modelli (Experiments su Agent Platform, Agent Platform ML Metadata).
 
-Un esempio concreto di "LLM-as-a-judge" (**non nominato dalla exam
-guide**, aggiunto qui come dettaglio supplementare da riverificare) è
-**AutoSxS** ("Auto side-by-side"): uno strumento della famiglia Vertex AI
-/ Gemini Enterprise Agent Platform che confronta automaticamente gli
-output di due modelli sugli stessi prompt, usando un autorater per
-scegliere la risposta preferita e produrre metriche tipo win-rate, senza
-bisogno di un valutatore umano per ogni esempio.
+**Nordica, concretamente (parte 1 — tracking).** Due dei cinque membri del
+team provano, in giorni diversi e senza coordinarsi, due configurazioni
+diverse di iperparametri per il modello di rinnovo contratti. Una
+settimana dopo nessuno dei due ricorda con certezza quale run ha usato
+quali dati, quali parametri, quale versione del preprocessing. Senza un
+sistema di tracking (Experiments, ML Metadata) questo confronto è
+impossibile da fare con certezza — bisogna ri-eseguire tutto da capo per
+saperlo. Tracciare artefatti, versioni e lineage non è un passo opzionale
+di documentazione: è la condizione per poter dire "il modello B batte il
+modello A" con dati alla mano.
 
-Il filo conduttore delle tre sottosezioni segue l'ordine reale di un
-progetto: prepari i dati (2.1), prototipi velocemente (2.2), tieni
-traccia di cosa hai provato (2.3) — così un collega, o tu stesso tra sei
-mesi, può ripetere o confrontare un esperimento senza rifare tutto da
-capo.
+**Nordica, concretamente (parte 2 — valutare l'output generativo).** Il
+modello di riassunto ticket del Dominio 1 (Problema 3) genera testo, non
+un numero o una categoria: non esiste un "accuracy" da calcolare come per
+un classificatore. Qui entra "LLM-as-a-judge", nominato genericamente
+dalla guida. Un esempio concreto di come funziona (**non nominato dalla
+exam guide**, aggiunto qui come dettaglio supplementare da riverificare)
+è **AutoSxS** ("Auto side-by-side"): si generano due riassunti dello
+stesso ticket con due versioni del modello (es. prima e dopo un tuning),
+si passano entrambi a un modello valutatore ("autorater") insieme al
+ticket originale, e l'autorater sceglie quale dei due riassunti è
+migliore — ripetuto su molti ticket produce una metrica di win-rate
+("la versione B è preferita nel 68% dei casi") senza che una persona
+debba leggere e giudicare ogni singolo confronto a mano.
+
+Il filo conduttore delle tre sottosezioni segue l'ordine reale del
+progetto di Nordica: preparare i dati (2.1), prototipare velocemente
+(2.2), tenere traccia di cosa è stato provato e di come si misura se ha
+funzionato (2.3) — così un collega, o lo stesso team tra sei mesi, può
+ripetere o confrontare un esperimento senza rifare tutto da capo.
 
 ### Collegamento al corso principale
 
@@ -93,23 +144,6 @@ descritto nella sottosezione 2.1, fatto con pandas invece che con BigQuery
 o Dataflow: lo stesso ragionamento su qualità dei dati e separazione
 train/val/test si applica indipendentemente dallo strumento — cambia la
 scala, non il principio.
-
-## Scenari di ragionamento
-
-(Dettagliati in `knowledge/pmle-02-collaborate-manage-data-models/examples.md`.)
-
-- 2 TB di log testuali da trasformare in feature, dati che non stanno in
-  memoria su una macchina → uno strumento distribuito (Dataflow o Apache
-  Spark), non un framework Python in-memoria: la scelta segue scala e
-  complessità, non abitudine.
-- Verificare in mezza giornata se un modello open-source da Model Garden è
-  ragionevolmente preciso, prima di investire settimane in una pipeline
-  completa → prototipo in notebook condiviso (Workbench o Colab
-  Enterprise).
-- Due membri del team hanno provato due configurazioni di iperparametri
-  diverse senza coordinarsi → senza tracking (Experiments, ML Metadata)
-  non si può confrontare in modo affidabile quale modello ha usato quali
-  dati e parametri.
 
 ## Errori comuni
 

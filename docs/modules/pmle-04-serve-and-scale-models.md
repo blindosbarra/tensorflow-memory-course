@@ -29,6 +29,11 @@ cresce.
 
 ## Teoria essenziale
 
+Il modello di rinnovo contratti di Nordica (Domini 2-3) è ora addestrato e
+validato. Resta la parte che gli utenti finali vedono davvero: renderlo
+disponibile per fare predizioni, senza rompere nulla quando cambia
+versione o quando il traffico cresce.
+
 ### 4.1 — Servire i modelli
 
 Cinque considerazioni: distribuire per **inferenza batch** (predizioni su
@@ -48,6 +53,25 @@ qualcosa non va prima di un rollout completo. In un **A/B testing**, il
 traffico viene diviso in modo più esteso tra due versioni per un
 confronto statistico dei risultati.
 
+**Nordica, concretamente.** Il team ha due esigenze molto diverse per lo
+stesso modello di rinnovo contratti: una volta al mese, la direzione
+commerciale vuole lo score di rischio-abbandono su tutti i 40.000
+contratti attivi, per pianificare le priorità del trimestre — nessuno
+aspetta una risposta immediata, quindi è **inferenza batch**, un job che
+gira di notte e scrive i risultati in una tabella. Ma quando un account
+manager apre la scheda di un singolo cliente durante una chiamata, vuole
+lo score aggiornato in quel momento — è **inferenza online**, una singola
+richiesta a bassa latenza. Stesso modello, due modalità di serving
+diverse a seconda di chi lo usa e quando.
+
+Quando arriva una nuova versione del modello (es. ri-addestrato con tre
+mesi di dati in più), Nordica non la manda a tutto il traffico in un
+colpo solo: prima un **canary deployment** — il 5% del traffico alla
+nuova versione, per un giorno, controllando che non si rompa nulla — poi,
+se tutto va bene, un **A/B testing** più esteso per confrontare
+statisticamente se la nuova versione produce davvero previsioni migliori,
+prima di sostituire completamente la vecchia.
+
 ### 4.2 — Scalare il serving online
 
 Cinque considerazioni: gestire e servire feature con l'Agent Platform
@@ -58,6 +82,18 @@ pubblici o privati; scegliere l'hardware giusto (CPU, GPU, TPU, o
 serving in base al throughput (Gemini Enterprise Agent Platform
 Inference, containerized serving); ottimizzare i modelli sia per il
 training sia per il serving in produzione.
+
+**Nordica, concretamente.** Una delle feature del modello di rinnovo
+contratti è "numero di ticket di assistenza aperti negli ultimi 90
+giorni", calcolata durante il training con una query batch su BigQuery.
+Se in produzione l'endpoint di serving calcolasse questa stessa feature
+con una logica leggermente diversa (es. contando anche i ticket chiusi lo
+stesso giorno, che la query di training escludeva), il modello riceverebbe
+in produzione input sistematicamente diversi da quelli visti in training
+— lo stesso training-serving skew già incontrato nei Domini 1 e 2. Usare
+lo stesso Feature Store sia per il training sia per il serving elimina
+questo rischio: la feature è calcolata una sola volta, in un unico posto,
+e sia il job di training sia l'endpoint online la leggono da lì.
 
 ### Il filo conduttore del dominio
 
@@ -77,20 +113,6 @@ produzione. Il Dominio 4 copre esattamente il passo successivo: cosa
 succede a quel file `.keras` una volta che deve rispondere a richieste
 reali, con più utenti, con la necessità di aggiornarlo senza interrompere
 il servizio.
-
-## Scenari di ragionamento
-
-(Dettagliati in `knowledge/pmle-04-serve-and-scale-models/examples.md`.)
-
-- Un milione di documenti da classificare una volta al mese vs un
-  documento appena caricato da classificare in tempo reale → inferenza
-  batch nel primo caso, online nel secondo.
-- Una nuova versione di un modello di raccomandazione da verificare senza
-  rischiare tutto il traffico → canary deployment per limitare il danno,
-  A/B testing per un confronto statistico più esteso.
-- Feature calcolate diversamente tra training e un servizio online →
-  training-serving skew; usare lo stesso Feature Store in entrambe le
-  fasi evita l'incoerenza.
 
 ## Errori comuni
 

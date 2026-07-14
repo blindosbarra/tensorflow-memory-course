@@ -29,6 +29,11 @@ non solo conoscenza di prodotto.
 
 ## Teoria essenziale
 
+Riprendiamo ancora "Nordica Commerce": il modello di rinnovo contratti B2B
+del Dominio 2 ha superato il prototipo in notebook ed è pronto per essere
+addestrato in modo strutturato. Le tre sottosezioni del Dominio 3 sono le
+decisioni che Nordica deve prendere per portarlo lì.
+
 ### 3.1 — Scegliere l'approccio dato il compito
 
 Quattro considerazioni: scegliere il **tipo di modello** (es. ARIMA per
@@ -44,6 +49,20 @@ accurato ma opaco può non essere la scelta giusta quando servono
 spiegazioni comprensibili (es. per obblighi normativi). L'esame tratta
 l'interpretabilità come un vincolo di progettazione da subito, non un
 problema da risolvere dopo con strumenti di spiegabilità a posteriori.
+
+**Nordica, concretamente.** Il modello di rinnovo contratti non serve
+solo a prevedere: quando un cliente business scopre che le sue condizioni
+non sono state rinnovate automaticamente, l'ufficio commerciale deve
+potergli spiegare *perché* — è una relazione contrattuale, non una
+raccomandazione anonima su un sito consumer. Un modello a scatola nera
+(es. una rete profonda complessa) potrebbe essere leggermente più
+accurato di un `BOOSTED_TREE_CLASSIFIER` o di una `LOGISTIC_REG`, ma se
+nessuno riesce a spiegare al cliente quali fattori hanno pesato nella
+decisione, quella maggiore accuratezza non vale il costo: qui
+l'interpretabilità (in questo caso, dei modelli visti nel Dominio 1,
+`LOGISTIC_REG` e gli alberi restano più facili da ispezionare di una
+`DNN_CLASSIFIER`) è un vincolo che entra nella scelta del modello fin
+dall'inizio, non un report da produrre a posteriori.
 
 ### 3.2 — Addestrare i modelli
 
@@ -62,6 +81,17 @@ Quest'ultimo punto è esplicito nella guida: non sempre il fine-tuning è
 la risposta. A volte un prompt ben progettato o un modello più piccolo
 bastano, ed è più economico e veloce da iterare.
 
+**Nordica, concretamente.** Torniamo al modello di riassunto ticket del
+Dominio 1: il primo tentativo con solo prompting produce riassunti
+generici ma corretti. Se il team scopre (tramite AutoSxS, Dominio 2) che
+il formato non è ancora abbastanza costante per l'operatore umano,
+la sequenza da seguire è quella del Dominio 1: prima un tuning efficiente
+in parametri (es. LoRA) sul formato desiderato, e solo se anche questo
+non basta si considera il fine-tuning completo. La sottosezione 3.2
+tratta il "come" tecnico di quell'ultima opzione (SDK, hyperparameter
+tuning, debug di un training che fallisce) — ma la decisione *se* farlo
+resta quella vista nel Dominio 1.
+
 ### 3.3 — Scegliere l'hardware giusto
 
 Due considerazioni: valutare le opzioni di calcolo/acceleratore (CPU,
@@ -77,6 +107,20 @@ il dataset o il batch è grande. Nel parallelismo del modello, il modello
 stesso è diviso tra più dispositivi — necessario quando il modello non
 entra nella memoria di un singolo acceleratore.
 
+**Nordica, concretamente.** Se in futuro Nordica decidesse di addestrare
+da zero (non solo fare fine-tuning) un modello linguistico proprio sui
+tre anni di ticket accumulati — uno scenario più estremo di quelli visti
+finora, ma comunque nel perimetro dell'esame — due problemi diversi
+possono presentarsi. Se il *dataset* è enorme ma il modello entra sulla
+memoria di una singola GPU, la soluzione è il parallelismo dei dati: ogni
+GPU tiene una copia intera del modello e processa un pezzo diverso del
+batch, poi i gradienti calcolati vengono mediati tra le GPU. Se invece è
+il *modello stesso* a non entrare nella memoria di una singola GPU (comune
+per i modelli linguistici più grandi), il parallelismo dei dati non basta
+— ogni dispositivo dovrebbe comunque contenere una copia intera del
+modello — e serve il parallelismo del modello, che divide gli strati o i
+parametri del modello stesso su più dispositivi.
+
 ### Collegamento al corso principale
 
 Le Lezioni 6-13 del corso principale (NumPy, tensori, gradienti, loss,
@@ -86,20 +130,6 @@ costruire e addestrare un modello a mano; il Dominio 3 valuta la
 competenza complementare — quale strumento e quale scala usare per lo
 stesso problema in un contesto aziendale reale (un dataset che non entra
 in RAM, un training che deve girare su più GPU).
-
-## Scenari di ragionamento
-
-(Dettagliati in `knowledge/pmle-03-scale-prototypes-into-ml-models/examples.md`.)
-
-- Una banca deve motivare per legge ogni rifiuto di prestito → un modello
-  più accurato ma opaco potrebbe non essere la scelta giusta:
-  l'interpretabilità è un vincolo di progettazione esplicito.
-- Un team vuole che un modello fondazionale risponda in un tono aziendale
-  specifico su un compito che già sa fare → spesso un prompt ben
-  progettato basta, il fine-tuning va scelto solo quando necessario.
-- Un modello linguistico non entra sulla memoria di una singola GPU → il
-  parallelismo dei dati non risolve il problema, serve parallelismo del
-  modello.
 
 ## Errori comuni
 
@@ -116,9 +146,10 @@ in RAM, un training che deve girare su più GPU).
 
 ## Quiz
 
-1. Una banca deve motivare legalmente ogni rifiuto di prestito con una
-   spiegazione comprensibile. Quale considerazione della sottosezione 3.1
-   entra in gioco, e come influenza la scelta del modello?
+1. Nordica deve poter spiegare a un cliente business perché il suo
+   contratto non è stato rinnovato automaticamente. Quale considerazione
+   della sottosezione 3.1 entra in gioco, e come influenza la scelta del
+   modello?
 2. Perché la guida elenca esplicitamente "quando il tuning dovrebbe
    essere considerato" come competenza a sé, separata da "come fare il
    tuning"?
@@ -131,9 +162,11 @@ in RAM, un training che deve girare su più GPU).
 
 1. L'interpretabilità, citata esplicitamente come "modeling techniques
    given interpretability requirements": un modello più accurato ma
-   opaco può non essere la scelta giusta se serve una spiegazione
-   comprensibile, quindi l'interpretabilità va considerata nella scelta
-   del modello, non aggiunta dopo.
+   opaco (es. una DNN complessa) può non essere la scelta giusta se serve
+   spiegare al cliente quali fattori hanno pesato sulla decisione, quindi
+   l'interpretabilità va considerata nella scelta del modello (es.
+   preferire `LOGISTIC_REG` o un albero a una rete profonda), non
+   aggiunta dopo con strumenti di spiegabilità a posteriori.
 2. Perché il fine-tuning ha un costo (tempo, calcolo, iterazione più
    lenta) che non sempre è giustificato: a volte un prompt ben
    progettato o un modello più piccolo ottengono lo stesso risultato a
