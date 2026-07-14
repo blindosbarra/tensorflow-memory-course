@@ -77,7 +77,51 @@ questa, ma anche `LINEAR_REG`/`LOGISTIC_REG` per regressione o
 classificazione lineare, `BOOSTED_TREE_REGRESSOR`/`_CLASSIFIER` per
 alberi con boosting del gradiente, `KMEANS` per clustering,
 `DNN_CLASSIFIER`/`_REGRESSOR` per reti dense — Nordica userà alcune di
-queste altre opzioni più avanti in questa stessa lezione. Una volta
+queste altre opzioni più avanti in questa stessa lezione.
+
+!!! info "Cosa sono questi modelli, in pratica (non dare per scontato di conoscerli)"
+    - **`LINEAR_REG`**: traccia una retta (o iperpiano) tra le feature e
+      un numero da prevedere — es. "quanto venderemo", un valore
+      continuo. È il modello di regressione più semplice: veloce da
+      addestrare, facile da interpretare, ma cattura solo relazioni
+      lineari tra le feature e il target.
+    - **`LOGISTIC_REG`**: come sopra ma per prevedere una categoria (tipicamente
+      sì/no, es. "questo cliente rinnoverà il contratto?"). Nonostante il
+      nome "regressione" è un modello di **classificazione**: restituisce
+      una probabilità tra 0 e 1.
+    - **`BOOSTED_TREE_REGRESSOR`/`_CLASSIFIER`** (gradient-boosted trees,
+      la stessa famiglia di algoritmi di XGBoost): costruisce molti
+      alberi decisionali piccoli in sequenza, dove ogni nuovo albero
+      corregge gli errori di quelli precedenti. Cattura relazioni non
+      lineari tra le feature (a differenza di `LINEAR_REG`/`LOGISTIC_REG`)
+      ed è spesso la scelta con le migliori prestazioni su dati tabellari
+      strutturati, al costo di essere meno immediato da interpretare di
+      una singola retta.
+    - **`KMEANS`**: **clustering**, non predizione — non c'è un target da
+      indovinare. Raggruppa le righe in un numero di gruppi (cluster)
+      scelto in anticipo, mettendo insieme i punti che si somigliano di
+      più secondo le feature date. Utile per segmentazione clienti o
+      rilevare pattern quando non si ha già un'etichetta "corretta" da
+      imparare.
+    - **`DNN_CLASSIFIER`/`_REGRESSOR`** (rete neurale densa, le stesse
+      reti feed-forward viste nelle Lezioni 5-7 del corso principale):
+      utile quando le relazioni tra le feature sono complesse e non
+      catturate bene da una retta o da alberi, ma richiede più dati e più
+      tempo di addestramento dei modelli sopra per dare un vantaggio
+      reale.
+    - **`ARIMA_PLUS`** (usato da Nordica qui sopra): pensato
+      specificamente per **serie storiche** — prevedere un valore futuro
+      a partire dal suo stesso andamento passato nel tempo (stagionalità,
+      trend), non da feature indipendenti come gli altri modelli di
+      questa lista.
+
+    In breve: prima si decide il **tipo di problema** (ho un'etichetta da
+    prevedere? è un numero o una categoria? ho invece solo dati da
+    raggruppare? il tempo è la variabile chiave?), e quella scelta
+    determina quale famiglia di `model_type` è pertinente — non il
+    contrario.
+
+Una volta
 addestrato, `ML.PREDICT(MODEL nordica.previsione_domanda, (SELECT ...))`
 genera le previsioni, e `ML.EVALUATE(MODEL nordica.previsione_domanda)`
 restituisce le metriche di errore sul modello — per un problema di

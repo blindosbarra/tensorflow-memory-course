@@ -41,14 +41,33 @@ evidence.yaml.
 - `CREATE MODEL nome_dataset.nome_modello OPTIONS(model_type='...',
   input_label_cols=['colonna_target']) AS SELECT ...`: un'unica
   istruzione SQL che addestra il modello sui risultati della query. Il
-  `model_type` sceglie l'algoritmo: `LINEAR_REG`/`LOGISTIC_REG` per
-  regressione/classificazione lineare, `KMEANS` per clustering,
-  `ARIMA_PLUS` per serie storiche, `BOOSTED_TREE_CLASSIFIER`/
-  `_REGRESSOR` per alberi con boosting del gradiente,
-  `DNN_CLASSIFIER`/`_REGRESSOR` per reti dense, `AUTOML_CLASSIFIER`/
-  `_REGRESSOR` per delegare la scelta dell'algoritmo ad AutoML invece di
-  fissarne uno. **Stato: needs_reverification** (elenco indicativo, non
-  necessariamente completo o aggiornato).
+  `model_type` sceglie l'algoritmo — elenco con cosa fa davvero ciascuno,
+  non solo il nome:
+    - `LINEAR_REG`: retta/iperpiano tra le feature e un target numerico
+      continuo (regressione). Semplice e interpretabile, cattura solo
+      relazioni lineari.
+    - `LOGISTIC_REG`: come sopra ma per un target categorico (tipicamente
+      binario); nonostante il nome è classificazione, non regressione.
+    - `KMEANS`: clustering non supervisionato — raggruppa righe simili
+      senza un target da prevedere, a differenza di tutti gli altri
+      model_type di questa lista.
+    - `ARIMA_PLUS`: serie storiche — prevede un valore futuro dal proprio
+      andamento passato nel tempo (trend, stagionalità), non da feature
+      indipendenti.
+    - `BOOSTED_TREE_CLASSIFIER`/`_REGRESSOR`: alberi decisionali costruiti
+      in sequenza (stessa famiglia di XGBoost), ognuno che corregge gli
+      errori del precedente; cattura relazioni non lineari, spesso la
+      scelta più performante su dati tabellari strutturati.
+    - `DNN_CLASSIFIER`/`_REGRESSOR`: rete neurale densa (stessa famiglia
+      delle Lezioni 5-7 del corso principale); utile per relazioni
+      complesse tra le feature, richiede più dati/tempo delle opzioni
+      sopra per dare un vantaggio reale.
+    - `AUTOML_CLASSIFIER`/`_REGRESSOR`: delega la scelta dell'algoritmo e
+      degli iperparametri alla ricerca di AutoML (vedi sotto) invece di
+      fissarne uno esplicitamente.
+
+  **Stato: needs_reverification** (elenco indicativo, non necessariamente
+  completo o aggiornato).
 - Clausola `TRANSFORM(...)`: dentro `CREATE MODEL` si possono dichiarare
   le trasformazioni di feature (es. `ML.STANDARD_SCALER`,
   `ML.BUCKETIZE`, `ML.ONE_HOT_ENCODER`) una sola volta; BigQuery ML le
