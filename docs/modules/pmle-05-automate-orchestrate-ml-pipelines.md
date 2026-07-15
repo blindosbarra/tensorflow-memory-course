@@ -3,7 +3,7 @@ id: pmle-05-automate-orchestrate-ml-pipelines
 title: "Certificazione PMLE - Dominio 5: automatizzare e orchestrare pipeline ML"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 25
+estimated_minutes: 35
 prerequisites: [pmle-04-serve-and-scale-models]
 deliverables: []
 sources:
@@ -17,9 +17,11 @@ sources:
     Contenuto verificato parola per parola contro la exam guide ufficiale
     Google Cloud, fornita direttamente dallo studente. Il concetto di
     CI/CD/CT, un esempio concreto di definizione di pipeline con l'SDK
-    Kubeflow, e i criteri di scelta tra Kubeflow Pipelines su GKE e Agent
-    Platform Pipelines sono spiegati con conoscenza MLOps generale, non da
-    documentazione di prodotto — segnalati dove compaiono.
+    Kubeflow, i criteri di scelta tra Kubeflow Pipelines su GKE e Agent
+    Platform Pipelines, e i dettagli implementativi di compilazione/
+    sottomissione/trigger di una pipeline e di CI/CD con Cloud Build sono
+    spiegati con conoscenza MLOps generale, non da documentazione di
+    prodotto — segnalati dove compaiono.
 
 ## Cosa copre questo dominio
 
@@ -148,6 +150,39 @@ avvisa il team.
     ragionamento generale sul trade-off gestito-vs-self-managed, non
     affermazioni verificate su documentazione live in questa sessione).
 
+!!! info "Come si esegue davvero una pipeline, e cosa la fa partire senza intervento umano"
+    Scrivere la pipeline (sopra) è solo metà del lavoro: qualcosa deve
+    **compilarla, sottometterla, e farla partire al momento giusto** —
+    la guida nomina "orchestrare pipeline" ma non questi tre passi
+    separati.
+
+    **Compilazione e sottomissione.** Il codice Python della pipeline
+    viene compilato in una definizione portabile (un file JSON/YAML che
+    descrive il grafo di componenti, indipendente dal motore che poi lo
+    esegue), che viene poi sottomessa specificando una **pipeline root**
+    (un bucket Cloud Storage dove salvare gli artefatti intermedi tra un
+    componente e il successivo — le tabelle di feature, il modello
+    addestrato, le metriche) e i valori dei parametri di quella run
+    specifica (es. quale `dataset_raw` usare questa settimana).
+
+    **Cosa fa davvero partire la pipeline.** Una pipeline non si esegue
+    da sola: serve un **trigger**, e ce ne sono di due tipi diversi a
+    seconda della policy scelta (Dominio 5.2, sotto). Per un retraining a
+    **intervallo fisso** (es. ogni lunedì alle 3:00), un job pianificato
+    tipo cron avvia la pipeline a orari prestabiliti. Per un retraining
+    **guidato da evento** (es. "appena arriva un nuovo file di dati
+    grezzi"), un trigger event-driven osserva un evento specifico (es. un
+    nuovo file caricato su un bucket Cloud Storage) e avvia
+    automaticamente una nuova run della pipeline in risposta — utile
+    quando i dati arrivano a intervalli irregolari e aspettare il
+    prossimo slot pianificato sprecherebbe tempo.
+
+    **Stato: needs_reverification** — meccanica generale di compilazione/
+    sottomissione/trigger di una pipeline gestita, conoscenza MLOps
+    generale non specifica di un prodotto Google Cloud; nomi esatti di
+    servizi e parametri non riverificati su documentazione live in questa
+    sessione.
+
 ### 5.2 — Automatizzare il retraining
 
 Due considerazioni: determinare una **policy di retraining** appropriata
@@ -178,6 +213,36 @@ volta deciso che serve un nuovo training, la pipeline CI/CD/CT lo
 esegue, valuta il nuovo modello, e lo distribuisce automaticamente solo
 se supera le soglie di qualità del passo di validazione (5.1) — la "CT"
 in più rispetto al CI/CD tradizionale del software.
+
+!!! info "CI/CD/CT con Cloud Build, concretamente"
+    La guida cita Cloud Build come esempio, senza mostrare come una
+    pipeline di build si collega davvero al retraining automatico.
+
+    **La sequenza di passi, concreta.** Un file di configurazione build
+    definisce una sequenza di step eseguiti in un container: (1)
+    eseguire i test automatici sul codice dei componenti della pipeline
+    (lo stesso principio delle Lezioni 1-15 del corso principale, qui
+    applicato al codice invece che ai dati); (2) ricompilare la
+    definizione della pipeline (vedi sopra); (3) sottomettere/avviare la
+    pipeline compilata. Questa sequenza si attiva **automaticamente**
+    quando qualcuno modifica il codice della pipeline in un repository
+    Git e fa push — chiudendo il cerchio tra "un data scientist cambia lo
+    script di training o la logica di validazione" e "una nuova run di
+    pipeline verifica quella modifica end-to-end", senza che nessuno
+    debba ricordarsi di eseguirla a mano.
+
+    **Cosa distingue questo dal "CT" della policy di retraining.** Sono
+    due trigger diversi per due motivi diversi: un push di codice
+    (CI/CD, questo riquadro) verifica che una *modifica al codice* non
+    rompa la pipeline; una soglia di degrado delle metriche o un nuovo
+    volume di dati (CT, sopra) verifica che il *modello* vada
+    riaddestrato anche se il codice non è cambiato. Una pipeline matura
+    ha bisogno di entrambi i trigger, non solo di uno.
+
+    **Stato: needs_reverification** — sequenza generale di build/test/
+    deploy applicata a una pipeline ML, conoscenza CI/CD/MLOps generale;
+    nome e sintassi esatta del file di configurazione non riverificati su
+    documentazione live in questa sessione.
 
 ### Il filo conduttore del dominio
 
@@ -212,6 +277,15 @@ valere anche quando nessuno esegue i passi a mano.
 - Confondere CI/CD tradizionale con CI/CD/CT: la componente "CT"
   (continuous training) è specifica di ML e riguarda il modello stesso,
   non solo il codice che lo produce.
+- Affidarsi a un solo tipo di trigger: solo un trigger pianificato (cron)
+  non reagisce a un evento imprevisto (nuovi dati arrivati fuori
+  programma); solo un trigger event-driven senza policy sulla soglia di
+  degrado delle metriche non intercetta un modello che peggiora senza un
+  evento esplicito ad avvisare.
+- Trattare il trigger CI/CD (push di codice) e il trigger CT (soglia di
+  degrado del modello) come lo stesso meccanismo: verificano cose
+  diverse — che il codice non rompa la pipeline, e che il modello vada
+  riaddestrato — e servono entrambi in una pipeline matura.
 
 ## Quiz
 
@@ -223,6 +297,13 @@ valere anche quando nessuno esegue i passi a mano.
    riaddestrare", secondo la sottosezione 5.2?
 3. Cosa aggiunge "CT" (continuous training) rispetto al CI/CD tradizionale
    del software?
+4. Nordica vuole riaddestrare il modello ogni volta che arrivano abbastanza
+   dati nuovi, non a un orario fisso. Che tipo di trigger serve, e perché
+   un trigger pianificato (cron) non basterebbe?
+5. Un data scientist corregge un bug nella logica di validazione dati
+   della pipeline e fa push su Git. Cosa dovrebbe succedere
+   automaticamente, e perché non basta aspettare il prossimo retraining
+   pianificato per scoprire se la correzione funziona?
 
 <details>
 <summary><b>Apri le risposte</b></summary>
@@ -239,6 +320,19 @@ valere anche quando nessuno esegue i passi a mano.
    quando i dati o le condizioni lo richiedono; il CI/CD tradizionale
    testa e distribuisce solo modifiche al codice, non la componente
    "modello" che cambia con nuovi dati.
+4. Serve un trigger event-driven, che osserva l'arrivo di nuovi dati (es.
+   un nuovo file su Cloud Storage) e avvia la pipeline in risposta. Un
+   trigger pianificato non basterebbe perché i dati arrivano a intervalli
+   irregolari: aspettare il prossimo orario fisso sprecherebbe tempo se i
+   dati sono già pronti, o riaddestrerebbe inutilmente se non lo sono
+   ancora.
+5. Dovrebbe attivarsi automaticamente una pipeline CI/CD che esegue i
+   test sul codice, ricompila la pipeline e la sottomette — verificando
+   la correzione end-to-end subito. Non basta aspettare il prossimo
+   retraining pianificato perché quel trigger (CT, basato su soglie di
+   degrado del modello o volume di dati) verifica una cosa diversa: se il
+   *modello* va riaddestrato, non se una *modifica al codice* funziona
+   correttamente.
 
 </details>
 

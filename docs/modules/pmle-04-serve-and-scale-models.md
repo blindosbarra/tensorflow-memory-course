@@ -3,7 +3,7 @@ id: pmle-04-serve-and-scale-models
 title: "Certificazione PMLE - Dominio 4: servire e scalare i modelli"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 25
+estimated_minutes: 35
 prerequisites: [pmle-03-scale-prototypes-into-ml-models]
 deliverables: []
 sources:
@@ -16,9 +16,11 @@ sources:
 !!! note "Stato: contenuto verificato su fonte primaria"
     Contenuto verificato parola per parola contro la exam guide ufficiale
     Google Cloud, fornita direttamente dallo studente. La distinzione tra
-    A/B testing e canary deployment è spiegata con conoscenza generale di
-    software deployment, non da documentazione di prodotto — segnalata
-    dove compare.
+    A/B testing e canary deployment, e i dettagli implementativi di come
+    si crea davvero un endpoint/si fa il deploy/si configura
+    l'autoscaling, sono spiegati con conoscenza generale di software
+    deployment/MLOps, non da documentazione di prodotto — segnalati dove
+    compaiono.
 
 ## Cosa copre questo dominio
 
@@ -71,6 +73,52 @@ nuova versione, per un giorno, controllando che non si rompa nulla — poi,
 se tutto va bene, un **A/B testing** più esteso per confrontare
 statisticamente se la nuova versione produce davvero previsioni migliori,
 prima di sostituire completamente la vecchia.
+
+!!! info "Come si crea davvero un endpoint e si fa un rollout, concretamente"
+    La guida nomina "endpoint", "Model Registry" e "canary deployment",
+    senza spiegare come si mettono davvero in pratica.
+
+    **I tre passi per servire online.** (1) Il modello addestrato viene
+    caricato nel **Model Registry** come una risorsa versionata — ogni
+    nuova versione (es. dopo un retraining) è una voce distinta collegata
+    alla stessa entry logica del modello, non un file sparso. (2) Si crea
+    una risorsa **endpoint**, un indirizzo stabile a cui inviare
+    richieste di predizione — l'endpoint di per sé non contiene ancora
+    nessun modello. (3) Si **fa il deploy** di una (o più) versione del
+    modello su quell'endpoint, specificando `machine-type`, un numero
+    minimo e massimo di repliche, e — quando ci sono più versioni
+    deployate sullo stesso endpoint — una **ripartizione del traffico**
+    tra loro (es. `traffic-split=modello_v1=95,modello_v2=5` per il
+    canary del 5% descritto sopra). Cambiare la percentuale di traffico
+    non richiede un nuovo deploy: è un aggiornamento della configurazione
+    dell'endpoint.
+
+    **Autoscaling, concretamente.** `min-replica-count` e
+    `max-replica-count` definiscono i limiti; l'endpoint aggiunge o
+    toglie repliche in base a una metrica di utilizzo target (es.
+    utilizzo CPU o GPU). Un dettaglio spesso trascurato: `min-replica
+    -count=0` è l'opzione più economica (nessun costo quando non arrivano
+    richieste) ma introduce latenza di "cold start" sulla prima richiesta
+    dopo un periodo di inattività, perché serve tempo per avviare una
+    replica da zero; `min-replica-count>=1` costa di più ma tiene sempre
+    almeno una replica pronta — la stessa logica costo/latenza vista nel
+    Dominio 1 per la scelta tra prompting/tuning/fine-tuning, qui
+    applicata al serving.
+
+    **Inferenza batch, concretamente.** Un batch prediction job non crea
+    né usa un endpoint: punta direttamente a dati di input (es. una
+    tabella BigQuery o file su Cloud Storage), specifica dove scrivere
+    l'output, e usa il modello dal Model Registry — gira, produce i
+    risultati, e il calcolo viene rilasciato: nessuna infrastruttura resta
+    accesa in attesa della prossima richiesta, a differenza di un
+    endpoint online che è sempre disponibile (e quindi costa) anche senza
+    traffico.
+
+    **Stato: needs_reverification** — struttura generale di Model
+    Registry/endpoint/deploy/autoscaling/batch prediction è conoscenza
+    MLOps generale; nomi esatti di flag e parametri non riverificati su
+    documentazione live in questa sessione (bloccato, vedi
+    `course/research_gaps.md`).
 
 ### 4.2 — Scalare il serving online
 
@@ -127,6 +175,13 @@ il servizio.
 - Scegliere l'hardware di serving in base a cosa è stato usato in
   training, invece che in base al throughput e alla latenza richiesti in
   produzione.
+- Impostare `min-replica-count=0` per un servizio che deve rispondere
+  sempre a bassa latenza: il risparmio sul costo si paga con una latenza
+  di cold start sulla prima richiesta dopo l'inattività, spesso
+  inaccettabile per un caso d'uso interattivo.
+- Costruire un batch prediction job come se fosse un endpoint online (o
+  viceversa): il primo non lascia infrastruttura accesa dopo l'esecuzione,
+  il secondo sì — sono due pattern di costo diversi, non intercambiabili.
 
 ## Quiz
 
@@ -139,6 +194,11 @@ il servizio.
    produzione, pur essendo la stessa architettura e gli stessi pesi. Quale
    problema descritto in questa lezione potrebbe spiegarlo, e quale
    strumento del Dominio 4 lo previene?
+4. Nordica vuole spostare il 5% del traffico dell'endpoint di rinnovo
+   contratti sulla nuova versione del modello. Serve un nuovo deploy, o
+   basta un cambiamento di configurazione? Perché?
+5. Perché `min-replica-count=0` è l'opzione più economica ma non sempre
+   quella giusta per un endpoint online?
 
 <details>
 <summary><b>Apri le risposte</b></summary>
@@ -156,6 +216,16 @@ il servizio.
    Store (Agent Platform Feature Store) sia in training sia in serving,
    come descritto nella sottosezione 4.2, previene questo tipo di
    incoerenza.
+4. Basta un cambiamento di configurazione dell'endpoint (la ripartizione
+   del traffico tra le versioni già deployate), non un nuovo deploy: le
+   due versioni del modello sono già entrambe attive sull'endpoint, sta
+   solo cambiando quale percentuale di richieste ciascuna riceve.
+5. Perché nessuna replica resta attiva quando non arrivano richieste
+   (costo zero in quei momenti), ma la prima richiesta dopo un periodo di
+   inattività paga il tempo di avvio di una nuova replica da zero (cold
+   start) — un compromesso accettabile per un carico sporadico e
+   tollerante alla latenza, ma spesso inaccettabile per un servizio che
+   deve rispondere sempre velocemente.
 
 </details>
 

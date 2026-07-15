@@ -3,7 +3,7 @@ id: pmle-06-monitor-ai-solutions
 title: "Certificazione PMLE - Dominio 6: monitorare le soluzioni AI"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 25
+estimated_minutes: 35
 prerequisites: [pmle-05-automate-orchestrate-ml-pipelines]
 deliverables: []
 sources:
@@ -16,8 +16,11 @@ sources:
 !!! note "Stato: contenuto verificato su fonte primaria"
     Contenuto verificato parola per parola contro la exam guide ufficiale
     Google Cloud, fornita direttamente dallo studente. Le definizioni dei
-    quattro tipi di drift sono spiegate con conoscenza ML generale, non
-    da documentazione di prodotto — segnalato dove compare.
+    quattro tipi di drift, la meccanica di Explainable AI (Sampled
+    Shapley/Integrated Gradients), e i dettagli implementativi di come si
+    configura davvero un job di Model Monitoring sono spiegati con
+    conoscenza ML/MLOps generale, non da documentazione di prodotto —
+    segnalati dove compaiono.
 
 ## Cosa copre questo dominio
 
@@ -58,6 +61,46 @@ per bias: se il modello penalizzasse sistematicamente clienti di una
 certa area geografica indipendentemente dal loro comportamento reale,
 sarebbe un problema di AI responsabile da monitorare, non solo un
 problema di accuratezza aggregata.
+
+!!! info "Spiegabilità (Explainable AI), concretamente"
+    La guida nomina "spiegabilità del modello" come considerazione di
+    6.1, collegata all'interpretabilità già vista come vincolo di
+    progettazione nel Dominio 3 — ma lì si sceglieva un modello
+    interpretabile *in anticipo* (es. `LOGISTIC_REG` invece di una DNN).
+    Qui la domanda è diversa: **dato** un modello già addestrato (magari
+    non semplicissimo da leggere), come si spiega **una singola
+    predizione**?
+
+    La richiesta di spiegabilità produce, insieme alla predizione, un
+    punteggio di contributo per ciascuna feature di quella specifica
+    riga di input (non è gratis: richiede calcolo aggiuntivo rispetto a
+    una predizione normale). Due famiglie di metodi:
+
+    - **Sampled Shapley**: funziona per qualsiasi tipo di modello (anche
+      a scatola nera), stima il contributo di ogni feature provando
+      molte combinazioni casuali di sottoinsiemi di feature presenti/
+      assenti e osservando come cambia la predizione — computazionalmente
+      costoso perché richiede molte permutazioni campionate.
+    - **Integrated Gradients**: richiede un modello derivabile (es. una
+      rete neurale), calcola il contributo di ogni feature seguendo il
+      gradiente della predizione lungo un percorso da un input di
+      riferimento neutro fino all'input reale — più economico di Sampled
+      Shapley ma non applicabile a modelli non derivabili come un albero.
+
+    **Esempio concreto.** Per un cliente a cui il modello di rinnovo
+    contratti assegna un rischio di abbandono dello 0,85, la spiegabilità
+    potrebbe restituire: `ticket_aperti_90gg` ha contribuito +0,30 al
+    punteggio di rischio, `mesi_da_attivazione` +0,10,
+    `spesa_mensile_eur` -0,15 (contributo negativo: abbassa il rischio)
+    — informazione che un account manager può usare per capire *perché*
+    quel cliente specifico è segnalato, non solo che lo è.
+
+    **Stato: needs_reverification** — meccanica generale di Sampled
+    Shapley e Integrated Gradients è conoscenza ML generale, non
+    specifica di un prodotto Google Cloud; nomi esatti dei metodi come
+    offerti da un servizio Google Cloud specifico e i relativi parametri
+    di configurazione non riverificati su documentazione live in questa
+    sessione. I numeri dell'esempio sono costruiti a scopo didattico.
 
 ### 6.2 — Monitorare, testare, risolvere problemi
 
@@ -106,6 +149,45 @@ predizioni soprattutto su "numero di ticket aperti" invece che su
 drift**, un segnale d'allarme anche se nessuna metrica di accuratezza è
 ancora scesa.
 
+!!! info "Come si configura davvero un job di Model Monitoring, concretamente"
+    La guida dice "configurare Model Monitoring" senza spiegare cosa
+    significhi impostarne uno.
+
+    **Gli elementi di configurazione.** Un job di monitoraggio si
+    collega a un endpoint già in produzione (Dominio 4) e richiede: una
+    **baseline** di riferimento — di solito le statistiche calcolate sul
+    dataset di training, usate come "normale" contro cui confrontare i
+    dati che arrivano in produzione; un **obiettivo di monitoraggio** —
+    skew detection (confronta la distribuzione dei dati serviti oggi
+    contro la baseline di training, cattura il training-serving skew e
+    il data drift) oppure drift detection (confronta la finestra di
+    dati serviti più recente contro una finestra precedente, cattura un
+    cambiamento nel tempo anche senza un riferimento di training); una
+    **frequenza di campionamento** — monitorare ogni singola richiesta
+    è costoso, quindi tipicamente si campiona solo una percentuale del
+    traffico (es. il 10%); **soglie di allarme per feature** — quanto
+    deve spostarsi la distribuzione di una feature specifica prima di
+    generare un avviso; un **canale di notifica** (es. email, un topic
+    Pub/Sub) a cui inviare l'allarme quando una soglia viene superata.
+
+    **Dove finiscono i dati per costruire tutto questo.** Le richieste e
+    le risposte di un endpoint possono essere registrate (request-response
+    logging) in una tabella per analisi successive — è la stessa fonte
+    di dati che alimenta sia il monitoraggio automatico sia il controllo
+    a campione fatto da un operatore umano (visto nell'Architettura 3
+    della lezione di sintesi per il caso senza etichette automatiche).
+    Un log di infrastruttura (latenza, tasso di errore, numero di
+    repliche attive) è invece una vista diversa e separata: risponde alla
+    domanda "il servizio funziona?", non "il modello sta ancora
+    predicendo bene?" — due tipi di problema diversi che richiedono due
+    dashboard diverse, non un'unica vista indifferenziata.
+
+    **Stato: needs_reverification** — struttura generale di un job di
+    monitoraggio (baseline, skew vs drift detection, campionamento,
+    soglie, notifiche) è conoscenza MLOps generale; nomi esatti di
+    servizi e parametri di configurazione non riverificati su
+    documentazione live in questa sessione.
+
 ### Collegamento al corso principale
 
 Le Lezioni 3-4 del corso principale (train/validation/test, data leakage)
@@ -128,6 +210,14 @@ una volta prima di esso.
 - Trattare il monitoraggio del bias come separato dal monitoraggio
   "tecnico": la guida le tratta come parte della stessa competenza di
   identificazione dei rischi.
+- Monitorare ogni singola richiesta di un endpoint ad alto traffico senza
+  campionare: il costo di calcolo del monitoraggio può superare quello
+  del serving stesso — un campione rappresentativo basta a rilevare
+  drift e skew.
+- Confondere log di infrastruttura (latenza, errori, repliche) con
+  monitoraggio della qualità del modello (drift, accuratezza): rispondono
+  a due domande diverse ("il servizio funziona?" contro "il modello sta
+  ancora predicendo bene?") e richiedono viste separate.
 
 ## Quiz
 
@@ -140,6 +230,14 @@ una volta prima di esso.
    a basare le predizioni su feature diverse rispetto a quando è stato
    validato. Quale tipo di drift descrive questo caso, e perché
    l'accuratezza da sola non lo cattura?
+4. Un cliente chiede all'account manager perché il modello lo ha segnalato
+   come "alto rischio di abbandono". Quale strumento del Dominio 6 gli
+   permette di rispondere con i fattori specifici di quel cliente, invece
+   di una spiegazione generica sul modello?
+5. Perché monitorare la distribuzione dei dati serviti contro la baseline
+   di training (skew detection) non è la stessa cosa che monitorare la
+   finestra di dati serviti più recente contro una finestra precedente
+   (drift detection)?
 
 <details>
 <summary><b>Apri le risposte</b></summary>
@@ -160,6 +258,18 @@ una volta prima di esso.
    basandole su segnali diversi da quelli validati — un cambiamento
    interno silenzioso finché non emerge un calo di performance più
    evidente.
+4. La spiegabilità (Explainable AI, es. Sampled Shapley o Integrated
+   Gradients): restituisce, insieme alla predizione, un contributo
+   stimato di ciascuna feature per quella riga specifica di input —
+   permette di dire "il rischio è alto soprattutto per i ticket aperti
+   recenti", non solo "il modello dice rischio alto".
+5. Perché rispondono a domande diverse: la skew detection confronta
+   contro un riferimento **fisso** (le statistiche di training), quindi
+   cattura anche un'incoerenza tra come i dati erano in training e come
+   sono oggi (training-serving skew, data drift); la drift detection
+   confronta due finestre di dati **entrambe di produzione** nel tempo,
+   quindi cattura un cambiamento che avviene *dopo* il deployment anche
+   se il confronto con il training resta valido.
 
 </details>
 

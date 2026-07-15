@@ -52,9 +52,30 @@ claims:
     primary_source: false
     evidence_note: "Added at the learner's request for a concrete pipeline example with feature extraction and explicit Kubeflow-vs-Agent-Platform-Pipelines selection criteria, instead of naming both tools without explaining when to pick one over the other. The Python code is simplified for teaching purposes and not tested against a real Kubeflow Pipelines SDK version; the selection criteria are general managed-vs-self-managed infrastructure reasoning, not verified against current product documentation this session."
     status: needs_reverification
+  - id: pipeline-compile-submit-trigger-implementation
+    claim: "Running a pipeline requires compiling the Python pipeline definition into a portable JSON/YAML graph definition, then submitting it with a pipeline root (a Cloud Storage location for intermediate artifacts between components) and run-specific parameter values. A pipeline needs an explicit trigger to start: a scheduled (cron-style) trigger for a fixed-interval retraining policy, or an event-driven trigger (e.g. reacting to a new file landing in a Cloud Storage bucket) for a data-arrival-driven policy."
+    importance: major
+    source_url: "general pre-training MLOps knowledge (pipeline compilation/submission/triggering), not from the exam guide"
+    source_title: "General knowledge of managed pipeline compilation, submission, and triggering mechanics"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for a stronger view of how Domain 5 is actually implemented on GCP, not just named. General managed-pipeline-platform knowledge, not verified against current Vertex AI / Agent Platform documentation this session (blocked, see research_gaps.md); exact service/parameter names not confirmed."
+    status: needs_reverification
+  - id: cicd-cloud-build-implementation
+    claim: "A CI/CD pipeline for ML code (e.g. via Cloud Build) runs a step sequence in a container on each code push to a Git repository: run automated tests on pipeline component code, recompile the pipeline definition, submit/run the compiled pipeline. This code-push-triggered CI/CD flow is distinct from the metric-degradation-threshold-triggered CT (continuous training) flow: CI/CD verifies a code change doesn't break the pipeline, CT verifies the model itself needs retraining even when code hasn't changed; a mature pipeline setup needs both trigger types, not just one."
+    importance: major
+    source_url: "general pre-training CI/CD/MLOps knowledge, not from the exam guide"
+    source_title: "General knowledge of CI/CD build-step sequencing applied to ML pipelines"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for a stronger view of how Domain 5's CI/CD/CT is actually implemented, distinguishing the CI/CD trigger from the CT trigger already covered. General CI/CD knowledge applied to ML, not verified against current Cloud Build documentation this session; exact config file syntax not confirmed."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Core exam-guide content (claims 1-3) verified against the primary document. One general MLOps concept (CI/CD/CT) used only to explain guide terminology, clearly separated as general knowledge."
     - "2026-07-14: learner asked how to actually build a pipeline (with feature extraction) and how to choose between Kubeflow and Agent Platform Pipelines/training, instead of just naming both tools. Added kfp-pipeline-definition-example: a worked pipeline DAG (validate -> extract features -> train -> evaluate -> conditional deploy) and explicit managed-vs-self-managed selection criteria. needs_reverification general knowledge, clearly separated from exam-guide-verified content."
+    - "2026-07-14 (second round): learner asked for a stronger view on how to implement Domains 3-6 concretely on GCP, not just theory. Added pipeline-compile-submit-trigger-implementation (compilation, pipeline root, scheduled vs event-driven triggers) and cicd-cloud-build-implementation (CI/CD build-step sequence distinct from the CT trigger). needs_reverification general MLOps knowledge, clearly separated from exam-guide-verified content."

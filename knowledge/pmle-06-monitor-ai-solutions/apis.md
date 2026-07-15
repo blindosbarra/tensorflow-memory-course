@@ -31,3 +31,20 @@ guide ufficiale (fonte primaria, vedi evidence.yaml).
   di prodotto — **needs_reverification** per dettagli implementativi
   Google Cloud specifici su come vengono misurati in pratica (vedi
   evidence.yaml).
+
+## Dettaglio supplementare: spiegabilità e configurazione del monitoraggio
+
+- **Sampled Shapley / Integrated Gradients**: metodi di spiegabilità che
+  restituiscono un contributo per feature su una singola predizione;
+  Sampled Shapley funziona su qualsiasi modello (costoso, campiona
+  sottoinsiemi di feature), Integrated Gradients richiede un modello
+  derivabile (più economico, segue il gradiente da un input di
+  riferimento). **Stato: needs_reverification**.
+- **Configurazione di un job di Model Monitoring**: baseline (statistiche
+  di training), obiettivo (skew detection vs drift detection),
+  campionamento del traffico, soglie di allarme per feature, canale di
+  notifica. **Stato: needs_reverification**.
+- **Request-response logging vs log di infrastruttura**: due fonti/viste
+  distinte — la prima alimenta il monitoraggio di qualità del modello, la
+  seconda risponde a "il servizio funziona?". **Stato:
+  needs_reverification**.

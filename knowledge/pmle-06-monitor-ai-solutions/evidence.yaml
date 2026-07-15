@@ -42,8 +42,29 @@ claims:
     primary_source: false
     evidence_note: "The exam guide names these four monitoring issues without defining them; these are standard ML monitoring concepts used here only to explain the guide's own terms, not Google-Cloud-specific implementation detail."
     status: needs_reverification
+  - id: explainable-ai-implementation
+    claim: "Explainability requests, alongside a prediction, return an estimated per-feature contribution score for that specific input row (at additional compute cost vs. a plain prediction). Two general families of method: Sampled Shapley works for any model type (including black-box) by sampling many random subsets of present/absent features and observing how the prediction changes, at significant compute cost; Integrated Gradients requires a differentiable model and follows the gradient of the prediction along a path from a neutral baseline input to the actual input, cheaper than Sampled Shapley but inapplicable to non-differentiable models like trees."
+    importance: major
+    source_url: "general pre-training ML knowledge (Sampled Shapley, Integrated Gradients), not from the exam guide"
+    source_title: "General knowledge of feature-attribution explainability methods"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for a stronger view of how Domain 6's 'model explainability' consideration is actually implemented, not just named. Standard explainability-method knowledge, not verified against current Vertex AI Explainable AI documentation this session (blocked, see research_gaps.md); exact method names/parameters as offered by a specific Google Cloud service not confirmed. The worked contribution-score numbers are an invented teaching example."
+    status: needs_reverification
+  - id: model-monitoring-job-configuration
+    claim: "Configuring a model monitoring job requires: a baseline (typically training-set statistics used as the 'normal' reference), a monitoring objective (skew detection compares served data against the training baseline, catching training-serving skew and data drift; drift detection compares a recent serving window against a prior serving window, catching change over time even without a training reference), a sampling rate (monitoring every request is costly, so typically only a percentage of traffic is sampled), per-feature alert thresholds, and a notification channel (e.g. email or a Pub/Sub topic). Request-response logging to a table is the data source feeding both automated monitoring and periodic human-reviewed sampling; infrastructure logs (latency, error rate, replica count) answer a different question ('is the service healthy?') from model-quality monitoring ('is the model still predicting well?') and need separate dashboards."
+    importance: major
+    source_url: "general pre-training MLOps knowledge (managed model monitoring job structure), not from the exam guide"
+    source_title: "General knowledge of model monitoring job configuration (baseline, skew vs drift detection, sampling, alerting)"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for a stronger view of how Domain 6's Model Monitoring is actually configured, not just named. General managed-monitoring-service knowledge, not verified against current Vertex AI Model Monitoring documentation this session; exact parameter names not confirmed."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Core exam-guide content (claims 1-3) verified against the primary document. General drift-type definitions used only to explain guide terminology, clearly separated as general knowledge. 'Model Armor' and 'Agent Platform Inference' cited exactly as the guide names them, no implementation detail added (too recent for reliable pre-training knowledge, see research_gaps.md)."
+    - "2026-07-14: learner asked for a stronger view on how to implement Domains 3-6 concretely on GCP, not just theory. Added explainable-ai-implementation (Sampled Shapley vs Integrated Gradients, a worked per-feature contribution example) to 6.1, and model-monitoring-job-configuration (baseline, skew vs drift detection, sampling, alerting, logging-stack separation) to 6.2. needs_reverification general MLOps knowledge, clearly separated from exam-guide-verified content."

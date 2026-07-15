@@ -3,7 +3,7 @@ id: pmle-03-scale-prototypes-into-ml-models
 title: "Certificazione PMLE - Dominio 3: scalare i prototipi in modelli ML"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 40
+estimated_minutes: 45
 prerequisites: [pmle-02-collaborate-manage-data-models]
 deliverables: []
 sources:
@@ -16,10 +16,12 @@ sources:
 !!! note "Stato: contenuto verificato su fonte primaria"
     Contenuto verificato parola per parola contro la exam guide ufficiale
     Google Cloud, fornita direttamente dallo studente. Alcuni concetti —
-    data vs model parallelism, e il dettaglio di cosa sono CNN/RNN/
-    Transformer dietro il termine "DNN" della guida — sono spiegati con
-    conoscenza ML generale, non da documentazione di prodotto Google
-    Cloud, segnalati dove compaiono.
+    data vs model parallelism, il dettaglio di cosa sono CNN/RNN/
+    Transformer dietro il termine "DNN" della guida, e i dettagli
+    implementativi di come si sottomette davvero un training job/
+    hyperparameter tuning su Google Cloud — sono spiegati con conoscenza
+    ML/MLOps generale, non da documentazione di prodotto Google Cloud,
+    segnalati dove compaiono.
 
 ## Cosa copre questo dominio
 
@@ -187,6 +189,53 @@ tratta il "come" tecnico di quell'ultima opzione (SDK, hyperparameter
 tuning, debug di un training che fallisce) — ma la decisione *se* farlo
 resta quella vista nel Dominio 1.
 
+!!! info "Come si sottomette davvero un training job custom, concretamente"
+    La guida nomina "Agent Platform custom training" come opzione SDK,
+    senza spiegare cosa significhi in pratica avviarne uno.
+
+    **Il job.** Il codice di training (uno script Python, o un container
+    Docker che lo incapsula) viene sottomesso specificando una
+    **worker pool spec**: quale immagine container eseguire, che
+    `machine-type` usare (es. `n1-standard-8`), quanti e quali
+    acceleratori (`accelerator-type=NVIDIA_TESLA_T4`,
+    `accelerator-count=2`), e quante repliche. Per training distribuito
+    (Dominio 3.3) si definiscono più worker pool: un pool "chief/master"
+    (una replica che coordina) e uno o più pool "worker" aggiuntivi — la
+    stessa distinzione tra parallelismo dati/modello vista sopra
+    determina quanti worker servono e come sono configurati.
+
+    **Hyperparameter tuning, come funziona davvero.** Non è una ricerca
+    a griglia esaustiva: si definisce uno spazio di ricerca (es.
+    `learning_rate`: continuo tra 1e-5 e 1e-1 su scala logaritmica,
+    `batch_size`: discreto tra 16/32/64) e una metrica obiettivo da
+    massimizzare o minimizzare (es. il recall visto nel Dominio 1); il
+    servizio esegue più prove (trial) in parallelo fino a un budget
+    massimo di prove, usando i risultati delle prove già fatte per
+    scegliere quali combinazioni provare dopo (ottimizzazione
+    bayesiana) — concettualmente la stessa logica di ricerca guidata
+    vista per AutoML nel Dominio 1, qui applicata agli iperparametri di
+    un'architettura fissata invece che all'architettura stessa.
+
+    **Risolvere errori di training, in pratica.** Due problemi ricorrenti
+    e le loro cause tipiche, distinti da un problema di
+    overfitting/underfitting (che è un problema del *modello*, non del
+    *job*): un job interrotto a metà su una VM **preemptible/spot**
+    (più economica ma può essere ripresa dal provider in qualsiasi
+    momento) perde tutto il progresso se non si salvano periodicamente
+    checkpoint (pesi + stato dell'optimizer) su Cloud Storage, da cui il
+    job può ripartire invece di ricominciare da zero; un job che fallisce
+    con un errore di memoria esaurita sull'acceleratore va quasi sempre
+    risolto riducendo il `batch_size` prima di sospettare l'architettura
+    del modello. Le quote regionali di GPU/TPU disponibili sono un altro
+    blocco pratico comune, non un problema di machine learning in sé.
+
+    **Stato: needs_reverification** — struttura generale di un job di
+    training gestito (worker pool, hyperparameter tuning bayesiano,
+    checkpointing su VM preemptibili) è conoscenza ML/MLOps generale;
+    nomi esatti di flag, parametri e opzioni non riverificati su
+    documentazione live in questa sessione (bloccato, vedi
+    `course/research_gaps.md`).
+
 ### 3.3 — Scegliere l'hardware giusto
 
 Due considerazioni: valutare le opzioni di calcolo/acceleratore (CPU,
@@ -245,6 +294,12 @@ in RAM, un training che deve girare su più GPU).
 - Applicare una rete densa "semplice" a immagini invece di una CNN,
   ignorando che il numero di pesi esplode senza sfruttare la
   correlazione spaziale tra pixel vicini.
+- Usare VM preemptible/spot per un training lungo senza salvare
+  checkpoint periodici: un'interruzione a metà fa perdere tutto il
+  progresso invece di poter riprendere da dove si era arrivati.
+- Sospettare subito l'architettura del modello quando un training fallisce
+  per memoria esaurita sull'acceleratore: la prima cosa da controllare è
+  il `batch_size`, un problema del job, non del modello.
 
 ## Quiz
 
@@ -264,6 +319,9 @@ in RAM, un training che deve girare su più GPU).
 5. Perché una RNN semplice fatica a imparare dipendenze tra elementi
    lontani in una sequenza lunga, e quali due varianti attenuano il
    problema?
+6. Un training job che dura 10 ore su una VM preemptible/spot viene
+   interrotto dopo 7 ore. Cosa determina se Nordica deve ricominciare da
+   zero o può ripartire da dove si era fermato?
 
 <details>
 <summary><b>Apri le risposte</b></summary>
@@ -298,6 +356,11 @@ in RAM, un training che deve girare su più GPU).
    nella sequenza. LSTM e GRU attenuano il problema con meccanismi di
    gate che permettono alla rete di decidere esplicitamente cosa
    mantenere e cosa scartare dallo stato nascosto nel tempo.
+6. Se il job salvava checkpoint periodici (pesi + stato dell'optimizer)
+   su Cloud Storage, può ripartire dall'ultimo checkpoint salvato invece
+   di ricominciare da zero. Senza checkpoint, tutto il progresso delle 7
+   ore è perso — il rischio esplicito da accettare quando si sceglie una
+   VM più economica ma interrompibile.
 
 </details>
 

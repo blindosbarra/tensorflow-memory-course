@@ -41,3 +41,18 @@ guide ufficiale (fonte primaria, vedi evidence.yaml).
   `course/research_gaps.md`).
 - **Containerized serving**: citato come alternativa/complemento per
   scalare il serving. **Stato: verified** (termine testuale).
+
+## Dettaglio supplementare: come si crea davvero un endpoint e si scala
+
+- **Model Registry → endpoint → deploy**: tre passi distinti — versione
+  del modello registrata, endpoint creato (nessun modello di per sé),
+  deploy con machine type/min-max repliche/traffic-split. Cambiare la
+  ripartizione del traffico è un aggiornamento di configurazione, non un
+  nuovo deploy. **Stato: needs_reverification**.
+- **Autoscaling**: `min-replica-count`/`max-replica-count` + metrica di
+  utilizzo target; `min-replica-count=0` più economico ma con cold start
+  sulla prima richiesta dopo inattività. **Stato: needs_reverification**.
+- **Batch prediction job**: non crea né usa un endpoint, legge/scrive
+  direttamente da dati, rilascia il calcolo a fine job — a differenza di
+  un endpoint online sempre disponibile (e quindi sempre in costo).
+  **Stato: needs_reverification**.

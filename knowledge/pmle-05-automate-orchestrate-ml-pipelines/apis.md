@@ -50,3 +50,17 @@ guide ufficiale (fonte primaria, vedi evidence.yaml).
   implementativi Google Cloud specifici (vedi evidence.yaml).
 - **Cloud Build**: citato come esempio di strumento per queste pipeline.
   **Stato: verified** (nome testuale, nessun dettaglio d'uso affermato).
+
+## Dettaglio supplementare: compilazione, trigger e CI/CD
+
+- **Compilazione e sottomissione**: la pipeline Python viene compilata
+  in una definizione JSON/YAML portabile, sottomessa con una pipeline
+  root (bucket Cloud Storage per artefatti intermedi) e i parametri
+  della run specifica. **Stato: needs_reverification**.
+- **Trigger**: pianificato (cron, per retraining a intervallo fisso) o
+  event-driven (es. nuovo file su Cloud Storage, per retraining guidato
+  dai dati). **Stato: needs_reverification**.
+- **CI/CD con Cloud Build**: sequenza test → ricompila → sottometti,
+  attivata da un push su Git — distinta dal trigger CT (soglia di
+  degrado del modello): il primo verifica il codice, il secondo il
+  modello. **Stato: needs_reverification**.

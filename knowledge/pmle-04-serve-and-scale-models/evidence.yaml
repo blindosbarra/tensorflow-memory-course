@@ -42,8 +42,19 @@ claims:
     primary_source: false
     evidence_note: "The exam guide names these two rollout strategies without defining them; this is standard software-deployment terminology used here only to explain the guide's own terms."
     status: needs_reverification
+  - id: endpoint-deploy-autoscale-batch-implementation
+    claim: "Serving a model online requires three concrete steps: registering the trained model as a versioned resource in a model registry, creating a stable endpoint resource (which holds no model by itself), and deploying one or more model versions to that endpoint with a machine type, min/max replica count, and (when multiple versions are deployed) a traffic-split percentage between them — changing the split is a configuration update, not a new deploy. Autoscaling uses min-replica-count/max-replica-count plus a target utilization metric; min-replica-count=0 is the cheapest option but introduces cold-start latency on the first request after idle, while min-replica-count>=1 costs more but keeps a replica always warm. A batch prediction job, by contrast, does not create or use an endpoint: it reads directly from input data (e.g. BigQuery or Cloud Storage), writes output, and releases compute when done, unlike an always-available online endpoint."
+    importance: major
+    source_url: "general pre-training MLOps knowledge (managed model serving structure), not from the exam guide"
+    source_title: "General knowledge of model registry / endpoint / deployment / autoscaling / batch prediction mechanics"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for a stronger view of how Domain 4 is actually implemented on GCP, not just named. General managed-serving-platform knowledge, not verified against current Vertex AI / Agent Platform documentation this session (blocked, see research_gaps.md); exact flag/parameter names not confirmed."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Core exam-guide content (claims 1-3) verified against the primary document. One general deployment concept (A/B testing vs canary) used only to explain guide terminology, clearly separated as general knowledge."
+    - "2026-07-14: learner asked for a stronger view on how to implement Domains 3-6 concretely on GCP, not just theory. Added endpoint-deploy-autoscale-batch-implementation (model registry -> endpoint -> deploy -> traffic split, autoscaling min/max replicas and cold-start tradeoff, batch prediction job contrast) to subsection 4.1. needs_reverification general MLOps knowledge, clearly separated from exam-guide-verified content."

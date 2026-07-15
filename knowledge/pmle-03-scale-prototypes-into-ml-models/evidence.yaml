@@ -72,9 +72,20 @@ claims:
     primary_source: false
     evidence_note: "Added at the learner's request for detailed RNN explanation, including when it is/isn't still the right choice within this module's own scenarios (time series vs. text). Standard ML architecture knowledge, matching what the main course's later 'transformers-gemma' module covers with code; not specific to a Google Cloud product, not re-verified against live documentation this session. Does not claim which exact architecture Gemini uses internally beyond 'Transformer-family', which is standard industry knowledge about modern foundational language models generally."
     status: needs_reverification
+  - id: custom-training-job-implementation
+    claim: "Submitting a custom training job requires specifying a worker pool spec: container image, machine type, accelerator type/count, and replica count; distributed training uses a chief/master pool (one coordinating replica) plus additional worker pools. Hyperparameter tuning defines a search space (e.g. a continuous log-scale range for learning rate, a discrete set for batch size) and an objective metric, running multiple trials up to a budget and using prior trial results to guide which combinations to try next (Bayesian optimization), rather than exhaustive grid search. Common training failures: a job on a preemptible/spot VM loses all progress on interruption unless it periodically checkpoints weights and optimizer state to Cloud Storage; an out-of-memory error on the accelerator is usually fixed by reducing batch size, not by suspecting the model architecture; regional GPU/TPU quota limits are a common practical blocker distinct from any ML problem."
+    importance: major
+    source_url: "general pre-training MLOps knowledge (managed training job structure, Bayesian hyperparameter search, checkpointing), not from the exam guide"
+    source_title: "General knowledge of managed ML training job configuration and troubleshooting"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for a stronger view of how Domain 3 is actually implemented on GCP, not just named. General managed-training-service and MLOps knowledge, not verified against current Vertex AI / Agent Platform documentation this session (blocked, see research_gaps.md); exact flag/parameter names not confirmed."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Core exam-guide content (claims 1-4) verified against the primary document. One general ML-systems concept (data vs model parallelism) is used only to explain guide terminology, clearly separated as general knowledge rather than Google Cloud product documentation."
     - "2026-07-14: learner asked for more detailed explanation of RNN and CNN. Added cnn-mechanics-general (convolution/pooling/parameter-sharing mechanics with a checked worked example and parameter-count comparison) and rnn-mechanics-and-transformer-note (hidden-state recurrence, vanishing/exploding gradients, LSTM/GRU, and an explicit note that modern foundational text models use Transformers, not RNNs, cross-referencing the main course's later Transformer module). Unpacks the exam guide's own unexplained 'DNN for complex patterns' bullet in subsection 3.1. All needs_reverification general knowledge, clearly separated from exam-guide-verified content."
+    - "2026-07-14 (second round): learner asked for a stronger view on how to implement Domains 3-6 concretely on GCP, not just theory. Added custom-training-job-implementation (worker pool spec, Bayesian hyperparameter tuning, preemptible-VM checkpointing, OOM/quota troubleshooting) to subsection 3.2. needs_reverification general MLOps knowledge, clearly separated from exam-guide-verified content."

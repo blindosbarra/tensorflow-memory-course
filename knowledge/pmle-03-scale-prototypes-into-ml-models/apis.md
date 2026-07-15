@@ -51,6 +51,21 @@ guide ufficiale (fonte primaria, vedi evidence.yaml).
   famiglia Transformer ha sostituito le RNN per il testo nei modelli
   fondazionali moderni in generale).
 
+## Dettaglio supplementare: come si sottomette davvero un training job
+
+- **Worker pool spec**: container image, machine type, tipo/numero di
+  acceleratori, numero di repliche; per training distribuito, un pool
+  chief/master + uno o più worker pool. **Stato: needs_reverification**.
+- **Hyperparameter tuning**: spazio di ricerca (es. learning rate
+  continuo su scala log, batch size discreto) + metrica obiettivo,
+  ottimizzazione bayesiana su più trial in parallelo, non grid search
+  esaustiva. **Stato: needs_reverification**.
+- **Troubleshooting comune**: VM preemptible/spot senza checkpoint →
+  progresso perso a ogni interruzione; errore di memoria esaurita
+  sull'acceleratore → ridurre `batch_size` prima di sospettare
+  l'architettura; quote regionali GPU/TPU come blocco pratico distinto
+  da un problema ML. **Stato: needs_reverification**.
+
 ## Hardware (3.3)
 
 - **CPU, GPU, TPU**: opzioni di calcolo/acceleratore da valutare. **Stato:
