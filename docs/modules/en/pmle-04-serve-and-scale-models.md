@@ -3,7 +3,7 @@ id: pmle-04-serve-and-scale-models-en
 title: "PMLE Certification - Domain 4: serving and scaling models"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 25
+estimated_minutes: 35
 prerequisites: [pmle-03-scale-prototypes-into-ml-models-en]
 deliverables: []
 sources:
@@ -16,9 +16,10 @@ sources:
 !!! note "Status: content verified against a primary source"
     Content verified word-for-word against the official Google Cloud exam
     guide, supplied directly by the learner. The distinction between A/B
-    testing and canary deployment is explained with general software
-    deployment knowledge, not from product documentation — flagged where
-    it appears.
+    testing and canary deployment, and the implementation detail of how
+    you actually create an endpoint/deploy/configure autoscaling, are
+    explained with general software deployment/MLOps knowledge, not from
+    product documentation — flagged where they appear.
 
 ## What this domain covers
 
@@ -68,6 +69,51 @@ of data), Nordica doesn't send it to all traffic at once: first a
 checking that nothing breaks — then, if all goes well, a broader **A/B
 test** to statistically compare whether the new version really produces
 better predictions, before fully replacing the old one.
+
+!!! info "How you actually create an endpoint and do a rollout, concretely"
+    The guide names "endpoint", "Model Registry", and "canary
+    deployment", without explaining how you actually put these into
+    practice.
+
+    **The three steps to serve online.** (1) The trained model gets
+    uploaded into the **Model Registry** as a versioned resource — each
+    new version (e.g. after a retraining run) is a distinct entry linked
+    to the same logical model entity, not a scattered file. (2) You
+    create an **endpoint** resource, a stable address to send prediction
+    requests to — the endpoint by itself holds no model yet. (3) You
+    **deploy** one (or more) model version to that endpoint, specifying
+    `machine-type`, a minimum and maximum replica count, and — when
+    multiple versions are deployed on the same endpoint — a **traffic
+    split** between them (e.g. `traffic-split=model_v1=95,model_v2=5`
+    for the 5% canary described above). Changing the traffic percentage
+    doesn't require a new deploy: it's an update to the endpoint's
+    configuration.
+
+    **Autoscaling, concretely.** `min-replica-count` and
+    `max-replica-count` define the limits; the endpoint adds or removes
+    replicas based on a target utilization metric (e.g. CPU or GPU
+    utilization). A detail often overlooked: `min-replica-count=0` is the
+    cheapest option (no cost when no requests arrive) but introduces
+    "cold start" latency on the first request after a period of
+    inactivity, because time is needed to spin up a replica from
+    scratch; `min-replica-count>=1` costs more but always keeps at least
+    one replica ready — the same cost/latency logic seen in Domain 1 for
+    the prompting/tuning/fine-tuning choice, here applied to serving.
+
+    **Batch inference, concretely.** A batch prediction job neither
+    creates nor uses an endpoint: it points directly at input data (e.g.
+    a BigQuery table or files on Cloud Storage), specifies where to write
+    the output, and uses the model from the Model Registry — it runs,
+    produces results, and the compute is released: no infrastructure
+    stays on waiting for the next request, unlike an online endpoint
+    which is always available (and therefore costs) even with no
+    traffic.
+
+    **Status: needs_reverification** — general structure of Model
+    Registry/endpoint/deploy/autoscaling/batch prediction is general
+    MLOps knowledge; exact flag and parameter names not re-verified
+    against live documentation in this session (blocked, see
+    `course/research_gaps.md`).
 
 ### 4.2 — Scaling online serving
 
@@ -122,6 +168,14 @@ the need to update it without interrupting the service.
   in production.
 - Choosing serving hardware based on what was used in training, instead
   of based on the throughput and latency required in production.
+- Setting `min-replica-count=0` for a service that must always respond
+  with low latency: the cost savings come at the price of cold-start
+  latency on the first request after inactivity, often unacceptable for
+  an interactive use case.
+- Building a batch prediction job as if it were an online endpoint (or
+  vice versa): the former leaves no infrastructure running after
+  execution, the latter does — two different cost patterns, not
+  interchangeable.
 
 ## Quiz
 
@@ -134,6 +188,11 @@ the need to update it without interrupting the service.
    despite being the same architecture with the same weights. Which
    problem described in this lesson could explain it, and which Domain 4
    tool prevents it?
+4. Nordica wants to move 5% of the contract-renewal endpoint's traffic to
+   the new model version. Does that need a new deploy, or just a
+   configuration change? Why?
+5. Why is `min-replica-count=0` the cheapest option but not always the
+   right one for an online endpoint?
 
 <details>
 <summary><b>Open the answers</b></summary>
@@ -150,6 +209,15 @@ the need to update it without interrupting the service.
    between training and serving. Using the same Feature Store (Agent
    Platform Feature Store) in both training and serving, as described in
    subsection 4.2, prevents this kind of inconsistency.
+4. Just a configuration change to the endpoint (the traffic split
+   between the already-deployed versions), not a new deploy: both model
+   versions are already active on the endpoint, only the percentage of
+   requests each receives is changing.
+5. Because no replica stays active when no requests arrive (zero cost in
+   those moments), but the first request after a period of inactivity
+   pays the cost of spinning up a new replica from scratch (cold start)
+   — an acceptable trade-off for sporadic, latency-tolerant traffic, but
+   often unacceptable for a service that must always respond quickly.
 
 </details>
 

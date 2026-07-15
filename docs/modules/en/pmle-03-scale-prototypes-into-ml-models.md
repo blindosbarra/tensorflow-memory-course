@@ -3,7 +3,7 @@ id: pmle-03-scale-prototypes-into-ml-models-en
 title: "PMLE Certification - Domain 3: scaling prototypes into ML models"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 40
+estimated_minutes: 45
 prerequisites: [pmle-02-collaborate-manage-data-models-en]
 deliverables: []
 sources:
@@ -16,10 +16,11 @@ sources:
 !!! note "Status: content verified against a primary source"
     Content verified word-for-word against the official Google Cloud exam
     guide, supplied directly by the learner. Some concepts — data vs.
-    model parallelism, and the detail of what CNN/RNN/Transformer
-    actually are behind the guide's "DNN" term — are explained with
-    general ML knowledge, not from Google Cloud product documentation,
-    flagged where they appear.
+    model parallelism, the detail of what CNN/RNN/Transformer actually
+    are behind the guide's "DNN" term, and the implementation detail of
+    how you actually submit a training job / hyperparameter tuning on
+    Google Cloud — are explained with general ML/MLOps knowledge, not
+    from Google Cloud product documentation, flagged where they appear.
 
 ## What this domain covers
 
@@ -182,6 +183,53 @@ technical "how" of that last option (SDKs, hyperparameter tuning,
 debugging a failing training run) — but the decision of *whether* to do
 it remains the one from Domain 1.
 
+!!! info "How you actually submit a custom training job, concretely"
+    The guide names "Agent Platform custom training" as an SDK option,
+    without explaining what actually starting one looks like.
+
+    **The job.** The training code (a Python script, or a Docker
+    container wrapping it) gets submitted by specifying a **worker pool
+    spec**: which container image to run, which `machine-type` to use
+    (e.g. `n1-standard-8`), how many and which accelerators
+    (`accelerator-type=NVIDIA_TESLA_T4`, `accelerator-count=2`), and how
+    many replicas. For distributed training (Domain 3.3) you define
+    multiple worker pools: a "chief/master" pool (one replica that
+    coordinates) plus one or more additional "worker" pools — the same
+    data/model parallelism distinction covered above determines how many
+    workers are needed and how they're configured.
+
+    **How hyperparameter tuning actually works.** It isn't exhaustive
+    grid search: you define a search space (e.g. `learning_rate`:
+    continuous between 1e-5 and 1e-1 on a log scale, `batch_size`:
+    discrete among 16/32/64) and an objective metric to maximize or
+    minimize (e.g. the recall seen in Domain 1); the service runs
+    multiple trials in parallel up to a maximum trial budget, using the
+    results of trials already run to decide which combinations to try
+    next (Bayesian optimization) — conceptually the same guided-search
+    logic seen for AutoML in Domain 1, here applied to the
+    hyperparameters of a fixed architecture instead of the architecture
+    itself.
+
+    **Troubleshooting training failures, in practice.** Two recurring
+    problems and their typical causes, distinct from an
+    overfitting/underfitting problem (which is a *model* problem, not a
+    *job* problem): a job interrupted midway on a **preemptible/spot**
+    VM (cheaper, but can be reclaimed by the provider at any time) loses
+    all progress unless it periodically saves checkpoints (weights +
+    optimizer state) to Cloud Storage, from which the job can resume
+    instead of starting over; a job that fails with an out-of-memory
+    error on the accelerator should almost always be fixed by reducing
+    `batch_size` before suspecting the model's architecture. Regional
+    GPU/TPU quota limits are another common practical blocker, not a
+    machine learning problem in itself.
+
+    **Status: needs_reverification** — general structure of a managed
+    training job (worker pool, Bayesian hyperparameter tuning,
+    checkpointing on preemptible VMs) is general ML/MLOps knowledge;
+    exact flag names, parameters, and options not re-verified against
+    live documentation in this session (blocked, see
+    `course/research_gaps.md`).
+
 ### 3.3 — Choosing the right hardware
 
 Two considerations: evaluating compute/accelerator options (CPU, GPU,
@@ -240,6 +288,12 @@ across multiple GPUs).
 - Applying a "plain" dense network to images instead of a CNN, ignoring
   that the number of weights explodes without exploiting the spatial
   correlation between nearby pixels.
+- Using preemptible/spot VMs for a long training run without saving
+  periodic checkpoints: an interruption midway loses all progress
+  instead of allowing a resume from where it left off.
+- Immediately suspecting the model's architecture when a training run
+  fails on an out-of-memory error on the accelerator: the first thing to
+  check is `batch_size`, a job problem, not a model problem.
 
 ## Quiz
 
@@ -258,6 +312,9 @@ across multiple GPUs).
 5. Why does a plain RNN struggle to learn dependencies between distant
    elements in a long sequence, and which two variants mitigate the
    problem?
+6. A training job that takes 10 hours on a preemptible/spot VM gets
+   interrupted after 7 hours. What determines whether Nordica has to
+   start over from scratch or can resume from where it left off?
 
 <details>
 <summary><b>Open the answers</b></summary>
@@ -292,6 +349,11 @@ across multiple GPUs).
    LSTM and GRU mitigate the problem with gating mechanisms that let the
    network explicitly decide what to keep and what to discard from the
    hidden state over time.
+6. If the job was saving periodic checkpoints (weights + optimizer
+   state) to Cloud Storage, it can resume from the last saved checkpoint
+   instead of starting over. Without checkpoints, all 7 hours of
+   progress are lost — the explicit risk you accept when choosing a
+   cheaper but interruptible VM.
 
 </details>
 

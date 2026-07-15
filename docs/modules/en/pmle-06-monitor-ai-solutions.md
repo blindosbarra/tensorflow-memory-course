@@ -3,7 +3,7 @@ id: pmle-06-monitor-ai-solutions-en
 title: "PMLE Certification - Domain 6: monitoring AI solutions"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 25
+estimated_minutes: 35
 prerequisites: [pmle-05-automate-orchestrate-ml-pipelines-en]
 deliverables: []
 sources:
@@ -16,8 +16,11 @@ sources:
 !!! note "Status: content verified against a primary source"
     Content verified word-for-word against the official Google Cloud exam
     guide, supplied directly by the learner. The definitions of the four
-    drift types are explained with general ML knowledge, not from
-    product documentation — flagged where they appear.
+    drift types, the mechanics of Explainable AI (Sampled Shapley/
+    Integrated Gradients), and the implementation detail of how you
+    actually configure a Model Monitoring job are explained with general
+    ML/MLOps knowledge, not from product documentation — flagged where
+    they appear.
 
 ## What this domain covers
 
@@ -57,6 +60,45 @@ time, the contract-renewal model needs to be checked for bias: if the
 model systematically penalized customers from a certain geographic area
 regardless of their actual behavior, that would be a responsible-AI
 problem to monitor, not just an aggregate-accuracy problem.
+
+!!! info "Explainability (Explainable AI), concretely"
+    The guide names "model explainability" as a 6.1 consideration,
+    connected to the interpretability already seen as a design constraint
+    in Domain 3 — but there you chose an interpretable model *ahead of
+    time* (e.g. `LOGISTIC_REG` instead of a DNN). Here the question is
+    different: **given** an already-trained model (maybe not the easiest
+    to read), how do you explain **a single prediction**?
+
+    An explainability request produces, alongside the prediction, a
+    contribution score for each feature of that specific input row (not
+    free: it requires extra compute compared to a plain prediction). Two
+    families of methods:
+
+    - **Sampled Shapley**: works for any type of model (even a black
+      box), estimates each feature's contribution by trying many random
+      combinations of present/absent feature subsets and observing how
+      the prediction changes — computationally expensive because it
+      needs many sampled permutations.
+    - **Integrated Gradients**: requires a differentiable model (e.g. a
+      neural network), computes each feature's contribution by following
+      the prediction's gradient along a path from a neutral baseline
+      input to the actual input — cheaper than Sampled Shapley but not
+      applicable to non-differentiable models like a tree.
+
+    **Concrete example.** For a customer the contract-renewal model
+    scores at 0.85 churn risk, explainability might return:
+    `open_tickets_90d` contributed +0.30 to the risk score,
+    `months_since_activation` +0.10, `monthly_spend_eur` -0.15 (a
+    negative contribution: it lowers the risk) — information an account
+    manager can use to understand *why* that specific customer is
+    flagged, not just that they are.
+
+    **Status: needs_reverification** — general mechanics of Sampled
+    Shapley and Integrated Gradients are general ML knowledge, not
+    specific to a Google Cloud product; exact method names as offered by
+    a specific Google Cloud service and their configuration parameters
+    not re-verified against live documentation in this session. The
+    example numbers are constructed for teaching purposes.
 
 ### 6.2 — Monitoring, testing, troubleshooting
 
@@ -103,6 +145,43 @@ started basing its predictions mostly on "number of open tickets"
 instead of "product usage" as it used to — **feature attribution
 drift**, a warning sign even though no accuracy metric has dropped yet.
 
+!!! info "How you actually configure a Model Monitoring job, concretely"
+    The guide says "configure Model Monitoring" without explaining what
+    setting one up actually involves.
+
+    **The configuration elements.** A monitoring job attaches to an
+    already-in-production endpoint (Domain 4) and requires: a
+    **baseline** reference — usually statistics computed on the training
+    dataset, used as "normal" to compare production data against; a
+    **monitoring objective** — skew detection (compares today's served
+    data distribution against the training baseline, catching
+    training-serving skew and data drift) or drift detection (compares
+    the most recent window of served data against a prior window,
+    catching a shift over time even without a training reference); a
+    **sampling rate** — monitoring every single request is expensive, so
+    typically only a percentage of traffic is sampled (e.g. 10%);
+    **per-feature alert thresholds** — how far a specific feature's
+    distribution has to shift before generating an alert; a
+    **notification channel** (e.g. email, a Pub/Sub topic) to send the
+    alert to when a threshold is crossed.
+
+    **Where the data to build all this comes from.** An endpoint's
+    requests and responses can be logged (request-response logging) to a
+    table for later analysis — the same data source that feeds both
+    automated monitoring and the human-reviewed sample check (seen in the
+    synthesis lesson's Architecture 3 for the no-automatic-labels case).
+    An infrastructure log (latency, error rate, active replica count) is
+    instead a different, separate view: it answers "is the service
+    working?", not "is the model still predicting well?" — two different
+    problem classes that need two different dashboards, not one
+    undifferentiated view.
+
+    **Status: needs_reverification** — general structure of a monitoring
+    job (baseline, skew vs. drift detection, sampling, thresholds,
+    notifications) is general MLOps knowledge; exact service and
+    configuration parameter names not re-verified against live
+    documentation in this session.
+
 ### Connection to the main course
 
 Lessons 3-4 of the main course (train/validation/test, data leakage)
@@ -122,6 +201,13 @@ arrives after deployment, not just once before it.
 - Confusing data drift and concept drift, applying the wrong fix.
 - Treating bias monitoring as separate from "technical" monitoring: the
   guide treats them as part of the same risk-identification skill.
+- Monitoring every single request on a high-traffic endpoint without
+  sampling: the compute cost of monitoring can exceed that of serving
+  itself — a representative sample is enough to detect drift and skew.
+- Confusing infrastructure logs (latency, errors, replicas) with model
+  quality monitoring (drift, accuracy): they answer two different
+  questions ("is the service working?" vs. "is the model still
+  predicting well?") and need separate views.
 
 ## Quiz
 
@@ -134,6 +220,13 @@ arrives after deployment, not just once before it.
    basing predictions on different features than when it was validated.
    Which type of drift does this describe, and why doesn't accuracy
    alone catch it?
+4. A customer asks the account manager why the model flagged them as
+   "high churn risk". Which Domain 6 tool lets the manager answer with
+   that specific customer's contributing factors, instead of a generic
+   statement about the model?
+5. Why isn't monitoring served data against the training baseline (skew
+   detection) the same thing as monitoring the most recent served-data
+   window against a prior one (drift detection)?
 
 <details>
 <summary><b>Open the answers</b></summary>
@@ -153,6 +246,18 @@ arrives after deployment, not just once before it.
    the model can keep giving correct answers while basing them on
    different signals than the validated ones — a silent internal shift
    until a more visible performance drop eventually shows up.
+4. Explainability (Explainable AI, e.g. Sampled Shapley or Integrated
+   Gradients): it returns, alongside the prediction, an estimated
+   contribution for each feature on that specific input row — letting
+   you say "the risk is high mainly because of recent open tickets", not
+   just "the model says high risk".
+5. Because they answer different questions: skew detection compares
+   against a **fixed** reference (training statistics), so it catches an
+   inconsistency between how the data looked in training and how it
+   looks today (training-serving skew, data drift); drift detection
+   compares two **production** windows over time, so it catches a change
+   that happens *after* deployment even if the comparison against
+   training still holds.
 
 </details>
 
