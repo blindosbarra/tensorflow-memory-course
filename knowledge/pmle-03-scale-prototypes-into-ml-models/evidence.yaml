@@ -52,8 +52,29 @@ claims:
     primary_source: false
     evidence_note: "The exam guide names 'data and model parallelism strategies' without defining them; this is a standard ML systems concept used here only to explain the guide's own terms, not to add Google-Cloud-specific implementation detail."
     status: needs_reverification
+  - id: cnn-mechanics-general
+    claim: "CNNs use small filters (e.g. 3x3) that slide across an image and reuse the same weights at every position (parameter sharing), giving far fewer parameters than a dense layer connecting every pixel independently (worked example: a 100x100 grayscale image to 100 dense neurons needs 1,000,000 weights, versus 288 weights for 32 3x3 filters, independent of image size). A convolution computes an element-wise product-and-sum between the filter and an image patch; pooling layers (e.g. max pooling) downsample feature maps afterward, keeping the strongest signal."
+    importance: major
+    source_url: "general pre-training ML knowledge (CNN architecture), not from the exam guide"
+    source_title: "General knowledge of convolutional neural network mechanics"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for detailed CNN/RNN explanation. The exam guide only says 'DNN for complex patterns' without naming CNN. Standard CNN mechanics, not specific to a Google Cloud product. The worked convolution example (a 3x3 Laplacian-like kernel over a 3x3 patch of [10,10,10,10,50,10,10,10,10], summing to 160) is an invented teaching illustration, arithmetic double-checked: 0*10-1*10+0*10-1*10+4*50-1*10+0*10-1*10+0*10 = -40+200 = 160."
+    status: needs_reverification
+  - id: rnn-mechanics-and-transformer-note
+    claim: "RNNs process a sequence one element at a time, maintaining a hidden state updated at each step (state_t = f(W_x*input_t + W_h*state_{t-1})) with the same weights reused across all time steps. Backpropagation through time can cause vanishing or exploding gradients over long sequences, impairing learning of long-range dependencies; LSTM and GRU variants add gating mechanisms that mitigate (not eliminate) this. Modern foundational text models (as referenced in Domain 1's Model Garden) use the Transformer architecture instead of RNNs, processing sequence elements in parallel via an attention mechanism rather than sequential recurrence, which trains faster on parallel hardware and is less prone to the vanishing-gradient issue tied to sequential state propagation."
+    importance: major
+    source_url: "general pre-training ML knowledge (RNN/LSTM/GRU mechanics, Transformer architecture), not from the exam guide"
+    source_title: "General knowledge of recurrent neural networks and the Transformer architecture"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's request for detailed RNN explanation, including when it is/isn't still the right choice within this module's own scenarios (time series vs. text). Standard ML architecture knowledge, matching what the main course's later 'transformers-gemma' module covers with code; not specific to a Google Cloud product, not re-verified against live documentation this session. Does not claim which exact architecture Gemini uses internally beyond 'Transformer-family', which is standard industry knowledge about modern foundational language models generally."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Core exam-guide content (claims 1-4) verified against the primary document. One general ML-systems concept (data vs model parallelism) is used only to explain guide terminology, clearly separated as general knowledge rather than Google Cloud product documentation."
+    - "2026-07-14: learner asked for more detailed explanation of RNN and CNN. Added cnn-mechanics-general (convolution/pooling/parameter-sharing mechanics with a checked worked example and parameter-count comparison) and rnn-mechanics-and-transformer-note (hidden-state recurrence, vanishing/exploding gradients, LSTM/GRU, and an explicit note that modern foundational text models use Transformers, not RNNs, cross-referencing the main course's later Transformer module). Unpacks the exam guide's own unexplained 'DNN for complex patterns' bullet in subsection 3.1. All needs_reverification general knowledge, clearly separated from exam-guide-verified content."

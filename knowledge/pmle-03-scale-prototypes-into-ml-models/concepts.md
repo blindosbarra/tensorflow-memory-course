@@ -39,6 +39,13 @@ da documentazione di prodotto, ed è segnalato come tale.
    **parallelismo del modello** (il modello stesso è diviso tra più
    dispositivi, quando non entra su uno solo).
 
+5. CNN, RNN e Transformer, come dettaglio del termine "DNN" della
+   sottosezione 3.1: convoluzione/pooling/condivisione dei pesi per le
+   CNN (immagini), stato nascosto/vanishing gradient/LSTM-GRU per le RNN
+   (sequenze), e perché i modelli fondazionali moderni per il testo
+   usano Transformer invece di RNN. Aggiunto su richiesta esplicita
+   dello studente per una spiegazione più dettagliata di CNN e RNN.
+
 ## Il filo conduttore del dominio
 
 Le tre sottosezioni rispondono in sequenza a: *che tipo di modello e

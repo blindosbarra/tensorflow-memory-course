@@ -27,6 +27,30 @@ guide ufficiale (fonte primaria, vedi evidence.yaml).
 - **Cloud Storage, BigQuery**: citati come luoghi dove organizzare i dati
   di training. **Stato: verified** (nomi testuali).
 
+## Dettaglio supplementare: cosa nasconde "DNN per pattern complessi"
+
+- **CNN (rete convoluzionale)**: filtri piccoli (es. 3×3) riusati
+  (parametri condivisi) in ogni posizione dell'immagine, invece di un
+  peso dedicato per ogni pixel; molti meno parametri di una rete densa
+  a parità di immagine (esempio verificato: 288 pesi per 32 filtri 3×3,
+  contro 1.000.000 di pesi per una rete densa 10.000→100 su
+  un'immagine 100×100). Un livello di pooling (es. max pooling) riduce
+  la dimensione mantenendo il segnale più forte. **Stato:
+  needs_reverification** (meccanica generale, non specifica di prodotto
+  Google Cloud).
+- **RNN (rete ricorrente), LSTM, GRU**: stato nascosto aggiornato passo
+  per passo con pesi condivisi nel tempo; soggetta a gradiente che
+  svanisce/esplode su sequenze lunghe (backpropagation through time);
+  LSTM/GRU aggiungono gate per attenuare il problema. **Stato:
+  needs_reverification**.
+- **Transformer**: architettura usata dai moderni modelli fondazionali
+  di testo (Model Garden, Dominio 1), elabora la sequenza in parallelo
+  con un meccanismo di attenzione invece che passo-passo come una RNN.
+  **Stato: needs_reverification** (non afferma quale architettura
+  esatta usi internamente un modello Gemini specifico, solo che la
+  famiglia Transformer ha sostituito le RNN per il testo nei modelli
+  fondazionali moderni in generale).
+
 ## Hardware (3.3)
 
 - **CPU, GPU, TPU**: opzioni di calcolo/acceleratore da valutare. **Stato:

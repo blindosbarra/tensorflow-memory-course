@@ -3,7 +3,7 @@ id: pmle-03-scale-prototypes-into-ml-models
 title: "Certificazione PMLE - Dominio 3: scalare i prototipi in modelli ML"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 30
+estimated_minutes: 40
 prerequisites: [pmle-02-collaborate-manage-data-models]
 deliverables: []
 sources:
@@ -15,9 +15,11 @@ sources:
 
 !!! note "Stato: contenuto verificato su fonte primaria"
     Contenuto verificato parola per parola contro la exam guide ufficiale
-    Google Cloud, fornita direttamente dallo studente. Un concetto (data
-    vs model parallelism) è spiegato con conoscenza ML generale, non da
-    documentazione di prodotto Google Cloud — segnalato dove compare.
+    Google Cloud, fornita direttamente dallo studente. Alcuni concetti —
+    data vs model parallelism, e il dettaglio di cosa sono CNN/RNN/
+    Transformer dietro il termine "DNN" della guida — sono spiegati con
+    conoscenza ML generale, non da documentazione di prodotto Google
+    Cloud, segnalati dove compaiono.
 
 ## Cosa copre questo dominio
 
@@ -63,6 +65,99 @@ l'interpretabilità (in questo caso, dei modelli visti nel Dominio 1,
 `LOGISTIC_REG` e gli alberi restano più facili da ispezionare di una
 `DNN_CLASSIFIER`) è un vincolo che entra nella scelta del modello fin
 dall'inizio, non un report da produrre a posteriori.
+
+!!! info "DNN per pattern complessi, in dettaglio: CNN, RNN, e perché i modelli fondazionali oggi usano Transformer"
+    La guida dice solo "DNN per pattern complessi", senza specificare
+    che "DNN" copre famiglie di architetture molto diverse tra loro a
+    seconda del tipo di dato. Tre di queste tornano più volte in questo
+    modulo (foto difettose e fiori nel Dominio 1, riassunto ticket nel
+    Dominio 1, previsione domanda/pioggia nei Domini 1 e nella lezione di
+    sintesi) senza mai essere spiegate.
+
+    **CNN (rete neurale convoluzionale) — per immagini.** Un `DNN`
+    "denso" tratta ogni pixel come un input indipendente: per
+    un'immagine 100×100 in scala di grigi (10.000 pixel) collegata a
+    soli 100 neuroni del livello successivo servirebbero già 10.000 ×
+    100 = **1.000.000 di pesi**, e la rete non saprebbe che due pixel
+    vicini sono correlati. Una **CNN** usa invece piccoli filtri (es. 3×3
+    pixel) che scorrono su tutta l'immagine, riusando **sempre gli
+    stessi pesi** in ogni posizione: 32 filtri 3×3 costano solo 3×3×32 =
+    **288 pesi**, indipendentemente da quanto è grande l'immagine — un
+    filtro che ha imparato a riconoscere un bordo lo riconosce ovunque
+    compaia nella foto, non solo in una posizione fissa.
+
+    Un esempio numerico di cosa calcola davvero un filtro. Un filtro
+    tipo "rileva contrasto locale":
+
+    ```
+    Filtro:        Patch di immagine (valori pixel):
+     0  -1   0       10  10  10
+    -1   4  -1       10  50  10
+     0  -1   0       10  10  10
+    ```
+
+    Il filtro scorre sulla patch e calcola la somma dei prodotti
+    elemento per elemento: `0×10 + (-1)×10 + 0×10 + (-1)×10 + 4×50 +
+    (-1)×10 + 0×10 + (-1)×10 + 0×10 = -40 + 200 = 160`. Un valore alto
+    (160) segnala che il pixel centrale (50) contrasta fortemente con i
+    vicini (tutti 10) — il filtro ha "acceso" un segnale forte in
+    corrispondenza di un bordo o di un punto isolato. Dopo alcuni strati
+    convoluzionali, un livello di **pooling** (es. max pooling: da un
+    blocco 2×2 di valori `[[9,2],[4,7]]` tiene solo il massimo, `9`)
+    riduce la dimensione mantenendo il segnale più forte, prima di
+    passare tutto a strati densi finali per la decisione di
+    classificazione. Questo è ciò che AutoML cerca automaticamente
+    (Dominio 1) quando lavora su immagini — spesso partendo da un
+    backbone convoluzionale già pre-addestrato invece che inventare
+    l'architettura da zero.
+
+    **RNN (rete neurale ricorrente) — per sequenze.** Una RNN elabora una
+    sequenza (una serie storica, una frase) un elemento alla volta,
+    mantenendo uno **stato nascosto** che riassume ciò che ha visto
+    finora e si aggiorna a ogni passo: `stato_t = f(pesi_x · input_t +
+    pesi_h · stato_(t-1))`. Gli stessi pesi sono riusati a ogni passo
+    temporale, il che permette a una RNN di gestire sequenze di
+    lunghezza qualunque con un numero fisso di parametri. Il problema
+    pratico: durante l'addestramento, il gradiente della loss deve
+    propagarsi all'indietro attraverso *tutti* i passi temporali
+    (backpropagation through time), e moltiplicandosi ripetutamente
+    tende a **svanire** (diventare quasi zero, la rete smette di
+    imparare dipendenze tra elementi lontani nella sequenza) o a
+    **esplodere** (crescere senza controllo). Varianti come **LSTM** e
+    **GRU** aggiungono meccanismi di "cancello" (gate) che permettono
+    alla rete di decidere esplicitamente cosa tenere e cosa scartare
+    dallo stato nascosto nel tempo, attenuando (non eliminando) questo
+    problema.
+
+    **Dove RNN è un'opzione reale in questo modulo, e dove non lo è
+    più.** Per la previsione domanda/pioggia (Domini 1 e la lezione di
+    sintesi), una RNN/LSTM è un'alternativa tecnicamente valida ad
+    `ARIMA_PLUS` o a un `BOOSTED_TREE_REGRESSOR` con feature di lag — ma
+    richiede più codice, più dati e più tuning, quindi il criterio del
+    Dominio 1 (minimo sforzo che basta) la rende la scelta di **ultima
+    istanza**, non la prima, a meno che il pattern temporale sia troppo
+    complesso per feature di lag scritte a mano. Per il testo (riassunto
+    ticket, Dominio 1 Problema 3), invece, le RNN sono in gran parte
+    **superate**: i modelli fondazionali moderni come quelli di Gemini
+    Enterprise Agent Platform Model Garden si basano sull'architettura
+    **Transformer**, che elabora tutti gli elementi della sequenza **in
+    parallelo** invece che uno alla volta, usando un meccanismo di
+    attenzione per pesare direttamente le relazioni tra elementi
+    lontani nella sequenza senza passare per uno stato nascosto
+    propagato passo-passo — più veloce da addestrare su hardware
+    parallelo e meno soggetto al problema del gradiente che svanisce. Il
+    corso principale tratta l'attenzione e i Transformer in dettaglio,
+    con codice, nel modulo "Transformer e modello open" più avanti nel
+    percorso.
+
+    **Stato: needs_reverification** — meccaniche generali di CNN
+    (convoluzione, pooling, condivisione dei pesi), RNN (stato nascosto,
+    vanishing/exploding gradient, LSTM/GRU) e Transformer/attenzione sono
+    conoscenza ML generale, non specifica di un prodotto Google Cloud,
+    non riverificate su documentazione live in questa sessione. L'esempio
+    numerico del filtro convoluzionale è un calcolo aritmetico verificato
+    su valori costruiti a scopo didattico, non un output di un modello
+    reale.
 
 ### 3.2 — Addestrare i modelli
 
@@ -143,6 +238,13 @@ in RAM, un training che deve girare su più GPU).
 - Confondere parallelismo dei dati e parallelismo del modello: solo il
   secondo risolve il problema di un modello che non entra su un singolo
   dispositivo.
+- Usare una RNN per un problema di testo oggi, per abitudine o perché
+  "sono reti per sequenze": i modelli fondazionali moderni per il testo
+  usano Transformer, non RNN — le RNN restano un'opzione valida
+  soprattutto per serie storiche, non la scelta di default per il testo.
+- Applicare una rete densa "semplice" a immagini invece di una CNN,
+  ignorando che il numero di pesi esplode senza sfruttare la
+  correlazione spaziale tra pixel vicini.
 
 ## Quiz
 
@@ -156,6 +258,12 @@ in RAM, un training che deve girare su più GPU).
 3. Un modello linguistico di grandi dimensioni non entra nella memoria di
    una singola GPU. Quale strategia di parallelismo risolve questo
    problema, e perché l'altra non basta?
+4. Perché una CNN ha bisogno di molti meno pesi di una rete densa per
+   elaborare la stessa immagine, e cosa perderebbe una rete densa che
+   una CNN invece cattura?
+5. Perché una RNN semplice fatica a imparare dipendenze tra elementi
+   lontani in una sequenza lunga, e quali due varianti attenuano il
+   problema?
 
 <details>
 <summary><b>Apri le risposte</b></summary>
@@ -176,6 +284,20 @@ in RAM, un training che deve girare su più GPU).
    dispositivi. Il parallelismo dei dati non basta perché ogni
    dispositivo dovrebbe comunque contenere una copia intera del modello,
    che non entra in memoria.
+4. Perché una CNN riusa lo stesso piccolo filtro (es. 3×3 pixel) in ogni
+   posizione dell'immagine invece di collegare ogni pixel a un peso
+   dedicato: pochi pesi (es. 288 per 32 filtri 3×3) bastano
+   indipendentemente da quanto è grande l'immagine. Una rete densa
+   tratterebbe ogni pixel come indipendente, perdendo l'informazione che
+   pixel vicini sono correlati (un bordo o una texture) e richiedendo
+   milioni di pesi anche per immagini piccole.
+5. Perché il gradiente della loss deve propagarsi all'indietro
+   attraverso ogni passo temporale (backpropagation through time), e
+   moltiplicandosi ripetutamente tende a svanire (quasi zero) o esplodere
+   — rendendo difficile imparare relazioni tra elementi molto distanti
+   nella sequenza. LSTM e GRU attenuano il problema con meccanismi di
+   gate che permettono alla rete di decidere esplicitamente cosa
+   mantenere e cosa scartare dallo stato nascosto nel tempo.
 
 </details>
 

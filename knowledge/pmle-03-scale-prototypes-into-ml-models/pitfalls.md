@@ -14,3 +14,9 @@
 - Confondere parallelismo dei dati e parallelismo del modello: il primo
   non risolve il problema di un modello che non entra su un singolo
   dispositivo, il secondo sì (vedi concepts.md).
+- Usare una RNN per il testo oggi per abitudine: i modelli fondazionali
+  moderni usano Transformer, non RNN — le RNN restano un'opzione valida
+  soprattutto per serie storiche, non la scelta di default per il testo.
+- Applicare una rete densa a immagini invece di una CNN: il numero di
+  pesi esplode senza motivo, e la rete non sfrutta la correlazione
+  spaziale tra pixel vicini che una CNN cattura per costruzione.
