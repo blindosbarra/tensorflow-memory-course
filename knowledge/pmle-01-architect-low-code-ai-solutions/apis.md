@@ -165,3 +165,44 @@ si sceglie il fine-tuning quando prompting e tuning efficiente non
 bastano a ottenere il comportamento richiesto, non come prima opzione.
 **Stato: needs_reverification** (conoscenza ML generale, non specifica
 di un prodotto Google Cloud).
+
+### Loss function, optimizer, metrica: come scegliere
+
+- **Loss per tipo di problema**: regressione → `MSE` (penalizza gli
+  errori grandi, sensibile agli outlier), `MAE` (penalità lineare, più
+  robusta agli outlier), `Huber loss` (compromesso). Classificazione
+  binaria → `binary cross-entropy` con un neurone di output e
+  attivazione `sigmoid`. Classificazione multi-classe mutuamente
+  esclusiva → `categorical`/`sparse categorical cross-entropy` con N
+  neuroni di output e attivazione `softmax` (probabilità che sommano a
+  1). Classificazione multi-etichetta (classi non esclusive) →
+  `binary cross-entropy` per etichetta, con `sigmoid` indipendente su
+  ciascun neurone, non `softmax`. **Stato: needs_reverification**
+  (definizioni matematiche standard, stesse della Lezione 9 del corso
+  principale).
+- **Softmax, esempio numerico verificato**: logit `[2,0; 1,0; 0,1]` →
+  `e^2,0≈7,39`, `e^1,0≈2,72`, `e^0,1≈1,10`, somma≈11,21 →
+  `P=[0,66; 0,24; 0,10]` (somma 1,00). Categorical cross-entropy per la
+  classe corretta (prima) = `-log(0,66)≈0,42`. **Stato:
+  needs_reverification** (formule standard; numeri usati come esempio
+  didattico verificato aritmeticamente, non output reale).
+- **Optimizer**: `SGD` (aggiornamento base scalato dal learning rate),
+  `SGD+momentum` (media mobile degli aggiornamenti passati, accelera la
+  convergenza), `RMSprop` (learning rate adattivo per singolo peso),
+  `Adam` (momentum + adattamento per-peso, scelta di default comune,
+  richiede poco tuning). Il learning rate è l'iperparametro più
+  sensibile: troppo alto → la loss di training oscilla o diverge; troppo
+  basso → progresso quasi impercettibile. **Stato: needs_reverification**
+  (meccaniche generali di ottimizzazione, stesse della Lezione 11 del
+  corso principale con `GradientTape`).
+- **Loss vs metrica**: la loss deve essere derivabile (l'optimizer ne usa
+  il gradiente); la metrica no — l'accuracy è una pessima loss diretta
+  (gradiente quasi ovunque zero) ma una metrica ragionevole da riportare.
+  In multi-classe, precision/recall/F1 per classe vanno aggregati con
+  **macro-average** (media semplice, fa emergere un problema su una
+  classe rara), **micro-average** (aggrega TP/FP/FN su tutte le classi
+  prima di calcolare, le classi comuni dominano — stesso limite
+  dell'accuracy aggregata), o **weighted average** (macro pesato per il
+  supporto di ciascuna classe). **Stato: needs_reverification**
+  (conoscenza ML generale standard, stessa della Lezione 13 del corso
+  principale).

@@ -41,3 +41,17 @@
   predicesse sempre la classe maggioritaria avrebbe comunque un'accuracy
   alta senza essere utile — precision, recall e F1 vanno guardati insieme
   all'accuracy, non al suo posto.
+- Usare `softmax` su un problema multi-etichetta (classi non mutuamente
+  esclusive): forza le probabilità a sommare a 1 e sopprime
+  artificialmente etichette corrette che dovrebbero poter essere vere
+  insieme. Serve `sigmoid` indipendente su ciascun neurone di output.
+- Guardare l'accuracy aggregata o il micro-average su un problema
+  multi-classe sbilanciato: entrambi pesano di fatto ogni singolo
+  esempio, quindi le classi comuni nascondono un recall pessimo su una
+  classe rara. Solo il macro-average tratta ogni classe allo stesso
+  modo indipendentemente da quanti esempi ha.
+- Usare una metrica non derivabile (es. accuracy) come loss da
+  minimizzare direttamente: il suo gradiente è quasi ovunque zero,
+  quindi non dà all'optimizer nessuna informazione utile su come
+  aggiustare i pesi — loss e metrica hanno scopi diversi e non sono
+  intercambiabili.

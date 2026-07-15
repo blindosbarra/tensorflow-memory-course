@@ -79,6 +79,16 @@ generale non riverificata su documentazione live:
 - AutoML: ricerca automatica di architettura e iperparametri dentro un
   budget di calcolo, spesso con transfer learning da backbone
   pre-addestrati per immagini/testo.
+- Loss function per tipo di problema (regressione, binaria, multi-classe
+  esclusiva, multi-etichetta), con un esempio numerico verificato di
+  softmax + categorical cross-entropy; optimizer (SGD, momentum,
+  RMSprop, Adam) e sensibilità del learning rate; differenza tra loss
+  (derivabile, ottimizzata) e metrica (riportata a un umano); le tre
+  modalità di aggregazione precision/recall/F1 in multi-classe (macro/
+  micro/weighted) e perché solo il macro-average fa emergere un problema
+  su una classe rara. Aggiunto su richiesta esplicita dello studente
+  ("explain optimization function, loss function and metrics... binary
+  classification vs probabilities for multi class").
 - Tuning di modelli fondazionali: prompting/RAG (nessun peso aggiornato)
   < tuning efficiente come LoRA (poche matrici aggiuntive) < fine-tuning
   completo (tutti i pesi) — in ordine di costo crescente, e il

@@ -3,7 +3,7 @@ id: pmle-01-architect-low-code-ai-solutions
 title: "Certificazione PMLE - Dominio 1: architettare soluzioni AI low-code"
 module: gcp-ml-certification
 status: writing
-estimated_minutes: 45
+estimated_minutes: 55
 prerequisites: []
 deliverables: []
 sources:
@@ -23,7 +23,9 @@ sources:
     (sintassi `CREATE MODEL`, clausola `TRANSFORM`, normalizzazione delle
     feature con numeri d'esempio, metriche di `ML.EVALUATE` calcolate su
     una matrice di confusione costruita, ricerca architetturale di
-    AutoML, framework prompting/tuning) sono conoscenza generale, non
+    AutoML, framework prompting/tuning, scelta di loss function/optimizer/
+    metrica e confronto binario-vs-multi-classe con un esempio numerico
+    di softmax) sono conoscenza generale, non
     riverificata sulla documentazione live in questa sessione: marcati
     esplicitamente dove compaiono, con i numeri usati negli esempi
     dichiarati come didattici e non come dati reali. Dettaglio in
@@ -389,6 +391,220 @@ generale, le stesse della Lezione 13 del corso principale); la tabella
 di confusione e tutti i numeri di Nordica sono un esempio didattico
 costruito per questa lezione, non un output reale di `ML.EVALUATE`.
 
+## Come scegliere loss function, optimizer e metrica
+
+Finora abbiamo visto *quali* metriche legge `ML.EVALUATE` e *come*
+interpretarle. Manca un pezzo che la exam guide non nomina mai
+esplicitamente ma che è alla base di come un modello impara e di come
+si giudica un problema di classificazione con più di due classi: la
+funzione di loss che guida l'addestramento, l'optimizer che la minimizza,
+e la differenza tra classificazione binaria e multi-classe a livello di
+architettura, non solo di metriche.
+
+### Loss function: cosa misura, e quale scegliere
+
+!!! info "Loss diverse per problemi diversi — con la formula e quando usarla"
+    La **loss function** misura quanto una singola predizione è
+    sbagliata rispetto al valore vero; l'addestramento aggiusta i pesi
+    del modello per minimizzare la loss media su tutto il training set.
+    Non è la stessa cosa di una metrica (vedi più sotto): la loss deve
+    essere una funzione liscia e derivabile, perché l'optimizer ne
+    calcola il gradiente per decidere come aggiornare i pesi.
+
+    - **Regressione (un numero continuo da prevedere)**:
+        - `MSE` (errore quadratico medio, `mean_squared_error`): eleva
+          l'errore al quadrato, quindi penalizza gli errori grandi molto
+          più di quelli piccoli. Sensibile agli outlier: un singolo
+          errore enorme domina la loss totale.
+        - `MAE` (errore assoluto medio, `mean_absolute_error`): penalità
+          lineare, più robusta agli outlier di `MSE`, ma il gradiente ha
+          la stessa dimensione ovunque (anche vicino a zero), il che può
+          rendere la convergenza finale meno precisa.
+        - `Huber loss`: un compromesso — quadratica per errori piccoli
+          (comportamento simile a MSE, buona precisione vicino al
+          minimo), lineare per errori grandi (comportamento simile a MAE,
+          robusta agli outlier).
+    - **Classificazione binaria (due classi, es. "rinnova / non
+      rinnova")**: `binary cross-entropy` (log loss). Richiede che
+      l'ultimo strato del modello abbia **un solo neurone** con
+      attivazione **sigmoid**, che schiaccia qualunque numero in un
+      valore tra 0 e 1 interpretabile come probabilità della classe
+      positiva.
+    - **Classificazione multi-classe, classi mutuamente esclusive** (es.
+      "quale delle 20 specie di fiori" del Problema 2 del Dominio 1 —
+      una foto è di *una* specie, non di più): `categorical
+      cross-entropy` se le etichette sono one-hot (es. `[0,0,1,0]`),
+      `sparse categorical cross-entropy` se le etichette sono un intero
+      di classe (es. `2`) — stessa matematica, solo un formato di
+      etichetta diverso, comodo per non dover fare l'one-hot encoding a
+      mano. Richiede che l'ultimo strato abbia **un neurone per
+      classe** con attivazione **softmax** (vedi il confronto sotto).
+    - **Classificazione multi-etichetta** (es. un ticket di assistenza
+      può appartenere contemporaneamente a più categorie: "fatturazione"
+      *e* "urgente" — le etichette non sono mutuamente esclusive):
+      `binary cross-entropy` calcolata **indipendentemente per ogni
+      etichetta**, con un'attivazione **sigmoid su ciascun neurone di
+      output**, non softmax — perché softmax forza le probabilità a
+      sommare a 1, il che avrebbe senso solo se le classi si escludessero
+      a vicenda.
+
+    **Stato: needs_reverification** — definizioni matematiche standard di
+    conoscenza ML generale (le stesse della Lezione 9 del corso
+    principale), non specifiche di un prodotto Google Cloud, non
+    riverificate su documentazione live in questa sessione.
+
+### Sigmoid + un neurone (binario) contro softmax + N neuroni (multi-classe): il confronto concreto
+
+Questa è la domanda che la exam guide non pone mai direttamente ma che
+serve per capire cosa succede "dentro" un `DNN_CLASSIFIER` o dentro il
+modello che AutoML costruisce per il Problema 2 del Dominio 1
+(classificazione fiori, Architettura 3 della lezione di sintesi):
+
+| | Binaria | Multi-classe esclusiva | Multi-etichetta |
+|---|---|---|---|
+| Esempio | Rinnova sì/no | Quale specie di fiore (1 su 20) | Quali categorie si applicano al ticket |
+| Neuroni di output | 1 | N (una per classe) | N (una per etichetta) |
+| Attivazione finale | sigmoid | **softmax** | sigmoid (su ciascun neurone) |
+| Le probabilità sommano a 1? | sì (P e 1-P) | sì, per costruzione | no — ogni probabilità è indipendente |
+| Loss | binary cross-entropy | categorical / sparse categorical cross-entropy | binary cross-entropy per etichetta |
+| Decisione finale | soglia sulla probabilità (es. 0,5 o tarata, vedi sopra) | classe con probabilità più alta (`argmax`) | soglia indipendente su ciascuna probabilità |
+
+**Un esempio numerico di softmax, per vedere perché serve.** Immagina
+che la rete di classificazione fiori produca, per una foto, tre valori
+grezzi (logit, prima dell'attivazione finale) per tre specie candidate:
+rosa = 2,0, tulipano = 1,0, orchidea = 0,1. Softmax li trasforma in
+probabilità con `p_i = e^(logit_i) / somma_di_tutti_e^(logit_j)`:
+
+```
+e^2,0 ≈ 7,39   e^1,0 ≈ 2,72   e^0,1 ≈ 1,10   →  somma ≈ 11,21
+
+P(rosa)      = 7,39 / 11,21 ≈ 0,66
+P(tulipano)  = 2,72 / 11,21 ≈ 0,24
+P(orchidea)  = 1,10 / 11,21 ≈ 0,10
+```
+
+Le tre probabilità sommano a 1,00 (0,66+0,24+0,10), per costruzione — è
+esattamente questo che rende softmax adatto alle classi mutuamente
+esclusive: "è più probabile che sia una rosa" implica automaticamente
+"è meno probabile che sia un tulipano o un'orchidea". Con sigmoid
+applicato a ciascun neurone indipendentemente (come nel caso
+multi-etichetta), questo non sarebbe garantito — e non dovrebbe esserlo,
+se un ticket può davvero essere sia "fatturazione" sia "urgente" allo
+stesso tempo.
+
+Se la specie vera in questa foto è la rosa, la categorical cross-entropy
+per questo singolo esempio è `-log(P(rosa)) = -log(0,66) ≈ 0,42` — più
+la probabilità assegnata alla classe corretta è vicina a 1, più questo
+valore si avvicina a 0 (predizione quasi perfetta); più si avvicina a 0,
+più la loss esplode verso l'infinito (predizione pessima e sicura di sé).
+
+**Dove questo tocca gli strumenti già visti in questa lezione.** In
+BigQuery ML, `LOGISTIC_REG` implementa internamente esattamente lo
+schema binario (sigmoid + log loss) senza che chi lo usa debba
+configurarlo; `DNN_CLASSIFIER` può fare sia binario sia multi-classe a
+seconda di quante classi ha `input_label_cols`, scegliendo internamente
+sigmoid o softmax di conseguenza. In AutoML per il Problema 2 (foto di
+prodotti difettosi/non difettosi, binario) e nell'Architettura 3 della
+lezione di sintesi (20 specie di fiori, multi-classe esclusiva), la
+ricerca automatica di AutoML (Dominio 1) ottimizza comunque una loss di
+questo tipo sotto il cofano — la ricerca riguarda l'architettura e gli
+iperparametri, non elimina la necessità di una loss coerente con la
+struttura del problema.
+
+### Optimizer: chi decide come muoversi lungo la loss
+
+!!! info "Da SGD ad Adam — cosa fa davvero un optimizer"
+    Una volta calcolata la loss e il suo gradiente (con backpropagation,
+    Lezione 8 del corso principale), l'**optimizer** decide *come*
+    aggiornare i pesi del modello per ridurre quella loss al passo
+    successivo.
+
+    - **SGD (discesa del gradiente stocastica)**: l'aggiornamento più
+      semplice — sposta ogni peso in direzione opposta al gradiente, di
+      una quantità proporzionale al **learning rate**. Può essere lento
+      o rimanere bloccato in zone piatte della superficie della loss.
+    - **SGD con momentum**: accumula una media mobile degli aggiornamenti
+      passati, così la direzione di aggiornamento "prende velocità"
+      quando i gradienti puntano ripetutamente nella stessa direzione —
+      converge più in fretta e supera più facilmente piccole
+      irregolarità della superficie della loss.
+    - **RMSprop**: adatta il learning rate **per ogni singolo peso**, in
+      base alla grandezza recente dei suoi gradienti — pesi con
+      gradienti storicamente grandi ricevono aggiornamenti più piccoli, e
+      viceversa.
+    - **Adam** (la scelta di default più comune): combina l'idea del
+      momentum con l'adattamento per-peso di RMSprop. È spesso la scelta
+      ragionevole di partenza per una rete profonda, perché richiede
+      relativamente poco tuning manuale per convergere in modo
+      affidabile.
+
+    **Il learning rate è l'iperparametro che conta di più.** Troppo
+    alto: la loss oscilla o diverge invece di scendere (un sintomo
+    diagnostico concreto — se la loss di training stessa esplode o
+    oscilla selvaggiamente invece di scendere gradualmente, la prima
+    cosa da controllare non è l'architettura del modello ma il learning
+    rate). Troppo basso: la discesa è così lenta che il training sembra
+    non progredire, anche se la direzione è corretta.
+
+    **Stato: needs_reverification** — meccaniche generali di
+    ottimizzazione basata su gradiente (le stesse della Lezione 11 del
+    corso principale, che le implementa con `GradientTape`), non
+    specifiche di un prodotto Google Cloud. In BigQuery ML
+    `DNN_CLASSIFIER`/`_REGRESSOR` l'optimizer è configurabile ma con
+    superficie di controllo più limitata di un training Keras scritto a
+    mano; dettagli esatti non riverificati su documentazione live in
+    questa sessione.
+
+### Metrica vs loss: non sono la stessa cosa
+
+Un punto spesso frainteso: la loss è ciò che l'optimizer minimizza
+durante il training (deve essere derivabile); la **metrica** è ciò che
+si riporta a fine training per giudicare il modello in termini
+comprensibili a una persona (non deve essere derivabile). L'accuracy, ad
+esempio, è una pessima loss da ottimizzare direttamente (è una funzione
+a gradini, il gradiente è quasi ovunque zero — non dà nessuna
+informazione utile su *come* aggiustare i pesi), ma è una metrica
+perfettamente ragionevole da riportare a un umano. Per questo un modello
+di classificazione binaria si addestra minimizzando la binary
+cross-entropy, ma si valuta con precision/recall/F1/accuracy/ROC AUC
+(viste sopra in "Prova tu, risolto") — due strumenti diversi per due
+scopi diversi, spesso confusi come se fossero intercambiabili.
+
+**Precision/recall/F1 in multi-classe: una complicazione che il caso
+binario non ha.** L'esempio di rinnovo contratti sopra era binario (due
+classi, una matrice di confusione 2×2). Con più classi (es. le 20
+specie di fiori), non esiste un'unica precision o un unico recall: ce
+n'è uno **per ciascuna classe** (rosa vs "tutte le altre", tulipano vs
+"tutte le altre", eccetera), e vanno aggregati in un solo numero in uno
+di tre modi diversi, con risultati anche molto diversi tra loro se le
+classi sono sbilanciate (esattamente il caso rose/orchidee rare
+dell'Architettura 3 della lezione di sintesi):
+
+- **Macro-average**: media semplice delle metriche per classe, ogni
+  classe pesa uguale indipendentemente da quante foto ha. Un recall
+  pessimo sulla classe rara (40 foto) pesa quanto un recall ottimo sulla
+  classe comune (800 foto) — buono per far emergere un problema su una
+  classe minoritaria, che è esattamente il punto sollevato
+  nell'Architettura 3.
+- **Micro-average**: si sommano prima tutti i TP, FP, FN su tutte le
+  classi insieme, poi si calcola una singola precision/recall globale —
+  in pratica pesa ogni *esempio* allo stesso modo, quindi le classi più
+  numerose dominano il risultato (simile al problema dell'accuracy
+  aggregata visto nell'Architettura 3).
+- **Weighted average**: come il macro-average, ma la media è pesata per
+  quante istanze reali ha ciascuna classe — un compromesso tra i due
+  precedenti.
+
+Se l'obiettivo è proprio accorgersi che una classe rara va male (il caso
+di Nordica coi vivai), il macro-average è la scelta giusta: micro-average
+e accuracy aggregata la nasconderebbero allo stesso modo.
+
+**Stato: needs_reverification** — la distinzione loss-vs-metrica e le
+tre modalità di aggregazione multi-classe sono conoscenza ML generale
+standard, le stesse della Lezione 13 del corso principale; non
+specifiche di un prodotto Google Cloud, non riverificate su
+documentazione live in questa sessione.
+
 ## Errori comuni
 
 - Scegliere sempre la soluzione custom per abitudine: nel Problema 2 di
@@ -410,6 +626,17 @@ costruito per questa lezione, non un output reale di `ML.EVALUATE`.
   chiarezza, marcate `needs_reverification` (vedi riquadro in cima alla
   pagina) perché non riverificate sulla documentazione live in questa
   sessione.
+- Usare softmax con un problema multi-etichetta (dove più classi possono
+  essere vere insieme): softmax forza le probabilità a sommare a 1, il
+  che sopprime artificialmente le altre etichette corrette. Serve
+  sigmoid indipendente su ciascun neurone di output, non softmax.
+- Guardare solo l'accuracy aggregata o il micro-average su un problema
+  multi-classe sbilanciato: entrambi nascondono un recall pessimo su una
+  classe rara nello stesso modo — serve il macro-average per farla
+  emergere.
+- Confondere loss e metrica: scegliere una metrica non derivabile (es.
+  accuracy) come loss da minimizzare direttamente non dà all'optimizer
+  nessuna informazione utile su come aggiustare i pesi.
 
 ## Quiz
 
@@ -422,6 +649,15 @@ costruito per questa lezione, non un output reale di `ML.EVALUATE`.
    fondazionale è l'ultima opzione da considerare, non la prima?
 4. Nello scenario B2B di "Prova tu", quale strumento risponde meglio ai
    vincoli, e quali metriche di `ML.EVALUATE` giudicherebbero il modello?
+5. Nordica costruisce un classificatore per il Problema 2 (foto
+   difettoso/non difettoso, due classi) e un secondo classificatore per
+   le 20 specie di fiori dell'Architettura 3 (una sola specie per foto).
+   Quale attivazione finale e quale loss usa ciascuno dei due, e perché
+   non sono intercambiabili?
+6. Sul dataset delle 20 specie di fiori, un modello ha il 90% di
+   accuracy aggregata ma un recall bassissimo sulle varietà rare. Quale
+   modo di aggregare precision/recall tra le classi farebbe emergere
+   questo problema, e quale lo nasconderebbe come l'accuracy?
 
 <details>
 <summary><b>Apri le risposte</b></summary>
@@ -452,6 +688,25 @@ costruito per questa lezione, non un output reale di `ML.EVALUATE`.
    guardare su `ML.EVALUATE` sono quelle di classificazione: precision,
    recall, F1 e ROC AUC — non errore quadratico medio, che è per la
    regressione.
+5. Il classificatore binario (difettoso/non difettoso) usa un neurone
+   di output con attivazione **sigmoid** e loss **binary
+   cross-entropy**: le due classi si escludono a vicenda per costruzione
+   (o è difettoso, o non lo è) e una sola probabilità basta a
+   descriverle entrambe (P e 1-P). Il classificatore a 20 specie usa 20
+   neuroni di output con attivazione **softmax** (le probabilità
+   sommano a 1 per costruzione, coerente con "una foto è di una sola
+   specie") e loss **categorical** (o sparse categorical) **cross-entropy**.
+   Non sono intercambiabili perché softmax su un problema binario
+   sarebbe ridondante (basterebbe un neurone), e sigmoid indipendente su
+   20 classi mutuamente esclusive non garantirebbe che le probabilità
+   sommino a 1.
+6. Il **macro-average** farebbe emergere il problema: pesa ogni classe
+   allo stesso modo indipendentemente da quante foto ha, quindi un
+   recall pessimo su una varietà rara abbassa visibilmente la media
+   anche se le classi comuni vanno benissimo. L'accuracy aggregata e il
+   **micro-average** lo nasconderebbero allo stesso modo, perché
+   entrambi pesano di fatto ogni singola foto — e le foto delle specie
+   comuni sono la stragrande maggioranza, quindi dominano il risultato.
 
 </details>
 

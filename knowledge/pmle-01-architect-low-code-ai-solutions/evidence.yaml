@@ -112,6 +112,46 @@ claims:
     primary_source: false
     evidence_note: "Added after learner feedback that evaluation metrics were named but never worked through with concrete numbers. The metric formulas themselves are standard and match Lesson 13 of the main course; the confusion-matrix numbers are an invented teaching example explicitly labeled as such in the lesson text, not real data or a real ML.EVALUATE/ML.CONFUSION_MATRIX output."
     status: needs_reverification
+  - id: loss-function-selection-general
+    claim: "Loss function choice by task: regression uses MSE (squares errors, sensitive to outliers), MAE (linear penalty, more robust to outliers), or Huber loss (quadratic near zero, linear for large errors, a compromise). Binary classification uses binary cross-entropy with a single sigmoid output unit. Mutually-exclusive multi-class classification uses categorical cross-entropy (one-hot labels) or sparse categorical cross-entropy (integer labels, same underlying math) with a softmax output layer (one unit per class, outputs sum to 1). Multi-label classification (non-exclusive labels) uses binary cross-entropy computed independently per label, with an independent sigmoid activation per output unit rather than softmax."
+    importance: major
+    source_url: "general pre-training ML knowledge (standard loss function definitions), not from the exam guide"
+    source_title: "General knowledge of loss function selection by task type"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Added at the learner's explicit request to explain loss/optimizer/metric selection and binary-vs-multiclass probability handling in detail. Standard ML knowledge matching the main course's Lesson 9 (probability-loss-functions), not specific to a Google Cloud product, not re-verified against live documentation this session."
+    status: needs_reverification
+  - id: sigmoid-vs-softmax-worked-example
+    claim: "Worked numeric example of the softmax function applied to three class logits (2.0, 1.0, 0.1), producing probabilities that sum to 1 (~0.66, ~0.24, ~0.10 after rounding) via p_i = e^(logit_i) / sum(e^(logit_j)), followed by a categorical cross-entropy computation for the correct class (-log(0.66) ~= 0.42). Used to illustrate why softmax (probabilities summing to 1, appropriate for mutually exclusive classes) differs from independent per-neuron sigmoid (appropriate for multi-label, non-exclusive classes)."
+    importance: minor
+    source_url: "n/a — worked arithmetic example, not a sourced factual claim"
+    source_title: "n/a"
+    publisher: "n/a"
+    accessed_at: "n/a"
+    primary_source: false
+    evidence_note: "The softmax and cross-entropy formulas are standard ML mathematics; the specific logit values and resulting numbers are an invented teaching example, arithmetic double-checked (7.389+2.718+1.105=11.212; 7.389/11.212=0.659; 2.718/11.212=0.242; 1.105/11.212=0.099; sum=1.000)."
+    status: needs_reverification
+  - id: optimizer-selection-general
+    claim: "General optimizer mechanics: SGD updates weights against the raw gradient scaled by the learning rate; SGD with momentum accumulates a moving average of past updates to accelerate convergence and smooth over small irregularities; RMSprop adapts the learning rate per parameter based on recent gradient magnitude; Adam combines momentum with RMSprop-style per-parameter adaptation and is commonly used as a reasonable default requiring comparatively little manual tuning. The learning rate is described as the most impactful hyperparameter: too high causes the training loss itself to oscillate or diverge; too low causes very slow apparent progress even when the update direction is correct."
+    importance: major
+    source_url: "general pre-training ML knowledge (gradient-based optimization), not from the exam guide"
+    source_title: "General knowledge of optimizer mechanics and learning rate sensitivity"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Standard optimization knowledge matching the main course's Lesson 11 (model-fit-under-the-hood, GradientTape implementation), not specific to a Google Cloud product. BigQuery ML DNN_CLASSIFIER/_REGRESSOR optimizer configurability is mentioned generally but exact current options are not verified against live documentation this session."
+    status: needs_reverification
+  - id: loss-vs-metric-and-multiclass-averaging
+    claim: "Loss must be differentiable (the optimizer needs its gradient) while a reported metric does not; accuracy is a poor direct optimization target (a step function with near-zero gradient almost everywhere) but a reasonable metric to report. For multi-class precision/recall/F1, per-class metrics must be aggregated one of three ways: macro-average (unweighted mean across classes, so a rare class's poor recall is not diluted by common classes), micro-average (aggregate TP/FP/FN across all classes first, effectively weighting by per-example frequency so common classes dominate, similar to aggregate accuracy's blind spot), or weighted average (macro-average weighted by each class's support, a compromise)."
+    importance: major
+    source_url: "general pre-training ML knowledge (standard evaluation-metric definitions), not from the exam guide"
+    source_title: "General knowledge of loss-vs-metric distinction and multiclass averaging schemes"
+    publisher: "n/a"
+    accessed_at: "not applicable — general pre-training knowledge, not fetched this session"
+    primary_source: false
+    evidence_note: "Standard ML evaluation knowledge matching the main course's Lesson 13 (evaluation-calibration), extended here to the multiclass case which the main course's binary classifier example does not need. Not specific to a Google Cloud product, not re-verified against live documentation this session."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
@@ -119,3 +159,4 @@ review:
     - "Core exam-guide content (claims 1-4) verified against the primary document itself, supplied by the learner. Lesson can advance past evidence_review for that content."
     - "2026-07-14: learner feedback was that the lesson named tools without explaining how they work — 'quality is zero, just a brief explanation of concepts'. Added five mechanism-level claims (BigQuery ML model types/TRANSFORM, ML.EVALUATE metrics, AutoML NAS+HPO mechanics, fine-tuning-vs-prompting framework), all needs_reverification general knowledge, clearly separated from the exam-guide-verified claims in the lesson text — same sourcing discipline as the pre-existing BigQuery ML syntax claim, applied more thoroughly this time instead of stopping at naming the activity."
     - "2026-07-14 (second round): learner feedback that the lesson still read as a syllabus — specifically no normalization section and no evaluation metrics worked with real examples. Added feature-scaling-mechanics (gradient descent + z-score, with a worked numeric example) and evaluation-metrics-worked-example (full confusion matrix -> precision/recall/F1/accuracy/ROC AUC computed by hand, with business interpretation of the precision/recall tradeoff). All example numbers explicitly labeled in the lesson text as invented teaching illustrations, not real data."
+    - "2026-07-14 (third round): learner asked for detailed coverage of loss functions, optimizers, and metrics to help identify the proper one, with clear examples, and specifically how binary classification differs from multi-class probability handling. Scope confirmed via clarifying question: PMLE docs, not the main course notebooks. Added loss-function-selection-general (regression/binary/multiclass/multilabel loss choice), sigmoid-vs-softmax-worked-example (a checked softmax + cross-entropy numeric example), optimizer-selection-general (SGD/momentum/RMSprop/Adam, learning rate sensitivity), and loss-vs-metric-and-multiclass-averaging (macro/micro/weighted averaging for multiclass precision/recall/F1). Cross-referenced one troubleshooting row into pmle-07's playbook (loss divergence -> learning rate)."
