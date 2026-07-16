@@ -1,0 +1,29 @@
+lesson_id: cosine-similarity
+reviewed_at: 2026-07-16
+claims:
+  - id: cosine-similarity-definition
+    claim: "Cosine similarity between two vectors is the cosine of the angle between them, computed as the dot product divided by the product of the L2 norms; scikit-learn's cosine_similarity computes this pairwise between rows of two arrays (or within one array), returning a similarity matrix."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.cosine_similarity.html"
+    source_title: "sklearn.metrics.pairwise.cosine_similarity"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The API reference documents the formula (dot product of L2-normalized vectors) and the pairwise-matrix output shape."
+    status: needs_reverification
+  - id: pairwise-metrics-context
+    claim: "scikit-learn's pairwise metrics module distinguishes distance metrics (e.g. Euclidean) from similarity/kernel measures (e.g. cosine), which behave differently with respect to vector magnitude."
+    importance: minor
+    source_url: "https://scikit-learn.org/stable/modules/metrics.html"
+    source_title: "Pairwise metrics, Affinities and Kernels"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The user guide covers the general distinction between distance and similarity measures available in the module."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to scikit-learn.org returned 403 (organization proxy policy) in this session, same restriction already logged for prior lessons this session. Claims drawn from general pre-training knowledge of the well-established cosine_similarity API, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "The same-type/different-type similarity numbers quoted in the docs page (0.975 vs 0.058) are genuinely measured by executing notebooks/lezione-18-cosine-similarity.ipynb in this session (uv run via nbclient), not invented; they may vary slightly on re-execution due to floating point/kernel differences but are seeded (keras.utils.set_random_seed(42))."

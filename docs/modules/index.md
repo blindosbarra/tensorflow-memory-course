@@ -36,6 +36,18 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
     `notebooks/lezione-14-tf-data.ipynb`
 15. [Tokenizzazione e vocabolario](tokenization-vocabulary.md) —
     `notebooks/lezione-15-tokenizzazione.ipynb`
+16. [Embedding layer](embedding-layer.md) —
+    `notebooks/lezione-16-embedding.ipynb`
+17. [Sentence embeddings e similarita'](sentence-embeddings.md) —
+    `notebooks/lezione-17-sentence-embeddings.ipynb`
+18. [Similarita' coseno](cosine-similarity.md) —
+    `notebooks/lezione-18-cosine-similarity.ipynb`
+19. [Visualizzazione (PCA/UMAP)](pca-umap.md) —
+    `notebooks/lezione-19-pca-umap.ipynb`
+20. [Clustering delle memorie](clustering-memories.md) —
+    `notebooks/lezione-20-clustering.ipynb`
+21. [Metriche di retrieval (Recall@K, MRR)](retrieval-metrics.md) —
+    `notebooks/lezione-21-retrieval-metrics.ipynb`
 
 **Sintesi eseguibile delle Lezioni 1-15**: `notebooks/consolidato-memoria-lezioni-01-15.ipynb`
 esegue l'intera pipeline in un solo notebook, dai dati grezzi al
@@ -44,25 +56,37 @@ necessarie (RAM, disco, tempo) in fondo. Non sostituisce le 15 lezioni
 singole (che restano il modo giusto per imparare passo per passo) — è un
 riferimento rapido per vedere il percorso completo girare in un colpo solo.
 
+Con la Lezione 21 si chiude la **Fase 3** (testo ed embedding): dal testo
+grezzo (Lezione 15) a un sistema che rappresenta le memorie come vettori,
+le confronta, le visualizza, le raggruppa senza etichette e valuta
+onestamente la qualita' della ricerca. La Lezione 19 copre UMAP solo a
+livello concettuale (nessun codice eseguito): il pacchetto `umap-learn`
+non si installa in questo ambiente (conflitto di versione con Python
+3.11) — la parte pratica usa solo PCA. Dettagli in
+`course/research_gaps.md`.
+
 ## Prossime lezioni previste
 
 Queste lezioni verranno costruite una alla volta, nell'ordine del
 [syllabus](../syllabus.md). L'ordine puo' sembrare lento, ma serve a non
 arrivare ai modelli con basi fragili.
 
-### Fase 3 — Testo ed embedding (continua)
+### Fase 4 — Rappresentare le memorie
 
-16. Embedding layer
-17. Sentence embeddings e similarita'
-18. Visualizzazione (PCA/UMAP) e clustering
-19. Metriche di retrieval (Recall@K, MRR)
+22. Schema di una memoria
+23. Episodic, semantic, preference
+24. Tempo, recency e decay
+25. Importance scoring
+26. Relazioni tra entita' ed eventi
+27. Memoria a grafo (NetworkX)
+28. Retrieval ibrido
+29. Contraddizioni e aggiornamento
 
 ### E poi
 
-20. Rappresentazione delle memorie (schema, importance, grafi, retrieval)
-21. Transformer e Gemma
-22. LoRA
-23. Pipeline, monitoring e capstone
+30. Transformer e Gemma
+31. LoRA
+32. Pipeline, monitoring e capstone
 
 ## Modulo facoltativo: certificazione GCP PMLE
 

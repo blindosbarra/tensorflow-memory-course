@@ -358,6 +358,156 @@ modules:
           code: pass
           didactics: pass
           publish: pass
+      embedding-layer:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/embedding-layer/
+          lesson: docs/modules/embedding-layer.md
+          notebook: notebooks/lezione-16-embedding.ipynb
+          exercise: notebooks/lezione-16-embedding.ipynb
+          solution: notebooks/lezione-16-embedding.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-16: rete.cloud/keras.io/tensorflow.org bloccati dal proxy (403) in questa sessione; claim in evidence.yaml marcate needs_reverification, vedi course/research_gaps.md. Embedding(mask_zero=True) aggiunto dopo aver notato che senza masking il pooling media anche il padding (in media ~72% dei token per sequenza in questo dataset), diluendo il vettore-frase — vedi il fix applicato anche a sentence-embeddings, cosine-similarity, pca-umap, clustering-memories, retrieval-metrics."
+      sentence-embeddings:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/sentence-embeddings/
+          lesson: docs/modules/sentence-embeddings.md
+          notebook: notebooks/lezione-17-sentence-embeddings.ipynb
+          exercise: notebooks/lezione-17-sentence-embeddings.ipynb
+          solution: notebooks/lezione-17-sentence-embeddings.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-16: costruisce un incorporatore (keras.Model con output intermedio) che riusa i pesi del classificatore di embedding-layer; stesso mask_zero=True. Encoder di frase pre-addestrati (USE, Sentence-BERT) citati per contesto ma non usati: nessuna credenziale Kaggle/HuggingFace ne' GPU in questo ambiente."
+      cosine-similarity:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/cosine-similarity/
+          lesson: docs/modules/cosine-similarity.md
+          notebook: notebooks/lezione-18-cosine-similarity.ipynb
+          exercise: notebooks/lezione-18-cosine-similarity.ipynb
+          solution: notebooks/lezione-18-cosine-similarity.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-16: verifica di sanita' misurata (non stimata): similarita' media stesso type 0.975 contro type diverso 0.058 nell'esecuzione di riferimento, dopo il fix mask_zero=True (senza, i vettori erano quasi tutti collineari per la diluizione da padding, similarita' ~0.9+ ovunque)."
+      pca-umap:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/pca-umap/
+          lesson: docs/modules/pca-umap.md
+          notebook: notebooks/lezione-19-pca-umap.ipynb
+          exercise: notebooks/lezione-19-pca-umap.ipynb
+          solution: notebooks/lezione-19-pca-umap.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-16: 'uv add --optional ml umap-learn' fallito (RuntimeError: richiede Python <3.10, ambiente su 3.11.15) — dipendenza NON aggiunta a pyproject.toml. UMAP coperto solo concettualmente (nessun codice eseguito, nessun output inventato); la parte hands-on usa solo PCA (scikit-learn, gia' dipendenza core). Vedi course/research_gaps.md per il dettaglio."
+      clustering-memories:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/clustering-memories/
+          lesson: docs/modules/clustering-memories.md
+          notebook: notebooks/lezione-20-clustering.ipynb
+          exercise: notebooks/lezione-20-clustering.ipynb
+          solution: notebooks/lezione-20-clustering.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-16: KMeans(n_clusters=4) sugli embedding grezzi (non sulla proiezione PCA). Validation set sbilanciato (13 episodic/5 semantic/1 unknown/1 preference) misurato ed usato onestamente nella spiegazione: Adjusted Rand Index 0.555 nell'esecuzione di riferimento, K-Means spezza la classe episodic in due cluster invece di isolare le classi rare."
+      retrieval-metrics:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/retrieval-metrics/
+          lesson: docs/modules/retrieval-metrics.md
+          notebook: notebooks/lezione-21-retrieval-metrics.ipynb
+          exercise: notebooks/lezione-21-retrieval-metrics.ipynb
+          solution: notebooks/lezione-21-retrieval-metrics.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-16: Precision@3=0.907, Recall@3=0.319, MRR=1.000 nell'esecuzione di riferimento (18/20 query valutate, 2 escluse per assenza di altri elementi rilevanti nel pool). Citazione al libro Manning/Raghavan/Schutze IR scartata per URL non verificabile in sessione (rete bloccata) invece di essere inventata — vedi course/research_gaps.md. Chiude la Fase 3 (modulo text-embeddings, Lezioni 15-21, tutte learner_review)."
   gcp-ml-certification:
     status: in_progress
     lessons:

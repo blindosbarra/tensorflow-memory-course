@@ -1,0 +1,48 @@
+lesson_id: embedding-layer
+reviewed_at: 2026-07-16
+claims:
+  - id: embedding-lookup-table
+    claim: "Embedding maps positive integer token ids to dense fixed-size vectors via a learned lookup table of shape (input_dim, output_dim), turned into trainable weights updated by backpropagation."
+    importance: critical
+    source_url: "https://keras.io/api/layers/core_layers/embedding/"
+    source_title: "Embedding layer"
+    publisher: "Keras"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The API documents input_dim/output_dim and states the layer can only be used as the first layer, mapping positive integers to dense vectors."
+    status: needs_reverification
+  - id: global-average-pooling-1d
+    claim: "GlobalAveragePooling1D computes the average of the values across the timesteps (sequence) axis, reducing a (batch, steps, features) tensor to (batch, features)."
+    importance: major
+    source_url: "https://keras.io/api/layers/pooling_layers/global_average_pooling1d/"
+    source_title: "GlobalAveragePooling1D layer"
+    publisher: "Keras"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The API documents the pooling operation and its input/output shapes."
+    status: needs_reverification
+  - id: embedding-mask-zero-propagation
+    claim: "Embedding(mask_zero=True) generates a mask for positions equal to 0 (the padding value) and propagates it to downstream layers that support masking (e.g. pooling/recurrent layers), which then exclude masked timesteps from their computation."
+    importance: major
+    source_url: "https://keras.io/api/layers/core_layers/embedding/"
+    source_title: "Embedding layer"
+    publisher: "Keras"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The API documents mask_zero and its effect of generating an output mask propagated to subsequent layers; general Keras masking behavior for pooling layers respecting an input mask."
+    status: needs_reverification
+  - id: word-embeddings-need-data
+    claim: "Word embeddings learned from scratch on a small corpus tend to be noisier/less semantically organized than embeddings trained on large corpora or pretrained ones."
+    importance: minor
+    source_url: "https://www.tensorflow.org/text/guide/word_embeddings"
+    source_title: "Word embeddings"
+    publisher: "TensorFlow"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The guide discusses training embeddings as part of a model versus using pretrained ones, general context for the data-hungriness of the approach."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to keras.io and tensorflow.org returned 403 (organization proxy policy) in this session, consistent with earlier PMLE-module findings; claims are drawn from general pre-training knowledge of these well-established Keras/TF APIs, not live-verified this session. Marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."

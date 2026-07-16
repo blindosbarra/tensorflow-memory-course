@@ -145,12 +145,16 @@ test, report, artifact e limiti noti.
 
 Totale stimato: 38,5 ore.
 
-Stato corrente: 15 lezioni disponibili come notebook, tutte in
-`learner_review`. Fase 1 (parte pandas + tf.data), Fase 0 completa,
-Fase 2 completa nelle sue lezioni fondamentali (rete, training loop,
-overfitting, valutazione con precision/recall/calibrazione), e Fase 3
-aperta con la tokenizzazione: leggendo il testo delle memorie il
-classificatore passa dal ~60-65% al ~95% su validation, confermando la
-diagnosi delle Lezioni 10-12. Le lezioni consolidano coppie di lezioni
-pianificate affini (vedi note in progress.yaml). Prossimo blocco: embedding
-layer, sentence embeddings e similarita' — il cuore del Memory AI Lab.
+Stato corrente: 21 lezioni disponibili come notebook, tutte in
+`learner_review`. Fase 0 completa, Fase 1 (parte pandas + tf.data)
+completa nelle sue lezioni fondamentali, Fase 2 completa nelle sue lezioni
+fondamentali (rete, training loop, overfitting, valutazione con
+precision/recall/calibrazione), e **Fase 3 completa**: dalla
+tokenizzazione (Lezione 15, il classificatore passa dal ~60-65% al ~95%
+su validation leggendo il testo) fino alle metriche di retrieval
+(Lezione 21), passando per embedding layer, sentence embeddings,
+similarita' coseno, PCA/UMAP (UMAP solo teorico: `umap-learn` non
+installabile in questo ambiente, Python 3.11) e clustering. Le lezioni
+consolidano coppie di lezioni pianificate affini (vedi note in
+progress.yaml). Prossimo blocco: Fase 4, rappresentazione delle memorie
+(schema, importance scoring, memoria a grafo).

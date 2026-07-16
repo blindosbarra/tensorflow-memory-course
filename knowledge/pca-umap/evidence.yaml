@@ -1,0 +1,40 @@
+lesson_id: pca-umap
+reviewed_at: 2026-07-16
+claims:
+  - id: pca-linear-max-variance
+    claim: "PCA finds orthogonal linear components ordered by the variance they explain, and exposes explained_variance_ratio_ as the fraction of total variance captured by each component."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html"
+    source_title: "sklearn.decomposition.PCA"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The API reference documents explained_variance_ratio_ and the linear, variance-maximizing nature of PCA components."
+    status: needs_reverification
+  - id: pca-decomposition-guide
+    claim: "PCA is a linear dimensionality reduction technique that projects data onto the directions of maximum variance; it does not capture non-linear structure in the data."
+    importance: major
+    source_url: "https://scikit-learn.org/stable/modules/decomposition.html#pca"
+    source_title: "Decomposing signals in components (matrix factorization problems)"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The user guide describes PCA's linear-projection mechanics and its use for dimensionality reduction/visualization."
+    status: needs_reverification
+  - id: umap-local-structure
+    claim: "UMAP is a nonlinear dimensionality reduction technique that aims to preserve local neighborhood (manifold) structure rather than global variance, and is a stochastic optimization process (results can vary run to run without a fixed random state)."
+    importance: major
+    source_url: "https://umap-learn.readthedocs.io/en/latest/how_umap_works.html"
+    source_title: "How UMAP Works"
+    publisher: "UMAP documentation"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The official documentation explains the manifold-learning/local-structure-preserving approach and the stochastic nature of the optimization, as general background for why the lesson treats UMAP conceptually only (package not installed in this environment)."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to scikit-learn.org and umap-learn.readthedocs.io returned 403 (organization proxy policy) in this session, same restriction already logged for prior lessons this session. Claims drawn from general pre-training knowledge of these well-established, widely documented algorithms, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "umap-learn was not added as a project dependency: 'uv add --optional ml umap-learn' failed in this session with a build error (a resolved dependency, likely numba/llvmlite via an old umap-learn release, requires Python <3.10, incompatible with this environment's Python 3.11.15). No code using umap-learn is presented as executed in the lesson notebook; UMAP is covered theoretically only, per COURSE_FACTORY_SPEC.md 3.2 ('non completare il paragrafo con supposizioni')."
+    - "The PCA explained-variance numbers quoted in the docs page (~98% for the first 2 components) are genuinely measured by executing notebooks/lezione-19-pca-umap.ipynb in this session (uv run via nbclient), not invented."

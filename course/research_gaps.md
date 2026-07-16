@@ -95,3 +95,47 @@ controllato dallo studente sul sito pubblicato. La struttura a cinque
 pilastri del Google Cloud Architecture Framework citata nella stessa
 lezione è conoscenza generale pre-addestramento, non riverificata contro
 `cloud.google.com/architecture/framework` in questa sessione.
+
+## Nuovo gap: modulo text-embeddings (Lezioni 16-21), rete bloccata e dipendenza UMAP non installabile
+
+Aggiunta 2026-07-16, costruzione delle Lezioni 16-21 (modulo
+`text-embeddings`: embedding layer, sentence embeddings, similarità
+coseno, PCA/UMAP, clustering, metriche di retrieval), su richiesta
+esplicita dello studente ("please build all" seguito da "Continue from
+where you left off" dopo un fallimento del tool di chiarimento scope).
+
+- **Rete bloccata**: `keras.io`, `www.tensorflow.org`, `scikit-learn.org`
+  ed `en.wikipedia.org` restituiscono tutti 403 dal proxy di
+  organizzazione in questa sessione (stessa restrizione già loggata per
+  `docs.cloud.google.com` nel modulo PMLE). Tutte le claim tecniche nei
+  nuovi `knowledge/<lezione>/evidence.yaml` (embedding-layer,
+  sentence-embeddings, cosine-similarity, pca-umap, clustering-memories,
+  retrieval-metrics) sono marcate `needs_reverification`: provengono da
+  conoscenza generale pre-addestramento su API consolidate e ben
+  documentate (Keras `Embedding`/`GlobalAveragePooling1D`/
+  `GlobalMaxPooling1D`, scikit-learn `PCA`/`KMeans`/`cosine_similarity`/
+  `adjusted_rand_score`, la definizione standard di Mean Reciprocal Rank),
+  non verificate live in questa sessione.
+- **`umap-learn` non installabile**: `uv add --optional ml umap-learn` ha
+  fallito con `RuntimeError: Cannot install on Python version 3.11.15;
+  only versions >=3.6,<3.10 are supported` (una dipendenza a monte,
+  verosimilmente `numba`/`llvmlite` risolta da una vecchia versione di
+  `umap-learn`, richiede Python `<3.10`). Nessuna versione alternativa è
+  stata forzata. Decisione: la Lezione 19 (`pca-umap`) copre UMAP solo
+  concettualmente (nessun codice eseguito, nessun output inventato); la
+  parte hands-on usa solo `PCA` di scikit-learn, già disponibile come
+  dipendenza core del corso. `umap-learn` **non** è stato aggiunto a
+  `pyproject.toml`.
+- **Citazione scartata invece di inventata**: per la Lezione 21
+  (`retrieval-metrics`) era stata considerata una citazione al libro di
+  testo *Introduction to Information Retrieval* (Manning/Raghavan/
+  Schütze, `nlp.stanford.edu/IR-book`), ma l'URL esatto del capitolo non
+  è verificabile in questa sessione (rete bloccata) — scartata invece di
+  essere inclusa non verificata, in linea con il principio "nessuna
+  invenzione" (§3.2). La sezione Fonti della lezione cita solo le due URL
+  di pattern verificabile (scikit-learn, Wikipedia).
+- Tutti i numeri quantitativi citati nelle pagine docs e nei notebook
+  (accuratezza, varianza spiegata dalla PCA, Adjusted Rand Index,
+  Precision@K/Recall@K/MRR) sono stati **misurati per davvero** eseguendo
+  i notebook in questa sessione (`uv run` + `nbclient`), non stimati o
+  inventati — vedi `course/progress.yaml` per il dettaglio per lezione.

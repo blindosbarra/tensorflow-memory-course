@@ -1,0 +1,38 @@
+lesson_id: sentence-embeddings
+reviewed_at: 2026-07-16
+claims:
+  - id: global-max-pooling-1d
+    claim: "GlobalMaxPooling1D computes the maximum value across the timesteps (sequence) axis, per feature, reducing a (batch, steps, features) tensor to (batch, features)."
+    importance: major
+    source_url: "https://keras.io/api/layers/pooling_layers/global_max_pooling1d/"
+    source_title: "GlobalMaxPooling1D layer"
+    publisher: "Keras"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The API documents the max-pooling operation and its input/output shapes, symmetric to GlobalAveragePooling1D already cited for embedding-layer."
+    status: needs_reverification
+  - id: functional-api-shared-weights
+    claim: "The Keras Functional API lets you build multiple models that share the same layers/weights, including models that expose an intermediate layer's output instead of the final output."
+    importance: major
+    source_url: "https://keras.io/guides/functional_api/"
+    source_title: "The Functional API"
+    publisher: "Keras"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The guide documents building graphs of layers and extracting models from intermediate nodes, which is the mechanism used to build the 'sentence embedder' from a trained classifier."
+    status: needs_reverification
+  - id: pretrained-sentence-encoders-exist
+    claim: "Pretrained sentence encoders (e.g. Universal Sentence Encoder) produce sentence-level embeddings usable directly for semantic similarity tasks, trained on much larger corpora than a small custom dataset."
+    importance: minor
+    source_url: "https://www.tensorflow.org/hub/tutorials/semantic_similarity_with_tf_hub_universal_encoder"
+    source_title: "Semantic Similarity with TF-Hub Universal Encoder"
+    publisher: "TensorFlow Hub"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The tutorial demonstrates using a pretrained encoder for semantic similarity, cited here only for context on production alternatives not used in this notebook."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to keras.io and tensorflow.org returned 403 (organization proxy policy) in this session, same restriction already logged for embedding-layer. Claims drawn from general pre-training knowledge of well-established Keras/TF-Hub APIs, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."

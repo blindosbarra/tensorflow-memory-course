@@ -45,7 +45,7 @@ modules:
 
   - id: text-embeddings
     title: Testo, embedding e visualizzazione
-    status: planned
+    status: in_progress
     lessons:
       - tokenization-vocabulary
       - embedding-layer

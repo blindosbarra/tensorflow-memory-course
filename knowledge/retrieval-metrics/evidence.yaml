@@ -1,0 +1,31 @@
+lesson_id: retrieval-metrics
+reviewed_at: 2026-07-16
+claims:
+  - id: precision-recall-at-k
+    claim: "Precision@K is the fraction of the top K retrieved items that are relevant; Recall@K is the fraction of all relevant items that appear in the top K retrieved items; both are standard information-retrieval evaluation measures."
+    importance: critical
+    source_url: "https://en.wikipedia.org/wiki/Mean_reciprocal_rank"
+    source_title: "Mean reciprocal rank"
+    publisher: "Wikipedia"
+    accessed_at: "2026-07-16"
+    primary_source: false
+    evidence_note: "Precision@K/Recall@K are standard, widely-taught information-retrieval definitions; cited alongside the MRR reference page rather than a dedicated primary source, since these are general field definitions not tied to one product's documentation."
+    status: needs_reverification
+  - id: mean-reciprocal-rank-definition
+    claim: "Mean Reciprocal Rank (MRR) is the average, over a set of queries, of the reciprocal of the rank of the first relevant result for each query (1/rank), ranging from 0 to 1 where 1 means every query's first result was relevant."
+    importance: critical
+    source_url: "https://en.wikipedia.org/wiki/Mean_reciprocal_rank"
+    source_title: "Mean reciprocal rank"
+    publisher: "Wikipedia"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The article defines reciprocal rank and mean reciprocal rank as used in information retrieval evaluation."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to en.wikipedia.org and scikit-learn.org returned 403 (organization proxy policy) in this session, same restriction already logged for prior lessons this session. Claims drawn from general pre-training knowledge of standard, widely-taught information-retrieval definitions, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "A citation to the Manning/Raghavan/Schutze 'Introduction to Information Retrieval' textbook (nlp.stanford.edu) was considered for the docs page/notebook but dropped: the exact chapter URL could not be verified live in this session and the system's no-invented-URLs principle takes priority over completeness of the Fonti section. Only the two verifiable-pattern URLs (scikit-learn API reference, Wikipedia) are cited."
+    - "Precision@3 (0.907), Recall@3 (0.319) and MRR (1.000) quoted in the docs page are genuinely measured by executing notebooks/lezione-21-retrieval-metrics.ipynb in this session (uv run via nbclient), not invented; seeded (keras.utils.set_random_seed(42)) but may shift slightly on a different machine/library version."
+review_process_note: "This is a deliberate example of the research_gaps.md workflow described in COURSE_FACTORY_SPEC.md 3.2: rather than invent a plausible-looking textbook URL, the citation was dropped and the gap is logged in course/research_gaps.md."

@@ -1,0 +1,39 @@
+lesson_id: clustering-memories
+reviewed_at: 2026-07-16
+claims:
+  - id: kmeans-algorithm-mechanics
+    claim: "K-Means alternates assigning each point to the nearest centroid and updating each centroid to the mean of its assigned points, minimizing inertia (sum of squared distances to the nearest centroid); the number of clusters k is a required input, not learned."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html"
+    source_title: "sklearn.cluster.KMeans"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The API reference documents the algorithm, the inertia objective, and the required n_clusters parameter."
+    status: needs_reverification
+  - id: kmeans-cluster-balance-tendency
+    claim: "K-Means tends to produce clusters of relatively similar size because it minimizes total within-cluster variance, which can be a poor fit when true class sizes are imbalanced."
+    importance: major
+    source_url: "https://scikit-learn.org/stable/modules/clustering.html#k-means"
+    source_title: "Clustering — K-means"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The user guide discusses K-means assumptions and limitations, including its tendency toward similarly-sized, isotropic clusters."
+    status: needs_reverification
+  - id: adjusted-rand-index-permutation-invariant
+    claim: "Adjusted Rand Index measures agreement between two clusterings/labelings independently of label permutation, with 1.0 meaning perfect agreement and a score near 0.0 meaning random-level agreement (negative values are possible for worse-than-random agreement)."
+    importance: major
+    source_url: "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html"
+    source_title: "sklearn.metrics.adjusted_rand_score"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-16"
+    primary_source: true
+    evidence_note: "The API reference documents the permutation-invariance property and the score range/interpretation."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to scikit-learn.org returned 403 (organization proxy policy) in this session, same restriction already logged for prior lessons this session. Claims drawn from general pre-training knowledge of these well-established, widely documented scikit-learn APIs, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "The contingency table and Adjusted Rand Index (0.555) quoted in the docs page are genuinely measured by executing notebooks/lezione-20-clustering.ipynb in this session (uv run via nbclient), not invented; seeded (keras.utils.set_random_seed(42), KMeans random_state=42) but may shift slightly on a different machine/library version."
