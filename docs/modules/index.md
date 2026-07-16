@@ -37,6 +37,13 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
 15. [Tokenizzazione e vocabolario](tokenization-vocabulary.md) —
     `notebooks/lezione-15-tokenizzazione.ipynb`
 
+**Sintesi eseguibile delle Lezioni 1-15**: `notebooks/consolidato-memoria-lezioni-01-15.ipynb`
+esegue l'intera pipeline in un solo notebook, dai dati grezzi al
+classificatore di memoria finale, con una stima delle risorse di calcolo
+necessarie (RAM, disco, tempo) in fondo. Non sostituisce le 15 lezioni
+singole (che restano il modo giusto per imparare passo per passo) — è un
+riferimento rapido per vedere il percorso completo girare in un colpo solo.
+
 ## Prossime lezioni previste
 
 Queste lezioni verranno costruite una alla volta, nell'ordine del
