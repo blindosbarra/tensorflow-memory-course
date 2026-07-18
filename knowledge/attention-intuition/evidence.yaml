@@ -1,0 +1,50 @@
+---
+lesson_id: attention-intuition
+reviewed_at: 2026-07-18
+claims:
+  - id: scaled-dot-product-attention-formula
+    claim: "Scaled dot-product attention is defined as Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V, where d_k is the dimension of the keys/queries and the softmax is applied row-wise over the keys."
+    importance: critical
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Section 3.2.1 of the paper defines scaled dot-product attention with exactly this formula and names the 1/sqrt(d_k) scaling factor."
+    status: needs_reverification
+  - id: scaling-factor-rationale
+    claim: "The 1/sqrt(d_k) scaling is introduced because, for large d_k, the dot products grow large in magnitude, pushing the softmax into regions with extremely small gradients; dividing by sqrt(d_k) counteracts this."
+    importance: major
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Section 3.2.1 states the scaling is used to counteract the effect of large dot products pushing softmax into small-gradient regions for large values of d_k."
+    status: needs_reverification
+  - id: softmax-definition
+    claim: "The softmax function converts a vector of real scores into a probability distribution: each output is exp(score_i) divided by the sum of exp over all scores, so outputs are non-negative and sum to 1."
+    importance: major
+    source_url: "https://numpy.org/doc/stable/reference/generated/numpy.exp.html"
+    source_title: "numpy.exp"
+    publisher: "NumPy documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The softmax identity is standard; numpy.exp documents the element-wise exponential used to implement it. A max-subtraction stabilization is applied in the notebook for numerical stability."
+    status: needs_reverification
+  - id: attention-as-soft-retrieval
+    claim: "Attention can be read as a soft, differentiable form of retrieval: the query is compared to every key to produce weights, and the output is the weighted average of the values (contrast with hard top-k retrieval which selects a discrete subset)."
+    importance: major
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: false
+    evidence_note: "The query/key/value terminology in Section 3.2 is deliberately drawn from information-retrieval language; the 'soft retrieval' reading is a didactic framing, not a quantitative claim."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to arxiv.org and numpy.org not tested live this session; same proxy restriction pattern logged earlier this session (course/research_gaps.md). The scaled dot-product attention formula and its sqrt(d_k) rationale are drawn from the canonical Transformer paper and are extremely stable; marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "All numeric outputs in the docs page (attention weights, retrieved memories) are genuinely produced by executing notebooks/lezione-30-attention-intuition.ipynb in this session via nbclient, not invented. Embeddings are a self-contained deterministic hashing embedding built in the notebook (no external model or weights required), so the notebook runs in the default numpy/pandas environment."

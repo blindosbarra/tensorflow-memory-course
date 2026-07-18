@@ -64,6 +64,8 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
     `notebooks/lezione-28-retrieval-ibrido.ipynb`
 29. [Contraddizioni e aggiornamento](contradiction-and-update.md) —
     `notebooks/lezione-29-contraddizioni.ipynb`
+30. [L'attenzione come recupero morbido](attention-intuition.md) —
+    `notebooks/lezione-30-attention-intuition.ipynb`
 
 **Sintesi eseguibile delle Lezioni 1-15**: `notebooks/consolidato-memoria-lezioni-01-15.ipynb`
 esegue l'intera pipeline in un solo notebook, dai dati grezzi al
@@ -97,7 +99,9 @@ arrivare ai modelli con basi fragili.
 
 ### Fase 5 — Transformer e modello open
 
-30. Attention, l'intuizione
+La Lezione 30 (attenzione come recupero morbido) e' gia' disponibile qui
+sopra. Le prossime:
+
 31. Self-attention, la matematica
 32. Il blocco Transformer
 33. Tokenizer e generazione

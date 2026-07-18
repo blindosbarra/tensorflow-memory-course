@@ -70,7 +70,7 @@ modules:
 
   - id: transformers-gemma
     title: Transformer e modello open
-    status: planned
+    status: in_progress
     lessons:
       - attention-intuition
       - self-attention-math

@@ -711,6 +711,34 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: euristica di rilevamento contraddizioni (polarita' opposta + argomento condiviso) su memorie preference; politica superseded_by (mai cancellare). Bug reale incontrato e risolto durante lo sviluppo: maschera booleana calcolata su un sottoinsieme filtrato aveva indice disallineato al secondo/terzo giro del ciclo di aggiornamento (TypeError: unhashable type: 'Series'); risolto calcolando la maschera sull'intero DataFrame a ogni iterazione — vedi knowledge/contradiction-and-update/evidence.yaml. Chiude la Fase 4 (Lezioni 22-29, tutte learner_review)."
+  transformers-gemma:
+    status: in_progress
+    lessons:
+      attention-intuition:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/attention-intuition/
+          lesson: docs/modules/attention-intuition.md
+          notebook: notebooks/lezione-30-attention-intuition.ipynb
+          exercise: notebooks/lezione-30-attention-intuition.ipynb
+          solution: notebooks/lezione-30-attention-intuition.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: scaled dot-product attention implementata da zero in NumPy (softmax stabilizzata + QK^T/sqrt(d_k)), letta come recupero *morbido* differenziabile in contrasto col top-k netto della Lezione 28. Embedding deterministico via hashing delle parole (32 dim, nessun modello esterno) cosi' il notebook gira nell'ambiente numpy/pandas di base senza TensorFlow/Gemma. Numeri nel docs (pesi 0.180/0.167/0.162) realmente eseguiti. Apre la Fase 5 (transformers-gemma). Nota di ambiente: le lezioni successive che richiedono i pesi Gemma (keras-hub, gemma-inference) non sono eseguibili in questo sandbox (proxy + peso del modello); seguiranno la convenzione needs_reverification gia' usata nel repo."
   gcp-ml-certification:
     status: in_progress
     lessons:
