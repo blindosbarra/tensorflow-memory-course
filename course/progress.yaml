@@ -508,6 +508,209 @@ modules:
           publish: pass
         notes:
           - "2026-07-16: Precision@3=0.907, Recall@3=0.319, MRR=1.000 nell'esecuzione di riferimento (18/20 query valutate, 2 escluse per assenza di altri elementi rilevanti nel pool). Citazione al libro Manning/Raghavan/Schutze IR scartata per URL non verificabile in sessione (rete bloccata) invece di essere inventata — vedi course/research_gaps.md. Chiude la Fase 3 (modulo text-embeddings, Lezioni 15-21, tutte learner_review)."
+  memory-representation:
+    status: in_progress
+    lessons:
+      memory-schema:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/memory-schema/
+          lesson: docs/modules/memory-schema.md
+          notebook: notebooks/lezione-22-schema-memoria.ipynb
+          exercise: notebooks/lezione-22-schema-memoria.ipynb
+          solution: notebooks/lezione-22-schema-memoria.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: apre la Fase 4. @dataclass + funzione di validazione dedicata (errori bloccanti vs avvisi); validazione dell'intero archivio train/val/test con assert finale, zero errori su 213/20/15 righe (misurato eseguendo il notebook)."
+      episodic-semantic-preference:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/episodic-semantic-preference/
+          lesson: docs/modules/episodic-semantic-preference.md
+          notebook: notebooks/lezione-23-episodic-semantic-preference.ipynb
+          exercise: notebooks/lezione-23-episodic-semantic-preference.ipynb
+          solution: notebooks/lezione-23-episodic-semantic-preference.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: PARAMETRI_TIPO (half-life, peso importanza base per type) e' una scelta di design dichiarata per il Memory AI Lab, non una misura esterna — dichiarato esplicitamente nella lezione e nel research pack, consumato dalle Lezioni 24-25."
+      time-recency-decay:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/time-recency-decay/
+          lesson: docs/modules/time-recency-decay.md
+          notebook: notebooks/lezione-24-recency-decay.ipynb
+          exercise: notebooks/lezione-24-recency-decay.ipynb
+          solution: notebooks/lezione-24-recency-decay.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: decadimento esponenziale con half-life; ORA_RIFERIMENTO fissato (non datetime.now()) per riproducibilita', stesso principio dei seed nelle lezioni con reti neurali. Recency media per type misurata (episodic 0.209, semantic 0.871, preference 0.741, unknown 0.388)."
+      importance-scoring:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/importance-scoring/
+          lesson: docs/modules/importance-scoring.md
+          notebook: notebooks/lezione-25-importance-scoring.ipynb
+          exercise: notebooks/lezione-25-importance-scoring.ipynb
+          solution: notebooks/lezione-25-importance-scoring.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: importanza_composita = peso_importanza_base * (0.6*importance + 0.4*recency), pesi dichiarati. Range misurato su train: [0.058, 1.077] — non vincolato a [0,1], e' un punteggio di ranking non una probabilita'."
+      entity-event-relations:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/entity-event-relations/
+          lesson: docs/modules/entity-event-relations.md
+          notebook: notebooks/lezione-26-entita-e-relazioni.ipynb
+          exercise: notebooks/lezione-26-entita-e-relazioni.ipynb
+          solution: notebooks/lezione-26-entita-e-relazioni.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: nessuna libreria NER installata ne' accesso di rete in questo ambiente; euristica regex dichiarata (parole capitalizzate non a inizio frase, stopword costruita osservando i falsi positivi su QUESTO dataset), limiti espliciti nella lezione. 157/213 memorie train con almeno un'entita' (misurato)."
+      graph-memory-networkx:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/graph-memory-networkx/
+          lesson: docs/modules/graph-memory-networkx.md
+          notebook: notebooks/lezione-27-grafo-memorie.ipynb
+          exercise: notebooks/lezione-27-grafo-memorie.ipynb
+          solution: notebooks/lezione-27-grafo-memorie.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: networkx gia' presente come dipendenza opzionale ml (confermato: import riuscito, versione 3.6.1). Grafo bipartito memoria-entita' su train: 227 nodi (213 memorie, 14 entita'), 241 archi (misurato)."
+      hybrid-retrieval:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: not_applicable
+          evidence_review: not_applicable
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/hybrid-retrieval/
+          lesson: docs/modules/hybrid-retrieval.md
+          notebook: notebooks/lezione-28-retrieval-ibrido.ipynb
+          exercise: notebooks/lezione-28-retrieval-ibrido.ipynb
+          solution: notebooks/lezione-28-retrieval-ibrido.ipynb
+        quality_gates:
+          research: not_applicable
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: lezione di sintesi (stesso pattern di pmle-07): combina segnali e metriche gia' documentati nelle Lezioni 18/21/25/27, nessuna nuova claim esterna, Gate A not_applicable invece di pass. Risultato onesto e non forzato: l'ibrido migliora Precision@3 (0.907->0.963) e Recall@3 (0.319->0.361) ma peggiora leggermente l'MRR (1.000->0.972) — spiegato con un esempio concreto (hist_0215/hist_0250), non nascosto."
+      contradiction-and-update:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/contradiction-and-update/
+          lesson: docs/modules/contradiction-and-update.md
+          notebook: notebooks/lezione-29-contraddizioni.ipynb
+          exercise: notebooks/lezione-29-contraddizioni.ipynb
+          solution: notebooks/lezione-29-contraddizioni.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: euristica di rilevamento contraddizioni (polarita' opposta + argomento condiviso) su memorie preference; politica superseded_by (mai cancellare). Bug reale incontrato e risolto durante lo sviluppo: maschera booleana calcolata su un sottoinsieme filtrato aveva indice disallineato al secondo/terzo giro del ciclo di aggiornamento (TypeError: unhashable type: 'Series'); risolto calcolando la maschera sull'intero DataFrame a ogni iterazione — vedi knowledge/contradiction-and-update/evidence.yaml. Chiude la Fase 4 (Lezioni 22-29, tutte learner_review)."
   gcp-ml-certification:
     status: in_progress
     lessons:

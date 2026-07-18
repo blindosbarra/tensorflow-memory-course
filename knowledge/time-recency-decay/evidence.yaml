@@ -1,0 +1,40 @@
+lesson_id: time-recency-decay
+reviewed_at: 2026-07-18
+claims:
+  - id: exponential-decay-definition
+    claim: "Exponential decay is a process in which a quantity decreases at a rate proportional to its current value, characterized by a constant half-life: the time after which the quantity is reduced to half its initial value, independent of the starting point."
+    importance: critical
+    source_url: "https://en.wikipedia.org/wiki/Exponential_decay"
+    source_title: "Exponential decay"
+    publisher: "Wikipedia"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The article defines exponential decay and its constant-half-life property, the mathematical basis for the recency_score formula used in this lesson."
+    status: needs_reverification
+  - id: half-life-definition
+    claim: "Half-life is the time required for a quantity undergoing exponential decay to be reduced to half of its initial value; the property holds regardless of the initial value (memorylessness of the decay rate)."
+    importance: major
+    source_url: "https://en.wikipedia.org/wiki/Half-life"
+    source_title: "Half-life"
+    publisher: "Wikipedia"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The article formally defines half-life, the property verified by the assert in the lesson's exercise."
+    status: needs_reverification
+  - id: pandas-timestamp-arithmetic
+    claim: "pandas.Timestamp supports arithmetic with Timedelta objects and subtraction between Timestamps to produce a Timedelta, usable to compute elapsed time between two dates."
+    importance: minor
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.Timestamp.html"
+    source_title: "pandas.Timestamp"
+    publisher: "pandas"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The API reference documents Timestamp as pandas' datetime type, interoperable with Timedelta for arithmetic."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to en.wikipedia.org and pandas.pydata.org not tested live this session; same proxy restriction pattern logged earlier in this session (course/research_gaps.md). Claims drawn from general pre-training knowledge of these standard, widely-taught concepts and stable pandas APIs, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "The choice of a fixed ORA_RIFERIMENTO constant instead of datetime.now()/pd.Timestamp.now() is a reproducibility design decision for this course (parallel to fixing random seeds), not an evidence-backed claim requiring a source."
+    - "Per-type recency statistics quoted in the docs page (episodic mean 0.209, semantic mean 0.871, etc.) are genuinely measured by executing notebooks/lezione-24-recency-decay.ipynb in this session, not invented."

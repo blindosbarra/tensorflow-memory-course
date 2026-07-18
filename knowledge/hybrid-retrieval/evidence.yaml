@@ -1,0 +1,10 @@
+lesson_id: hybrid-retrieval
+reviewed_at: 2026-07-18
+claims: []
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Synthesis lesson (same pattern as gcp-ml-certification's pmle-07, see knowledge/pmle-07-architetture-end-to-end/evidence.yaml and course/progress.yaml): combines cosine_similarity (already sourced in knowledge/cosine-similarity/evidence.yaml), networkx.Graph (already sourced in knowledge/graph-memory-networkx/evidence.yaml), retrieval metrics (knowledge/retrieval-metrics/evidence.yaml), and importanza_composita (an explicit Memory AI Lab design choice, knowledge/importance-scoring/evidence.yaml). No new external API or claim is introduced here, so no new claims entries are needed — Gate A (research) is not_applicable rather than pass for this lesson, consistent with the pmle-07 precedent."
+    - "The hybrid weighting formula (w1=0.5, w2=0.3, w3=0.2) is an explicit design choice for this lesson, not sourced from external literature."
+    - "All retrieval-comparison numbers quoted in the docs page (Precision@3 0.907->0.963, Recall@3 0.319->0.361, MRR 1.000->0.972, the hist_0215/hist_0250 concrete example) are genuinely measured by executing notebooks/lezione-28-retrieval-ibrido.ipynb in this session, not invented. The MRR regression is a real, unforced result of the chosen weights on this dataset, not a constructed example — reported honestly rather than hidden or reframed as an unambiguous win."

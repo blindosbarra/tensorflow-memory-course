@@ -1,0 +1,29 @@
+lesson_id: graph-memory-networkx
+reviewed_at: 2026-07-18
+claims:
+  - id: networkx-graph-basics
+    claim: "networkx.Graph represents an undirected graph of nodes and edges; Graph.neighbors(node) returns an iterator over nodes adjacent to a given node, and Graph.degree(node) returns the number of edges incident to it."
+    importance: critical
+    source_url: "https://networkx.org/documentation/stable/reference/classes/graph.html"
+    source_title: "Graph — NetworkX documentation"
+    publisher: "NetworkX"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The class reference documents neighbors() and degree() as core Graph methods/properties."
+    status: needs_reverification
+  - id: networkx-spring-layout
+    claim: "networkx.spring_layout computes node positions using a force-directed (Fruchterman-Reingold-style) algorithm, useful for visualizing graph structure; passing a seed makes the layout reproducible."
+    importance: minor
+    source_url: "https://networkx.org/documentation/stable/reference/generated/networkx.drawing.layout.spring_layout.html"
+    source_title: "networkx.drawing.layout.spring_layout"
+    publisher: "NetworkX"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The API reference documents the force-directed layout algorithm and its seed parameter for reproducibility."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to networkx.org not tested live this session; same proxy restriction pattern logged earlier in this session (course/research_gaps.md). Claims drawn from general pre-training knowledge of this well-established, widely-used graph library, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2. networkx itself is confirmed installed and importable in this environment (version 3.6.1, checked via 'uv run python -c \"import networkx\"')."
+    - "The bipartite memory-entity graph (227 nodes: 213 memories + 14 entities, 241 edges) and the memorie_correlate example (36 related memories for hist_0002) are genuinely measured by executing notebooks/lezione-27-grafo-memorie.ipynb in this session, not invented."

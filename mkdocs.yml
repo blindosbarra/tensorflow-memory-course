@@ -29,6 +29,14 @@ nav:
       - "Lezione 19 — PCA e UMAP": modules/pca-umap.md
       - "Lezione 20 — Clustering delle memorie": modules/clustering-memories.md
       - "Lezione 21 — Metriche di retrieval": modules/retrieval-metrics.md
+      - "Lezione 22 — Schema della memoria": modules/memory-schema.md
+      - "Lezione 23 — Episodic, semantic, preference": modules/episodic-semantic-preference.md
+      - "Lezione 24 — Decadimento temporale": modules/time-recency-decay.md
+      - "Lezione 25 — Importanza composita": modules/importance-scoring.md
+      - "Lezione 26 — Entita' e relazioni": modules/entity-event-relations.md
+      - "Lezione 27 — Il grafo delle memorie": modules/graph-memory-networkx.md
+      - "Lezione 28 — Retrieval ibrido": modules/hybrid-retrieval.md
+      - "Lezione 29 — Contraddizioni e aggiornamento": modules/contradiction-and-update.md
   - "Certificazione GCP PMLE (facoltativo)":
       - "Dominio 1 — Architetture low-code": modules/pmle-01-architect-low-code-ai-solutions.md
       - "Dominio 2 — Collaborare su dati e modelli": modules/pmle-02-collaborate-manage-data-models.md

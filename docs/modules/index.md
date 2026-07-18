@@ -48,6 +48,22 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
     `notebooks/lezione-20-clustering.ipynb`
 21. [Metriche di retrieval (Recall@K, MRR)](retrieval-metrics.md) —
     `notebooks/lezione-21-retrieval-metrics.ipynb`
+22. [Schema della memoria](memory-schema.md) —
+    `notebooks/lezione-22-schema-memoria.ipynb`
+23. [Episodic, semantic, preference](episodic-semantic-preference.md) —
+    `notebooks/lezione-23-episodic-semantic-preference.ipynb`
+24. [Decadimento temporale (recency)](time-recency-decay.md) —
+    `notebooks/lezione-24-recency-decay.ipynb`
+25. [Un punteggio di importanza composito](importance-scoring.md) —
+    `notebooks/lezione-25-importance-scoring.ipynb`
+26. [Entita' e relazioni](entity-event-relations.md) —
+    `notebooks/lezione-26-entita-e-relazioni.ipynb`
+27. [Il grafo delle memorie](graph-memory-networkx.md) —
+    `notebooks/lezione-27-grafo-memorie.ipynb`
+28. [Retrieval ibrido](hybrid-retrieval.md) —
+    `notebooks/lezione-28-retrieval-ibrido.ipynb`
+29. [Contraddizioni e aggiornamento](contradiction-and-update.md) —
+    `notebooks/lezione-29-contraddizioni.ipynb`
 
 **Sintesi eseguibile delle Lezioni 1-15**: `notebooks/consolidato-memoria-lezioni-01-15.ipynb`
 esegue l'intera pipeline in un solo notebook, dai dati grezzi al
@@ -65,28 +81,37 @@ non si installa in questo ambiente (conflitto di versione con Python
 3.11) — la parte pratica usa solo PCA. Dettagli in
 `course/research_gaps.md`.
 
+Con la Lezione 29 si chiude anche la **Fase 4** (rappresentare le
+memorie): schema esplicito e validato, type con parametri di decadimento
+differenziati, recency, un punteggio di importanza composito, entita'
+estratte con un'euristica dichiarata, un grafo bipartito memoria-entita',
+retrieval ibrido (con un confronto onesto — non sempre a favore
+dell'ibrido — contro il solo embedding) e gestione delle contraddizioni
+che non cancella mai la storia.
+
 ## Prossime lezioni previste
 
 Queste lezioni verranno costruite una alla volta, nell'ordine del
 [syllabus](../syllabus.md). L'ordine puo' sembrare lento, ma serve a non
 arrivare ai modelli con basi fragili.
 
-### Fase 4 — Rappresentare le memorie
+### Fase 5 — Transformer e modello open
 
-22. Schema di una memoria
-23. Episodic, semantic, preference
-24. Tempo, recency e decay
-25. Importance scoring
-26. Relazioni tra entita' ed eventi
-27. Memoria a grafo (NetworkX)
-28. Retrieval ibrido
-29. Contraddizioni e aggiornamento
+30. Attention, l'intuizione
+31. Self-attention, la matematica
+32. Il blocco Transformer
+33. Tokenizer e generazione
+34. KerasHub
+35. Inferenza con Gemma
+36. Output strutturato
+37. Valutazione di modelli generativi
 
 ### E poi
 
-30. Transformer e Gemma
-31. LoRA
-32. Pipeline, monitoring e capstone
+38. LoRA e adattamento efficiente
+39. Pipeline, deploy e monitoring
+40. Feedback e preference training
+41. Memory AI Lab completo (capstone)
 
 ## Modulo facoltativo: certificazione GCP PMLE
 

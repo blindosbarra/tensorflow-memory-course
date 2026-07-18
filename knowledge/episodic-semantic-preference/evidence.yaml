@@ -1,0 +1,30 @@
+lesson_id: episodic-semantic-preference
+reviewed_at: 2026-07-18
+claims:
+  - id: series-map-elementwise
+    claim: "pandas.Series.map applies a function or lookup (e.g. a dict) elementwise to each value of a Series, returning a new Series of the same length."
+    importance: major
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.Series.map.html"
+    source_title: "pandas.Series.map"
+    publisher: "pandas"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The API reference documents elementwise mapping via function, dict, or Series."
+    status: needs_reverification
+  - id: dataframe-groupby-aggregation
+    claim: "pandas.DataFrame.groupby splits a DataFrame into groups by one or more keys, enabling per-group aggregation (e.g. first(), value_counts()) on the remaining columns."
+    importance: minor
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html"
+    source_title: "pandas.DataFrame.groupby"
+    publisher: "pandas"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The API reference documents the split-apply-combine grouping mechanism."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to pandas.pydata.org not tested live this session; same proxy restriction pattern logged earlier in this session (course/research_gaps.md). Claims drawn from general pre-training knowledge of these extremely stable, well-established pandas APIs, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "PARAMETRI_TIPO (half-life and base importance weight per type) is an explicit Memory AI Lab design choice authored for this lesson, not sourced from external literature — declared as such in the lesson body and here, not presented as a measured/verified fact. No claim entry needed for it: it is not an evidence-backed assertion, it's a documented design decision (consistent with pmle-07's handling of constructed-for-teaching numeric examples, see course/progress.yaml)."
+    - "Per-type row counts and PARAMETRI_TIPO values applied to memory_train.csv (episodic=108, preference=61, semantic=43, unknown=1) are genuinely measured by executing notebooks/lezione-23-episodic-semantic-preference.ipynb in this session, not invented."

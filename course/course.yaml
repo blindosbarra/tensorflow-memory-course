@@ -57,7 +57,7 @@ modules:
 
   - id: memory-representation
     title: Rappresentare le memorie
-    status: planned
+    status: in_progress
     lessons:
       - memory-schema
       - episodic-semantic-preference

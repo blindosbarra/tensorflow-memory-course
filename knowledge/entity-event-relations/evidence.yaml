@@ -1,0 +1,30 @@
+lesson_id: entity-event-relations
+reviewed_at: 2026-07-18
+claims:
+  - id: re-findall-regex
+    claim: "re.findall returns all non-overlapping matches of a regular expression pattern in a string as a list; \\b is a word-boundary anchor and [A-Z][a-zA-Z]* matches a capitalized word."
+    importance: major
+    source_url: "https://docs.python.org/3/library/re.html"
+    source_title: "re — Regular expression operations"
+    publisher: "Python documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The official documentation describes findall's behavior and the standard regex syntax used (word boundaries, character classes)."
+    status: needs_reverification
+  - id: itertools-combinations
+    claim: "itertools.combinations(iterable, r) returns all r-length subsequences of elements from the input, in sorted order, without repeated elements — used here to enumerate all unordered entity pairs within a memory."
+    importance: minor
+    source_url: "https://docs.python.org/3/library/itertools.html#itertools.combinations"
+    source_title: "itertools.combinations"
+    publisher: "Python documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The official documentation describes the combinatorics semantics of combinations()."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to docs.python.org not tested live this session; same proxy restriction pattern logged earlier in this session (course/research_gaps.md). Claims drawn from general pre-training knowledge of these extremely stable standard-library APIs, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "The entity-extraction heuristic (regex on capitalized non-sentence-initial words, STOPWORD_MAIUSCOLE built by observing false positives on this specific dataset) is an explicit, declared design choice for this environment (no NER library installed, no network access to download one) — not presented as equivalent to real NER. Limitations are stated in the lesson body: no person/place distinction, no multi-word entities, capitalization-dependent, non-universal stopword list."
+    - "All entity-extraction statistics quoted in the docs page (157/213 memories with an entity, top co-occurring pairs) are genuinely measured by executing notebooks/lezione-26-entita-e-relazioni.ipynb in this session, not invented."

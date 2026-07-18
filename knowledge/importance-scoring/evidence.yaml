@@ -1,0 +1,20 @@
+lesson_id: importance-scoring
+reviewed_at: 2026-07-18
+claims:
+  - id: dataframe-sort-values
+    claim: "pandas.DataFrame.sort_values sorts a DataFrame by one or more columns, with an ascending parameter controlling sort direction."
+    importance: minor
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html"
+    source_title: "pandas.DataFrame.sort_values"
+    publisher: "pandas"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The API reference documents sort_values and its ascending parameter, used here to rank memories by composite score."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to pandas.pydata.org not tested live this session; same proxy restriction pattern logged earlier in this session (course/research_gaps.md). Claim drawn from general pre-training knowledge of this extremely stable, well-established pandas API, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "The importanza_composita formula and its weights (alpha=0.6, beta=0.4) are an explicit Memory AI Lab design choice authored for this lesson, combining previously-introduced signals (importance from Lesson 1, recency from Lesson 24, peso_importanza_base from Lesson 23) — not sourced from external literature, declared as such in the lesson body. No claim entry needed for it: it's a documented design decision, not an evidence-backed assertion."
+    - "All composite-score statistics quoted in the docs page (range [0.058, 1.077], per-type means, top-5 ranking) are genuinely measured by executing notebooks/lezione-25-importance-scoring.ipynb in this session, not invented."

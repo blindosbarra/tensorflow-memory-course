@@ -145,16 +145,24 @@ test, report, artifact e limiti noti.
 
 Totale stimato: 38,5 ore.
 
-Stato corrente: 21 lezioni disponibili come notebook, tutte in
+Stato corrente: 29 lezioni disponibili come notebook, tutte in
 `learner_review`. Fase 0 completa, Fase 1 (parte pandas + tf.data)
 completa nelle sue lezioni fondamentali, Fase 2 completa nelle sue lezioni
 fondamentali (rete, training loop, overfitting, valutazione con
-precision/recall/calibrazione), e **Fase 3 completa**: dalla
+precision/recall/calibrazione), **Fase 3 completa**: dalla
 tokenizzazione (Lezione 15, il classificatore passa dal ~60-65% al ~95%
 su validation leggendo il testo) fino alle metriche di retrieval
 (Lezione 21), passando per embedding layer, sentence embeddings,
 similarita' coseno, PCA/UMAP (UMAP solo teorico: `umap-learn` non
-installabile in questo ambiente, Python 3.11) e clustering. Le lezioni
+installabile in questo ambiente, Python 3.11) e clustering, e **Fase 4
+completa**: schema esplicito e validato (Lezione 22), type con parametri
+di decadimento differenziati (Lezione 23), recency (Lezione 24), un
+punteggio di importanza composito (Lezione 25), entita' estratte con
+un'euristica dichiarata — nessuna libreria NER in questo ambiente
+(Lezione 26), un grafo bipartito memoria-entita' con NetworkX (Lezione
+27), retrieval ibrido con un confronto onesto (non sempre a favore
+dell'ibrido) contro il solo embedding (Lezione 28), e gestione delle
+contraddizioni che non cancella mai la storia (Lezione 29). Le lezioni
 consolidano coppie di lezioni pianificate affini (vedi note in
-progress.yaml). Prossimo blocco: Fase 4, rappresentazione delle memorie
-(schema, importance scoring, memoria a grafo).
+progress.yaml). Prossimo blocco: Fase 5, Transformer e modello open
+(attention, self-attention, Gemma).

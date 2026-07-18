@@ -1,0 +1,29 @@
+lesson_id: memory-schema
+reviewed_at: 2026-07-18
+claims:
+  - id: dataclass-declarative-structure
+    claim: "The dataclasses module (Python standard library) generates __init__ and other special methods from declared class-level type-annotated fields, but does not perform runtime type or value validation on its own."
+    importance: critical
+    source_url: "https://docs.python.org/3/library/dataclasses.html"
+    source_title: "dataclasses — Data Classes"
+    publisher: "Python documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The official documentation describes what @dataclass generates and does not claim any runtime validation of field types/values."
+    status: needs_reverification
+  - id: pandas-to-datetime-validation
+    claim: "pandas.to_datetime raises an error (by default, errors='raise') when given a string it cannot parse as a date/time, which makes it usable as a validity check for a timestamp field."
+    importance: major
+    source_url: "https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html"
+    source_title: "pandas.to_datetime"
+    publisher: "pandas"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The API reference documents the errors parameter and default raising behavior on unparseable input."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to docs.python.org and pandas.pydata.org not tested live this session; same proxy restriction pattern logged for keras.io/tensorflow.org/scikit-learn.org/wikipedia.org earlier in this session (course/research_gaps.md). Claims drawn from general pre-training knowledge of these extremely stable, well-established standard-library/pandas APIs, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "The zero-errors validation report on train/val/test (213/20/15 rows) quoted in the docs page is genuinely measured by executing notebooks/lezione-22-schema-memoria.ipynb in this session (uv run via nbclient), not invented."

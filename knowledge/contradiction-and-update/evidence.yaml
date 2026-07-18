@@ -1,0 +1,21 @@
+lesson_id: contradiction-and-update
+reviewed_at: 2026-07-18
+claims:
+  - id: re-sub-findall
+    claim: "re.sub replaces regex matches with a replacement string; re.findall returns all non-overlapping matches, both usable to normalize text and extract content words for a simple keyword-based heuristic."
+    importance: minor
+    source_url: "https://docs.python.org/3/library/re.html"
+    source_title: "re — Regular expression operations"
+    publisher: "Python documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Already cited for entity-event-relations (Lesson 26); reused here for the same standard-library module, applied to a different extraction task."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to docs.python.org not tested live this session; same proxy restriction pattern logged earlier in this session (course/research_gaps.md)."
+    - "The contradiction-detection heuristic (polarity via likes/prefers/dislikes keywords, topic overlap via stopword-filtered content words) and the update policy (mark superseded_by, never delete) are explicit Memory AI Lab design choices for this lesson, not sourced from external literature — declared as such in the lesson body, including an honest demonstration of a case the heuristic does NOT catch (same-dimension value conflict without explicit polarity keywords, e.g. 'morning' vs 'evening' sessions)."
+    - "All contradiction-detection numbers quoted in the docs page (13, 17, 0 memories superseded across the three incoming test memories; 30 superseded / 31 still valid / 61 total) are genuinely measured by executing notebooks/lezione-29-contraddizioni.ipynb in this session, not invented."
+    - "During development, the first implementation of the update loop had a real pandas indexing bug: computing the conflict boolean mask on a filtered subset (archivio_preference[...isna()].apply(...)) produced a Series with a partial index misaligned with the full DataFrame on the second and third loop iterations, causing archivio_preference.loc[mask, col] = ... to raise TypeError: unhashable type: 'Series' on the third new memory (the one with zero conflicts). Fixed by computing the mask via .apply() over the FULL archivio_preference DataFrame (checking 'superseded_by is None' inside the same lambda) so the boolean mask's index always matches the DataFrame's full index across iterations. Verified by re-running the notebook end to end after the fix (uv run via nbclient) with no errors."
