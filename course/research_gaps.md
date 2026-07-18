@@ -139,3 +139,33 @@ where you left off" dopo un fallimento del tool di chiarimento scope).
   Precision@K/Recall@K/MRR) sono stati **misurati per davvero** eseguendo
   i notebook in questa sessione (`uv run` + `nbclient`), non stimati o
   inventati — vedi `course/progress.yaml` per il dettaglio per lezione.
+
+## transformers-gemma (Fase 5, Lezioni 30-37) — 2026-07-18
+
+- **Lezioni 30-33 (attention-intuition, self-attention-math, transformer-block,
+  tokenizer-generation)**: costruite da zero in **NumPy** ed eseguite davvero
+  in questa sessione (`uv run` + `nbclient`). Tutti i numeri nelle pagine docs
+  (pesi di attenzione, forme, media/std dopo layer norm, dimensione vocabolario
+  66, stringhe generate dal bigram) sono output reali, non inventati. Le claim
+  teoriche citano *Attention Is All You Need* (Vaswani et al., 2017,
+  arXiv:1706.03762) e sono marcate `needs_reverification` perche' l'egress di
+  rete verso arxiv.org/keras.io/numpy.org non e' testato live in questo sandbox
+  (stesso pattern gia' loggato sopra).
+- **Lezioni 34-37 (keras-hub, gemma-inference, structured-output,
+  evaluation-generative)**: richiedono il modello open **Gemma** via KerasHub.
+  Il pacchetto `keras-hub` e' un extra opzionale (`ml`) e i pesi Gemma sono un
+  download **autenticato di diversi GB** non ottenibile attraverso il proxy di
+  questo ambiente. Decisione (coerente con §3.2 "nessuna invenzione" e §3.3
+  "esecuzione prima della pubblicazione"): i notebook usano una **guardia di
+  ambiente** che salta le celle del modello quando KerasHub/Gemma non sono
+  presenti, cosi' i notebook **restano eseguibili in CI** (verificato in questa
+  sessione) senza inventare output del modello. Il codice mostrato e' l'API
+  reale di KerasHub (`GemmaCausalLM.from_preset`, `.generate`,
+  `compile(sampler=...)`), marcata `needs_reverification`: NON eseguita contro
+  i pesi reali in questa sessione. Le parti di **progetto** di ognuna di queste
+  lezioni sono invece pienamente eseguibili senza modello (registro dei preset,
+  estrattore a regole di fallback, validatore JSON contro lo schema della
+  Lezione 22, metriche precision/recall/F1 a livello di entita' con guardia di
+  regressione) e girano davvero. Quando i pesi Gemma saranno disponibili in un
+  ambiente con GPU, le celle guardate vanno eseguite e le claim relative
+  ri-verificate prima di marcare `done` le Lezioni 34-37.

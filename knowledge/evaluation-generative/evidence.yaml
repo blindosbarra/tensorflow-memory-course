@@ -1,0 +1,29 @@
+---
+lesson_id: evaluation-generative
+reviewed_at: 2026-07-18
+claims:
+  - id: field-level-prf
+    claim: "Extraction quality can be measured with set-based precision, recall and F1 over the extracted items: precision = TP/(TP+FP), recall = TP/(TP+FN), F1 = 2PR/(P+R), where TP/FP/FN are counted by comparing predicted entities against a gold set."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/model_evaluation.html"
+    source_title: "Metrics and scoring: precision, recall, F1"
+    publisher: "scikit-learn documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The precision/recall/F1 definitions are standard and documented by scikit-learn; here applied to entity sets rather than per-class labels. Consistent with Lesson 13. Not verified live; needs_reverification for the live-network principle."
+    status: needs_reverification
+  - id: llm-as-judge-calibration
+    claim: "Using a second model as an automatic judge (LLM-as-judge) for subjective quality must be calibrated against human judgments, otherwise the metric reflects the judge's own biases rather than true quality."
+    importance: major
+    source_url: "https://scikit-learn.org/stable/modules/model_evaluation.html"
+    source_title: "Metrics and scoring"
+    publisher: "scikit-learn documentation"
+    accessed_at: "2026-07-18"
+    primary_source: false
+    evidence_note: "The calibration caveat is a widely-held evaluation principle presented didactically, not a claim tied to a specific paper in this pass. Flagged for reverification against a primary source (e.g. an LLM-as-judge study) before marking done."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-37-valutazione-generativa.ipynb is FULLY executed this session: it evaluates the rule-based extractor (no model needed) on a hand-labeled gold set and computes real precision/recall/F1, with a regression-guard assert (F1 >= 0.8). Only the LLM-as-judge discussion is conceptual; no model output is invented. The F1/precision numbers in the docs are the genuine executed values."

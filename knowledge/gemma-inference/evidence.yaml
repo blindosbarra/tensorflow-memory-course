@@ -1,0 +1,29 @@
+---
+lesson_id: gemma-inference
+reviewed_at: 2026-07-18
+claims:
+  - id: gemma-generate
+    claim: "A KerasHub GemmaCausalLM performs text generation with a generate(prompt, max_length=...) method, and the decoding strategy (greedy or temperature sampling) is configured via compile(sampler=...)."
+    importance: critical
+    source_url: "https://keras.io/keras_hub/api/models/gemma/"
+    source_title: "Gemma models — KerasHub"
+    publisher: "Keras documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "KerasHub CausalLM task models expose .generate() and a configurable sampler via .compile(). NOT verified live this session (gated model); see course/research_gaps.md."
+    status: needs_reverification
+  - id: sampler-equals-temperature
+    claim: "The sampler that KerasHub uses at generation time is the same greedy-vs-temperature decision studied with a toy model in Lesson 33: the model only changes how the next-token distribution is produced, not the autoregressive loop."
+    importance: major
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: false
+    evidence_note: "Didactic linkage between the decoding loop and the sampler; the autoregressive framing is from the Transformer paper. Not a quantitative claim."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Gemma cells in notebooks/lezione-35-inferenza-gemma.ipynb are guarded and NOT executed here (gated weights). The .generate()/.compile(sampler=...) API is real KerasHub, marked needs_reverification per 3.2 and logged in course/research_gaps.md. The executable project cell (rule-based entity extractor fallback) genuinely runs and asserts, so the system works without the model."

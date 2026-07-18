@@ -1,0 +1,19 @@
+---
+lesson_id: structured-output
+reviewed_at: 2026-07-18
+claims:
+  - id: validate-not-trust
+    claim: "Because a language model emits free text, structured-output pipelines must extract the JSON block, parse it, and validate it against a schema (repairing or rejecting non-conforming output) rather than trusting the raw generation."
+    importance: critical
+    source_url: "https://docs.python.org/3/library/json.html"
+    source_title: "json — JSON encoder and decoder"
+    publisher: "Python documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "json.loads raises json.JSONDecodeError on malformed input, which is exactly what makes a validate-then-accept pipeline necessary; documented in the standard library. The 'don't trust the model output' practice is a widely-held engineering principle, framed didactically here."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "The Gemma call in notebooks/lezione-36-output-strutturato.ipynb is guarded and NOT executed here; the fallback uses a realistic 'dirty' example output. The whole validator/repair logic (regex JSON isolation, json.loads, schema check against Lesson 22's fields) genuinely runs and asserts on valid/invalid cases. json.JSONDecodeError behavior is standard-library, marked needs_reverification only for the live-network principle per 3.2."

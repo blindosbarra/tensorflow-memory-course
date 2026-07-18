@@ -1,0 +1,30 @@
+---
+lesson_id: transformer-block
+reviewed_at: 2026-07-18
+claims:
+  - id: block-sublayers
+    claim: "A Transformer encoder block wraps the self-attention sub-layer and a position-wise feed-forward sub-layer, each followed by a residual connection and layer normalization; the position-wise FFN is two linear transformations with a non-linearity in between, applied identically at every position."
+    importance: critical
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Section 3.1 describes the residual connection + layer normalization around each of the two sub-layers; Section 3.3 defines the position-wise feed-forward network as two linear layers with a ReLU in between."
+    status: needs_reverification
+  - id: residual-same-shape
+    claim: "The residual connection adds the sub-layer input to its output (x + Sublayer(x)), which requires the sub-layer to preserve the model dimension, so a block's input and output both have shape (n, d_model) and blocks can be stacked."
+    importance: major
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Section 3.1 states all sub-layers and embeddings produce outputs of dimension d_model to enable the residual connections."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to arxiv.org not tested live this session (see course/research_gaps.md); canonical Transformer content marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "The lesson implements the post-norm variant (LayerNorm after the residual add) as in the original 2017 paper, and says so; it does not claim this is the only variant (pre-norm is common in later models). All shapes/statistics in the docs (output (5,16), per-token mean ~0 / std ~1, stacked-block norm 4.0 = sqrt(16)) are genuinely produced by executing notebooks/lezione-32-blocco-transformer.ipynb this session. Weights are random, not learned, and the lesson states the block is illustrative, not trained."

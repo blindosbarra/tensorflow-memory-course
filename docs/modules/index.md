@@ -66,6 +66,20 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
     `notebooks/lezione-29-contraddizioni.ipynb`
 30. [L'attenzione come recupero morbido](attention-intuition.md) —
     `notebooks/lezione-30-attention-intuition.ipynb`
+31. [Self-attention, la matematica](self-attention-math.md) —
+    `notebooks/lezione-31-self-attention.ipynb`
+32. [Il blocco Transformer](transformer-block.md) —
+    `notebooks/lezione-32-blocco-transformer.ipynb`
+33. [Tokenizer e generazione](tokenizer-generation.md) —
+    `notebooks/lezione-33-tokenizer-generazione.ipynb`
+34. [KerasHub: modelli pre-addestrati](keras-hub.md) —
+    `notebooks/lezione-34-keras-hub.ipynb`
+35. [Inferenza con Gemma](gemma-inference.md) —
+    `notebooks/lezione-35-inferenza-gemma.ipynb`
+36. [Output strutturato](structured-output.md) —
+    `notebooks/lezione-36-output-strutturato.ipynb`
+37. [Valutare un modello generativo](evaluation-generative.md) —
+    `notebooks/lezione-37-valutazione-generativa.ipynb`
 
 **Sintesi eseguibile delle Lezioni 1-15**: `notebooks/consolidato-memoria-lezioni-01-15.ipynb`
 esegue l'intera pipeline in un solo notebook, dai dati grezzi al
@@ -97,20 +111,16 @@ Queste lezioni verranno costruite una alla volta, nell'ordine del
 [syllabus](../syllabus.md). L'ordine puo' sembrare lento, ma serve a non
 arrivare ai modelli con basi fragili.
 
-### Fase 5 — Transformer e modello open
+La **Fase 5 — Transformer e modello open** (Lezioni 30–37) e' ora completa
+e disponibile qui sopra: dall'attenzione implementata da zero in NumPy fino
+a inferenza con Gemma, output strutturato e valutazione generativa. Le
+Lezioni 34–37 usano un modello open (Gemma via KerasHub): le celle che
+richiedono i pesi del modello sono **guardate** e vengono saltate quando il
+modello non e' presente (come in CI), cosi' i notebook restano eseguibili e
+il codice del modello resta reale per chi ha GPU e accesso a Gemma. Dettagli
+in `course/research_gaps.md`.
 
-La Lezione 30 (attenzione come recupero morbido) e' gia' disponibile qui
-sopra. Le prossime:
-
-31. Self-attention, la matematica
-32. Il blocco Transformer
-33. Tokenizer e generazione
-34. KerasHub
-35. Inferenza con Gemma
-36. Output strutturato
-37. Valutazione di modelli generativi
-
-### E poi
+### Prossime fasi
 
 38. LoRA e adattamento efficiente
 39. Pipeline, deploy e monitoring

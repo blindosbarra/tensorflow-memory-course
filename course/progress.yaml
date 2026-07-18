@@ -739,6 +739,181 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: scaled dot-product attention implementata da zero in NumPy (softmax stabilizzata + QK^T/sqrt(d_k)), letta come recupero *morbido* differenziabile in contrasto col top-k netto della Lezione 28. Embedding deterministico via hashing delle parole (32 dim, nessun modello esterno) cosi' il notebook gira nell'ambiente numpy/pandas di base senza TensorFlow/Gemma. Numeri nel docs (pesi 0.180/0.167/0.162) realmente eseguiti. Apre la Fase 5 (transformers-gemma). Nota di ambiente: le lezioni successive che richiedono i pesi Gemma (keras-hub, gemma-inference) non sono eseguibili in questo sandbox (proxy + peso del modello); seguiranno la convenzione needs_reverification gia' usata nel repo."
+      self-attention-math:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/self-attention-math/
+          lesson: docs/modules/self-attention-math.md
+          notebook: notebooks/lezione-31-self-attention.ipynb
+          exercise: notebooks/lezione-31-self-attention.ipynb
+          solution: notebooks/lezione-31-self-attention.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: self-attention da zero in NumPy (Q=XWq, K=XWk, V=XWv dalla stessa sequenza); matrice di attenzione quadrata nxn. Con proiezioni casuali la matrice e' volutamente quasi uniforme (0.14-0.19) e la docs lo dice onestamente: senza addestramento nessun token preferisce fortemente un altro. Eseguito davvero questa sessione."
+      transformer-block:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/transformer-block/
+          lesson: docs/modules/transformer-block.md
+          notebook: notebooks/lezione-32-blocco-transformer.ipynb
+          exercise: notebooks/lezione-32-blocco-transformer.ipynb
+          solution: notebooks/lezione-32-blocco-transformer.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: blocco encoder completo in NumPy (self-attention + residua + layer norm + FFN posizionale, variante post-norm). Forma conservata (n, d_model); dopo layer norm media~0/std~1, norma per token 4.0=sqrt(16); 3 blocchi impilati. Eseguito davvero. Pesi casuali/illustrativi, dichiarato."
+      tokenizer-generation:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/tokenizer-generation/
+          lesson: docs/modules/tokenizer-generation.md
+          notebook: notebooks/lezione-33-tokenizer-generazione.ipynb
+          exercise: notebooks/lezione-33-tokenizer-generazione.ipynb
+          solution: notebooks/lezione-33-tokenizer-generazione.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: tokenizer word-level dal corpus (vocab 66 + <bos>/<eos>, round-trip garantito) + generazione autoregressiva con modellino bigram (matrice 66x66, add-one smoothing). Greedy vs temperatura mostrati con output reali. Il modello NON e' un Transformer: il punto e' che il ciclo di generazione e' identico. Eseguito davvero."
+      keras-hub:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/keras-hub/
+          lesson: docs/modules/keras-hub.md
+          notebook: notebooks/lezione-34-keras-hub.ipynb
+          exercise: notebooks/lezione-34-keras-hub.ipynb
+          solution: notebooks/lezione-34-keras-hub.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: KerasHub e from_preset (backbone vs task model GemmaCausalLM). Celle Gemma GUARDATE e saltate (pesi gated non scaricabili nel sandbox): notebook eseguibile in CI, API reale needs_reverification (vedi research_gaps.md). Cella progetto (registro preset + scegli_preset) eseguita davvero con assert."
+      gemma-inference:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/gemma-inference/
+          lesson: docs/modules/gemma-inference.md
+          notebook: notebooks/lezione-35-inferenza-gemma.ipynb
+          exercise: notebooks/lezione-35-inferenza-gemma.ipynb
+          solution: notebooks/lezione-35-inferenza-gemma.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: inferenza gemma.generate + compile(sampler=...) legata alla temperatura della Lezione 33. Celle Gemma GUARDATE. Cella progetto: estrai_entita con fallback a regole (euristica maiuscole Lezione 26) eseguita davvero, assert su Marco/Glasgow. needs_reverification per l'API modello."
+      structured-output:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/structured-output/
+          lesson: docs/modules/structured-output.md
+          notebook: notebooks/lezione-36-output-strutturato.ipynb
+          exercise: notebooks/lezione-36-output-strutturato.ipynb
+          solution: notebooks/lezione-36-output-strutturato.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: JSON conforme allo schema Lezione 22. Cella Gemma GUARDATA (usa output di esempio 'sporco' come fallback). Validatore estrai_e_valida (regex blocco {..} + json.loads + check campi/type) ESEGUITO davvero: accetta il valido, rifiuta type errato e JSON malformato."
+      evaluation-generative:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/evaluation-generative/
+          lesson: docs/modules/evaluation-generative.md
+          notebook: notebooks/lezione-37-valutazione-generativa.ipynb
+          exercise: notebooks/lezione-37-valutazione-generativa.ipynb
+          solution: notebooks/lezione-37-valutazione-generativa.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: valutazione a livello di campo (P/R/F1 su insiemi di entita') su gold set etichettato a mano (4 memorie, 7 entita'). Estrattore a regole ottiene P=R=F1=1.0 (set piccolo/diagnostico, dichiarato). NESSUN modello richiesto: notebook interamente eseguito. Guardia di regressione assert F1>=0.8. LLM-as-judge solo concettuale (needs_reverification)."
   gcp-ml-certification:
     status: in_progress
     lessons:

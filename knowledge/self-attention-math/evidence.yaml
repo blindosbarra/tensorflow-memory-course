@@ -1,0 +1,30 @@
+---
+lesson_id: self-attention-math
+reviewed_at: 2026-07-18
+claims:
+  - id: self-attention-projections
+    claim: "In self-attention the queries, keys, and values are all computed from the same input sequence X via three separate learned projection matrices: Q = X W_Q, K = X W_K, V = X W_V."
+    importance: critical
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Section 3.2.2 describes the linear projections of queries, keys and values; in the self-attention (encoder) case all three come from the same previous layer's output."
+    status: needs_reverification
+  - id: self-attention-square-matrix
+    claim: "Because queries and keys both come from the same sequence of length n, the attention score/weight matrix in self-attention is square (n x n); entry (i, j) is how much token i attends to token j."
+    importance: major
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Follows directly from Section 3.2: with n queries and n keys the QK^T product is n x n. The (i,j) reading is the standard interpretation."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress to arxiv.org not tested live this session (see course/research_gaps.md). The self-attention projection definition is canonical Transformer-paper content, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "All shapes and attention numbers in the docs are genuinely produced by executing notebooks/lezione-31-self-attention.ipynb this session. Projection matrices are random (not learned) purely to illustrate the mechanics, which is stated explicitly in the lesson; the resulting attention matrix is deliberately close to uniform and the docs say so rather than overstating the effect."

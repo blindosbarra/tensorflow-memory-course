@@ -1,0 +1,30 @@
+---
+lesson_id: tokenizer-generation
+reviewed_at: 2026-07-18
+claims:
+  - id: autoregressive-generation
+    claim: "Autoregressive generation produces text one token at a time: the model predicts a distribution over the next token, one token is selected and appended to the sequence, and the process repeats until an end-of-sequence token is produced or a length limit is reached."
+    importance: critical
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Section 3.1 describes the decoder as auto-regressive, consuming previously generated symbols as additional input when generating the next. The generation loop is standard."
+    status: needs_reverification
+  - id: temperature-sampling
+    claim: "Temperature sampling rescales the next-token logits by dividing by a temperature T before the softmax: T<1 sharpens the distribution (more conservative), T>1 flattens it (more diverse), and as T->0 it approaches greedy (argmax) selection."
+    importance: major
+    source_url: "https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html"
+    source_title: "numpy.random.Generator.choice"
+    publisher: "NumPy documentation"
+    accessed_at: "2026-07-18"
+    primary_source: false
+    evidence_note: "Temperature scaling of logits is a standard, widely-documented decoding technique; numpy.random.Generator.choice documents the probability-weighted sampling used to implement it. The T->0 = greedy limit is a mathematical property of the softmax."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Network egress not tested live this session (see course/research_gaps.md). The autoregressive-loop and temperature claims are standard, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "The model in this lesson is an intentionally tiny bigram (add-one smoothed transition counts) built from the course corpus, explicitly presented as NOT a Transformer: the point is that the generation LOOP is identical regardless of how the next-token distribution is produced. Vocabulary size (66), transition matrix shape (66x66) and all generated strings are genuinely produced by executing notebooks/lezione-33-tokenizer-generazione.ipynb this session."

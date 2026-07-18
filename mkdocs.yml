@@ -38,6 +38,13 @@ nav:
       - "Lezione 28 — Retrieval ibrido": modules/hybrid-retrieval.md
       - "Lezione 29 — Contraddizioni e aggiornamento": modules/contradiction-and-update.md
       - "Lezione 30 — L'attenzione come recupero morbido": modules/attention-intuition.md
+      - "Lezione 31 — Self-attention, la matematica": modules/self-attention-math.md
+      - "Lezione 32 — Il blocco Transformer": modules/transformer-block.md
+      - "Lezione 33 — Tokenizer e generazione": modules/tokenizer-generation.md
+      - "Lezione 34 — KerasHub: modelli pre-addestrati": modules/keras-hub.md
+      - "Lezione 35 — Inferenza con Gemma": modules/gemma-inference.md
+      - "Lezione 36 — Output strutturato": modules/structured-output.md
+      - "Lezione 37 — Valutare un modello generativo": modules/evaluation-generative.md
   - "Certificazione GCP PMLE (facoltativo)":
       - "Dominio 1 — Architetture low-code": modules/pmle-01-architect-low-code-ai-solutions.md
       - "Dominio 2 — Collaborare su dati e modelli": modules/pmle-02-collaborate-manage-data-models.md

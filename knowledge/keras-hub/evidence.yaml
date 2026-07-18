@@ -1,0 +1,29 @@
+---
+lesson_id: keras-hub
+reviewed_at: 2026-07-18
+claims:
+  - id: kerashub-from-preset
+    claim: "KerasHub distributes pretrained model presets that are loaded with a from_preset(...) classmethod on a task model such as GemmaCausalLM, which loads the backbone, tokenizer, and task head together."
+    importance: critical
+    source_url: "https://keras.io/keras_hub/"
+    source_title: "KerasHub"
+    publisher: "Keras documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "KerasHub docs describe the from_preset API on task models (e.g. GemmaCausalLM) that bundles backbone + preprocessor/tokenizer + head. NOT verified live this session (network + model gated); see course/research_gaps.md."
+    status: needs_reverification
+  - id: backbone-vs-task
+    claim: "KerasHub distinguishes a Backbone (the Transformer stack producing representations) from a task model that adds a task-specific head, e.g. a CausalLM head for text generation."
+    importance: major
+    source_url: "https://keras.io/keras_hub/"
+    source_title: "KerasHub"
+    publisher: "Keras documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Standard KerasHub API structure (Backbone vs *CausalLM/*Classifier task models). Not verified live; needs_reverification."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "The Gemma/KerasHub cells in notebooks/lezione-34-keras-hub.ipynb are NOT executed in this environment (package + gated multi-GB weights unavailable through the proxy). The notebook runs in CI because model cells are guarded and skipped. API shown is the real KerasHub interface from pre-training knowledge, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2 and logged in course/research_gaps.md. The executable project cell (preset registry + scegli_preset) genuinely runs and asserts."
