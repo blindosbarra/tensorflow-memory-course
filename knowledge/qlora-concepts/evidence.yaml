@@ -1,0 +1,29 @@
+---
+lesson_id: qlora-concepts
+reviewed_at: 2026-07-18
+claims:
+  - id: qlora-definition
+    claim: "QLoRA fine-tunes a large model by keeping the base model frozen and quantized to 4-bit (low memory) while training LoRA adapters in higher precision on top, enabling adaptation of large models on a single GPU."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2305.14314"
+    source_title: "QLoRA: Efficient Finetuning of Quantized LLMs"
+    publisher: "Dettmers et al., 2023 (arXiv:2305.14314)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The QLoRA paper describes backpropagating through a frozen 4-bit quantized base into LoRA adapters. NOT verified live this session; needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+  - id: quantization-memory-tradeoff
+    claim: "Storing weights with fewer bits (e.g. int8 or 4-bit) reduces memory roughly proportionally (int8 ~4x smaller than float32, 4-bit ~8x smaller) at the cost of a small rounding error."
+    importance: major
+    source_url: "https://numpy.org/doc/stable/reference/generated/numpy.round.html"
+    source_title: "numpy.round"
+    publisher: "NumPy documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The memory ratio is arithmetic (bits per weight); the rounding error is demonstrated numerically in the notebook (relative error 0.0113 for int8 on a random matrix). numpy.round documents the rounding used."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-42-qlora.ipynb is FULLY executed this session: int8 quantize/dequantize is real (262144 -> 65540 bytes, 4x, relative error 0.0113), the QLoRA-at-init assertion (B=0 => output equals quantized base) runs, and the memory table (32/16/8/4-bit for 2e9 params) with the 4-bit = 1/8 float32 check runs. QLoRA definition from the primary paper marked needs_reverification (network not live). No model weights are actually quantized here; the demo uses a random matrix as an honest stand-in and says so."

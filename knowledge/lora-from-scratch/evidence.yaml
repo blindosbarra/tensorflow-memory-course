@@ -1,0 +1,19 @@
+---
+lesson_id: lora-from-scratch
+reviewed_at: 2026-07-18
+claims:
+  - id: lora-init-convention
+    claim: "LoRA initializes A to a small random matrix and B to zero, so that BA = 0 at the start and the adapted model is initially identical to the pretrained one; the update is often scaled by alpha/r."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2106.09685"
+    source_title: "LoRA: Low-Rank Adaptation of Large Language Models"
+    publisher: "Hu et al., 2021 (arXiv:2106.09685)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The LoRA paper initializes A ~ Gaussian and B = 0 (so BA is zero at the start) and scales the update by alpha/r. Not verified live this session; needs_reverification."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-40-lora-from-scratch.ipynb is fully executed this session: the adapter is trained by hand-written gradient descent in NumPy on a toy regression, loss drops 5.6381 -> 2.6155 while W0 stays bit-identical (asserted), and a freshly created adapter (B=0) reproduces the W0-only output exactly (asserted). The 2.2x improvement is honest: a rank-2 adapter only partially fits a full-rank random target update. Init/scaling convention from the primary paper, needs_reverification per 3.2."

@@ -1,0 +1,19 @@
+---
+lesson_id: baseline-comparison
+reviewed_at: 2026-07-18
+claims:
+  - id: rank-sufficiency
+    claim: "When the true weight update is low-rank, a LoRA adapter whose rank r meets or exceeds that true rank can reach essentially the same loss as full fine-tuning while training only r*(d+k) parameters instead of d*k."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2106.09685"
+    source_title: "LoRA: Low-Rank Adaptation of Large Language Models"
+    publisher: "Hu et al., 2021 (arXiv:2106.09685)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The LoRA paper's premise is that the adaptation update is low-rank; the exact-match-at-sufficient-rank behavior is demonstrated numerically in the notebook (rank-3 true update: LoRA r>=3 reaches loss 0.0, matching full fine-tuning). Marked needs_reverification for the primary-source network check per 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-43-baseline-comparison.ipynb is FULLY executed this session. The true update is constructed to be rank 3. Measured losses: full fine-tuning 0.0 (384 params); LoRA r=1 -> 9.22, r=2 -> 3.13, r=3 -> 0.0 (120 params), r=4/r=8 -> 0.0. scegli_rango correctly picks the smallest sufficient rank (r=3) under a 0.05 threshold. All numbers are genuine outputs; the earlier draft used a full-rank random update (where LoRA legitimately cannot match full FT) and was corrected to a low-rank update so the comparison honestly reflects LoRA's premise."

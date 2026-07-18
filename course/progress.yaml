@@ -914,6 +914,184 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: valutazione a livello di campo (P/R/F1 su insiemi di entita') su gold set etichettato a mano (4 memorie, 7 entita'). Estrattore a regole ottiene P=R=F1=1.0 (set piccolo/diagnostico, dichiarato). NESSUN modello richiesto: notebook interamente eseguito. Guardia di regressione assert F1>=0.8. LLM-as-judge solo concettuale (needs_reverification)."
+  lora:
+    status: in_progress
+    lessons:
+      transfer-learning-freezing:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/transfer-learning-freezing/
+          lesson: docs/modules/transfer-learning-freezing.md
+          notebook: notebooks/lezione-38-transfer-learning.ipynb
+          exercise: notebooks/lezione-38-transfer-learning.ipynb
+          solution: notebooks/lezione-38-transfer-learning.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: apre la Fase 6. Freezing in NumPy: 48/432 param addestrabili (11.1%), un passo di training aggiorna solo la testa, corpo congelato bit-identico (assert). Full FT vs freezing vs LoRA introdotti. Eseguito davvero."
+      lora-math:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/lora-math/
+          lesson: docs/modules/lora-math.md
+          notebook: notebooks/lezione-39-lora-math.ipynb
+          exercise: notebooks/lezione-39-lora-math.ipynb
+          solution: notebooks/lezione-39-lora-math.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: decomposizione W0+BA, tabella risparmio param (r=1 -> 3.6% del pieno, 27x meno). Ricostruzione a basso rango via SVD (Eckart-Young): errore 0.6153@r1 -> 0.0000@r3 su Delta di rango 3. Eseguito davvero. Cita Hu et al. 2021 (needs_reverification)."
+      lora-from-scratch:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/lora-from-scratch/
+          lesson: docs/modules/lora-from-scratch.md
+          notebook: notebooks/lezione-40-lora-from-scratch.ipynb
+          exercise: notebooks/lezione-40-lora-from-scratch.ipynb
+          solution: notebooks/lezione-40-lora-from-scratch.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: adapter LoRA addestrato a mano (gradient descent NumPy), perdita 5.6381 -> 2.6155 con W0 congelato bit-identico (assert). Convenzione B=0 all'avvio => output == solo W0 (assert). Miglioramento parziale onesto (rango 2 su update pieno). Eseguito davvero."
+      gemma-lora:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/gemma-lora/
+          lesson: docs/modules/gemma-lora.md
+          notebook: notebooks/lezione-41-gemma-lora.ipynb
+          exercise: notebooks/lezione-41-gemma-lora.ipynb
+          solution: notebooks/lezione-41-gemma-lora.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: backbone.enable_lora(rank=4) su Gemma. Celle Gemma GUARDATE e saltate (pesi gated), API reale needs_reverification (research_gaps.md). Cella progetto stima_trainable_lora eseguita: ~0.39% param attenzione addestrabili (256x) su Gemma-2B, dimensioni d'ordine di grandezza dichiarate."
+      qlora-concepts:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/qlora-concepts/
+          lesson: docs/modules/qlora-concepts.md
+          notebook: notebooks/lezione-42-qlora.ipynb
+          exercise: notebooks/lezione-42-qlora.ipynb
+          solution: notebooks/lezione-42-qlora.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: quantizzazione int8 ESEGUITA (262144->65540 byte, 4x, errore rel 0.0113); QLoRA all'avvio == base quantizzata (assert); tabella memoria 32/16/8/4-bit con check 4-bit=1/8 fp32. QLoRA (Dettmers 2023) needs_reverification. Nessun peso di modello reale quantizzato: matrice random come stand-in dichiarato."
+      baseline-comparison:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/baseline-comparison/
+          lesson: docs/modules/baseline-comparison.md
+          notebook: notebooks/lezione-43-baseline-comparison.ipynb
+          exercise: notebooks/lezione-43-baseline-comparison.ipynb
+          solution: notebooks/lezione-43-baseline-comparison.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: full FT vs LoRA su update di RANGO 3. Misurato: full 0.0 (384 param); LoRA r=1->9.22, r=2->3.13, r=3->0.0 (120 param), r>=3 plateau. scegli_rango sceglie r=3 sotto soglia 0.05. Correzione onesta: prima stesura usava update a rango pieno (LoRA non puo' eguagliare) -> cambiato a rango basso per riflettere la premessa di LoRA. Eseguito davvero."
+      adapter-packaging:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/adapter-packaging/
+          lesson: docs/modules/adapter-packaging.md
+          notebook: notebooks/lezione-44-adapter-packaging.ipynb
+          exercise: notebooks/lezione-44-adapter-packaging.ipynb
+          solution: notebooks/lezione-44-adapter-packaging.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: chiude la Fase 6. Salva/carica adapter con np.savez (4052 byte vs 32768 base, ~8x), round-trip output identico atol 1e-6, rango dai metadati (assert). Il notebook pulisce i propri file temporanei (adapter_memoria/ rimossa). Eseguito davvero."
   gcp-ml-certification:
     status: in_progress
     lessons:

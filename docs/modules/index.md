@@ -80,6 +80,20 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
     `notebooks/lezione-36-output-strutturato.ipynb`
 37. [Valutare un modello generativo](evaluation-generative.md) —
     `notebooks/lezione-37-valutazione-generativa.ipynb`
+38. [Transfer learning e freezing](transfer-learning-freezing.md) —
+    `notebooks/lezione-38-transfer-learning.ipynb`
+39. [La matematica di LoRA](lora-math.md) —
+    `notebooks/lezione-39-lora-math.ipynb`
+40. [LoRA da zero: addestrare un adapter](lora-from-scratch.md) —
+    `notebooks/lezione-40-lora-from-scratch.ipynb`
+41. [LoRA su Gemma](gemma-lora.md) —
+    `notebooks/lezione-41-gemma-lora.ipynb`
+42. [QLoRA: quantizzazione + LoRA](qlora-concepts.md) —
+    `notebooks/lezione-42-qlora.ipynb`
+43. [LoRA vs full fine-tuning](baseline-comparison.md) —
+    `notebooks/lezione-43-baseline-comparison.ipynb`
+44. [Impacchettare e distribuire un adapter](adapter-packaging.md) —
+    `notebooks/lezione-44-adapter-packaging.ipynb`
 
 **Sintesi eseguibile delle Lezioni 1-15**: `notebooks/consolidato-memoria-lezioni-01-15.ipynb`
 esegue l'intera pipeline in un solo notebook, dai dati grezzi al
@@ -120,12 +134,18 @@ modello non e' presente (come in CI), cosi' i notebook restano eseguibili e
 il codice del modello resta reale per chi ha GPU e accesso a Gemma. Dettagli
 in `course/research_gaps.md`.
 
+La **Fase 6 — LoRA e adattamento efficiente** (Lezioni 38–44) e' ora
+completa e disponibile qui sopra: freezing, la matematica del basso rango,
+un adapter LoRA addestrato da zero in NumPy, QLoRA/quantizzazione, il
+confronto onesto con il full fine-tuning e l'impacchettamento degli adapter.
+La sola Lezione 41 (LoRA su Gemma) ha le celle del modello **guardate** come
+nelle Lezioni 34–37; tutte le altre della fase sono interamente eseguibili.
+
 ### Prossime fasi
 
-38. LoRA e adattamento efficiente
-39. Pipeline, deploy e monitoring
-40. Feedback e preference training
-41. Memory AI Lab completo (capstone)
+45. Pipeline, deploy e monitoring (MLOps)
+46. Feedback e preference training
+47. Memory AI Lab completo (capstone)
 
 ## Modulo facoltativo: certificazione GCP PMLE
 

@@ -1,0 +1,29 @@
+---
+lesson_id: transfer-learning-freezing
+reviewed_at: 2026-07-18
+claims:
+  - id: freezing-definition
+    claim: "Freezing a layer's weights means its gradients are not applied during training, so those parameters stay unchanged while only the remaining (trainable) parameters are updated."
+    importance: critical
+    source_url: "https://keras.io/guides/transfer_learning/"
+    source_title: "Transfer learning & fine-tuning"
+    publisher: "Keras documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The Keras transfer-learning guide describes setting layer.trainable = False to freeze weights so they are not updated during training. Not verified live this session; standard, needs_reverification."
+    status: needs_reverification
+  - id: full-finetune-forgetting
+    claim: "Updating all pretrained weights (full fine-tuning) is maximally flexible but expensive and can overwrite previously learned knowledge (catastrophic forgetting), which is one motivation for parameter-efficient methods."
+    importance: major
+    source_url: "https://arxiv.org/abs/2106.09685"
+    source_title: "LoRA: Low-Rank Adaptation of Large Language Models"
+    publisher: "Hu et al., 2021 (arXiv:2106.09685)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The LoRA paper motivates parameter-efficient adaptation by the cost of full fine-tuning of large models. Catastrophic forgetting is a widely documented phenomenon. Not verified live; needs_reverification."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-38-transfer-learning.ipynb is fully executed in NumPy this session: parameter counts (432 total, 48 trainable = 11.1%), the single training step updating only the head, and the bit-identical-frozen-body assertion are all real outputs. Source claims marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2 (network not tested live)."

@@ -1,0 +1,19 @@
+---
+lesson_id: adapter-packaging
+reviewed_at: 2026-07-18
+claims:
+  - id: adapter-portability
+    claim: "A LoRA adaptation is fully captured by its two small matrices A and B plus metadata (rank, scaling), so it can be saved and shipped as a small adapter (KB-scale) that is reapplied on top of the same frozen shared base to reproduce identical behavior, rather than distributing a full copy of the model per task."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2106.09685"
+    source_title: "LoRA: Low-Rank Adaptation of Large Language Models"
+    publisher: "Hu et al., 2021 (arXiv:2106.09685)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The LoRA paper highlights that only the small low-rank matrices need to be stored/swapped per task while the base is shared. The round-trip identical-output property is demonstrated in the notebook. Marked needs_reverification for the primary-source network check per 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-44-adapter-packaging.ipynb is FULLY executed this session: the adapter is saved with np.savez (4052 bytes vs 32768 for the base W0, ~8x smaller), reloaded, and an assert confirms the reloaded adapter reproduces the original output exactly (atol 1e-6) with rank restored from metadata. The notebook cleans up its own temporary files (adapter_memoria/ removed) so no artifacts are committed or left for the notebook-execution gate."

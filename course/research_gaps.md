@@ -169,3 +169,26 @@ where you left off" dopo un fallimento del tool di chiarimento scope).
   regressione) e girano davvero. Quando i pesi Gemma saranno disponibili in un
   ambiente con GPU, le celle guardate vanno eseguite e le claim relative
   ri-verificate prima di marcare `done` le Lezioni 34-37.
+
+## lora (Fase 6, Lezioni 38-44) — 2026-07-18
+
+- **Lezioni 38-40, 42-44**: costruite da zero in **NumPy** ed **eseguite davvero**
+  in questa sessione. Tutti i numeri nelle docs (conteggi parametri, errori di
+  ricostruzione SVD, discesa della perdita dell'adapter, errore di
+  quantizzazione int8, tabella full-vs-LoRA, dimensione dell'adapter su disco)
+  sono output reali, non inventati. Le claim teoriche citano *LoRA* (Hu et al.,
+  2021, arXiv:2106.09685) e *QLoRA* (Dettmers et al., 2023, arXiv:2305.14314) e
+  sono marcate `needs_reverification` perche' l'egress di rete non e' testato
+  live in questo sandbox.
+- **Lezione 41 (gemma-lora)**: richiede i pesi Gemma. Come le Lezioni 34-37, le
+  celle del modello (`backbone.enable_lora(rank=...)`) sono **guardate** e saltate
+  quando KerasHub/Gemma non sono presenti, cosi' il notebook resta eseguibile in
+  CI. L'API mostrata e' reale, `needs_reverification`, non eseguita contro i pesi
+  reali. La cella di progetto (stima del risparmio di parametri) e' pienamente
+  eseguibile e gira davvero.
+- **Nota di onesta' didattica (Lezione 43)**: la prima stesura del confronto
+  full-vs-LoRA usava un aggiornamento a rango pieno, dove LoRA non puo' per
+  costruzione eguagliare il full fine-tuning: sarebbe stato fuorviante. Corretto
+  a un aggiornamento di rango basso (la premessa esplicita di LoRA, Lezione 39),
+  cosi' la tabella mostra onestamente che a rango sufficiente LoRA eguaglia il
+  full FT con una frazione dei parametri.

@@ -1,0 +1,29 @@
+---
+lesson_id: lora-math
+reviewed_at: 2026-07-18
+claims:
+  - id: lora-decomposition
+    claim: "LoRA represents the weight update of a pretrained layer W0 as a low-rank product BA (B is d x r, A is r x k, r << min(d,k)), keeps W0 frozen, and trains only A and B, reducing trainable parameters from d*k to r*(d+k)."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2106.09685"
+    source_title: "LoRA: Low-Rank Adaptation of Large Language Models"
+    publisher: "Hu et al., 2021 (arXiv:2106.09685)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The LoRA paper defines the update as W0 + BA with rank r << model dimensions, W0 frozen, only A and B trained. Not verified live this session; needs_reverification."
+    status: needs_reverification
+  - id: eckart-young
+    claim: "The best rank-r approximation of a matrix (in Frobenius/spectral norm) is given by truncating its singular value decomposition to the top r singular values/vectors (Eckart-Young theorem), so if an update has rank <= r a rank-r factorization reconstructs it exactly."
+    importance: major
+    source_url: "https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html"
+    source_title: "numpy.linalg.svd"
+    publisher: "NumPy documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "numpy.linalg.svd documents the SVD used; Eckart-Young is a classical linear-algebra theorem. The exact-reconstruction-at-true-rank result is demonstrated numerically in the notebook (error 0.0000 at r=3)."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-39-lora-math.ipynb is fully executed this session: parameter-savings table and the rank-r reconstruction errors (0.6153 at r=1 down to 0.0000 at r=3 for a rank-3 Delta) are genuine outputs. LoRA claims from the primary paper marked needs_reverification per 3.2 (network not tested live)."

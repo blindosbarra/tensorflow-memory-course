@@ -83,7 +83,7 @@ modules:
 
   - id: lora
     title: LoRA e adattamento efficiente
-    status: planned
+    status: in_progress
     lessons:
       - transfer-learning-freezing
       - lora-math

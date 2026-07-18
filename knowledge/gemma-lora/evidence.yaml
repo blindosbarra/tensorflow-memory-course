@@ -1,0 +1,19 @@
+---
+lesson_id: gemma-lora
+reviewed_at: 2026-07-18
+claims:
+  - id: enable-lora-api
+    claim: "In KerasHub, LoRA is enabled on a Gemma model by calling backbone.enable_lora(rank=r), which injects LoRA adapters into the attention layers, freezes the original weights, and leaves only the adapters trainable, so a normal fit trains a tiny fraction of the parameters."
+    importance: critical
+    source_url: "https://keras.io/keras_hub/api/models/gemma/"
+    source_title: "Gemma models — KerasHub"
+    publisher: "Keras documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "KerasHub Gemma backbones expose enable_lora(rank=...) to inject LoRA adapters and freeze base weights. NOT verified live this session (gated model); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Gemma cells in notebooks/lezione-41-gemma-lora.ipynb are guarded and NOT executed here (no keras_hub, gated weights). The enable_lora API is real KerasHub, needs_reverification, logged in course/research_gaps.md. The executable project cell (stima_trainable_lora) genuinely runs: for d_model=2048, 18 attention layers, r=4 it reports ~0.39% trainable (256x reduction) using the Lesson-39 parameter formula. The 2048/18 figures are order-of-magnitude for Gemma-2B and are described as such, not exact architecture claims."
