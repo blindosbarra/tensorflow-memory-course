@@ -94,6 +94,20 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
     `notebooks/lezione-43-baseline-comparison.ipynb`
 44. [Impacchettare e distribuire un adapter](adapter-packaging.md) —
     `notebooks/lezione-44-adapter-packaging.ipynb`
+45. [Uno schema per il feedback](feedback-schema.md) —
+    `notebooks/lezione-45-feedback-schema.ipynb`
+46. [Coppie chosen/rejected](chosen-rejected-data.md) —
+    `notebooks/lezione-46-chosen-rejected.ipynb`
+47. [Una reward function da zero](reward-functions.md) —
+    `notebooks/lezione-47-reward-functions.ipynb`
+48. [L'intuizione di DPO](dpo-intuition.md) —
+    `notebooks/lezione-48-dpo-intuition.ipynb`
+49. [Preference tuning di una politica](preference-tuning.md) —
+    `notebooks/lezione-49-preference-tuning.ipynb`
+50. [RLHF, RLAIF e DPO a confronto](rlhf-rlaif-overview.md) —
+    `notebooks/lezione-50-rlhf-rlaif.ipynb`
+51. [I rischi del preference learning online](online-learning-risks.md) —
+    `notebooks/lezione-51-online-learning-risks.ipynb`
 
 **Sintesi eseguibile delle Lezioni 1-15**: `notebooks/consolidato-memoria-lezioni-01-15.ipynb`
 esegue l'intera pipeline in un solo notebook, dai dati grezzi al
@@ -141,11 +155,17 @@ confronto onesto con il full fine-tuning e l'impacchettamento degli adapter.
 La sola Lezione 41 (LoRA su Gemma) ha le celle del modello **guardate** come
 nelle Lezioni 34–37; tutte le altre della fase sono interamente eseguibili.
 
+La **Fase 7 — Feedback e preference training** (Lezioni 45–51) e' ora
+completa e disponibile qui sopra, ed e' **interamente eseguibile in NumPy**
+(nessun modello esterno): schema del feedback, coppie chosen/rejected, un
+reward model con la loss di Bradley-Terry, la loss DPO, il preference tuning
+di una politica, il confronto RLHF/RLAIF/DPO e i rischi del preference
+learning online (reward hacking/Goodhart).
+
 ### Prossime fasi
 
-45. Pipeline, deploy e monitoring (MLOps)
-46. Feedback e preference training
-47. Memory AI Lab completo (capstone)
+- Pipeline, deploy e monitoring (MLOps)
+- Memory AI Lab completo (capstone)
 
 ## Modulo facoltativo: certificazione GCP PMLE
 

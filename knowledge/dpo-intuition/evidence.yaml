@@ -1,0 +1,19 @@
+---
+lesson_id: dpo-intuition
+reviewed_at: 2026-07-18
+claims:
+  - id: dpo-loss
+    claim: "DPO optimizes a policy directly from preference pairs with a single supervised loss L = -log sigmoid(beta * ((log pi_theta(y_w) - log pi_ref(y_w)) - (log pi_theta(y_l) - log pi_ref(y_l)))), where log pi_theta - log pi_ref is an implicit reward, eliminating the separate reward model and RL loop of classic RLHF."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2305.18290"
+    source_title: "Direct Preference Optimization: Your Language Model is Secretly a Reward Model"
+    publisher: "Rafailov et al., 2023 (arXiv:2305.18290)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The DPO paper derives exactly this loss and the implicit-reward interpretation, with beta controlling the KL-style deviation from the reference. NOT verified live; needs_reverification per 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-48-dpo-intuition.ipynb is fully executed this session: the DPO loss is implemented in NumPy on toy log-probs; starting from the reference (implicit margin 0.0) the training drives loss 0.6931 -> 0.4202 and the mean implicit margin 0.0 -> 1.30, with 100% of pairs ending chosen>rejected. Real outputs."

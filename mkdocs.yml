@@ -52,6 +52,13 @@ nav:
       - "Lezione 42 — QLoRA: quantizzazione + LoRA": modules/qlora-concepts.md
       - "Lezione 43 — LoRA vs full fine-tuning": modules/baseline-comparison.md
       - "Lezione 44 — Impacchettare un adapter": modules/adapter-packaging.md
+      - "Lezione 45 — Uno schema per il feedback": modules/feedback-schema.md
+      - "Lezione 46 — Coppie chosen/rejected": modules/chosen-rejected-data.md
+      - "Lezione 47 — Una reward function da zero": modules/reward-functions.md
+      - "Lezione 48 — L'intuizione di DPO": modules/dpo-intuition.md
+      - "Lezione 49 — Preference tuning di una politica": modules/preference-tuning.md
+      - "Lezione 50 — RLHF, RLAIF e DPO": modules/rlhf-rlaif-overview.md
+      - "Lezione 51 — I rischi del preference learning online": modules/online-learning-risks.md
   - "Certificazione GCP PMLE (facoltativo)":
       - "Dominio 1 — Architetture low-code": modules/pmle-01-architect-low-code-ai-solutions.md
       - "Dominio 2 — Collaborare su dati e modelli": modules/pmle-02-collaborate-manage-data-models.md

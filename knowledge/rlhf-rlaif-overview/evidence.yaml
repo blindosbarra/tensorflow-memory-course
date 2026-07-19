@@ -1,0 +1,19 @@
+---
+lesson_id: rlhf-rlaif-overview
+reviewed_at: 2026-07-18
+claims:
+  - id: rlhf-vs-rlaif
+    claim: "RLHF trains a reward model from human preferences and optimizes the policy with RL under a KL constraint; RLAIF replaces the human labeller with a model (a reward model or an LLM judge), trading scalability for inheriting the judge's biases; DPO is an orthogonal choice about HOW to optimize (directly from pairs, no RL) and can consume either human or AI labels."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2212.08073"
+    source_title: "Constitutional AI: Harmlessness from AI Feedback"
+    publisher: "Bai et al., 2022 (arXiv:2212.08073)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Constitutional AI / RLAIF uses AI-generated preferences in place of human labels; RLHF (Ouyang et al., 2022) uses human labels + RL; DPO (Rafailov et al., 2023) removes the RL loop. The human-vs-AI (who labels) and RL-vs-direct (how to optimize) axes are orthogonal. NOT verified live; needs_reverification per 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-50-rlhf-rlaif.ipynb is fully executed this session: an AI judge with increasing noise agrees with the human labeller 0.87 / 0.81 / 0.69 / 0.39, and a DPO policy trained on good vs bad AI labels reaches human-alignment 0.964 vs -0.167 respectively, demonstrating that judge quality propagates to the final policy. Real outputs. The three-way conceptual framing cites the RLHF/RLAIF/DPO primary papers, needs_reverification per 3.2."

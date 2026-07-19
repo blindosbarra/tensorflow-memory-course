@@ -192,3 +192,23 @@ where you left off" dopo un fallimento del tool di chiarimento scope).
   a un aggiornamento di rango basso (la premessa esplicita di LoRA, Lezione 39),
   cosi' la tabella mostra onestamente che a rango sufficiente LoRA eguaglia il
   full FT con una frazione dei parametri.
+
+## preference-learning (Fase 7, Lezioni 45-51) — 2026-07-18
+
+- **Tutte le 7 lezioni sono interamente eseguibili in NumPy** ed **eseguite
+  davvero** in questa sessione: nessun modello esterno o peso Gemma richiesto
+  (a differenza delle Fasi 5-6). Tutti i numeri nelle docs (validazione
+  feedback, coppie, recupero della reward vera a coseno 0.995, discesa della
+  loss DPO, generalizzazione della politica, accordo del giudice AI, U rovesciata
+  del reward hacking) sono output reali. Le claim teoriche citano fonti primarie
+  (InstructGPT/Ouyang 2022, DPO/Rafailov 2023, Constitutional AI/Bai 2022,
+  reward-overoptimization/Gao 2022) e sono marcate `needs_reverification` perche'
+  l'egress di rete non e' testato live in questo sandbox.
+- **Due correzioni di onesta' didattica** (dettaglio in progress.yaml):
+  Lezione 47 (reward model) — la prima stesura tentava di predire l'importanza da
+  feature testuali deboli (lunghezza, parole forti) e falliva sotto il caso
+  (accuratezza 0.32): sostituita da un esperimento controllato con reward vera
+  nota, che il modello recupera davvero. Lezione 51 (reward hacking) — la prima
+  stesura con proxy lineare non faceva mai calare l'obiettivo vero (nessun
+  Goodhart osservabile): corretta a un obiettivo distanza-dal-target reale, che
+  produce la U rovesciata attesa.

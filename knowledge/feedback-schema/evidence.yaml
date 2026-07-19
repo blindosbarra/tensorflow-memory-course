@@ -1,0 +1,19 @@
+---
+lesson_id: feedback-schema
+reviewed_at: 2026-07-18
+claims:
+  - id: pairwise-vs-pointwise
+    claim: "Preference feedback is commonly collected as pairwise comparisons (A preferred over B) rather than absolute scores, because comparative judgments tend to be more consistent across annotators than absolute ratings, and the pairwise form is what feeds RLHF-style reward modeling and DPO."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2203.02155"
+    source_title: "Training language models to follow instructions with human feedback (InstructGPT)"
+    publisher: "Ouyang et al., 2022 (arXiv:2203.02155)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "InstructGPT collects human rankings/comparisons of model outputs to train a reward model. The consistency advantage of comparisons is a widely stated rationale. NOT verified live this session; needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-45-feedback-schema.ipynb is fully executed this session: the Feedback dataclass + validator run, correctly accepting 1 valid feedback and rejecting 4 malformed ones each with an explicit reason. Pure Python/dataclasses, no external model."

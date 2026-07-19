@@ -1,0 +1,19 @@
+---
+lesson_id: reward-functions
+reviewed_at: 2026-07-18
+claims:
+  - id: bradley-terry
+    claim: "A reward model r(x) can be trained from preferences alone using the Bradley-Terry model, P(chosen > rejected) = sigmoid(r(chosen) - r(rejected)), by minimizing -log sigmoid(r_w - r_l) over the pairs; this is the basis of the RLHF reward model."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2203.02155"
+    source_title: "Training language models to follow instructions with human feedback (InstructGPT)"
+    publisher: "Ouyang et al., 2022 (arXiv:2203.02155)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "InstructGPT trains a reward model with a pairwise logistic (Bradley-Terry) loss over human comparisons. The Bradley-Terry model (Bradley & Terry, 1952) is the classical pairwise-comparison model. NOT verified live; needs_reverification per 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-47-reward-functions.ipynb is fully executed this session as a CONTROLLED experiment: a known ground-truth reward w* generates noisy pairwise labels, and the Bradley-Terry-trained reward recovers w* to cosine 0.995 with pairwise accuracy 0.84 (capped below 1.0 by label noise). An earlier draft tried to predict importance from weak textual features (length/strong-words) and honestly failed (accuracy 0.32, worse than chance); it was replaced by the controlled setup rather than overstating weak features. Documented in course/research_gaps.md."

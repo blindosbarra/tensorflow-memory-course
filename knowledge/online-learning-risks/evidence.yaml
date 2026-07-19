@@ -1,0 +1,19 @@
+---
+lesson_id: online-learning-risks
+reviewed_at: 2026-07-18
+claims:
+  - id: goodhart-reward-hacking
+    claim: "Optimizing a proxy reward instead of the true objective leads to reward hacking (Goodhart's law): past a point the proxy keeps rising while true quality falls, so a practical defense is early stopping on the true objective measured on a trusted held-out sample rather than stopping when the proxy is maximal."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2210.10760"
+    source_title: "Scaling Laws for Reward Model Overoptimization"
+    publisher: "Gao et al., 2022 (arXiv:2210.10760)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Reward-model overoptimization (true objective degrading as the proxy reward is over-optimized) is studied empirically by Gao et al., 2022; Goodhart's law is the classical framing. NOT verified live; needs_reverification per 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-51-online-learning-risks.ipynb is fully executed this session: proxy-ascent past the true optimum produces the classic inverted-U in true quality (peaks at step 29) while the proxy rises monotonically (max at step 59); an early-stopping guard on the true objective stops at step 29. Real outputs. Feedback-loop and distribution-shift risks are described conceptually. An earlier draft's linear toy did not actually turn the true objective down and was corrected to a distance-to-true-target objective so the over-optimization is genuine, not asserted; documented in course/research_gaps.md."

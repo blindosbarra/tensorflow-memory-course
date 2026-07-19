@@ -110,7 +110,7 @@ modules:
 
   - id: preference-learning
     title: Feedback e preference training
-    status: planned
+    status: in_progress
     lessons:
       - feedback-schema
       - chosen-rejected-data

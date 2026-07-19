@@ -1,0 +1,19 @@
+---
+lesson_id: preference-tuning
+reviewed_at: 2026-07-18
+claims:
+  - id: dpo-policy-generalizes
+    claim: "When DPO is applied to a parametric policy pi_theta(x) proportional to exp(theta . feat(x)), the softmax normalizing constant cancels in the chosen-minus-rejected difference, and because the policy is a model over features it generalizes the learned preference to unseen items."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2305.18290"
+    source_title: "Direct Preference Optimization: Your Language Model is Secretly a Reward Model"
+    publisher: "Rafailov et al., 2023 (arXiv:2305.18290)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "DPO applies to a parametric policy; the log-ratio difference cancels the partition function. Generalization to unseen inputs is a property of parametric models. NOT verified live; needs_reverification per 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-49-preference-tuning.ipynb is fully executed this session: a linear policy is DPO-tuned from noisy preference pairs; accuracy on held-out UNSEEN pairs is 0.79-0.84 and the tuned policy aligns with the true preference direction at cosine 0.974. Real outputs; the softmax-constant cancellation is stated and used, not hand-waved."

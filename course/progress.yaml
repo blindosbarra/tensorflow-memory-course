@@ -1092,6 +1092,184 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: chiude la Fase 6. Salva/carica adapter con np.savez (4052 byte vs 32768 base, ~8x), round-trip output identico atol 1e-6, rango dai metadati (assert). Il notebook pulisce i propri file temporanei (adapter_memoria/ rimossa). Eseguito davvero."
+  preference-learning:
+    status: in_progress
+    lessons:
+      feedback-schema:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/feedback-schema/
+          lesson: docs/modules/feedback-schema.md
+          notebook: notebooks/lezione-45-feedback-schema.ipynb
+          exercise: notebooks/lezione-45-feedback-schema.ipynb
+          solution: notebooks/lezione-45-feedback-schema.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: apre la Fase 7. Dataclass Feedback + validatore (assoluto vs relativo). Accetta 1 valido, scarta 4 rotti con motivo. Eseguito davvero. Cita InstructGPT (needs_reverification)."
+      chosen-rejected-data:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/chosen-rejected-data/
+          lesson: docs/modules/chosen-rejected-data.md
+          notebook: notebooks/lezione-46-chosen-rejected.ipynb
+          exercise: notebooks/lezione-46-chosen-rejected.ipynb
+          solution: notebooks/lezione-46-chosen-rejected.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: coppie chosen/rejected dai 61 memory di tipo preference (40 coppie, margine minimo, scartate coppie a testo identico). Check bias lunghezza (chosen piu' lunga 60%) segnalato onestamente. Eseguito sui dati reali."
+      reward-functions:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/reward-functions/
+          lesson: docs/modules/reward-functions.md
+          notebook: notebooks/lezione-47-reward-functions.ipynb
+          exercise: notebooks/lezione-47-reward-functions.ipynb
+          solution: notebooks/lezione-47-reward-functions.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: reward model Bradley-Terry in NumPy. Esperimento CONTROLLATO: recupera la reward vera w* a coseno 0.995, accuratezza 0.84 (limitata dal rumore). Prima stesura usava feature testuali deboli e falliva (0.32 < caso): sostituita invece di sopravvalutare feature deboli. Eseguito davvero."
+      dpo-intuition:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/dpo-intuition/
+          lesson: docs/modules/dpo-intuition.md
+          notebook: notebooks/lezione-48-dpo-intuition.ipynb
+          exercise: notebooks/lezione-48-dpo-intuition.ipynb
+          solution: notebooks/lezione-48-dpo-intuition.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: loss DPO in NumPy. Da reference (margine 0) -> loss 0.6931->0.4202, margine 0->1.30, 100% coppie chosen>rejected. Reward implicito log pi_theta - log pi_ref. Cita Rafailov 2023 (needs_reverification). Eseguito davvero."
+      preference-tuning:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/preference-tuning/
+          lesson: docs/modules/preference-tuning.md
+          notebook: notebooks/lezione-49-preference-tuning.ipynb
+          exercise: notebooks/lezione-49-preference-tuning.ipynb
+          solution: notebooks/lezione-49-preference-tuning.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: DPO su una politica lineare (softmax). Generalizza: accuratezza su coppie NUOVE 0.79-0.84, allineamento con preferenza vera coseno 0.974. Costante softmax si cancella nella differenza. Eseguito davvero."
+      rlhf-rlaif-overview:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/rlhf-rlaif-overview/
+          lesson: docs/modules/rlhf-rlaif-overview.md
+          notebook: notebooks/lezione-50-rlhf-rlaif.ipynb
+          exercise: notebooks/lezione-50-rlhf-rlaif.ipynb
+          solution: notebooks/lezione-50-rlhf-rlaif.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: RLHF vs RLAIF (chi etichetta) vs DPO (come si ottimizza). Giudice AI con rumore: accordo umano 0.87/0.81/0.69/0.39; politica DPO da giudice buono allineamento 0.964, da scadente -0.167. Eseguito davvero. Cita Constitutional AI/InstructGPT (needs_reverification)."
+      online-learning-risks:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/online-learning-risks/
+          lesson: docs/modules/online-learning-risks.md
+          notebook: notebooks/lezione-51-online-learning-risks.ipynb
+          exercise: notebooks/lezione-51-online-learning-risks.ipynb
+          solution: notebooks/lezione-51-online-learning-risks.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: chiude la Fase 7. Reward hacking/Goodhart: U rovesciata, qualita' vera picco al passo 29, proxy sale fino a 59; early stopping sull'obiettivo vero ferma a 29. Prima stesura lineare non faceva calare il vero: corretta a obiettivo distanza-dal-target reale. Cita Gao et al. 2022 (needs_reverification). Eseguito davvero."
   gcp-ml-certification:
     status: in_progress
     lessons:

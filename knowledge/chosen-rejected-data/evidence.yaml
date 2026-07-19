@@ -1,0 +1,19 @@
+---
+lesson_id: chosen-rejected-data
+reviewed_at: 2026-07-18
+claims:
+  - id: preference-pairs
+    claim: "Preference optimization consumes (chosen y_w, rejected y_l) pairs; these come directly from pairwise feedback or are derived from other signals, and must be cleaned (no degenerate chosen==rejected pairs, a minimum preference margin, and checks for spurious shortcuts such as a length bias)."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2203.02155"
+    source_title: "Training language models to follow instructions with human feedback (InstructGPT)"
+    publisher: "Ouyang et al., 2022 (arXiv:2203.02155)"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "The chosen/rejected pair structure underlies reward-model training in InstructGPT. Length-bias and other spurious-correlation cautions are well documented in the RLHF literature. NOT verified live; needs_reverification per 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "notebooks/lezione-46-chosen-rejected.ipynb is fully executed on the real course data this session: 61 preference-type memories, 40 pairs built with a minimum importance margin, degenerate same-text pairs skipped, and a length-bias check (chosen longer in 0.60 of pairs) reported honestly as a mild bias to watch. Real outputs, not invented."
