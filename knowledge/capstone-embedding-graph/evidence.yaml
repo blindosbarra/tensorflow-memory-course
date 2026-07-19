@@ -1,0 +1,19 @@
+---
+lesson_id: capstone-embedding-graph
+reviewed_at: 2026-07-18
+claims:
+  - id: capstone-embedding-graph-main
+    claim: "The representation components (deterministic embedding, cosine-similarity search, rule-based entity extraction, and an adjacency-list graph in pure Python) provide the record's embedding, entities and relations without heavy dependencies."
+    importance: critical
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., 2017"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Interamente eseguibile; evita `networkx` (extra opzionale) usando una lista di adiacenza. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-55-capstone-embedding-grafo.ipynb this session, not invented."

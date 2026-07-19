@@ -108,6 +108,24 @@ sito e' il riassunto di riferimento. I notebook vanno eseguiti in ordine.
     `notebooks/lezione-50-rlhf-rlaif.ipynb`
 51. [I rischi del preference learning online](online-learning-risks.md) —
     `notebooks/lezione-51-online-learning-risks.ipynb`
+52. [L'architettura del Memory AI Lab](capstone-architecture.md) —
+    `notebooks/lezione-52-capstone-architettura.ipynb`
+53. [Il dataset del capstone](capstone-dataset.md) —
+    `notebooks/lezione-53-capstone-dataset.ipynb`
+54. [Il classificatore del tipo di memoria](capstone-classifier.md) —
+    `notebooks/lezione-54-capstone-classificatore.ipynb`
+55. [Embedding, retrieval e grafo](capstone-embedding-graph.md) —
+    `notebooks/lezione-55-capstone-embedding-grafo.ipynb`
+56. [Estrazione strutturata con Gemma + LoRA](capstone-gemma-lora.md) —
+    `notebooks/lezione-56-capstone-gemma-lora.ipynb`
+57. [Valutazione offline del lab](capstone-evaluation.md) —
+    `notebooks/lezione-57-capstone-valutazione.ipynb`
+58. [La pipeline: MemoryAILab](capstone-pipeline.md) —
+    `notebooks/lezione-58-capstone-pipeline.ipynb`
+59. [Monitoraggio e drift](capstone-monitoring.md) —
+    `notebooks/lezione-59-capstone-monitoring.ipynb`
+60. [Demo: il Memory AI Lab al lavoro](capstone-demo.md) —
+    `notebooks/lezione-60-capstone-demo.ipynb`
 
 **Sintesi eseguibile delle Lezioni 1-15**: `notebooks/consolidato-memoria-lezioni-01-15.ipynb`
 esegue l'intera pipeline in un solo notebook, dai dati grezzi al
@@ -162,10 +180,23 @@ reward model con la loss di Bradley-Terry, la loss DPO, il preference tuning
 di una politica, il confronto RLHF/RLAIF/DPO e i rischi del preference
 learning online (reward hacking/Goodhart).
 
-### Prossime fasi
+La **Fase 8 — Memory AI Lab completo (capstone)** (Lezioni 52–60) e' ora
+completa e disponibile qui sopra: architettura e contratto di output,
+dataset validato, classificatore del tipo, embedding/retrieval/grafo,
+estrazione relazioni (Gemma+LoRA con fallback), valutazione offline, la
+pipeline `MemoryAILab` che produce il record strutturato completo,
+monitoraggio del drift (PSI) e la demo end-to-end. Tutte le lezioni sono
+eseguibili in NumPy/Python puro; solo la cella Gemma della Lezione 56 e'
+guardata.
 
-- Pipeline, deploy e monitoring (MLOps)
-- Memory AI Lab completo (capstone)
+Con la Fase 8 il **percorso principale del corso (Lezioni 1–60) e'
+completo**: dal CSV grezzo di memorie a un Memory AI Lab funzionante
+end-to-end.
+
+### Fase non ancora costruita
+
+- Pipeline, deploy e monitoring cloud (MLOps / Vertex AI) — modulo `mlops`,
+  ancora `planned`.
 
 ## Modulo facoltativo: certificazione GCP PMLE
 

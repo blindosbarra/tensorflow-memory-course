@@ -1,0 +1,19 @@
+---
+lesson_id: capstone-dataset
+reviewed_at: 2026-07-18
+claims:
+  - id: capstone-dataset-main
+    claim: "Before training any component, the dataset must be split (train/val/test), validated against the schema, and cleaned of unusable rows (e.g. type=unknown), with a quality report and a leakage check that test ids do not appear in train."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/cross_validation.html"
+    source_title: "Cross-validation"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Interamente eseguibile sui dati reali del corso; numeri (212/19/14, 1 scartata) sono output reali. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-53-capstone-dataset.ipynb this session, not invented."

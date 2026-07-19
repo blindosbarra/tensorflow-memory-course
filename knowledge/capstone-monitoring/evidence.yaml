@@ -1,0 +1,19 @@
+---
+lesson_id: capstone-monitoring
+reviewed_at: 2026-07-18
+claims:
+  - id: capstone-monitoring-main
+    claim: "Input drift (a shift in the incoming data distribution vs the training reference) can degrade quality silently; the Population Stability Index (PSI) measures the shift and a threshold raises an alarm (common convention: <0.1 stable, 0.1-0.25 moderate, >0.25 strong)."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/model_evaluation.html"
+    source_title: "Metrics and scoring"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Interamente eseguibile; PSI reali. La convenzione di soglia PSI e' pratica industriale comune (needs_reverification). All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-59-capstone-monitoring.ipynb this session, not invented."

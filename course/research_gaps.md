@@ -212,3 +212,26 @@ where you left off" dopo un fallimento del tool di chiarimento scope).
   stesura con proxy lineare non faceva mai calare l'obiettivo vero (nessun
   Goodhart osservabile): corretta a un obiettivo distanza-dal-target reale, che
   produce la U rovesciata attesa.
+
+## capstone (Fase 8, Lezioni 52-60) — 2026-07-18
+
+- **8 delle 9 lezioni sono interamente eseguibili** in NumPy/Python puro ed
+  eseguite davvero in questa sessione: architettura/contratto, dataset validato
+  (212/19/14), classificatore bag-of-words, embedding/retrieval/grafo (grafo come
+  lista di adiacenza per evitare `networkx`, che e' un extra opzionale),
+  valutazione offline (classificatore 0.93, P@3 0.80, relazioni F1 1.00),
+  pipeline `MemoryAILab` che produce il record JSON del contratto, monitoraggio
+  drift (PSI 0.038 vs 6.779) e demo end-to-end (4 memorie, 2 archiviate). Tutti i
+  numeri sono output reali.
+- **Lezione 56 (capstone-gemma-lora)**: come le Lezioni 34-37 e 41, la cella
+  Gemma+LoRA e' **guardata** e saltata (pesi gated); il fallback a regole per le
+  relazioni e' eseguito davvero. `needs_reverification` per la parte modello.
+- **Note di sviluppo**: (a) Lezione 54 — il val set e' piccolo (19 righe), quindi
+  l'accuratezza alta e' dichiarata come non sovra-interpretabile invece di essere
+  presentata come prova forte; (b) Lezione 60 — trovato e corretto un bug di
+  duplicazione (`process` ri-archiviava lo stesso `memory_id`): reso idempotente
+  sull'id. (c) La convenzione delle soglie PSI (Lezione 59) e' pratica industriale
+  comune, marcata `needs_reverification`.
+- **Percorso principale completo (Lezioni 1-60)**. Resta non costruito solo il
+  modulo opzionale `mlops` (Vertex AI / deploy / monitoring cloud), `planned` su
+  richiesta dell'utente di non svilupparlo ora.

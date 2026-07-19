@@ -1270,6 +1270,234 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: chiude la Fase 7. Reward hacking/Goodhart: U rovesciata, qualita' vera picco al passo 29, proxy sale fino a 59; early stopping sull'obiettivo vero ferma a 29. Prima stesura lineare non faceva calare il vero: corretta a obiettivo distanza-dal-target reale. Cita Gao et al. 2022 (needs_reverification). Eseguito davvero."
+  capstone:
+    status: in_progress
+    lessons:
+      capstone-architecture:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-architecture/
+          lesson: docs/modules/capstone-architecture.md
+          notebook: notebooks/lezione-52-capstone-architettura.ipynb
+          exercise: notebooks/lezione-52-capstone-architettura.ipynb
+          solution: notebooks/lezione-52-capstone-architettura.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: apre la Fase 8. MemoryRecord dataclass + validatore + scheletro pipeline con componenti stub e orchestratore; smoke test end-to-end. Eseguito davvero."
+      capstone-dataset:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-dataset/
+          lesson: docs/modules/capstone-dataset.md
+          notebook: notebooks/lezione-53-capstone-dataset.ipynb
+          exercise: notebooks/lezione-53-capstone-dataset.ipynb
+          solution: notebooks/lezione-53-capstone-dataset.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: dataset validato train/val/test 212/19/14 (scartata 1 riga type=unknown), importanza clip [0,1], assert no-leakage id test vs train. Eseguito sui dati reali."
+      capstone-classifier:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-classifier/
+          lesson: docs/modules/capstone-classifier.md
+          notebook: notebooks/lezione-54-capstone-classificatore.ipynb
+          exercise: notebooks/lezione-54-capstone-classificatore.ipynb
+          solution: notebooks/lezione-54-capstone-classificatore.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: bag-of-words (vocab 64 solo train) + softmax NumPy; batte la maggioranza (0.68 val). Val accuracy alta ma val piccolo (19 righe): cautela dichiarata nel docs, non sovra-interpretata. Eseguito davvero."
+      capstone-embedding-graph:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-embedding-graph/
+          lesson: docs/modules/capstone-embedding-graph.md
+          notebook: notebooks/lezione-55-capstone-embedding-grafo.ipynb
+          exercise: notebooks/lezione-55-capstone-embedding-grafo.ipynb
+          solution: notebooks/lezione-55-capstone-embedding-grafo.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: embedding deterministico (48d) + retrieval coseno + entita' a regole + grafo come lista di adiacenza in Python puro (evita networkx, extra opzionale). Elena nodo piu' connesso (grado 5). Eseguito davvero."
+      capstone-gemma-lora:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-gemma-lora/
+          lesson: docs/modules/capstone-gemma-lora.md
+          notebook: notebooks/lezione-56-capstone-gemma-lora.ipynb
+          exercise: notebooks/lezione-56-capstone-gemma-lora.ipynb
+          solution: notebooks/lezione-56-capstone-gemma-lora.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: relazioni (source,type,target) via Gemma+LoRA GUARDATA (needs_reverification) + fallback a regole eseguito davvero (Marco,visited,Glasgow). Vedi research_gaps.md."
+      capstone-evaluation:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-evaluation/
+          lesson: docs/modules/capstone-evaluation.md
+          notebook: notebooks/lezione-57-capstone-valutazione.ipynb
+          exercise: notebooks/lezione-57-capstone-valutazione.ipynb
+          solution: notebooks/lezione-57-capstone-valutazione.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: report offline sul test set - classificatore 0.93 (n=14), retrieval P@3 0.80, relazioni F1 1.00 (gold piccolo); soglie come guardie di regressione. Eseguito davvero."
+      capstone-pipeline:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-pipeline/
+          lesson: docs/modules/capstone-pipeline.md
+          notebook: notebooks/lezione-58-capstone-pipeline.ipynb
+          exercise: notebooks/lezione-58-capstone-pipeline.ipynb
+          solution: notebooks/lezione-58-capstone-pipeline.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: classe MemoryAILab.process assembla i componenti reali -> record JSON completo conforme al contratto (Lezione 52) e allo schema del COURSE_FACTORY_SPEC. Importanza composita (Lezione 25). assert su tutti i campi. Eseguito davvero."
+      capstone-monitoring:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-monitoring/
+          lesson: docs/modules/capstone-monitoring.md
+          notebook: notebooks/lezione-59-capstone-monitoring.ipynb
+          exercise: notebooks/lezione-59-capstone-monitoring.ipynb
+          solution: notebooks/lezione-59-capstone-monitoring.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: monitoraggio drift con PSI; batch simile PSI 0.038 (OK), batch drift 6.779 (ALLARME). Convenzione soglia PSI e' pratica industriale (needs_reverification). Chiude il ciclo con la Fase 7. Eseguito davvero."
+      capstone-demo:
+        status: learner_review
+        state_machine:
+          planned: done
+          researching: done
+          evidence_review: done
+          writing: done
+          lab_build: done
+          technical_review: done
+          learner_review: in_progress
+          done: pending
+        artifacts:
+          research_pack: knowledge/capstone-demo/
+          lesson: docs/modules/capstone-demo.md
+          notebook: notebooks/lezione-60-capstone-demo.ipynb
+          exercise: notebooks/lezione-60-capstone-demo.ipynb
+          solution: notebooks/lezione-60-capstone-demo.ipynb
+        quality_gates:
+          research: pass
+          lesson: pass
+          code: pass
+          didactics: pass
+          publish: pass
+        notes:
+          - "2026-07-18: chiude il corso principale (Lezioni 1-60). Lab su 4 memorie, archivia 2 sopra soglia (Marco 0.42, prefers 0.60); process idempotente sull'id (bug di duplicazione trovato e corretto durante lo sviluppo). Memory AI Lab funzionante end-to-end. Eseguito davvero."
   gcp-ml-certification:
     status: in_progress
     lessons:

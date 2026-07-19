@@ -1,0 +1,19 @@
+---
+lesson_id: capstone-gemma-lora
+reviewed_at: 2026-07-18
+claims:
+  - id: capstone-gemma-lora-main
+    claim: "The relations component uses a LoRA-adapted open model constrained to structured output, with a rule-based fallback (a known verb between two entities) so the component works even without the model."
+    importance: critical
+    source_url: "https://keras.io/keras_hub/api/models/gemma/"
+    source_title: "Gemma models — KerasHub"
+    publisher: "Keras documentation"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2. NOT executed against the real gated model this session; the guarded cell is skipped and the rule-based fallback runs. needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Cella Gemma guardata (needs_reverification, vedi research_gaps.md); il fallback a regole e' eseguito davvero. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-56-capstone-gemma-lora.ipynb this session, not invented."

@@ -59,6 +59,15 @@ nav:
       - "Lezione 49 — Preference tuning di una politica": modules/preference-tuning.md
       - "Lezione 50 — RLHF, RLAIF e DPO": modules/rlhf-rlaif-overview.md
       - "Lezione 51 — I rischi del preference learning online": modules/online-learning-risks.md
+      - "Lezione 52 — L'architettura del Memory AI Lab": modules/capstone-architecture.md
+      - "Lezione 53 — Il dataset del capstone": modules/capstone-dataset.md
+      - "Lezione 54 — Il classificatore del tipo": modules/capstone-classifier.md
+      - "Lezione 55 — Embedding, retrieval e grafo": modules/capstone-embedding-graph.md
+      - "Lezione 56 — Estrazione con Gemma + LoRA": modules/capstone-gemma-lora.md
+      - "Lezione 57 — Valutazione offline del lab": modules/capstone-evaluation.md
+      - "Lezione 58 — La pipeline: MemoryAILab": modules/capstone-pipeline.md
+      - "Lezione 59 — Monitoraggio e drift": modules/capstone-monitoring.md
+      - "Lezione 60 — Demo: il Memory AI Lab al lavoro": modules/capstone-demo.md
   - "Certificazione GCP PMLE (facoltativo)":
       - "Dominio 1 — Architetture low-code": modules/pmle-01-architect-low-code-ai-solutions.md
       - "Dominio 2 — Collaborare su dati e modelli": modules/pmle-02-collaborate-manage-data-models.md

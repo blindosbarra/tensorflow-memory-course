@@ -122,7 +122,7 @@ modules:
 
   - id: capstone
     title: Memory AI Lab completo
-    status: planned
+    status: in_progress
     lessons:
       - capstone-architecture
       - capstone-dataset

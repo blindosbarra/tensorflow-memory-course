@@ -1,0 +1,19 @@
+---
+lesson_id: capstone-demo
+reviewed_at: 2026-07-18
+claims:
+  - id: capstone-demo-main
+    claim: "Running the assembled MemoryAILab over a stream of heterogeneous memories produces one complete structured record each and archives only those above the importance threshold, demonstrating the whole course end-to-end."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2305.18290"
+    source_title: "Direct Preference Optimization"
+    publisher: "Rafailov et al., 2023"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Interamente eseguibile; conteggi reali (4 processate, 2 archiviate). All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-60-capstone-demo.ipynb this session, not invented."

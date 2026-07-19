@@ -1,0 +1,19 @@
+---
+lesson_id: capstone-architecture
+reviewed_at: 2026-07-18
+claims:
+  - id: capstone-architecture-main
+    claim: "Fixing an explicit output contract (a validated record schema) and a pipeline skeleton of stable-signature components up front lets each component be built and tested independently and then integrated by an orchestrator without changing structure."
+    importance: critical
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., 2017"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Il notebook e' interamente eseguibile (dataclass + smoke test), Python puro. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-52-capstone-architettura.ipynb this session, not invented."

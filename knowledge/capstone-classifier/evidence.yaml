@@ -1,0 +1,19 @@
+---
+lesson_id: capstone-classifier
+reviewed_at: 2026-07-18
+claims:
+  - id: capstone-classifier-main
+    claim: "A bag-of-words representation (vocabulary built from train only, to avoid leakage) with a NumPy softmax regression classifies the memory type well above the majority-class baseline, reproducing the text-signal jump of Lesson 15."
+    importance: critical
+    source_url: "https://scikit-learn.org/stable/modules/linear_model.html"
+    source_title: "Logistic regression"
+    publisher: "scikit-learn"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Interamente eseguibile in NumPy; accuratezze reali, con la cautela sul val set piccolo dichiarata. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-54-capstone-classificatore.ipynb this session, not invented."

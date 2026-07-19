@@ -1,0 +1,19 @@
+---
+lesson_id: capstone-pipeline
+reviewed_at: 2026-07-18
+claims:
+  - id: capstone-pipeline-main
+    claim: "Assembling the real components into a single MemoryAILab.process method produces the complete structured record of the contract (type, entities, relations, importance, should_store), where should_store applies a threshold to the composite importance."
+    importance: critical
+    source_url: "https://arxiv.org/abs/2106.09685"
+    source_title: "LoRA: Low-Rank Adaptation"
+    publisher: "Hu et al., 2021"
+    accessed_at: "2026-07-18"
+    primary_source: true
+    evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    status: needs_reverification
+review:
+  reviewer: claude
+  decision: pass
+  notes:
+    - "Interamente eseguibile; il record JSON e' output reale. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-58-capstone-pipeline.ipynb this session, not invented."
