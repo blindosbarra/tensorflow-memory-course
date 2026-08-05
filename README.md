@@ -49,41 +49,23 @@ uv run jupyter lab notebooks/
 
 ## Lezioni disponibili (in learner review)
 
-1. `notebooks/lezione-01-dati-mancanti.ipynb` — dati mancanti:
-   teoria (meccanismi, strategie, effetti) + progetto passo 1 (ingestion).
-2. `notebooks/lezione-02-duplicati-tipi-outlier.ipynb` — duplicati, tipi errati
-   e outlier + progetto passo 2 (controllo qualita' del nuovo batch).
-3. `notebooks/lezione-03-train-validation-test.ipynb` — valutare senza barare:
-   i tre insiemi e i tre tipi di divisione + progetto passo 3 (lo storico
-   viene diviso temporalmente).
-4. `notebooks/lezione-04-data-leakage.ipynb` — le tre forme di leakage, con
-   dimostrazioni numeriche + progetto passo 4 (audit anti-leakage degli split).
-5. `notebooks/lezione-05-encoding-scaling.ipynb` — encoding e scaling + progetto
-   passo 5 (la prima matrice di feature, pronta per la Fase 2).
-6. `notebooks/lezione-06-numpy.ipynb` — pensare per array: vettorizzazione,
-   riduzioni, maschere + progetto passo 6 (le firme delle classi).
-7. `notebooks/lezione-07-tensori.ipynb` — forme, prodotto scalare come somma
-   pesata, `X @ W` + progetto passo 7 (i punteggi di classe, pesi casuali).
-8. `notebooks/lezione-08-gradienti.ipynb` — derivate come sensibilita',
-   discesa del gradiente + progetto passo 8 (i primi parametri imparati).
-9. `notebooks/lezione-09-loss.ipynb` — MSE, softmax e cross-entropy +
-   progetto passo 9 (softmax regression a mano: la baseline della Fase 2).
-10. `notebooks/lezione-10-prima-rete-neurale.ipynb` — Keras: non-linearita'
-    e confini curvi (mezzelune) + progetto passo 10 (la rete sfida la
-    baseline). Da qui serve `uv sync --extra ml`.
-11. `notebooks/lezione-11-dentro-il-training.ipynb` — batch, epoche,
-    autodiff e il training loop scritto a mano + progetto passo 11.
-12. `notebooks/lezione-12-overfitting.ipynb` — curve di apprendimento,
-    early stopping, dropout + progetto passo 12 (valutazione finale sul
-    test e primo modello salvato).
-13. `notebooks/lezione-13-valutare-un-classificatore.ipynb` — precision,
-    recall, F1, confusion matrix, calibrazione + progetto passo 13 (la
-    pagella del classificatore).
-14. `notebooks/lezione-14-tf-data.ipynb` — pipeline di input: shuffle (e la
-    trappola del buffer), batch, prefetch + progetto passo 14.
-15. `notebooks/lezione-15-tokenizzazione.ipynb` — il modello legge il
-    testo: vocabolario, OOV, bag of words + progetto passo 15 (il salto:
-    ~60% -> ~95% su validation).
+Il corso e' strutturato in 60 lezioni principali in `notebooks/` (suddivise per fasi di apprendimento), un notebook consolidato e un modulo supplementare di certificazione GCP PMLE:
+
+### Corso Principale: Memory AI Lab (Lezioni 1–60)
+- **Fase 1 & 0 — Dati e Fondamenti (Lezioni 01–09, 14)**: da pulizia dati, train/val/test e leakage fino a NumPy, gradienti, loss e input pipeline `tf.data`.
+- **Fase 2 — Keras e Reti Neurali Dense (Lezioni 10–13)**: prima rete neurale Keras, training loop custom con `GradientTape`, overfitting, dropout e metriche di calibrazione.
+- **Fase 3 — Testo, Embedding e Retrieval (Lezioni 15–21)**: tokenizzazione, embedding layer, cosine similarity, PCA/UMAP, clustering K-Means e metriche di retrieval (Recall@K, MRR).
+- **Fase 4 — Schema e Grafo delle Memorie (Lezioni 22–29)**: schema di memoria `@dataclass`, decadimento temporale, importanza composita, entita' e grafo relazionale `NetworkX`, retrieval ibrido e gestione contraddizioni.
+- **Fase 5 — Transformer e Gemma (Lezioni 30–37)**: self-attention matematica da zero, blocco Transformer, tokenizer, `KerasHub`, inferenza Gemma, output strutturato e valutazione generativa.
+- **Fase 6 — LoRA e QLoRA (Lezioni 38–44)**: transfer learning, matematica di LoRA, LoRA da zero e su Gemma, QLoRA e impacchettamento adapter.
+- **Fase 7 — Preference Learning (Lezioni 45–51)**: feedback schema, coppie chosen/rejected, reward function, DPO, RLHF/RLAIF e rischi del learning online.
+- **Fase 8 — Capstone Memory AI Lab (Lezioni 52–60)**: architettura end-to-end, dataset, classificatore, embedding graph, Gemma+LoRA, valutazione offline, pipeline, monitoring e demo finale.
+
+### Notebook Consolidato
+- `notebooks/consolidato-memoria-lezioni-01-15.ipynb` — riepilogo end-to-end eseguibile delle prime 15 lezioni sulla preparazione dati e baseline neurale.
+
+### Certificazione GCP Professional ML Engineer (facoltativo)
+- **Domini 1–6 e Sintesi Architetturale** (`pmle-01` .. `pmle-07`): teoria e scenari di architetture low-code, Feature Store, AutoSxS, serving, pipeline MLOps e monitoring. Disponibile in italiano (`docs/modules/pmle-*.md`) e in inglese (`docs/modules/en/pmle-*.md`).
 
 I notebook vanno eseguiti in ordine: ogni lezione riparte dagli artifact
 salvati dalla precedente. Le pagine in `docs/modules/` sono i riassunti di
