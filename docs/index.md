@@ -12,7 +12,7 @@ Corso pratico in micro-sessioni per imparare:
 - evaluation e monitoring;
 - preference training.
 
-Il corso viene costruito progressivamente dalla Course Factory descritta nel repository in conformità alla specifica [`COURSE_FACTORY_SPEC.md`](file:///usr/local/google/home/sommacampagna/projects/tensorflow-memory-course/COURSE_FACTORY_SPEC.md).
+Il corso viene costruito progressivamente dalla Course Factory descritta nel repository, in conformità alla specifica `COURSE_FACTORY_SPEC.md` (file nella radice del repository, non pubblicato su questo sito).
 
 ## Come navigare il corso
 - **[Syllabus completo](syllabus.md)**: panoramica di tutti i moduli, obiettivi didattici, prerequisiti e ordine di progressione.

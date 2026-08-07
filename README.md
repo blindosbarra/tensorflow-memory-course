@@ -26,6 +26,32 @@ Su PowerShell:
 $env:UV_CACHE_DIR='.uv-cache'; uv sync --extra dev
 ```
 
+## Gemma: come abilitarlo (facoltativo)
+
+Le lezioni 34, 35, 36, 41 e 56 mostrano l'API reale di Gemma via KerasHub.
+**Senza fare nulla, girano lo stesso**: le celle del modello stampano
+`[saltato]` insieme alla spiegazione di cosa avrebbero prodotto, e il resto
+della lezione — teoria, fallback a regole, progetto — funziona per intero.
+La lezione resta studiabile; e' una scelta, non una limitazione.
+
+Per eseguirle davvero servono tre cose:
+
+1. l'extra `ml` installato: `uv sync --extra dev --extra ml` (~600 MB);
+2. le credenziali Kaggle in ambiente, `KAGGLE_USERNAME` e `KAGGLE_KEY`, con
+   la licenza Gemma accettata sul tuo account Kaggle;
+3. l'opt-in esplicito `GEMMA_ENABLED=1`.
+
+```bash
+export GEMMA_ENABLED=1
+export KAGGLE_USERNAME=... KAGGLE_KEY=...
+uv run jupyter lab notebooks/
+```
+
+Il terzo passo esiste apposta: il preset `gemma_2b_en` pesa diversi GB, e chi
+ha per caso delle credenziali Kaggle nell'ambiente non deve ritrovarsi un
+download del genere senza averlo chiesto. Se una delle tre condizioni manca,
+il notebook lo dice e prosegue con il fallback.
+
 ## Documento principale
 
 Leggi [`COURSE_FACTORY_SPEC.md`](COURSE_FACTORY_SPEC.md).
