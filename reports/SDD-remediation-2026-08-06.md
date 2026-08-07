@@ -1,7 +1,7 @@
 # SDD — Remediation of the TensorFlow Memory AI Course
 
 Version: 1.1 — 2026-08-07 (converged; see section 10 for what changed)
-Status: ready for implementation — **0 of 13 work items implemented**
+Status: in implementation — WI-2 done, WI-1 implemented and under final verification
 Source review: `reports/reviews/codebase-status-2026-08-06.md`
 Source plan: `reports/fix-plan-2026-08-06.md`
 Work queue (durable state): `reports/handover/queue.yaml`
@@ -107,13 +107,13 @@ Do not regress any passing check.
 
 ### 1.5 Implementation status (re-verified 2026-08-07)
 
-Nothing in this document has been implemented yet. Each row below was
-checked against the tree, not against a tracker:
+**WI-2 done; WI-1 implemented, full notebook run still pending.** Each row
+below was checked against the tree, not against a tracker:
 
-| WI | Evidence that it is still open |
+| WI | Evidence, checked against the tree |
 |---|---|
-| WI-1 | `GEMMA_ENABLED` appears in no file; the import-only guard is intact in all 5 notebooks |
-| WI-2 | `docs/index.md:15` still carries `file:///usr/local/google/home/...` |
+| WI-1 | **implemented 2026-08-07, awaiting the 61/61 run** — opt-in guard in all 5 notebooks, `from_preset` wrapped, README documents the opt-in |
+| WI-2 | **done 2026-08-07** — the link is now plain text; no `file:///` remains under `docs/` |
 | WI-3 | `docs/glossary.md` has 2 entries |
 | WI-4 | `docs/references.md` is 14 lines, 6 links; no `scripts/build_references.py` |
 | WI-5 | lessons 31-60: zero occurrences of "esercizio"/"soluzione" |
@@ -295,8 +295,8 @@ is authoritative for *state* and this document for *specification*.
 
 | ID | Title | Priority | Blocked by | Status |
 |---|---|---|---|---|
-| WI-1 | Fix the Gemma availability guard (5 notebooks) | P0 | — | todo |
-| WI-2 | Remove the absolute path from the site homepage | P0 | — | todo |
+| WI-1 | Fix the Gemma availability guard (5 notebooks) | P0 | — | **in_progress** |
+| WI-2 | Remove the absolute path from the site homepage | P0 | — | **done** |
 | WI-3 | Rebuild `docs/glossary.md` | P1 | — | todo |
 | WI-4 | Regenerate `docs/references.md` from lesson sources | P1 | — | todo |
 | WI-5 | Add exercise + solution to lessons 31-60 | P1 | D2 | blocked |
@@ -384,6 +384,35 @@ notebooks branch on it a second time, further down:
 Give those the same treatment as cell 3: they must degrade to the same
 `[saltato]` branch. An agent that edits only cells 2 and 3, as v1.0 said,
 leaves two cells that can still fail.
+
+**How this was solved (implemented 2026-08-07).** Rather than editing four
+cells across two notebooks, cell 3's `except` branch sets
+`GEMMA_AVAILABLE = False` after printing its reason. The guard cell states
+what the environment *offers*; the load cell corrects it to what the
+environment actually *delivered*. Every later cell then reads a truthful
+flag and falls back on its own, unmodified — which is why the diff stays at
+cells 2 and 3 in all five notebooks.
+
+The structure that makes this work is `if not GEMMA_AVAILABLE:` in place of
+`else:`, so the fallback body runs both when Gemma was never available and
+when loading it failed, without duplicating the lesson text:
+
+```python
+if GEMMA_AVAILABLE:
+    try:
+        ...  # existing body unchanged
+    except Exception as exc:  # noqa: BLE001
+        print(f"[saltato] modello non caricabile: {type(exc).__name__}")
+        GEMMA_AVAILABLE = False
+if not GEMMA_AVAILABLE:
+    ...  # existing else branch, unchanged
+```
+
+Verified on `lezione-35` and `lezione-56` with `GEMMA_ENABLED=1` and
+deliberately invalid Kaggle credentials: the load fails, cell 3 prints
+`[saltato] modello non caricabile: ProxyError`, and the downstream cells
+produce their rule-based results (`['Marco', 'Glasgow']`) with no
+`NameError` for the undefined `gemma`.
 
 ### Required change
 
