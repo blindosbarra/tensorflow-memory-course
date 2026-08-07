@@ -1,7 +1,7 @@
 # SDD — Remediation of the TensorFlow Memory AI Course
 
 Version: 1.1 — 2026-08-07 (converged; see section 10 for what changed)
-Status: in implementation — WI-2 done, WI-1 implemented and under final verification
+Status: in implementation — **2 of 13 work items done and verified** (WI-1, WI-2)
 Source review: `reports/reviews/codebase-status-2026-08-06.md`
 Source plan: `reports/fix-plan-2026-08-06.md`
 Work queue (durable state): `reports/handover/queue.yaml`
@@ -93,7 +93,7 @@ templates/, schemas/, prompts/
 mkdocs.yml                site nav — currently 100% consistent, keep it that way
 ```
 
-### 1.4 Current health (measured 2026-08-06)
+### 1.4 Health at the time of writing (measured 2026-08-06)
 
 | Check | Result |
 |---|---|
@@ -101,18 +101,18 @@ mkdocs.yml                site nav — currently 100% consistent, keep it that w
 | `mypy src` (strict) | PASS, 3 files |
 | `pytest` | PASS, 8 tests |
 | `mkdocs build --strict` | PASS |
-| `scripts/execute_notebooks.py` | **FAIL — 56/61** (5 Gemma notebooks) |
+| `scripts/execute_notebooks.py` | **FAIL — 56/61** (5 Gemma notebooks) — **now 61/61 since WI-1, 2026-08-07** |
 
 Do not regress any passing check.
 
 ### 1.5 Implementation status (re-verified 2026-08-07)
 
-**WI-2 done; WI-1 implemented, full notebook run still pending.** Each row
-below was checked against the tree, not against a tracker:
+**2 of 13 done** (WI-1, WI-2 — both P0). Each row below was checked against
+the tree, not against a tracker:
 
 | WI | Evidence, checked against the tree |
 |---|---|
-| WI-1 | **implemented 2026-08-07, awaiting the 61/61 run** — opt-in guard in all 5 notebooks, `from_preset` wrapped, README documents the opt-in |
+| WI-1 | **done 2026-08-07** — opt-in guard in all 5 notebooks, `from_preset` wrapped, README documents the opt-in; 61/61 with a clean tree |
 | WI-2 | **done 2026-08-07** — the link is now plain text; no `file:///` remains under `docs/` |
 | WI-3 | `docs/glossary.md` has 2 entries |
 | WI-4 | `docs/references.md` is 14 lines, 6 links; no `scripts/build_references.py` |
@@ -295,7 +295,7 @@ is authoritative for *state* and this document for *specification*.
 
 | ID | Title | Priority | Blocked by | Status |
 |---|---|---|---|---|
-| WI-1 | Fix the Gemma availability guard (5 notebooks) | P0 | — | **in_progress** |
+| WI-1 | Fix the Gemma availability guard (5 notebooks) | P0 | — | **done** |
 | WI-2 | Remove the absolute path from the site homepage | P0 | — | **done** |
 | WI-3 | Rebuild `docs/glossary.md` | P1 | — | todo |
 | WI-4 | Regenerate `docs/references.md` from lesson sources | P1 | — | todo |
