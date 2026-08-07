@@ -88,7 +88,7 @@ items:
   - id: WI-2
     title: "Rimuovere il path assoluto dalla home del sito"
     priority: P0
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -97,6 +97,10 @@ items:
       - "grep -rn 'file:///' docs/ || true"
       - "uv run mkdocs build --strict"
     expect: "nessun risultato dal grep; build del sito OK"
+    notes: >-
+      Fatto il 2026-08-07. Il link e' diventato testo semplice: la spec sta
+      nella radice del repository e non e' pubblicata su MkDocs, quindi non
+      esisteva un URL pubblico da usare senza inventarlo.
     verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
 
   - id: WI-3
