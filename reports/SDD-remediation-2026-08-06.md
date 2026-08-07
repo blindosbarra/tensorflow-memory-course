@@ -1,9 +1,20 @@
 # SDD — Remediation of the TensorFlow Memory AI Course
 
-Version: 1.0 — 2026-08-06
-Status: ready for implementation
+Version: 1.1 — 2026-08-07 (converged; see section 10 for what changed)
+Status: ready for implementation — **0 of 13 work items implemented**
 Source review: `reports/reviews/codebase-status-2026-08-06.md`
 Source plan: `reports/fix-plan-2026-08-06.md`
+Work queue (durable state): `reports/handover/queue.yaml`
+Loop procedure: `reports/handover/AGENT_LOOP.md`
+
+> **Convergence note.** Version 1.0 described work to be done; it did not
+> record whether any of it *had* been done, and the machinery it depended on
+> lived on a branch that was never merged. One loop iteration ran against
+> that gap and produced nothing. Version 1.1 folds the four artifacts —
+> review, plan, this SDD, and the handover queue — into one line of truth:
+> the SDD specifies, the queue tracks state, `AGENT_LOOP.md` says how to run
+> an iteration, and all three now live on the same branch. Every status
+> claim below was re-verified against the working tree on 2026-08-07.
 
 ---
 
@@ -94,6 +105,32 @@ mkdocs.yml                site nav — currently 100% consistent, keep it that w
 
 Do not regress any passing check.
 
+### 1.5 Implementation status (re-verified 2026-08-07)
+
+Nothing in this document has been implemented yet. Each row below was
+checked against the tree, not against a tracker:
+
+| WI | Evidence that it is still open |
+|---|---|
+| WI-1 | `GEMMA_ENABLED` appears in no file; the import-only guard is intact in all 5 notebooks |
+| WI-2 | `docs/index.md:15` still carries `file:///usr/local/google/home/...` |
+| WI-3 | `docs/glossary.md` has 2 entries |
+| WI-4 | `docs/references.md` is 14 lines, 6 links; no `scripts/build_references.py` |
+| WI-5 | lessons 31-60: zero occurrences of "esercizio"/"soluzione" |
+| WI-6 | notebooks 31-60 unchanged |
+| WI-7 | `README.md:36` and `docs/index.md:20` still promise an exercise in every lesson |
+| WI-8 | `exercises/` (15 files), `solutions/`, `templates/lesson.md` all present |
+| WI-9 | 21 of 61 notebooks reference a seed, unchanged |
+| WI-10 | consolidated notebook unchanged |
+| WI-11 | `course.yaml` 84 declared lessons vs `progress.yaml` 68 tracked vs 61 notebooks |
+| WI-12 | `mlops` still declared in `course.yaml` with 10 lessons and no notebooks |
+| WI-13 | `src/memory_ai/` still holds only `data_cleaning.py`, `data_quality.py` |
+
+The inventory figures in section 1.3 were re-counted at the same time and
+are correct as written, with one clarification: `docs/modules/` holds **68**
+Italian `.md` files, of which 67 are lesson pages carrying `## Fonti` and one
+is `index.md`. The `modules/en/` subtree holds 7 PMLE translations.
+
 ---
 
 ## 2. Environment setup
@@ -133,6 +170,43 @@ uv run mkdocs build --strict
 `execute_notebooks.py` runs all 61 notebooks with `allow_errors=False`,
 each with `cwd=notebooks/`, and returns non-zero listing every failure. It
 takes roughly 15 minutes end to end.
+
+### 3.1 Two tiers, and which one gates what
+
+Version 1.0 gave every notebook item a single gate: the full 15-minute run,
+needing the ~600 MB `ml` extra. An agent that could not build that
+environment could not finish *anything*, and the procedure told it to revert.
+That is a gate that converts a working change into no change at all.
+
+Each item in `reports/handover/queue.yaml` now carries up to three fields:
+
+- **`verify_fast`** — cheap, run first, catches most mistakes. For notebook
+  work this is `nbformat.validate` plus
+  `execute_notebooks.py --only <stems>`, which runs just the notebooks you
+  touched.
+- **`verify`** — the real definition of done. Unchanged: the full run, and
+  `git status --porcelain` empty afterwards.
+- **`verify_env`** — what the environment must provide. If it names the `ml`
+  extra and you cannot build it, that is an environment limit, not a failed
+  change.
+
+The `--only` flag is new in this revision; without arguments the script
+still runs all 61 notebooks exactly as before.
+
+**Trap — a partial run legitimately dirties the tree.** Several notebooks
+write the same file in `datasets/processed/`, each enriching what the
+previous one wrote, and the committed version is the *last* writer's output.
+Running `--only lezione-01-dati-mancanti` rewrites
+`datasets/processed/memory_events_clean.csv` with lesson 1's seven columns,
+dropping the outlier flags lesson 2 adds — verified 2026-08-07. `git status`
+is then dirty, and **this is not a determinism failure**. Restore with
+`git checkout -- datasets/` after a partial run. The clean-tree invariant
+applies only after a *full* run.
+
+**When you cannot run `verify`:** commit the change marked unverified,
+leave the item `todo`, and record in its `notes` which command you could
+not run and why. Do not revert sound work because of a machine, and do not
+mark it done. See `AGENT_LOOP.md`, "When the environment will not cooperate".
 
 **Reproducibility invariant:** after a full notebook run, `git status` must
 be clean. The notebooks rewrite `datasets/processed/*.csv` and `*.npy`, and
@@ -215,21 +289,25 @@ nb=nbformat.read(sys.argv[1],as_version=4); nbformat.validate(nb); print('valid'
 
 ## 5. Work item index
 
-| ID | Title | Priority | Blocked by |
-|---|---|---|---|
-| WI-1 | Fix the Gemma availability guard (5 notebooks) | P0 | — |
-| WI-2 | Remove the absolute path from the site homepage | P0 | — |
-| WI-3 | Rebuild `docs/glossary.md` | P1 | — |
-| WI-4 | Regenerate `docs/references.md` from lesson sources | P1 | — |
-| WI-5 | Add exercise + solution to lessons 31-60 | P1 | D2 |
-| WI-6 | Raise theory density in lessons 31-60 | P2 | D2 |
-| WI-7 | Align README and `docs/index.md` with reality | P1 | WI-5 |
-| WI-8 | Retire stale `exercises/`, `solutions/`, `templates/lesson.md` | P2 | — |
-| WI-9 | Seed the 21 non-deterministic notebooks | P2 | — |
-| WI-10 | Make the consolidated notebook portable (Windows/macOS) | P2 | — |
-| WI-11 | Reconcile `course.yaml` and `progress.yaml` with reality | P2 | D1, D2, D3 |
-| WI-12 | Resolve the `mlops` module and the Vertex AI requirement | P3 | D1 |
-| WI-13 | Extract capstone components into `src/memory_ai/` + tests | P3 | — |
+Status column verified against the tree on 2026-08-07. The machine-readable
+copy is `reports/handover/queue.yaml`; if the two ever disagree, the queue
+is authoritative for *state* and this document for *specification*.
+
+| ID | Title | Priority | Blocked by | Status |
+|---|---|---|---|---|
+| WI-1 | Fix the Gemma availability guard (5 notebooks) | P0 | — | todo |
+| WI-2 | Remove the absolute path from the site homepage | P0 | — | todo |
+| WI-3 | Rebuild `docs/glossary.md` | P1 | — | todo |
+| WI-4 | Regenerate `docs/references.md` from lesson sources | P1 | — | todo |
+| WI-5 | Add exercise + solution to lessons 31-60 | P1 | D2 | blocked |
+| WI-6 | Raise theory density in lessons 31-60 | P2 | D2 | blocked |
+| WI-7 | Align README and `docs/index.md` with reality | P1 | WI-5 | blocked |
+| WI-8 | Retire stale `exercises/`, `solutions/`, `templates/lesson.md` | P2 | — | todo |
+| WI-9 | Seed the 21 non-deterministic notebooks | P2 | — | todo |
+| WI-10 | Make the consolidated notebook portable (Windows/macOS) | P2 | — | todo |
+| WI-11 | Reconcile `course.yaml` and `progress.yaml` with reality | P2 | D1, D2, D3 | blocked |
+| WI-12 | Resolve the `mlops` module and the Vertex AI requirement | P3 | D1 | blocked |
+| WI-13 | Extract capstone components into `src/memory_ai/` + tests | P3 | — | todo |
 
 Priorities reflect learner impact, per the course author's direction that CI
 state is not itself a goal.
@@ -292,6 +370,20 @@ is **cell index 3**.
 
 In `lezione-34`, `from_preset` also appears as prose in cells 0, 1 and 6 —
 those are markdown, leave them.
+
+**Correction (verified 2026-08-07).** The table above is accurate — guard at
+cell 2, `from_preset` at cell 3, guard sizes 918/918/918/631/357 characters —
+but it is not the complete list of cells that read `GEMMA_AVAILABLE`. Two
+notebooks branch on it a second time, further down:
+
+| Notebook | Extra cell reading `GEMMA_AVAILABLE` |
+|---|---|
+| `notebooks/lezione-35-inferenza-gemma.ipynb` | cell 5 |
+| `notebooks/lezione-56-capstone-gemma-lora.ipynb` | cell 4 |
+
+Give those the same treatment as cell 3: they must degrade to the same
+`[saltato]` branch. An agent that edits only cells 2 and 3, as v1.0 said,
+leaves two cells that can still fail.
 
 ### Required change
 
@@ -952,6 +1044,91 @@ validation, auditable reports returned as frozen dataclasses.
 
 ---
 
+## 6. Postmortem — why the first attempt implemented nothing
+
+A coding loop was pointed at this document on 2026-08-07. It created the
+branch `agent/complete-sdd-remediation`, pushed it at exactly the merge
+commit of PR #1, and added **zero commits**. Not a partial item, not a
+failed attempt: no work at all. The cause is worth recording, because it was
+a defect in this specification's delivery, not in the agent's reasoning.
+
+### 6.1 The proximate cause: a missing file that looked like a finished job
+
+The loop's first instruction was:
+
+```text
+1. Run: uv run python scripts/next_work_item.py
+   - exit 2 → stop the loop and report why (all done, or a decision is needed)
+```
+
+That script — together with `reports/handover/queue.yaml` and
+`AGENT_LOOP.md` — was committed to `claude/codebase-review-status-0ufpuv` at
+06:47:48 UTC. PR #1 had merged at 06:36:52 UTC and carried only the three
+report documents. The machinery missed the merge by eleven minutes and was
+never merged afterwards.
+
+The agent branched from `master`, where the script does not exist. A Python
+interpreter asked to run a file that is not there exits with code **2**:
+
+```console
+$ uv run python scripts/next_work_item.py; echo $?
+python3: can't open file 'scripts/next_work_item.py': [Errno 2] No such file
+2
+```
+
+Exit 2 was defined as "all done, or a decision is needed". The agent did
+what it was told: it stopped and reported that there was nothing to do. The
+one failure mode the loop was designed to prevent — spinning without a stop
+condition — was traded for a worse one: stopping instantly with a false
+success signal.
+
+The lesson generalises past this repository. **An exit code that means
+"nothing to do" must never be reachable by an environment fault.** A control
+signal has to be something only the working system can produce; absence of
+output must be distinguishable from a report of completion. Hence the
+sentinel lines and the step-0 preflight now in `AGENT_LOOP.md`.
+
+### 6.2 Contributing causes that would have stopped it anyway
+
+Even with the machinery present, three things stood between the agent and a
+commit:
+
+1. **The verification gate could not be paid.** WI-1 is first in priority
+   order, and its only gate was the full 61-notebook run, requiring the
+   ~600 MB `ml` extra and about fifteen minutes. The procedure then said: if
+   verification fails, revert. An agent in a sandbox without that
+   environment would have written the correct fix and thrown it away.
+   Section 3.1 and the `verify_fast`/`verify_env` fields exist because of
+   this.
+
+2. **The branch pointer disagreed with the assignment.** `queue.yaml` named
+   `claude/codebase-review-status-0ufpuv` as *the* branch while the agent
+   had been assigned `agent/complete-sdd-remediation`, and step 6 said only
+   "push to the assigned branch". The queue field is now
+   `machinery_landed_on` and is explicitly not a push target.
+
+3. **The reading cost was front-loaded and undifferentiated.** This document
+   is ~1100 lines of English, and the procedure required sections 1-5 before
+   *any* edit. That is the right call before touching notebooks; it is a
+   poor trade before WI-2, which deletes one URL from one line. The tiering
+   in section 3.1 is a partial answer; a fuller one would let trivial items
+   declare a shorter reading set.
+
+### 6.3 The instruction was not achievable as phrased
+
+The loop was asked to "complete the SDD remediation". It cannot be
+completed by any agent: **5 of 13 items are blocked on decisions D1, D2 and
+D3, which are the course author's and which an agent is explicitly forbidden
+to resolve** (section 7). The reachable ceiling for autonomous work is
+8 items — WI-1, 2, 3, 4, 8, 9, 10, 13 — after which the correct behaviour
+is to stop and ask.
+
+An instruction whose success condition is unreachable will report failure or
+manufacture progress. Neither is useful. Ask for the eight, or resolve the
+three decisions first.
+
+---
+
 ## 7. Open decisions
 
 These block the work items named. They are the course author's to make; do
@@ -1036,3 +1213,49 @@ The remediation is complete when:
    full notebook run leaves `git status` clean.
 7. Every decision D1-D3 is recorded with its rationale in
    `course/research_gaps.md` or a `reports/reviews/` entry.
+
+None of the seven hold today. Condition 7 in particular has no artifact at
+all: D1, D2 and D3 are recorded only in this document and in the queue, and
+`course/research_gaps.md` does not mention them.
+
+**The autonomous ceiling.** Conditions 1, 3 and 6 are reachable by an agent
+without any decision (WI-1, WI-2, WI-9, WI-10 and the checks). Conditions 2,
+4, 5 and 7 are not: they depend on D1, D2 and D3. Do not ask a loop to
+satisfy this section — ask it for the eight unblocked items, then decide.
+
+---
+
+## 10. Change log
+
+### 1.1 — 2026-08-07 (convergence)
+
+Written after the first implementation attempt produced zero commits. This
+revision changes no work item's intent; it makes the document usable by the
+agent that has to execute it.
+
+- **Status is now recorded.** Section 1.5 gives per-item evidence, verified
+  against the tree rather than a tracker; section 5 gains a status column.
+  v1.0 could not distinguish "not started" from "done".
+- **The machinery is on the same branch as the specification.** `queue.yaml`,
+  `AGENT_LOOP.md` and `scripts/next_work_item.py` were stranded on an
+  unmerged branch, which is what broke the first run. They are now here.
+- **Section 6 records the postmortem**, including the exit-code collision
+  that ended the loop with a false "nothing to do".
+- **Verification is tiered** (section 3.1): `verify_fast` for the iteration,
+  `verify` for done, `verify_env` for what the machine must provide. A new
+  `--only` flag on `scripts/execute_notebooks.py` makes the fast tier real.
+  An agent that cannot build the ml extra now commits with a note instead of
+  reverting.
+- **WI-1's scope was corrected**: `GEMMA_AVAILABLE` is also read by cell 5
+  of `lezione-35` and cell 4 of `lezione-56`, which v1.0 did not list.
+- **Inventory clarified**: `docs/modules/` holds 68 Italian pages (67 lesson
+  pages with `## Fonti`, plus `index.md`) and 7 English PMLE pages. All other
+  counts in section 1.3 were re-verified and were correct.
+- **Section 9 states the autonomous ceiling**: 8 of 13 items, because 5 wait
+  on decisions no agent may take.
+
+### 1.0 — 2026-08-06
+
+Initial specification: 13 work items derived from
+`reports/reviews/codebase-status-2026-08-06.md` and
+`reports/fix-plan-2026-08-06.md`.
