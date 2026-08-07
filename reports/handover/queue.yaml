@@ -1,0 +1,246 @@
+# Work queue for the remediation loop.
+#
+# This file is the ONLY durable state shared between loop iterations. Each
+# iteration starts cold: it reads this file, picks one item, does it, updates
+# the item, commits. Nothing else carries over.
+#
+# Specification for every item: reports/SDD-remediation-2026-08-06.md
+# Operating procedure for the loop: reports/handover/AGENT_LOOP.md
+# Pick the next item with: uv run python scripts/next_work_item.py
+#
+# status values:
+#   todo         ready to be picked (all dependencies satisfied)
+#   in_progress  claimed by an iteration; see recovery rules in AGENT_LOOP.md
+#   done         implemented, verified and committed
+#   blocked      waiting on a human decision named in blocked_by
+#
+# Do not hand-edit `status` to `done` without having run the item's `verify`
+# command successfully.
+
+meta:
+  sdd: reports/SDD-remediation-2026-08-06.md
+  procedure: reports/handover/AGENT_LOOP.md
+  branch: claude/codebase-review-status-0ufpuv
+  # Decisions belong to the course author. An agent must never resolve one.
+  decisions:
+    D1:
+      question: "Modulo mlops: costruirlo, ridurlo a percorso locale, o rimuoverlo?"
+      recommendation: "B — ridurlo a 2-3 lezioni eseguibili in locale"
+      status: open
+    D2:
+      question: "Esercizi per le lezioni 31-60: tutte, nessuna, o ibrido?"
+      recommendation: "C tendendo ad A — esercizi dove non serve Gemma"
+      status: open
+    D3:
+      question: "Research pack incompleti: completarli tutti o emendare la spec?"
+      recommendation: "B — emendare la spec, evidence.yaml obbligatorio"
+      status: open
+
+items:
+  - id: WI-1
+    title: "Correggere la guardia di disponibilita' di Gemma (5 notebook)"
+    priority: P0
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - notebooks/lezione-34-keras-hub.ipynb
+      - notebooks/lezione-35-inferenza-gemma.ipynb
+      - notebooks/lezione-36-output-strutturato.ipynb
+      - notebooks/lezione-41-gemma-lora.ipynb
+      - notebooks/lezione-56-capstone-gemma-lora.ipynb
+      - README.md
+    verify:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
+      - "git status --porcelain"
+    expect: "61/61 notebook eseguiti; git status vuoto"
+    notes: >-
+      Il fix e' gia' stato prototipato e verificato su lezione-35: il
+      notebook gira e prende il ramo di fallback. Resta da applicarlo ai
+      cinque file e ad aggiungere il try/except attorno a from_preset.
+
+  - id: WI-2
+    title: "Rimuovere il path assoluto dalla home del sito"
+    priority: P0
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - docs/index.md
+    verify:
+      - "grep -rn 'file:///' docs/ || true"
+      - "uv run mkdocs build --strict"
+    expect: "nessun risultato dal grep; build del sito OK"
+
+  - id: WI-3
+    title: "Ricostruire docs/glossary.md"
+    priority: P1
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - docs/glossary.md
+    verify:
+      - "uv run mkdocs build --strict"
+    expect: "build OK; ogni termine tracciabile a una lezione esistente"
+
+  - id: WI-4
+    title: "Rigenerare docs/references.md dalle fonti delle lezioni"
+    priority: P1
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - docs/references.md
+      - scripts/build_references.py
+    verify:
+      - "uv run ruff check ."
+      - "uv run mkdocs build --strict"
+    expect: "build OK; rigenerare due volte produce output identico"
+
+  - id: WI-5
+    title: "Aggiungere esercizio e soluzione alle lezioni 31-60"
+    priority: P1
+    status: blocked
+    blocked_by: [D2]
+    depends_on: [WI-1]
+    files:
+      - notebooks/lezione-3*.ipynb
+      - notebooks/lezione-4*.ipynb
+      - notebooks/lezione-5*.ipynb
+      - notebooks/lezione-60-capstone-demo.ipynb
+    verify:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
+      - "git status --porcelain"
+    expect: "61/61; ogni cella soluzione termina con un assert che passa"
+    notes: >-
+      Da fare una fase per commit: 31-37, 38-44, 45-51, 52-60. Tocca gli
+      stessi cinque notebook di WI-1: WI-1 va chiuso prima.
+
+  - id: WI-6
+    title: "Alzare la densita' teorica delle lezioni 31-60"
+    priority: P2
+    status: blocked
+    blocked_by: [D2]
+    depends_on: [WI-5]
+    files:
+      - notebooks/lezione-3*.ipynb
+      - notebooks/lezione-4*.ipynb
+      - notebooks/lezione-5*.ipynb
+      - notebooks/lezione-60-capstone-demo.ipynb
+      - knowledge/
+    verify:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
+    expect: "61/61; ogni claim nuovo ha una fonte primaria in evidence.yaml"
+
+  - id: WI-7
+    title: "Allineare README e docs/index.md alla realta'"
+    priority: P1
+    status: blocked
+    blocked_by: [D2]
+    depends_on: [WI-5]
+    files:
+      - README.md
+      - docs/index.md
+    verify:
+      - "uv run mkdocs build --strict"
+    expect: "ogni affermazione sulla struttura delle lezioni e' verificabile"
+
+  - id: WI-8
+    title: "Ritirare exercises/, solutions/ e templates/lesson.md obsoleti"
+    priority: P2
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - exercises/
+      - solutions/
+      - templates/lesson.md
+      - docs/modules/data-cleaning-01-missing-values.md
+      - docs/modules/duplicates-types-outliers.md
+    verify:
+      - "uv run mkdocs build --strict"
+    expect: "nessuna pagina pubblicata rimanda a un path non raggiungibile"
+    notes: >-
+      templates/lesson.md e' il pezzo importante: descrive ancora il modello
+      precedente a 3fa5799 (starter .py + test dedicati). Un agente che lo
+      seguisse ricostruirebbe l'impianto cancellato.
+
+  - id: WI-9
+    title: "Fissare i seed nei 21 notebook non deterministici"
+    priority: P2
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - notebooks/
+    verify:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
+      - "git status --porcelain"
+    expect: "due esecuzioni consecutive lasciano git status pulito"
+    notes: >-
+      Dove la lezione insegna la non-determinismo (lezione-20, etichette
+      K-Means) va mantenuta e resa esplicita, non eliminata con un seed.
+
+  - id: WI-10
+    title: "Rendere portabile il notebook consolidato (Windows/macOS)"
+    priority: P2
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - notebooks/consolidato-memoria-lezioni-01-15.ipynb
+    verify:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
+    expect: "61/61; nessun import non condizionale di `resource`"
+
+  - id: WI-11
+    title: "Riallineare course.yaml e progress.yaml alla realta'"
+    priority: P2
+    status: blocked
+    blocked_by: [D1, D2, D3]
+    depends_on: []
+    files:
+      - course/course.yaml
+      - course/progress.yaml
+      - scripts/check_course_consistency.py
+    verify:
+      - "uv run ruff check ."
+    expect: "conteggi dichiarati/tracciati/presenti riconciliati"
+
+  - id: WI-12
+    title: "Risolvere il modulo mlops e il requisito Vertex AI"
+    priority: P3
+    status: blocked
+    blocked_by: [D1]
+    depends_on: []
+    files:
+      - course/course.yaml
+      - COURSE_FACTORY_SPEC.md
+      - docs/modules/
+      - notebooks/
+    verify:
+      - "uv run mkdocs build --strict"
+    expect: "nessun id di lezione dichiarato senza decisione registrata"
+
+  - id: WI-13
+    title: "Estrarre i componenti del capstone in src/memory_ai/ con test"
+    priority: P3
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - src/memory_ai/
+      - tests/
+      - notebooks/lezione-5*.ipynb
+      - notebooks/lezione-60-capstone-demo.ipynb
+    verify:
+      - "uv run ruff check ."
+      - "uv run mypy src"
+      - "uv run pytest"
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
+    expect: "mypy strict pulito; test per ogni componente estratto"
+    notes: >-
+      Lavoro grande. Se una iterazione non basta, spezzalo per componente
+      (schema, classificatore, importance, embedding, retrieval, grafo,
+      pipeline) e registra il progresso in notes prima di fermarti.
