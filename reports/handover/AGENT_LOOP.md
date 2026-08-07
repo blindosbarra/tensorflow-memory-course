@@ -17,20 +17,40 @@ Paste this as the recurring instruction:
 ```text
 Work one item from the remediation queue.
 
+0. Preflight. Confirm the machinery is on this branch before trusting
+   anything it says:
+     test -f reports/handover/queue.yaml && test -f scripts/next_work_item.py
+   If either is missing you are on a branch without the queue. STOP and
+   report "machinery missing on <branch>". Do NOT report this as
+   "nothing left to do" — it is the opposite, and confusing the two is
+   what wasted the first attempt.
 1. Run: uv run python scripts/next_work_item.py
-   - exit 2 → stop the loop and report why (all done, or a decision is needed)
-   - exit 3 → the queue file is malformed; fix it and stop
+   Key on the SENTINEL line it prints, not on the exit code:
+     SENTINEL: PICK <id>           → work that item
+     SENTINEL: ALL-DONE            → stop, report success
+     SENTINEL: NOTHING-ACTIONABLE  → stop, report the open decisions
+     SENTINEL: QUEUE-MALFORMED     → fix the queue file and stop
+     SENTINEL: QUEUE-MISSING       → see step 0; stop
+     no SENTINEL line at all       → the script did not run. This is an
+       environment problem. Report it as such and stop. Never read it as
+       a statement about the work.
 2. Read that item's section in reports/SDD-remediation-2026-08-06.md, and
    read sections 1-5 of the same document before your first edit.
 3. Set the item's status to in_progress in reports/handover/queue.yaml.
 4. Implement exactly that item. Nothing else.
-5. Run the item's `verify` commands. They must all pass.
+5. Verify in two tiers. Run `verify_fast` first — it is cheap and catches
+   most mistakes. Then run `verify`; the item is not done until those pass.
+   If `verify_env` names an environment you cannot build (the ml extra is
+   ~600 MB and needs network), see "When the environment will not cooperate"
+   below: commit the work with the item left `todo`. Do NOT revert it.
 6. Commit the work and the queue update together, in Italian, naming the
-   item id in the message body. Push to the assigned branch.
+   item id in the message body. Push to the branch you were assigned in
+   this iteration's instructions (not a branch named in the queue file).
 7. Set the item's status to done and stop. One item per iteration.
 
 Never resolve a decision (D1, D2, D3) yourself. Never push to master.
 Never mark an item done without having run its verify commands.
+Never end an iteration silently: commit something, or say what stopped you.
 ```
 
 ---
@@ -100,10 +120,36 @@ Two invariants apply to any item that touches notebooks:
   rewrite `datasets/processed/`, and today they regenerate it byte-identically
   to what is committed. A dirty tree after a run means determinism broke.
 
-If verification fails and you cannot fix it within the iteration, revert your
-changes, set the item back to `todo`, record what failed in its `notes`, and
-stop. A reverted iteration with an accurate note is worth more than a
-half-finished commit.
+Both apply to the **full** run only. A `--only` run of a few notebooks leaves
+`datasets/processed/` dirty on purpose: several lessons write the same file
+in sequence and the committed version belongs to the last writer. Run
+`git checkout -- datasets/` after a partial run, and never read a dirty tree
+after `--only` as a determinism failure.
+
+If verification fails **because the change is wrong**, revert your changes,
+set the item back to `todo`, record what failed in its `notes`, and stop. A
+reverted iteration with an accurate note is worth more than a half-finished
+commit.
+
+### When the environment will not cooperate
+
+This is a different case and it has a different answer. If the change is
+sound but you *cannot run* the verification — no network for the ~600 MB ml
+extra, the sync times out, the sandbox has no room — **do not revert**.
+Reverting throws away good work because of a machine, and leaves the next
+iteration to redo it from nothing.
+
+Instead:
+
+1. Commit the change, clearly marked as unverified in the message body.
+2. Leave the item's status at `todo` and add to its `notes`: what you did,
+   which verify command you could not run, and the exact error.
+3. Push and stop, reporting that the item needs verification in an
+   environment that has the ml extra.
+
+An unverified but committed change with an honest note is recoverable in
+one minute by whoever has the environment. A revert is not recoverable at
+all.
 
 ### 6. Commit and push
 
@@ -179,6 +225,9 @@ The loop should stop, and say so, when:
 
 ## Current state at handover
 
+Re-verified against the working tree on **2026-08-07**: all 13 items are
+still `todo` or `blocked`. Nothing has been implemented.
+
 | | |
 |---|---|
 | Ready now, no decisions needed | WI-1, WI-2, WI-3, WI-4, WI-8, WI-9, WI-10, WI-13 |
@@ -193,3 +242,21 @@ fix has already been prototyped and verified.
 Baseline at handover: `ruff`, `mypy src`, `pytest` and
 `mkdocs build --strict` all pass; `scripts/execute_notebooks.py` reports
 **56/61**, failing exactly the five notebooks WI-1 repairs.
+
+## What the first attempt taught us
+
+The loop ran once, on 2026-08-07, and produced **zero commits**. The branch
+`agent/complete-sdd-remediation` was created and pushed at exactly the merge
+commit of PR #1, with nothing on top.
+
+The cause was mechanical, not a judgement failure. This procedure, the queue
+and the picker were committed to `claude/codebase-review-status-0ufpuv`
+*eleven minutes after* PR #1 merged, so they never reached `master`. The
+agent branched from `master`, ran step 1, and got the shell's answer for a
+script that does not exist: **exit code 2** — which the old prompt above
+defined as "all done, or a decision is needed". The agent stopped and
+reported no work, exactly as instructed.
+
+Three changes above come directly from that: the preflight in step 0, the
+sentinel lines instead of bare exit codes, and the rule that an iteration
+never ends silently. The full analysis is section 6 of the SDD.

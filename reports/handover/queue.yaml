@@ -16,11 +16,27 @@
 #
 # Do not hand-edit `status` to `done` without having run the item's `verify`
 # command successfully.
+#
+# verify_fast  gate cheap da eseguire per prima, dentro l'iterazione
+# verify       la vera definizione di done: finche' non passa, l'item non e' done
+# verify_env   cosa deve fornire la macchina. Se non riesci a costruirlo, e' un
+#              limite dell'ambiente: committa con nota, lascia todo, non revertire
+#
+# Un run parziale (`execute_notebooks.py --only ...`) sporca datasets/processed/
+# di proposito: piu' lezioni scrivono lo stesso file in sequenza. Ripulisci con
+# `git checkout -- datasets/`. L'invariante di git status pulito vale solo dopo
+# un run completo.
 
 meta:
   sdd: reports/SDD-remediation-2026-08-06.md
   procedure: reports/handover/AGENT_LOOP.md
-  branch: claude/codebase-review-status-0ufpuv
+  # The loop works on whatever branch the iteration was assigned. This field
+  # records where the machinery currently lives, not a branch to push to:
+  # hard-coding a branch here is what desynchronised the first attempt, which
+  # ran on `agent/complete-sdd-remediation` while this said something else.
+  machinery_landed_on: claude/sdd-implementation-review-b73ltl
+  # Never push to master. Never resolve a decision.
+  last_verified: 2026-08-07  # every status below re-checked against the tree
   # Decisions belong to the course author. An agent must never resolve one.
   decisions:
     D1:
@@ -50,14 +66,24 @@ items:
       - notebooks/lezione-41-gemma-lora.ipynb
       - notebooks/lezione-56-capstone-gemma-lora.ipynb
       - README.md
+    verify_fast:
+      - "uv run python -c \"import nbformat,sys; [nbformat.validate(nbformat.read(f,as_version=4)) for f in sys.argv[1:]]; print('valid')\" notebooks/lezione-34-keras-hub.ipynb notebooks/lezione-35-inferenza-gemma.ipynb notebooks/lezione-36-output-strutturato.ipynb notebooks/lezione-41-gemma-lora.ipynb notebooks/lezione-56-capstone-gemma-lora.ipynb"
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py --only lezione-34-keras-hub lezione-35-inferenza-gemma lezione-36-output-strutturato lezione-41-gemma-lora lezione-56-capstone-gemma-lora"
     verify:
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
       - "git status --porcelain"
+    verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
     expect: "61/61 notebook eseguiti; git status vuoto"
     notes: >-
       Il fix e' gia' stato prototipato e verificato su lezione-35: il
       notebook gira e prende il ramo di fallback. Resta da applicarlo ai
       cinque file e ad aggiungere il try/except attorno a from_preset.
+      ATTENZIONE (verificato 2026-08-07): la SDD elenca solo le celle 2 e 3,
+      ma GEMMA_AVAILABLE e' letta anche dalla cella 5 di
+      lezione-35-inferenza-gemma e dalla cella 4 di
+      lezione-56-capstone-gemma-lora. Vanno trattate come la cella 3.
+      Se l'ambiente non regge l'extra ml, non marcare done: lascia todo e
+      annota qui che manca la verifica, non revertire il lavoro.
 
   - id: WI-2
     title: "Rimuovere il path assoluto dalla home del sito"
@@ -71,6 +97,7 @@ items:
       - "grep -rn 'file:///' docs/ || true"
       - "uv run mkdocs build --strict"
     expect: "nessun risultato dal grep; build del sito OK"
+    verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
 
   - id: WI-3
     title: "Ricostruire docs/glossary.md"
@@ -83,6 +110,7 @@ items:
     verify:
       - "uv run mkdocs build --strict"
     expect: "build OK; ogni termine tracciabile a una lezione esistente"
+    verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
 
   - id: WI-4
     title: "Rigenerare docs/references.md dalle fonti delle lezioni"
@@ -97,6 +125,7 @@ items:
       - "uv run ruff check ."
       - "uv run mkdocs build --strict"
     expect: "build OK; rigenerare due volte produce output identico"
+    verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
 
   - id: WI-5
     title: "Aggiungere esercizio e soluzione alle lezioni 31-60"
@@ -109,10 +138,13 @@ items:
       - notebooks/lezione-4*.ipynb
       - notebooks/lezione-5*.ipynb
       - notebooks/lezione-60-capstone-demo.ipynb
+    verify_fast:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py --only <i notebook della fase che stai chiudendo>"
     verify:
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
       - "git status --porcelain"
     expect: "61/61; ogni cella soluzione termina con un assert che passa"
+    verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
     notes: >-
       Da fare una fase per commit: 31-37, 38-44, 45-51, 52-60. Tocca gli
       stessi cinque notebook di WI-1: WI-1 va chiuso prima.
@@ -129,9 +161,12 @@ items:
       - notebooks/lezione-5*.ipynb
       - notebooks/lezione-60-capstone-demo.ipynb
       - knowledge/
+    verify_fast:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py --only <i notebook toccati>"
     verify:
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
     expect: "61/61; ogni claim nuovo ha una fonte primaria in evidence.yaml"
+    verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
@@ -145,6 +180,7 @@ items:
     verify:
       - "uv run mkdocs build --strict"
     expect: "ogni affermazione sulla struttura delle lezioni e' verificabile"
+    verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
 
   - id: WI-8
     title: "Ritirare exercises/, solutions/ e templates/lesson.md obsoleti"
@@ -161,6 +197,7 @@ items:
     verify:
       - "uv run mkdocs build --strict"
     expect: "nessuna pagina pubblicata rimanda a un path non raggiungibile"
+    verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
     notes: >-
       templates/lesson.md e' il pezzo importante: descrive ancora il modello
       precedente a 3fa5799 (starter .py + test dedicati). Un agente che lo
@@ -174,10 +211,13 @@ items:
     depends_on: []
     files:
       - notebooks/
+    verify_fast:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py --only <i notebook seminati in questa iterazione>"
     verify:
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
       - "git status --porcelain"
     expect: "due esecuzioni consecutive lasciano git status pulito"
+    verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
     notes: >-
       Dove la lezione insegna la non-determinismo (lezione-20, etichette
       K-Means) va mantenuta e resa esplicita, non eliminata con un seed.
@@ -190,9 +230,12 @@ items:
     depends_on: []
     files:
       - notebooks/consolidato-memoria-lezioni-01-15.ipynb
+    verify_fast:
+      - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py --only consolidato-memoria-lezioni-01-15"
     verify:
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
     expect: "61/61; nessun import non condizionale di `resource`"
+    verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
 
   - id: WI-11
     title: "Riallineare course.yaml e progress.yaml alla realta'"
@@ -207,6 +250,7 @@ items:
     verify:
       - "uv run ruff check ."
     expect: "conteggi dichiarati/tracciati/presenti riconciliati"
+    verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
 
   - id: WI-12
     title: "Risolvere il modulo mlops e il requisito Vertex AI"
@@ -222,6 +266,7 @@ items:
     verify:
       - "uv run mkdocs build --strict"
     expect: "nessun id di lezione dichiarato senza decisione registrata"
+    verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
 
   - id: WI-13
     title: "Estrarre i componenti del capstone in src/memory_ai/ con test"
@@ -234,12 +279,17 @@ items:
       - tests/
       - notebooks/lezione-5*.ipynb
       - notebooks/lezione-60-capstone-demo.ipynb
+    verify_fast:
+      - "uv run ruff check ."
+      - "uv run mypy src"
+      - "uv run pytest"
     verify:
       - "uv run ruff check ."
       - "uv run mypy src"
       - "uv run pytest"
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
     expect: "mypy strict pulito; test per ogni componente estratto"
+    verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
     notes: >-
       Lavoro grande. Se una iterazione non basta, spezzalo per componente
       (schema, classificatore, importance, embedding, retrieval, grafo,

@@ -12,7 +12,24 @@ Usage:
 Exit codes:
     0  an actionable item was printed (or --board/--check succeeded)
     2  nothing actionable: everything is done, or the rest needs a decision
-    3  the queue file is malformed
+    3  the queue file is missing or malformed
+
+Exit codes alone are not a safe control signal for the loop: a *missing*
+script makes the interpreter itself exit 2, which is indistinguishable from
+"nothing actionable" and silently ends a loop that has done no work. That
+happened on 2026-08-07 (see the postmortem in the SDD, section 6). Every run
+therefore prints a sentinel as its first stdout line, and the loop must key
+on the sentinel:
+
+    SENTINEL: PICK <id>          an item was selected, work it
+    SENTINEL: ALL-DONE           the queue is finished
+    SENTINEL: NOTHING-ACTIONABLE everything left waits on a human decision
+    SENTINEL: QUEUE-MALFORMED    the queue file is unusable
+    SENTINEL: QUEUE-MISSING      the queue file is not there at all
+    SENTINEL: BOARD / CHECK-OK   informational modes
+
+No sentinel line at all means this script did not run. That is an
+environment problem, never a statement about the work.
 """
 
 from __future__ import annotations
@@ -29,14 +46,34 @@ PRIORITY_ORDER = ("P0", "P1", "P2", "P3")
 VALID_STATUS = frozenset({"todo", "in_progress", "done", "blocked"})
 
 
+def sentinel(name: str) -> None:
+    """Print the machine-readable control line the loop keys on."""
+
+    print(f"SENTINEL: {name}")
+
+
 def load_queue(path: Path) -> dict[str, Any]:
     """Read the queue file and fail loudly if it is not usable."""
 
     if not path.exists():
-        raise SystemExit(f"Queue file not found: {path}")
-    loaded = yaml.safe_load(path.read_text(encoding="utf-8"))
+        sentinel("QUEUE-MISSING")
+        print(f"Queue file not found: {path}", file=sys.stderr)
+        print(
+            "Run from the repository root, on a branch that carries "
+            "reports/handover/queue.yaml.",
+            file=sys.stderr,
+        )
+        raise SystemExit(3)
+    try:
+        loaded = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        sentinel("QUEUE-MALFORMED")
+        print(f"{path}: not valid YAML: {exc}", file=sys.stderr)
+        raise SystemExit(3) from exc
     if not isinstance(loaded, dict):
-        raise SystemExit(f"{path}: expected a mapping at the top level")
+        sentinel("QUEUE-MALFORMED")
+        print(f"{path}: expected a mapping at the top level", file=sys.stderr)
+        raise SystemExit(3)
     return loaded
 
 
@@ -118,9 +155,17 @@ def describe(item: dict[str, Any]) -> str:
         "Files in scope:",
     ]
     lines += [f"  {path}" for path in item.get("files") or []]
-    lines += ["", "Verify with:"]
+    if item.get("verify_fast"):
+        lines += [
+            "",
+            "Verify (fast gate — run first, cheap, must pass):",
+        ]
+        lines += [f"  {command}" for command in item["verify_fast"]]
+    lines += ["", "Verify (full gate — the item is not done until these pass):"]
     lines += [f"  {command}" for command in item.get("verify") or []]
     lines += ["", f"Expect: {item.get('expect', '-')}"]
+    if item.get("verify_env"):
+        lines += ["", f"Environment needed: {item['verify_env']}"]
     if item.get("notes"):
         lines += ["", f"Note: {item['notes'].strip()}"]
     return "\n".join(lines)
@@ -160,16 +205,19 @@ def main() -> int:
 
     problems = validate(queue)
     if problems:
+        sentinel("QUEUE-MALFORMED")
         print("Queue file is malformed:", file=sys.stderr)
         for problem in problems:
             print(f"  {problem}", file=sys.stderr)
         return 3
 
     if args.check:
+        sentinel("CHECK-OK")
         print(f"{QUEUE_PATH}: OK ({len(queue['items'])} items)")
         return 0
 
     if args.board:
+        sentinel("BOARD")
         print(board(queue))
         return 0
 
@@ -184,8 +232,10 @@ def main() -> int:
     if not ready:
         remaining = [item for item in queue["items"] if item.get("status") != "done"]
         if not remaining:
+            sentinel("ALL-DONE")
             print("All work items are done.")
             return 2
+        sentinel("NOTHING-ACTIONABLE")
         print("Nothing is actionable. Every remaining item waits on a human decision.")
         print()
         print(board(queue))
@@ -197,6 +247,7 @@ def main() -> int:
                 print(f"    suggested: {decision.get('recommendation')}")
         return 2
 
+    sentinel(f"PICK {ready[0]['id']}")
     print(describe(ready[0]))
     return 0
 

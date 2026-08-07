@@ -1,7 +1,18 @@
-"""Execute every notebook end to end and fail on errors."""
+"""Execute every notebook end to end and fail on errors.
+
+Usage:
+    uv run python scripts/execute_notebooks.py                 # all notebooks
+    uv run python scripts/execute_notebooks.py --only lezione-34-keras-hub
+
+`--only` runs a subset, matched on the file stem, so a remediation item that
+touches five notebooks can be gated in a minute instead of the fifteen the
+full run costs. It is a development aid: the definition of done for anything
+touching notebooks is still the full run with a clean `git status`.
+"""
 
 from __future__ import annotations
 
+import argparse
 import os
 from pathlib import Path
 import sys
@@ -31,7 +42,23 @@ def execute_notebook(path: Path) -> None:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Execute the course notebooks.")
+    parser.add_argument(
+        "--only",
+        nargs="+",
+        metavar="STEM",
+        help="run only these notebooks, matched on the file name without .ipynb",
+    )
+    args = parser.parse_args()
+
     notebooks = sorted(Path("notebooks").rglob("*.ipynb"))
+    if args.only:
+        wanted = {stem.removesuffix(".ipynb") for stem in args.only}
+        notebooks = [path for path in notebooks if path.stem in wanted]
+        missing = sorted(wanted - {path.stem for path in notebooks})
+        if missing:
+            print(f"No such notebook: {', '.join(missing)}", file=sys.stderr)
+            return 2
     if not notebooks:
         print("No notebooks found.")
         return 0
