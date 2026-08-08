@@ -191,7 +191,7 @@ items:
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
     priority: P1
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -200,6 +200,14 @@ items:
     verify:
       - "uv run mkdocs build --strict"
     expect: "ogni affermazione sulla struttura delle lezioni e' verificabile"
+    notes: >-
+      Fatto il 2026-08-07, conseguenza diretta di D2. Corretti README.md,
+      docs/index.md e anche docs/syllabus.md, che la SDD non elencava ma
+      conteneva la stessa promessa. Misurato prima di scrivere: le lezioni
+      31-60 non hanno esercizio (30 su 30), tutte e 61 hanno il quiz, e le
+      lezioni 52-60 non hanno un passo di progetto separato perche' sono il
+      capstone. La SDD sbagliava su un punto: la lezione 13 il passo del
+      progetto ce l'ha ("Parte 3 — Il progetto").
     verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
 
   - id: WI-8
