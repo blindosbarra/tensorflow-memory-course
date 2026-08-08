@@ -110,7 +110,7 @@ items:
   - id: WI-3
     title: "Ricostruire docs/glossary.md"
     priority: P1
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -119,6 +119,9 @@ items:
       - "uv run mkdocs build --strict"
     expect: "build OK; ogni termine tracciabile a una lezione esistente"
     verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
+    notes: >-
+      Fatto e verificato il 2026-08-08: glossario ampliato a 55 termini in
+      ordine alfabetico, con collegamenti alle lezioni; build MkDocs strict OK.
 
   - id: WI-4
     title: "Rigenerare docs/references.md dalle fonti delle lezioni"
