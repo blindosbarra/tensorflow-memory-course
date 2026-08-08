@@ -17,4 +17,4 @@ Il corso viene costruito progressivamente dalla Course Factory descritta nel rep
 ## Come navigare il corso
 - **[Syllabus completo](syllabus.md)**: panoramica di tutti i moduli, obiettivi didattici, prerequisiti e ordine di progressione.
 - **[Indice delle Lezioni](modules/index.md)**: schede di riferimento e riassunti teorici per ciascuna delle 60 lezioni del corso principale e delle 7 unità della certificazione GCP PMLE (disponibili in [Italiano](modules/index.md) e [Inglese](modules/en/pmle-01-architect-low-code-ai-solutions.md)).
-- **Notebooks (`notebooks/`)**: ogni lezione è accompagnata dal proprio notebook Jupyter autosufficiente con teoria, esempi di codice eseguibili, esercizio guidato e passo incrementale del Memory AI Lab.
+- **Notebooks (`notebooks/`)**: ogni lezione è accompagnata dal proprio notebook Jupyter autosufficiente con teoria, esempi di codice eseguibili e quiz con risposte. Le lezioni 1–30 aggiungono un esercizio guidato con soluzione spiegata e un passo incrementale del Memory AI Lab; le lezioni 31–60 sono di sola lettura, senza esercizio guidato; le lezioni 52–60 sono il capstone e coincidono con il progetto.

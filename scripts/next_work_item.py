@@ -43,7 +43,11 @@ import yaml
 
 QUEUE_PATH = Path("reports/handover/queue.yaml")
 PRIORITY_ORDER = ("P0", "P1", "P2", "P3")
-VALID_STATUS = frozenset({"todo", "in_progress", "done", "blocked"})
+VALID_STATUS = frozenset({"todo", "in_progress", "done", "blocked", "cancelled"})
+# Statuses that need no further work. `cancelled` means the course author
+# decided against the item; it must never be offered again, and it must not
+# keep the loop from reporting ALL-DONE.
+CLOSED_STATUS = frozenset({"done", "cancelled"})
 
 
 def sentinel(name: str) -> None:
@@ -181,7 +185,9 @@ def board(queue: dict[str, Any]) -> str:
     lines = [f"{'ID':<6} {'PRI':<4} {'STATUS':<12} REASON / TITLE"]
     for item in items:
         reasons: list[str] = []
-        if item["id"] not in ready_ids and item.get("status") not in {"done", "in_progress"}:
+        if item["id"] not in ready_ids and item.get("status") not in (
+            CLOSED_STATUS | {"in_progress"}
+        ):
             waiting = unresolved_decisions(queue, item)
             missing = unmet_dependencies(item, by_id)
             if waiting:
@@ -230,7 +236,9 @@ def main() -> int:
 
     ready = actionable(queue)
     if not ready:
-        remaining = [item for item in queue["items"] if item.get("status") != "done"]
+        remaining = [
+            item for item in queue["items"] if item.get("status") not in CLOSED_STATUS
+        ]
         if not remaining:
             sentinel("ALL-DONE")
             print("All work items are done.")

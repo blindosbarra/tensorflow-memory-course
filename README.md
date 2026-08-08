@@ -58,11 +58,22 @@ Leggi [`COURSE_FACTORY_SPEC.md`](COURSE_FACTORY_SPEC.md).
 
 ## Come si studia
 
-Ogni lezione e' **un notebook autosufficiente** in `notebooks/`: teoria,
-esempi eseguibili, esercizio guidato con soluzione spiegata, quiz con
-risposte, e un passo del **progetto del corso** (Memory AI Lab), che cresce
-di lezione in lezione fino a diventare il sistema completo. Non servono
-terminale, pytest o altri strumenti: si apre il notebook e si esegue.
+Ogni lezione e' **un notebook autosufficiente** in `notebooks/`: si apre e si
+esegue, senza terminale, pytest o altri strumenti. Tutte le lezioni hanno
+teoria, esempi eseguibili e quiz con risposte.
+
+Ci sono pero' **due tipi di lezione**, ed e' meglio saperlo prima di
+iniziare:
+
+- **Lezioni 1-30 — con esercizio.** Oltre a teoria ed esempi, un **esercizio
+  guidato con soluzione spiegata** e un passo del **progetto del corso**
+  (Memory AI Lab), che cresce di lezione in lezione.
+- **Lezioni 31-60 — di sola lettura.** Teoria, esempi eseguibili e quiz, ma
+  **nessun esercizio guidato**: il codice e' gia' scritto e commentato, e si
+  studia eseguendolo e modificandolo.
+
+Le lezioni 52-60 non hanno un "passo del progetto" separato perche' **sono**
+il progetto: il Memory AI Lab costruito dall'inizio alla fine.
 
 Per aprire un notebook in locale:
 

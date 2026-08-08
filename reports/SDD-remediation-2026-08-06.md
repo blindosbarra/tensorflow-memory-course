@@ -1,7 +1,8 @@
 # SDD — Remediation of the TensorFlow Memory AI Course
 
 Version: 1.1 — 2026-08-07 (converged; see section 10 for what changed)
-Status: in implementation — **2 of 13 work items done and verified** (WI-1, WI-2)
+Status: in implementation — **2 of 13 done and verified** (WI-1, WI-2), **1
+cancelled** (WI-5), 10 open. **D1, D2 and D3 all resolved 2026-08-07.**
 Source review: `reports/reviews/codebase-status-2026-08-06.md`
 Source plan: `reports/fix-plan-2026-08-06.md`
 Work queue (durable state): `reports/handover/queue.yaml`
@@ -32,8 +33,9 @@ context, conventions, and traps that apply to every work item.
 **This document is written in English; everything you author in the
 repository must be in Italian.** See section 4.1.
 
-**Do not start a work item whose `Blocked by` field names an unresolved
-decision.** Open decisions are in section 7.
+**Every open decision is now resolved** (D1, D2, D3 — 2026-08-07, section 7).
+No work item is blocked on a human any more. If a *new* question of the same
+kind arises, it is the course author's, not yours: stop and ask.
 
 ---
 
@@ -107,8 +109,8 @@ Do not regress any passing check.
 
 ### 1.5 Implementation status (re-verified 2026-08-07)
 
-**2 of 13 done** (WI-1, WI-2 — both P0). Each row below was checked against
-the tree, not against a tracker:
+**2 of 13 done** (WI-1, WI-2 — both P0) and **1 cancelled** (WI-5, by decision
+D2). Each row below was checked against the tree, not against a tracker:
 
 | WI | Evidence, checked against the tree |
 |---|---|
@@ -116,7 +118,7 @@ the tree, not against a tracker:
 | WI-2 | **done 2026-08-07** — the link is now plain text; no `file:///` remains under `docs/` |
 | WI-3 | `docs/glossary.md` has 2 entries |
 | WI-4 | `docs/references.md` is 14 lines, 6 links; no `scripts/build_references.py` |
-| WI-5 | lessons 31-60: zero occurrences of "esercizio"/"soluzione" |
+| WI-5 | **cancelled 2026-08-07 by D2** — the promise is corrected instead (WI-7) |
 | WI-6 | notebooks 31-60 unchanged |
 | WI-7 | `README.md:36` and `docs/index.md:20` still promise an exercise in every lesson |
 | WI-8 | `exercises/` (15 files), `solutions/`, `templates/lesson.md` all present |
@@ -299,14 +301,14 @@ is authoritative for *state* and this document for *specification*.
 | WI-2 | Remove the absolute path from the site homepage | P0 | — | **done** |
 | WI-3 | Rebuild `docs/glossary.md` | P1 | — | todo |
 | WI-4 | Regenerate `docs/references.md` from lesson sources | P1 | — | todo |
-| WI-5 | Add exercise + solution to lessons 31-60 | P1 | D2 | blocked |
-| WI-6 | Raise theory density in lessons 31-60 | P2 | D2 | blocked |
-| WI-7 | Align README and `docs/index.md` with reality | P1 | WI-5 | blocked |
+| WI-5 | ~~Add exercise + solution to lessons 31-60~~ | P1 | — | **cancelled (D2)** |
+| WI-6 | Raise theory density in lessons 31-60 | P2 | — | todo |
+| WI-7 | Align README and `docs/index.md` with reality | P1 | — | todo |
 | WI-8 | Retire stale `exercises/`, `solutions/`, `templates/lesson.md` | P2 | — | todo |
 | WI-9 | Seed the 21 non-deterministic notebooks | P2 | — | todo |
 | WI-10 | Make the consolidated notebook portable (Windows/macOS) | P2 | — | todo |
-| WI-11 | Reconcile `course.yaml` and `progress.yaml` with reality | P2 | D1, D2, D3 | blocked |
-| WI-12 | Resolve the `mlops` module and the Vertex AI requirement | P3 | D1 | blocked |
+| WI-11 | Reconcile `course.yaml` and `progress.yaml` with reality | P2 | — | todo |
+| WI-12 | Resolve the `mlops` module and the Vertex AI requirement | P3 | — | todo |
 | WI-13 | Extract capstone components into `src/memory_ai/` + tests | P3 | — | todo |
 
 Priorities reflect learner impact, per the course author's direction that CI
@@ -1158,10 +1160,32 @@ three decisions first.
 
 ---
 
-## 7. Open decisions
+## 7. Decisions — RESOLVED 2026-08-07
 
-These block the work items named. They are the course author's to make; do
-not assume an answer.
+**All three were decided by the course author on 2026-08-07.** Nothing in
+this section blocks work any more. The rationale is recorded in
+`course/research_gaps.md`, section "Decisioni dell'autore del corso"; the
+machine-readable copy is `meta.decisions` in `reports/handover/queue.yaml`.
+
+| Decision | Outcome | Effect on the work items |
+|---|---|---|
+| **D1** mlops module | **Shrink to a short local path.** 2-3 runnable lessons on packaging, artifacts and a local pipeline; cloud theory stays with the PMLE module. | WI-12 unblocked, and it is now the *reduction* job, not a build job. Seven declared lesson ids leave `course.yaml`; `COURSE_FACTORY_SPEC.md` §2 must be amended. |
+| **D2** exercises 31-60 | **Correct the promise.** Two declared lesson types: with exercise (1-30), read-only (31-60). No new exercises. | **WI-5 is cancelled, not deferred.** WI-7 becomes the deliverable and is unblocked. WI-6 (theory depth) survives — see below. |
+| **D3** research packs | **Amend the spec.** `evidence.yaml` mandatory, the other five files recommended. | WI-11 unblocked; the spec §5 amendment is part of it. |
+
+**D2 does not cancel WI-6.** The two were bundled only because both rewrite
+the same 30 notebooks. Exercises and depth are different promises: lessons
+31-60 sit at a median of 355 markdown words against 1085 for lessons 1-30,
+and a read-only lesson at one third the depth of its neighbours is still a
+weak lesson. WI-6 is now `todo` on its own merits.
+
+The original analysis that produced these decisions is kept below, because
+it records *why* each option was weighed — useful if a future change of
+circumstance reopens one of them.
+
+### Original analysis (pre-decision)
+
+They blocked the work items named. They were the course author's to make.
 
 ### D1 — The `mlops` module (blocks WI-12, part of WI-11)
 
