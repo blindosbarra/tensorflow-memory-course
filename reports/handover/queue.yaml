@@ -13,6 +13,7 @@
 #   in_progress  claimed by an iteration; see recovery rules in AGENT_LOOP.md
 #   done         implemented, verified and committed
 #   blocked      waiting on a human decision named in blocked_by
+#   cancelled    decided against by the course author; do not reopen
 #
 # Do not hand-edit `status` to `done` without having run the item's `verify`
 # command successfully.
@@ -42,15 +43,24 @@ meta:
     D1:
       question: "Modulo mlops: costruirlo, ridurlo a percorso locale, o rimuoverlo?"
       recommendation: "B — ridurlo a 2-3 lezioni eseguibili in locale"
-      status: open
+      status: resolved
+      decided: 2026-08-07
+      decision: "B — percorso breve eseguibile in locale; teoria cloud al modulo PMLE"
+      rationale: course/research_gaps.md (sezione "Decisioni dell'autore del corso")
     D2:
       question: "Esercizi per le lezioni 31-60: tutte, nessuna, o ibrido?"
       recommendation: "C tendendo ad A — esercizi dove non serve Gemma"
-      status: open
+      status: resolved
+      decided: 2026-08-07
+      decision: "Correggere la promessa: due tipi di lezione dichiarati, con esercizio (1-30) e di sola lettura (31-60). WI-5 annullato."
+      rationale: course/research_gaps.md (sezione "Decisioni dell'autore del corso")
     D3:
       question: "Research pack incompleti: completarli tutti o emendare la spec?"
       recommendation: "B — emendare la spec, evidence.yaml obbligatorio"
-      status: open
+      status: resolved
+      decided: 2026-08-07
+      decision: "B — emendare la spec: evidence.yaml obbligatorio, gli altri cinque file raccomandati"
+      rationale: course/research_gaps.md (sezione "Decisioni dell'autore del corso")
 
 items:
   - id: WI-1
@@ -138,8 +148,8 @@ items:
   - id: WI-5
     title: "Aggiungere esercizio e soluzione alle lezioni 31-60"
     priority: P1
-    status: blocked
-    blocked_by: [D2]
+    status: cancelled
+    blocked_by: []
     depends_on: [WI-1]
     files:
       - notebooks/lezione-3*.ipynb
@@ -154,15 +164,17 @@ items:
     expect: "61/61; ogni cella soluzione termina con un assert che passa"
     verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
     notes: >-
-      Da fare una fase per commit: 31-37, 38-44, 45-51, 52-60. Tocca gli
-      stessi cinque notebook di WI-1: WI-1 va chiuso prima.
+      ANNULLATO dalla decisione D2 del 2026-08-07: l'autore ha scelto di
+      correggere la promessa invece di scrivere trenta esercizi. Le lezioni
+      31-60 restano di sola lettura, dichiarate come tali. Il lavoro passa a
+      WI-7. Non riaprire senza una nuova decisione dell'autore.
 
   - id: WI-6
     title: "Alzare la densita' teorica delle lezioni 31-60"
     priority: P2
-    status: blocked
-    blocked_by: [D2]
-    depends_on: [WI-5]
+    status: todo
+    blocked_by: []
+    depends_on: []
     files:
       - notebooks/lezione-3*.ipynb
       - notebooks/lezione-4*.ipynb
@@ -179,9 +191,9 @@ items:
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
     priority: P1
-    status: blocked
-    blocked_by: [D2]
-    depends_on: [WI-5]
+    status: todo
+    blocked_by: []
+    depends_on: []
     files:
       - README.md
       - docs/index.md
@@ -248,8 +260,8 @@ items:
   - id: WI-11
     title: "Riallineare course.yaml e progress.yaml alla realta'"
     priority: P2
-    status: blocked
-    blocked_by: [D1, D2, D3]
+    status: todo
+    blocked_by: []
     depends_on: []
     files:
       - course/course.yaml
@@ -263,8 +275,8 @@ items:
   - id: WI-12
     title: "Risolvere il modulo mlops e il requisito Vertex AI"
     priority: P3
-    status: blocked
-    blocked_by: [D1]
+    status: todo
+    blocked_by: []
     depends_on: []
     files:
       - course/course.yaml

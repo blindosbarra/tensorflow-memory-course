@@ -235,3 +235,55 @@ where you left off" dopo un fallimento del tool di chiarimento scope).
 - **Percorso principale completo (Lezioni 1-60)**. Resta non costruito solo il
   modulo opzionale `mlops` (Vertex AI / deploy / monitoring cloud), `planned` su
   richiesta dell'utente di non svilupparlo ora.
+
+## Decisioni dell'autore del corso — 2026-08-07
+
+Le tre decisioni aperte lasciate dalla review di stato
+(`reports/reviews/codebase-status-2026-08-06.md`) e dalla SDD di remediation
+(`reports/SDD-remediation-2026-08-06.md`, sezione 7) sono state prese
+dall'autore del corso. Sono registrate qui perche' cambiano cosa il corso
+promette, non solo come e' implementato.
+
+### D2 — Esercizi per le lezioni 31-60: **correggere la promessa**
+
+Le lezioni 1-30 hanno esercizio guidato e soluzione spiegata; le lezioni
+31-60 no. La scelta e' di **non** aggiungere trenta esercizi, ma di dire la
+verita' su come e' fatto il corso: due tipi di lezione dichiarati, con
+esercizio (1-30) e di sola lettura (31-60).
+
+Conseguenza diretta: `README.md` e `docs/index.md` promettono oggi un
+esercizio in ogni lezione, e la promessa va corretta (WI-7). Il lavoro di
+scrivere gli esercizi (WI-5) e' annullato, non rimandato.
+
+Resta valido, e separato da questa decisione, il divario di profondita'
+teorica: le lezioni 31-60 hanno una mediana di 355 parole di markdown contro
+le 1085 delle lezioni 1-30 (WI-6). Una lezione di sola lettura puo' essere
+comunque una buona lezione; una lezione a un terzo della profondita' delle
+altre no.
+
+### D1 — Modulo `mlops`: **ridurlo a poche lezioni locali**
+
+Il modulo e' dichiarato in `course.yaml` con 10 lezioni e non ne ha nessuna.
+La scelta e' di ridurlo a un percorso breve ed eseguibile in locale
+(packaging, artefatti, pipeline locale), delegando la teoria cloud al modulo
+di certificazione PMLE.
+
+Motivazione: il corso e' costruito per girare senza dipendenze esterne — la
+guardia di Gemma esiste esattamente per questo. Una pipeline Vertex AI
+*testabile* richiederebbe un progetto GCP fatturabile che nessuno studente
+ha garantito, e contraddirebbe quel principio.
+
+Conseguenza: i sette id di lezione `mlops` non piu' previsti escono da
+`course.yaml`, e `COURSE_FACTORY_SPEC.md` sezione 2 va emendata perche' oggi
+richiede una pipeline Vertex AI (WI-12).
+
+### D3 — Research pack incompleti: **emendare la spec**
+
+58 dei 67 `knowledge/<topic>/` contengono solo `evidence.yaml`, mentre la
+spec sezione 5 ne richiede altri cinque. La scelta e' di emendare la spec:
+`evidence.yaml` obbligatorio, gli altri cinque file raccomandati.
+
+Motivazione: `evidence.yaml` e' il file che regge la regola "nessun fatto
+inventato", ed e' presente in tutti e 67 i topic. Gli altri cinque non hanno
+impedito di scrivere le lezioni 3-60. Una spec che richiede artefatti che
+nessuno produce non e' una spec: e' un debito dichiarato.
