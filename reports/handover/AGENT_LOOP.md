@@ -48,7 +48,8 @@ Work one item from the remediation queue.
    this iteration's instructions (not a branch named in the queue file).
 7. Set the item's status to done and stop. One item per iteration.
 
-Never resolve a decision (D1, D2, D3) yourself. Never push to master.
+Never resolve a decision yourself; D1-D3 are already resolved, treat them as
+settled and do not undo work implementing them. Never push to master.
 Never mark an item done without having run its verify commands.
 Never end an iteration silently: commit something, or say what stopped you.
 ```
@@ -99,8 +100,8 @@ add it to the queue as a new item, or note it in the existing item, and move
 on. Unrelated changes are prohibited by `AGENTS.md` and make the diff
 unreviewable.
 
-If the item turns out to be bigger than one iteration (WI-13 is the likely
-case), split it: complete a coherent piece, record what remains in the item's
+If the item turns out to be bigger than one iteration (WI-6, WI-12 and WI-13
+all are), split it: complete a coherent piece, record what remains in the item's
 `notes`, leave the status `in_progress`, commit, and stop. The next iteration
 picks up from the note.
 
@@ -173,11 +174,18 @@ reviewable diff.
 
 ## Guardrails
 
-**Never resolve a decision.** `D1`, `D2` and `D3` in the queue's `meta`
-belong to the course author. They carry recommendations; a recommendation is
-not an answer. If every remaining item is waiting on one, the picker exits 2
-and prints the open questions — that is the loop's signal to stop and ask,
-not to choose.
+**Never resolve a decision.** Decisions in the queue's `meta` belong to the
+course author. They carry recommendations; a recommendation is not an answer.
+If every remaining item is waiting on one, the picker prints
+`SENTINEL: NOTHING-ACTIONABLE` with the open questions — that is the loop's
+signal to stop and ask, not to choose.
+
+`D1`, `D2` and `D3` were all **resolved on 2026-08-07** and no longer block
+anything; their outcomes are in `course/research_gaps.md`. Treat a resolved
+decision as settled: do not relitigate it, and do not undo work that
+implements it. **WI-5 is `cancelled` by D2** — the course author chose to
+correct the promise instead of writing thirty exercises. Cancelled is not
+"todo, later"; reopening it needs a new decision from the author.
 
 **Never invent content.** If a source is missing, add an entry to
 `course/research_gaps.md` instead of filling the gap. Do not invent APIs,
@@ -225,23 +233,30 @@ The loop should stop, and say so, when:
 
 ## Current state at handover
 
-Re-verified against the working tree on **2026-08-07**: all 13 items are
-still `todo` or `blocked`. Nothing has been implemented.
+Re-verified against the working tree on **2026-08-07**, after the decisions
+were taken.
 
 | | |
 |---|---|
-| Ready now, no decisions needed | WI-1, WI-2, WI-3, WI-4, WI-8, WI-9, WI-10, WI-13 |
-| Waiting on D2 | WI-5, WI-6, WI-7 |
-| Waiting on D1 | WI-12 |
-| Waiting on D1, D2, D3 | WI-11 |
+| Done and verified | WI-1, WI-2, WI-7 |
+| Cancelled by decision D2 | WI-5 |
+| Ready now — nothing blocks any of them | WI-3, WI-4, WI-6, WI-8, WI-9, WI-10, WI-11, WI-12, WI-13 |
 
-Eight items can be worked immediately. The first is WI-1, which is the only
-place in the course where published code fails in a learner's hands, and its
-fix has already been prototyped and verified.
+**No item is waiting on a human any more.** D1, D2 and D3 are resolved, so
+the picker will keep offering work until all nine remaining items are done.
+Suggested order is simply the picker's: P1 first (WI-3, WI-4), then the P2
+group, then P3.
 
-Baseline at handover: `ruff`, `mypy src`, `pytest` and
-`mkdocs build --strict` all pass; `scripts/execute_notebooks.py` reports
-**56/61**, failing exactly the five notebooks WI-1 repairs.
+Two of the nine are large and will not fit one iteration — **WI-6** (raise
+theory depth across 30 notebooks) and **WI-12** (write the reduced `mlops`
+path decided in D1). Split them as section 4 describes: complete a coherent
+piece, record what remains in the item's `notes`, leave it `in_progress`,
+commit, stop.
+
+Baseline now: `ruff`, `mypy src`, `pytest` and `mkdocs build --strict` all
+pass, and `scripts/execute_notebooks.py` reports **61/61** with a clean
+`git status` afterwards — verified twice. That is the state you must not
+regress.
 
 ## What the first attempt taught us
 
