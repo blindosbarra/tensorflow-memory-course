@@ -17,13 +17,28 @@ Paste this as the recurring instruction:
 ```text
 Work one item from the remediation queue.
 
-0. Preflight. Confirm the machinery is on this branch before trusting
-   anything it says:
-     test -f reports/handover/queue.yaml && test -f scripts/next_work_item.py
-   If either is missing you are on a branch without the queue. STOP and
-   report "machinery missing on <branch>". Do NOT report this as
-   "nothing left to do" — it is the opposite, and confusing the two is
-   what wasted the first attempt.
+0. Preflight — two checks, and only one of them may stop you.
+   a) Machinery present:
+        test -f reports/handover/queue.yaml && test -f scripts/next_work_item.py
+      If either is missing you are on a checkout without the queue. STOP and
+      report "machinery missing". Do NOT report this as "nothing left to do"
+      — it is the opposite, and confusing the two wasted the first attempt.
+   b) Freshness — is this checkout current? Use whichever works:
+        - if `git remote` lists a remote: `git fetch origin master` and check
+          your HEAD contains origin/master;
+        - otherwise check by CONTENT, which needs no remote:
+            uv run python scripts/next_work_item.py --board
+          A current checkout shows WI-1, WI-2, WI-3, WI-4 and WI-7 as `done`,
+          WI-5 as `cancelled`, and no decision listed as open. If instead the
+          board offers you WI-3 or WI-4, the checkout predates work that is
+          already merged: STOP and say so.
+      **A missing remote is not a reason to stop.** Some sandboxes check the
+      repository out with no `origin` and on a branch of their own choosing;
+      that is normal and says nothing about the work. Only a *stale board*
+      stops you here.
+   c) Branch: work on whatever branch this environment gave you — do not
+      require a particular name, and do not create one if the harness owns
+      that. The only hard rule is: never commit or push to `master`.
 1. Run: uv run python scripts/next_work_item.py
    Key on the SENTINEL line it prints, not on the exit code:
      SENTINEL: PICK <id>           → work that item
@@ -44,8 +59,10 @@ Work one item from the remediation queue.
    ~600 MB and needs network), see "When the environment will not cooperate"
    below: commit the work with the item left `todo`. Do NOT revert it.
 6. Commit the work and the queue update together, in Italian, naming the
-   item id in the message body. Push to the branch you were assigned in
-   this iteration's instructions (not a branch named in the queue file).
+   item id in the message body. Push to the branch this environment gave
+   you, or the one named in this iteration's instructions if it named one.
+   Never a branch named in the queue file, and never `master`. If the
+   harness opens the pull request for you, let it.
 7. Set the item's status to done and stop. One item per iteration.
 
 Never resolve a decision yourself; D1-D3 are already resolved, treat them as
@@ -257,6 +274,25 @@ Baseline now: `ruff`, `mypy src`, `pytest` and `mkdocs build --strict` all
 pass, and `scripts/execute_notebooks.py` reports **61/61** with a clean
 `git status` afterwards — verified twice. That is the state you must not
 regress.
+
+## A preflight must not out-stop the work
+
+The freshness check in step 0 was first written as a bare
+`git fetch origin master`, with "stop if you cannot confirm". On 2026-08-08 a
+loop ran in a sandbox that checks the repository out with **no `origin`
+remote and on a branch called `work`**. The fetch failed, the agent could not
+confirm freshness, and it stopped having changed nothing — correct by the
+letter of the instruction, useless in effect.
+
+That is the same shape as the exit-code bug below: a signal that cannot tell
+"this environment is different" from "it is unsafe to proceed", defaulting to
+silence. A guard that stops the work it was written to protect is worse than
+no guard, because it looks like diligence.
+
+The fix is the content-based fallback in step 0b: freshness is a property of
+the queue, which is in the repository, so it can always be checked without a
+network or a remote. Prefer a check on something you already have over a
+check on something the environment might not provide.
 
 ## What the first attempt taught us
 
