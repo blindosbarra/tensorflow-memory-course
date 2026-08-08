@@ -14,6 +14,15 @@ uv run python scripts/execute_notebooks.py
 uv run mkdocs build --strict
 ```
 
+`docs/references.md` e' **generata**: raccoglie le sezioni `## Fonti` di tutte
+le lezioni. Non si modifica a mano — si aggiunge la fonte nella lezione e si
+rigenera:
+
+```bash
+uv run python scripts/build_references.py           # riscrive la pagina
+uv run python scripts/build_references.py --check   # esce 1 se e' da rigenerare
+```
+
 Se l'ambiente blocca la cache globale di `uv`, usa una cache locale:
 
 ```bash
