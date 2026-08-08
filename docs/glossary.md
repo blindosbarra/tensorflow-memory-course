@@ -135,12 +135,6 @@ Funzione scalare che misura l'errore del modello e fornisce l'obiettivo da
 minimizzare durante il training. Vedi
 [Probabilità e loss function](modules/probability-loss-functions.md).
 
-## Memoria semantica
-
-Memoria di un fatto o concetto che non dipende necessariamente da un singolo
-episodio. Vedi
-[Memorie episodiche, semantiche e di preferenza](modules/episodic-semantic-preference.md).
-
 ## Missing value
 
 Valore assente in una tabella. In pandas può apparire con sentinelle diverse,
@@ -275,12 +269,18 @@ Operazione in cui ogni token combina informazioni dagli altri token tramite pesi
 calcolati da query, key e value. Vedi
 [Matematica della self-attention](modules/self-attention-math.md).
 
+## Semantic
+
+Memoria di un fatto o concetto che non dipende necessariamente da un singolo
+episodio. Vedi
+[Memorie episodiche, semantiche e di preferenza](modules/episodic-semantic-preference.md).
+
 ## Sentence embedding
 
 Un singolo vettore che rappresenta il contenuto semantico di un'intera frase o
 memoria. Vedi [Sentence embeddings](modules/sentence-embeddings.md).
 
-## Similarita' coseno
+## Similarità coseno
 
 Misura della somiglianza tra due vettori basata sul coseno dell'angolo che li
 separa, non sulla loro lunghezza. Vedi

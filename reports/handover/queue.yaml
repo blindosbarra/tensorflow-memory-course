@@ -129,6 +129,20 @@ items:
       - "uv run mkdocs build --strict"
     expect: "build OK; ogni termine tracciabile a una lezione esistente"
     verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
+    notes: >-
+      Fatto il 2026-08-08 dal loop di coding: da 2 a 55 voci, in ordine
+      alfabetico, ognuna con il link alla pagina della lezione che introduce
+      il termine. Verificato in review: mkdocs --strict passa, i 55 link
+      risolvono tutti, e ognuno dei 55 termini compare davvero nella pagina
+      linkata o in un notebook (controllo automatico, insensibile ad accenti
+      e maiuscole).
+      Corretti in review due difetti di coerenza: "Similarita' coseno" era
+      l'unica parola in forma apostrofata in un file che usa gli accenti, e
+      contraddiceva il testo del suo stesso link; e la terna dei tipi di
+      memoria mescolava due convenzioni (Episodic, Preference in inglese ma
+      "Memoria semantica" in italiano). Ora sono Episodic/Semantic/Preference,
+      che e' anche il nome usato dalla pagina della lezione e dai valori della
+      colonna `type` nei dati.
 
   - id: WI-4
     title: "Rigenerare docs/references.md dalle fonti delle lezioni"
