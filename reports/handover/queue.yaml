@@ -147,7 +147,7 @@ items:
   - id: WI-4
     title: "Rigenerare docs/references.md dalle fonti delle lezioni"
     priority: P1
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -158,6 +158,21 @@ items:
       - "uv run mkdocs build --strict"
     expect: "build OK; rigenerare due volte produce output identico"
     verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
+    notes: >-
+      Fatto il 2026-08-08. La pagina ora e' generata da
+      scripts/build_references.py: da 6 link (tutti delle lezioni 1-2) a 87
+      voci su 10 moduli, 78 URL distinti. Ordine preso da course.yaml, quindi
+      deterministico e indipendente dal filesystem; dedup per URL dentro il
+      modulo, con l'elenco delle lezioni che citano la fonte.
+      Verificato: due rigenerazioni consecutive danno file identici; ogni URL
+      della pagina esiste in una lezione (nessuna fonte inventata) e nessun
+      URL delle lezioni resta fuori; ruff e mkdocs --strict passano.
+      `--check` esce 1 se la pagina e' da rigenerare, cosi' la deriva si
+      accorge prima di arrivare al sito. docs/modules/en/ e' saltata: sono
+      traduzioni delle pagine PMLE e le loro fonti stanno gia' sotto gli
+      originali italiani. Una voce di pmle-07 e' esclusa perche' non ha URL:
+      e' un rimando alle lezioni sorelle, non una fonte esterna; lo script lo
+      segnala su stderr invece di scartarlo in silenzio.
 
   - id: WI-5
     title: "Aggiungere esercizio e soluzione alle lezioni 31-60"
