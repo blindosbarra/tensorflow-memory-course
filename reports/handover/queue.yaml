@@ -120,7 +120,7 @@ items:
   - id: WI-3
     title: "Ricostruire docs/glossary.md"
     priority: P1
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
