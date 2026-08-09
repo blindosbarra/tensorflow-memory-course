@@ -1,6 +1,6 @@
 ---
 lesson_id: gemma-inference
-reviewed_at: 2026-07-18
+reviewed_at: 2026-08-09
 claims:
   - id: gemma-generate
     claim: "A KerasHub GemmaCausalLM performs text generation with a generate(prompt, max_length=...) method, and the decoding strategy (greedy or temperature sampling) is configured via compile(sampler=...)."
@@ -22,8 +22,40 @@ claims:
     primary_source: false
     evidence_note: "Didactic linkage between the decoding loop and the sampler; the autoregressive framing is from the Transformer paper. Not a quantitative claim."
     status: needs_reverification
+  - id: generation-length-contract
+    claim: "GemmaCausalLM.generate performs autoregressive generation and max_length limits total output sequence length, including the prompt."
+    importance: critical
+    source_url: "https://keras.io/keras_hub/api/models/gemma/gemma_causal_lm/"
+    source_title: "GemmaCausalLM model"
+    publisher: "Keras documentation"
+    accessed_at: null
+    primary_source: true
+    evidence_note: "Semantica di generate e di max_length dalla conoscenza pre-addestramento: la pagina API non e' stata aperta (keras.io bloccato dal proxy), quindi needs_reverification. E' esattamente il tipo di dettaglio che cambia fra versioni."
+    status: needs_reverification
+  - id: kerashub-sampler-contract
+    claim: "KerasHub separates model logits from token selection through sampler objects, including greedy, random and temperature samplers."
+    importance: critical
+    source_url: "https://keras.io/keras_hub/api/samplers/"
+    source_title: "Samplers API"
+    publisher: "Keras documentation"
+    accessed_at: null
+    primary_source: true
+    evidence_note: "Contratto dei sampler dalla conoscenza pre-addestramento: l'indice API non e' stato aperto (keras.io bloccato dal proxy), quindi needs_reverification."
+    status: needs_reverification
+  - id: temperature-rescaling
+    claim: "Temperature rescales logits before softmax; lower temperatures sharpen and higher temperatures flatten the resulting categorical distribution."
+    importance: major
+    source_url: "https://arxiv.org/abs/1503.02531"
+    source_title: "Distilling the Knowledge in a Neural Network"
+    publisher: "Hinton, Vinyals and Dean"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "La sezione 2 formalizza softmax con temperatura e descrive l'effetto sulla distribuzione."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Gemma cells in notebooks/lezione-35-inferenza-gemma.ipynb are guarded and NOT executed here (gated weights). The .generate()/.compile(sampler=...) API is real KerasHub, marked needs_reverification per 3.2 and logged in course/research_gaps.md. The executable project cell (rule-based entity extractor fallback) genuinely runs and asserts, so the system works without the model."
+    - "2026-08-09: ampliata la teoria su ciclo autoregressivo, sampler, limiti di generazione e contratti della pipeline; fonti registrate insieme al testo."
+    - "2026-08-09, correzione: generation-length-contract e kerashub-sampler-contract erano marcate verified con accessed_at pur riguardando la stessa API KerasHub che questa nota dichiara non verificabile qui. keras.io risulta bloccato dal proxy di egress, quindi sono tornate a needs_reverification con accessed_at azzerato. Resta verified temperature-rescaling: arXiv:1503.02531 e' un documento canonico e stabile, non documentazione di API versionata."

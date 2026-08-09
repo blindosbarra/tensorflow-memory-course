@@ -818,15 +818,15 @@ modules:
           - "2026-07-18: tokenizer word-level dal corpus (vocab 66 + <bos>/<eos>, round-trip garantito) + generazione autoregressiva con modellino bigram (matrice 66x66, add-one smoothing). Greedy vs temperatura mostrati con output reali. Il modello NON e' un Transformer: il punto e' che il ciclo di generazione e' identico. Eseguito davvero."
           - "2026-08-09 (WI-6): teoria approfondita (il tokenizer come interfaccia del modello, conservazione dell'ordine dei logit al variare di T, differenza fra determinismo del greedy e seed di un generatore pseudocasuale). Registrate due nuove affermazioni in knowledge/tokenizer-generation/evidence.yaml; nella stessa revisione la voce temperature-sampling ha ricevuto una fonte primaria (arXiv:1503.02531) al posto della pagina NumPy marcata primary_source: false, che documentava la chiamata di campionamento ma non la definizione di temperatura. Stato riportato a technical_review come per le lezioni 31 e 32. Codice invariato."
       keras-hub:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/keras-hub/
@@ -842,16 +842,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: KerasHub e from_preset (backbone vs task model GemmaCausalLM). Celle Gemma GUARDATE e saltate (pesi gated non scaricabili nel sandbox): notebook eseguibile in CI, API reale needs_reverification (vedi research_gaps.md). Cella progetto (registro preset + scegli_preset) eseguita davvero con assert."
+          - "2026-08-09 (WI-6): teoria approfondita e nuove affermazioni registrate in knowledge/keras-hub/evidence.yaml nello stesso commit; codice invariato. Stato riportato a technical_review."
       gemma-inference:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/gemma-inference/
@@ -867,16 +868,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: inferenza gemma.generate + compile(sampler=...) legata alla temperatura della Lezione 33. Celle Gemma GUARDATE. Cella progetto: estrai_entita con fallback a regole (euristica maiuscole Lezione 26) eseguita davvero, assert su Marco/Glasgow. needs_reverification per l'API modello."
+          - "2026-08-09 (WI-6): teoria approfondita e nuove affermazioni registrate in knowledge/gemma-inference/evidence.yaml nello stesso commit; codice invariato. Stato riportato a technical_review."
       structured-output:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/structured-output/
@@ -892,6 +894,7 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: JSON conforme allo schema Lezione 22. Cella Gemma GUARDATA (usa output di esempio 'sporco' come fallback). Validatore estrai_e_valida (regex blocco {..} + json.loads + check campi/type) ESEGUITO davvero: accetta il valido, rifiuta type errato e JSON malformato."
+          - "2026-08-09 (WI-6): teoria approfondita e nuove affermazioni registrate in knowledge/structured-output/evidence.yaml nello stesso commit; codice invariato. Stato riportato a technical_review."
       evaluation-generative:
         status: learner_review
         state_machine:
