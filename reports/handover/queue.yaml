@@ -370,7 +370,7 @@ items:
   - id: WI-11
     title: "Riallineare course.yaml e progress.yaml alla realta'"
     priority: P2
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -381,6 +381,28 @@ items:
       - "uv run ruff check ."
     expect: "conteggi dichiarati/tracciati/presenti riconciliati"
     verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
+    notes: >-
+      2026-08-09: fatto. I 17 id dichiarati e non tracciati (2 data-engineering,
+      5 keras-dnn, 10 mlops) sono ora registrati in progress.yaml come planned,
+      con artefatti null e gate pending: dichiarati mancanti invece che
+      invisibili. foundations, data-engineering e keras-dnn passano da planned a
+      in_progress in course.yaml, cosi' lo status torna a distinguerli da mlops,
+      che e' l'unico genuinamente vuoto. course_status e current_milestone non
+      contraddicono piu' il syllabus e dicono apertamente che manca la learner
+      review umana. I tre gate che la SDD dava per sopravvalutati sono retti
+      dalle decisioni prese nel frattempo: code dipendeva da WI-1 (done),
+      didactics da D2, research da D3.
+      Aggiunto scripts/check_course_consistency.py (la parte "optional,
+      recommended" dell'item), che oggi riporta "OK: nothing to reconcile".
+      Non e' un gate di CI, per scelta dell'autore del corso.
+      Una nota per chi legge i conteggi: dichiarate 84, tracciate 85. La
+      differenza e' pmle-en-translations, che traccia le sette traduzioni EN
+      delle pagine PMLE come deliverable e non come lezione — non ha un id di
+      lezione in course.yaml e non deve averlo. Lo script la elenca a parte
+      invece di contarla come drift.
+      Verificato: ruff (verify dell'item), piu' mypy, pytest 8 passed,
+      mkdocs build --strict, build_references.py --check e
+      next_work_item.py --check, tutti pass.
 
   - id: WI-12
     title: "Risolvere il modulo mlops e il requisito Vertex AI"

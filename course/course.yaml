@@ -9,7 +9,7 @@ course:
 modules:
   - id: foundations
     title: Fondamenti minimi
-    status: planned
+    status: in_progress
     lessons:
       - python-numpy-refresh
       - vectors-matrices-tensors
@@ -18,7 +18,7 @@ modules:
 
   - id: data-engineering
     title: Pulizia e pipeline dei dati
-    status: planned
+    status: in_progress
     lessons:
       - data-cleaning-01-missing-values
       - duplicates-types-outliers
@@ -31,7 +31,7 @@ modules:
 
   - id: keras-dnn
     title: Keras e reti neurali dense
-    status: planned
+    status: in_progress
     lessons:
       - perceptron-dense-layer
       - forward-pass
