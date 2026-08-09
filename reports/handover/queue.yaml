@@ -68,6 +68,13 @@ meta:
       decided: 2026-08-09
       decision: "Toglierli da course.yaml: il corso dichiara solo cio' che insegna"
       rationale: course/research_gaps.md (sezione "Decisioni dell'autore del corso")
+    D5:
+      question: "Classificatore di tipo in src/memory_ai/ (lezione 54): addestrarlo al volo dal corpus o caricare parametri salvati?"
+      recommendation: "Al volo — il corpus e' committato, l'addestramento e' NumPy puro e deterministico"
+      status: resolved
+      decided: 2026-08-09
+      decision: "Al volo: fit() legge datasets/processed/memory_train.csv e addestra all'uso. Nessun parametro salvato nel repo."
+      rationale: course/research_gaps.md (sezione "Decisioni dell'autore del corso")
 
 items:
   - id: WI-1
@@ -548,9 +555,15 @@ items:
       de-duplicazione va fatta, e' una decisione dell'autore del corso e va
       fatta in un item suo, aggiornando le lezioni che mostrano i numeri.
       RESTA DA FARE:
-        - classificatore di tipo (lezione 54): serve il corpus, quindi va
-          deciso se il pacchetto lo addestra al volo o carica parametri
-          salvati. E' la ragione per cui non e' in questa fetta.
+        - classificatore di tipo (lezione 54). La domanda che lo teneva
+          fuori dalla prima fetta e' decisa: D5, 2026-08-09, il pacchetto
+          lo ADDESTRA AL VOLO da datasets/processed/memory_train.csv e non
+          committa parametri salvati. Vincoli che ne discendono: fit()
+          esplicito, mai addestramento all'import; il path del corpus e' un
+          parametro con default, non un path assoluto. Non serve l'extra ml
+          (e' NumPy puro) e l'addestramento e' deterministico, quindi
+          verifica l'estrazione per PARITA' col notebook come per gli altri
+          quattro componenti. Non ridecidere: e' una decisione dell'autore.
         - grafo di entita' e relazioni (lezione 55, NetworkX) e retrieval
           ibrido (lezione 28): entrambi richiedono l'extra ml.
         - la classe MemoryAILab che assembla la pipeline (lezione 58), che
