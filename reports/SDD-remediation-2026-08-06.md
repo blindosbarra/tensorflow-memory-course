@@ -270,6 +270,18 @@ This is where automated edits most often go wrong. Notebooks are
   outputs, 18 do not). **Preserve whatever the file already does**; do not
   add or strip outputs as a side effect.
 
+- **Never write LaTeX through a layer that interprets escapes.** A markdown
+  cell containing `\right)` or `\alpha` is one careless heredoc, shell echo
+  or double-decoded string away from holding a literal carriage return
+  followed by `ight)`, or a BEL followed by `lpha`. That happened on
+  2026-08-09 in lesson 40 and no gate caught it: markdown cells are not
+  executed, so the 61/61 run stays green; the JSON is well-formed, so
+  `nbformat.validate` passes; and `mkdocs` builds `docs/modules/`, not the
+  notebooks. Build the string in Python and let `json.dumps` do the
+  escaping. `tests/test_notebook_text_integrity.py` now fails on any stray
+  control character in a notebook's source, naming the cell, the line and
+  the escape it probably came from.
+
 After editing, validate:
 
 ```bash
@@ -277,6 +289,7 @@ uv run python -c "
 import nbformat,sys
 nb=nbformat.read(sys.argv[1],as_version=4); nbformat.validate(nb); print('valid')
 " notebooks/<file>.ipynb
+uv run pytest tests/test_notebook_text_integrity.py
 ```
 
 ### 4.4 Git

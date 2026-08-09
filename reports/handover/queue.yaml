@@ -277,6 +277,17 @@ items:
       `uv sync --extra dev --extra ml`; albero pulito rispetto ai dataset
       rigenerati. Restano da approfondire le lezioni 43-60, sempre registrando
       evidenze e testo nello stesso commit.
+      2026-08-09, correzione in revisione: il segmento 40-42 aveva introdotto
+      due caratteri di controllo nella lezione 40, dove '\\right)' era diventato
+      CR + 'ight)' e '\\alpha' BEL + 'lpha'. Due formule rotte proprio nella
+      lezione che spiega il fattore alpha/r. Nessun gate poteva vederlo: le
+      celle markdown non vengono eseguite, quindi il run 61/61 resta verde, il
+      JSON e' valido per nbformat, e mkdocs compila docs/modules/ non i
+      notebook. Corretto, e aggiunto tests/test_notebook_text_integrity.py che
+      fallisce su qualunque carattere di controllo nel sorgente di un notebook,
+      indicando cella, riga e l'escape da cui probabilmente deriva. La SDD 4.3
+      ora lo dice esplicitamente: mai scrivere LaTeX attraverso uno strato che
+      interpreta gli escape.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
