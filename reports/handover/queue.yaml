@@ -222,6 +222,21 @@ items:
       le fonti primarie nei notebook. Gate rapido sui tre notebook e run
       completo dei 61 notebook superati, con albero pulito salvo i file della
       patch. Restano da approfondire le lezioni 34-60.
+      2026-08-09: il segmento 31-33 era stato dichiarato completo senza
+      soddisfare il criterio di accettazione di questo item — le affermazioni
+      nuove erano solo nei notebook, nessun knowledge/*/evidence.yaml era stato
+      toccato e course/progress.yaml continuava a dichiarare technical_review
+      done sulle versioni del 18 luglio. Sanato: sei affermazioni registrate
+      nei tre pack (con due fonti primarie nuove, arXiv:1607.06450 per la layer
+      normalization e arXiv:1503.02531 per la softmax con temperatura, che
+      sostituisce una fonte marcata primary_source: false), citazioni aggiunte
+      nelle lezioni, e le tre lezioni riportate a technical_review. Per le
+      lezioni 34-60 registrare le evidenze NELLO STESSO commit del testo: e' il
+      criterio di accettazione, non un passaggio successivo.
+      Osservazione fuori scope, per chi lavorera' WI-4: docs/references.md e'
+      generato da docs/modules/*.md, quindi le fonti citate solo nei notebook
+      non compaiono nella pagina aggregata. Oggi riguarda le tre fonti nuove
+      delle lezioni 32-33. Nessun gate fallisce.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"

@@ -1,6 +1,6 @@
 ---
 lesson_id: tokenizer-generation
-reviewed_at: 2026-07-18
+reviewed_at: 2026-08-09
 claims:
   - id: autoregressive-generation
     claim: "Autoregressive generation produces text one token at a time: the model predicts a distribution over the next token, one token is selected and appended to the sequence, and the process repeats until an end-of-sequence token is produced or a length limit is reached."
@@ -15,16 +15,38 @@ claims:
   - id: temperature-sampling
     claim: "Temperature sampling rescales the next-token logits by dividing by a temperature T before the softmax: T<1 sharpens the distribution (more conservative), T>1 flattens it (more diverse), and as T->0 it approaches greedy (argmax) selection."
     importance: major
-    source_url: "https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html"
-    source_title: "numpy.random.Generator.choice"
+    source_url: "https://arxiv.org/abs/1503.02531"
+    source_title: "Distilling the Knowledge in a Neural Network"
+    publisher: "Hinton, Vinyals and Dean, 2015 (arXiv:1503.02531)"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "Section 2 defines the temperature-scaled softmax q_i = exp(z_i/T) / sum_j exp(z_j/T) and describes T>1 as producing a softer distribution over classes, which is the definition the lesson uses. The T->0 = greedy limit is a mathematical property of that expression. This entry previously cited numpy.random.Generator.choice, which documents the probability-weighted draw used to implement sampling but not the temperature definition it was cited for; that NumPy reference now backs sampling-determinism, where it is the primary source."
+    status: needs_reverification
+  - id: temperature-order-preserving
+    claim: "Dividing the logits by a temperature T>0 preserves their relative order, so temperature changes how far apart the scores are before the softmax but never which token is the argmax. T<1 amplifies the differences and T>1 compresses them; a higher temperature can therefore increase variety, but it does not make an improbable token correct."
+    importance: major
+    source_url: "https://arxiv.org/abs/1503.02531"
+    source_title: "Distilling the Knowledge in a Neural Network"
+    publisher: "Hinton, Vinyals and Dean, 2015 (arXiv:1503.02531)"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "The source supplies the definition (division of the logits by T before the softmax). Order preservation is an immediate mathematical property of dividing by a positive constant, recorded here the same way the T->0 greedy limit is recorded under temperature-sampling. The lesson's added caveat — that temperature reshapes the distribution and does not change what the model knows — is a reading of that property, not a separate empirical claim."
+    status: needs_reverification
+  - id: sampling-determinism
+    claim: "Greedy decoding is deterministic given the next-token distribution and a fixed tie-breaking rule. Temperature sampling instead draws from a pseudo-random generator: seeding that generator makes a particular run reproducible, but it does not turn sampling into greedy decoding."
+    importance: major
+    source_url: "https://numpy.org/doc/stable/reference/random/generator.html"
+    source_title: "numpy.random.Generator / numpy.random.default_rng"
     publisher: "NumPy documentation"
-    accessed_at: "2026-07-18"
-    primary_source: false
-    evidence_note: "Temperature scaling of logits is a standard, widely-documented decoding technique; numpy.random.Generator.choice documents the probability-weighted sampling used to implement it. The T->0 = greedy limit is a mathematical property of the softmax."
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "The claim is about the behaviour of the API this notebook actually calls — default_rng(seed) and rng.choice, both documented on this page — so the NumPy reference is the primary source for it. The documentation states that a Generator constructed from a given seed reproduces the same stream. The two kinds of determinism stay distinct because the selection rules differ: greedy takes the argmax and never consults the generator. The notebook shows this by running greedy once and sampling at two seeds."
     status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Network egress not tested live this session (see course/research_gaps.md). The autoregressive-loop and temperature claims are standard, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "2026-08-09 (WI-6): re-reviewed after the theory sections were deepened. Two claims added — that dividing logits by T>0 preserves their order, and the distinction between greedy determinism and a seeded pseudo-random sampler. The temperature-sampling entry's source was also replaced: it previously pointed at numpy.random.Generator.choice with primary_source: false, which documented the sampling call but not the temperature definition it was cited for. It now cites the paper that defines the temperature-scaled softmax, so every claim in this pack rests on a primary source, as reports/handover/queue.yaml requires. Network egress is blocked in this environment (403 through the proxy), so the new and re-sourced claims are needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
+    - "Two passages added to the notebook are deliberately NOT recorded as claims. The tokenizer section (encode/decode fix the vocabulary and therefore the meaning of each output index; ids carry no meaning away from the maps built here; an unseen word is simply absent) describes this notebook's own implementation and was verified by reading it. The closing paragraph about preferring controllable decoding and validating structured output anyway in the Memory AI Lab is course direction for later lessons, not an assertion about how any model behaves."
     - "The model in this lesson is an intentionally tiny bigram (add-one smoothed transition counts) built from the course corpus, explicitly presented as NOT a Transformer: the point is that the generation LOOP is identical regardless of how the next-token distribution is produced. Vocabulary size (66), transition matrix shape (66x66) and all generated strings are genuinely produced by executing notebooks/lezione-33-tokenizer-generazione.ipynb this session."

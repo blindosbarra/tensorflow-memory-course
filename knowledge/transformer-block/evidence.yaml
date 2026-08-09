@@ -1,6 +1,6 @@
 ---
 lesson_id: transformer-block
-reviewed_at: 2026-07-18
+reviewed_at: 2026-08-09
 claims:
   - id: block-sublayers
     claim: "A Transformer encoder block wraps the self-attention sub-layer and a position-wise feed-forward sub-layer, each followed by a residual connection and layer normalization; the position-wise FFN is two linear transformations with a non-linearity in between, applied identically at every position."
@@ -22,9 +22,31 @@ claims:
     primary_source: true
     evidence_note: "Section 3.1 states all sub-layers and embeddings produce outputs of dimension d_model to enable the residual connections."
     status: needs_reverification
+  - id: output-projection-dmodel
+    claim: "The attention sub-layer returns to d_model through a learned output projection W_O, and the second linear transformation of the FFN returns to the same dimension. This is what makes the residual sum x + Sublayer(x) well defined and lets blocks be stacked, even though the intermediate work happens in other dimensions (d_v per head, d_ff inside the FFN)."
+    importance: major
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "Section 3.2.2 defines multi-head attention as the concatenation of the per-head outputs projected once more by W^O; Section 3.3 gives the FFN as an inner layer of dimension d_ff followed by a projection back to d_model. Together they are the shape contract the lesson describes."
+    status: needs_reverification
+  - id: layer-norm-per-position
+    claim: "Layer normalization computes its mean and variance over the features of a single position, independently for each position, rather than across a batch. It therefore rescales each token's own representation and moves no information between tokens: it does not create context and does not substitute for attention."
+    importance: major
+    source_url: "https://arxiv.org/abs/1607.06450"
+    source_title: "Layer Normalization"
+    publisher: "Ba, Kiros and Hinton, 2016 (arXiv:1607.06450)"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "The paper defines layer normalization by computing the normalization statistics from the summed inputs to the neurons in a layer on a single training case, which is exactly the batch- and position-independence the lesson relies on. That no information crosses token boundaries follows from the statistics being per-position. The notebook omits the learnable gain and bias to isolate the mechanics and says so."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Network egress to arxiv.org not tested live this session (see course/research_gaps.md); canonical Transformer content marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
     - "The lesson implements the post-norm variant (LayerNorm after the residual add) as in the original 2017 paper, and says so; it does not claim this is the only variant (pre-norm is common in later models). All shapes/statistics in the docs (output (5,16), per-token mean ~0 / std ~1, stacked-block norm 4.0 = sqrt(16)) are genuinely produced by executing notebooks/lezione-32-blocco-transformer.ipynb this session. Weights are random, not learned, and the lesson states the block is illustrative, not trained."
+    - "2026-08-09 (WI-6): re-reviewed after the theory sections were deepened. Two claims added — the W_O / FFN return to d_model as the shape contract behind the residual sum, and the per-position nature of layer normalization. The second brings a new primary source into this pack (arXiv:1607.06450), because the original Transformer paper cites layer normalization rather than defining it. Network egress is blocked in this environment (403 through the proxy), so both new claims are needs_reverification per COURSE_FACTORY_SPEC.md 3.2. The explicit FFN formula ReLU(xW1+b1)W2+b2 added to the notebook is the definition already covered by block-sublayers and needs no separate entry."
+    - "The notebook also states that reusing the same random parameters across the three stacked blocks is a size-of-example choice and that a real model learns distinct parameters per block, and that the lab's asserts check structural invariants rather than semantic quality. Both are statements about this notebook's own code, verified by reading it, not external claims."

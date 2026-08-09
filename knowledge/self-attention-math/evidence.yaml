@@ -1,6 +1,6 @@
 ---
 lesson_id: self-attention-math
-reviewed_at: 2026-07-18
+reviewed_at: 2026-08-09
 claims:
   - id: self-attention-projections
     claim: "In self-attention the queries, keys, and values are all computed from the same input sequence X via three separate learned projection matrices: Q = X W_Q, K = X W_K, V = X W_V."
@@ -22,9 +22,30 @@ claims:
     primary_source: true
     evidence_note: "Follows directly from Section 3.2: with n queries and n keys the QK^T product is n x n. The (i,j) reading is the standard interpretation."
     status: needs_reverification
+  - id: scaled-dot-product-scaling
+    claim: "Scaled dot-product attention divides the QK^T scores by sqrt(d_k) before the softmax. A dot product sums d_k contributions, so for large d_k the scores grow in magnitude and push the softmax into regions where its gradients are extremely small; the division is a fixed scale correction, not a learned parameter."
+    importance: critical
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "Section 3.2.1 defines Attention(Q,K,V) = softmax(QK^T/sqrt(d_k))V and gives the motivation for the scaling factor: for large values of d_k the dot products grow large in magnitude, pushing the softmax into regions where it has extremely small gradients. That the factor is fixed rather than learned follows from the definition — it carries no parameters."
+    status: needs_reverification
+  - id: qkv-separate-roles
+    claim: "The three projections are kept separate because Q, K and V play different roles: rows of Q formulate a request, rows of K are the addresses it is compared against, and rows of V carry the content that is combined. Forcing Q = K = V = X would remove the model's ability to learn separately what to look for, what makes a token findable, and what content to transfer."
+    importance: major
+    source_url: "https://arxiv.org/abs/1706.03762"
+    source_title: "Attention Is All You Need"
+    publisher: "Vaswani et al., NeurIPS 2017 (arXiv:1706.03762)"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "Section 3.2.2 specifies three distinct learned projection matrices per head, applied to queries, keys and values respectively; the separation of the three parameter sets is what the notebook's reading rests on. The query/address/content phrasing is an interpretation of that structure, presented in the lesson as a reading aid and not as a claim from the paper."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Network egress to arxiv.org not tested live this session (see course/research_gaps.md). The self-attention projection definition is canonical Transformer-paper content, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
     - "All shapes and attention numbers in the docs are genuinely produced by executing notebooks/lezione-31-self-attention.ipynb this session. Projection matrices are random (not learned) purely to illustrate the mechanics, which is stated explicitly in the lesson; the resulting attention matrix is deliberately close to uniform and the docs say so rather than overstating the effect."
+    - "2026-08-09 (WI-6): re-reviewed after the theory sections were deepened. Two claims added for content the lesson now asserts and this pack did not cover — the sqrt(d_k) scaling and its gradient motivation, and the reason the three projections are kept separate. Both cite the same primary source already used by this pack; network egress to arxiv.org is still blocked in this environment (403 through the proxy), so both are marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2 rather than verified. The shape walk-through added to the notebook (Q,K in R^{n x d_k}, QK^T in R^{n x n}, row-wise softmax) restates self-attention-square-matrix and needs no separate entry."
