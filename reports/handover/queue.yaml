@@ -267,6 +267,16 @@ items:
       61 notebook sono passati dopo `uv sync --extra dev --extra ml`; albero
       pulito rispetto ai dataset rigenerati. Restano da approfondire le lezioni
       40-60, sempre registrando evidenze e testo nello stesso commit.
+      2026-08-09: completato il segmento 40-42. Approfonditi il collo di
+      bottiglia e il merge di LoRA, il contratto KerasHub per target e
+      checkpoint degli adapter, e i meccanismi distinti di QLoRA (NF4, double
+      quantization e paged optimizer). Tre nuove affermazioni sono state
+      registrate nei rispettivi evidence.yaml nello stesso commit del testo;
+      le tre lezioni sono tornate a technical_review. Il gate rapido sui tre
+      notebook e il gate completo dei 61 notebook sono passati dopo
+      `uv sync --extra dev --extra ml`; albero pulito rispetto ai dataset
+      rigenerati. Restano da approfondire le lezioni 43-60, sempre registrando
+      evidenze e testo nello stesso commit.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
