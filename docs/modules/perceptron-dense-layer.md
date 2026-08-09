@@ -18,8 +18,8 @@ sources:
 > `notebooks/lezione-10-prima-rete-neurale.ipynb`. Questa pagina e' il
 > riassunto di riferimento. Con questa lezione comincia la Fase 2
 > (TensorFlow/Keras). Richiede `uv sync --extra ml`.
-> Consolida le lezioni pianificate `perceptron-dense-layer`,
-> `forward-pass` e l'introduzione a `sequential-functional-api`.
+> Copre anche il forward pass e l'introduzione all'API sequenziale, che
+> erano dichiarati come lezioni a se' e non lo sono piu' (D4).
 
 ## Cosa saprai fare
 

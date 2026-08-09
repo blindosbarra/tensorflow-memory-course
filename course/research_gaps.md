@@ -287,3 +287,22 @@ Motivazione: `evidence.yaml` e' il file che regge la regola "nessun fatto
 inventato", ed e' presente in tutti e 67 i topic. Gli altri cinque non hanno
 impedito di scrivere le lezioni 3-60. Una spec che richiede artefatti che
 nessuno produce non e' una spec: e' un debito dichiarato.
+
+### D4 — I sette id dichiarati e mai scritti: **toglierli**
+
+`course.yaml` dichiarava sette lezioni che non sono mai state scritte:
+`tfdata-performance` e `data-validation` in `data-engineering`,
+`forward-pass`, `losses-optimizers`, `backprop-autodiff`,
+`sequential-functional-api` e `callbacks-checkpoints` in `keras-dnn`. La
+scelta e' di toglierli: il corso dichiara solo cio' che insegna.
+
+Motivazione: quei temi sono gia' insegnati dentro le lezioni 10-14, e le
+pagine di quelle lezioni lo dicevano gia' esplicitamente. Tenerli dichiarati
+avrebbe promesso allo studente nove lezioni di Fase 2 quando il contenuto sta
+in quattro, che e' la stessa classe di problema corretta da D2 sugli esercizi.
+Non e' una rinuncia a insegnare quei temi: e' smettere di contarli due volte.
+
+Conseguenza: i sette id escono da `course.yaml` e da `progress.yaml`; il
+syllabus non li elenca piu' nel percorso minimo ne' nelle Fasi 1 e 2; le tre
+pagine che li citavano come "lezioni pianificate" ora dicono che l'argomento
+e' coperto li' dentro. Chiude la seconda meta' di WI-12.

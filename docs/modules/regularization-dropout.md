@@ -16,8 +16,8 @@ sources:
 
 > **La lezione si segue nel notebook**
 > `notebooks/lezione-12-overfitting.ipynb`. Questa pagina e' il riassunto
-> di riferimento. Consolida le lezioni pianificate `regularization-dropout`
-> e `callbacks-checkpoints`, e apre la valutazione finale.
+> di riferimento. Copre anche callback e checkpoint, che erano dichiarati
+> come lezione a se' e non lo sono piu' (D4), e apre la valutazione finale.
 
 ## Cosa saprai fare
 

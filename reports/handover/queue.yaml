@@ -61,6 +61,13 @@ meta:
       decided: 2026-08-07
       decision: "B — emendare la spec: evidence.yaml obbligatorio, gli altri cinque file raccomandati"
       rationale: course/research_gaps.md (sezione "Decisioni dell'autore del corso")
+    D4:
+      question: "I 7 id data-engineering/keras-dnn dichiarati e mai scritti: toglierli o tenerli come planned?"
+      recommendation: "Toglierli — i temi sono gia' insegnati dentro le lezioni 10-14"
+      status: resolved
+      decided: 2026-08-09
+      decision: "Toglierli da course.yaml: il corso dichiara solo cio' che insegna"
+      rationale: course/research_gaps.md (sezione "Decisioni dell'autore del corso")
 
 items:
   - id: WI-1
@@ -423,7 +430,7 @@ items:
   - id: WI-12
     title: "Risolvere il modulo mlops e il requisito Vertex AI"
     priority: P3
-    status: in_progress
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -473,6 +480,19 @@ items:
       il modello smontato da 3fa5799 e da D2 e gia' corretto in
       templates/lesson.md con WI-8. E' la stessa classe di residuo, in una
       sezione che questo item non tocca.
+      2026-08-09, seconda parte: SBLOCCATO E CHIUSO. L'autore del corso ha
+      deciso (D4, registrata in meta.decisions e in course/research_gaps.md):
+      i sette id data-engineering/keras-dnn dichiarati e mai scritti si
+      tolgono, perche' il corso dichiara solo cio' che insegna e quei temi
+      sono gia' insegnati dentro le lezioni 10-14. Tolti da course.yaml e da
+      progress.yaml; il syllabus non li elenca piu' nel percorso minimo ne'
+      nelle Fasi 1 e 2; le tre pagine di lezione che li citavano come
+      "lezioni pianificate" ora dicono che l'argomento e' coperto li' dentro,
+      con rimando a D4. Fase 2 passa da nove lezioni dichiarate a quattro
+      reali. Dichiarate 70, tracciate 71 (la differenza resta il deliverable
+      pmle-en-translations). Nessun id di lezione resta dichiarato senza una
+      decisione registrata, che e' il primo criterio di accettazione; il
+      secondo, sulla spec, era gia' soddisfatto dalla prima parte.
 
   - id: WI-13
     title: "Estrarre i componenti del capstone in src/memory_ai/ con test"
