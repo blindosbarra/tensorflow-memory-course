@@ -117,16 +117,22 @@ Obiettivi misurabili: distinguere pesi fissi/addestrabili, implementare LoRA,
 misurare baseline e impacchettare adapter. Assessment: esperimento riproducibile
 baseline/LoRA; QLoRA resta opzionale se l'hardware non e' adeguato.
 
-## Fase 7 — Pipeline, deploy e monitoring (5 ore)
+## Fase 7 — Packaging e pipeline locale (non ancora costruita)
 
 Lezioni: `reproducible-project`, `containers-artifacts`,
-`local-training-pipeline`, `vertex-ai-training`, `vertex-ai-pipelines`,
-`registry-deployment`, `batch-online-inference`, `model-evaluation`,
-`monitoring-drift`, `cost-cleanup-security`.
+`local-training-pipeline`.
 
-Obiettivi misurabili: versionare artifact, eseguire una pipeline locale,
-valutare, monitorare e documentare costi/cleanup cloud. Assessment: pipeline
-locale completa e piano Vertex AI opzionale con smoke test e cleanup.
+Obiettivi misurabili: versionare artifact ed eseguire una pipeline di
+training riproducibile in locale. Assessment: pipeline locale completa.
+
+Questa fase e' l'unica del corso ancora da scrivere: gli id sono dichiarati
+in `course/course.yaml` e tracciati come `planned`, senza notebook ne'
+pagina. La decisione **D1** (2026-08-07) l'ha ridotta da dieci lezioni a
+tre, togliendo le sette cloud — una pipeline Vertex AI *testabile*
+richiederebbe un progetto GCP fatturabile, che contraddice il principio per
+cui il corso gira senza dipendenze esterne. Evaluation e monitoring sono gia'
+insegnati dalle lezioni capstone 57 e 59; la teoria cloud resta nel modulo
+di certificazione PMLE.
 
 ## Fase 8 — Feedback e preference training (3,5 ore)
 

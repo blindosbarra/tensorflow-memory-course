@@ -24,9 +24,11 @@ Il corso non è completo quando esistono molti file Markdown. È completo quando
 - tutti gli esempi Python passano lint e test;
 - tutti i notebook sono eseguibili dall’inizio alla fine;
 - dataset e output attesi sono riproducibili;
-- gli esercizi hanno hint e soluzione separata;
+- le lezioni con esercizio (1-30) hanno hint e soluzione spiegata nel
+  notebook stesso; le lezioni 31-60 sono dichiarate di sola lettura (D2);
 - il progetto finale funziona localmente;
-- esiste almeno una pipeline Vertex AI documentata e testabile;
+- esiste almeno una pipeline di training riproducibile eseguibile in locale,
+  documentata e testabile (D1);
 - evaluation e monitoring producono report;
 - il sito statico viene compilato senza errori;
 - un principiante può seguire il percorso senza dipendenze implicite.
@@ -184,7 +186,9 @@ Funzioni minime:
 - **pytest, ruff, mypy**: test, lint e controlli di tipo.
 - **TensorFlow/Keras/KerasHub**: stack ML.
 - **Pandas, scikit-learn, NetworkX, Matplotlib**: dati, metriche e grafi.
-- **Google Cloud SDK e Vertex AI SDK**: fase cloud.
+- **Google Cloud SDK e Vertex AI SDK**: non installati e non richiesti. La
+  decisione **D1** ha tolto la fase cloud eseguibile; Vertex AI resta teoria
+  d'esame nel modulo PMLE, che non esegue codice.
 
 La versione esatta delle dipendenze deve essere bloccata nel lockfile dopo aver verificato compatibilità e disponibilità nell’ambiente scelto.
 
@@ -431,13 +435,15 @@ Costruire progressivamente:
 
 - packaging;
 - artifact;
-- pipeline locale;
-- pipeline Vertex AI;
-- model registry;
-- deploy;
+- pipeline locale riproducibile;
 - evaluation;
-- monitoring;
-- cost guardrails.
+- monitoring.
+
+Model registry, deploy gestito e cost guardrails sono usciti da questo passo
+con la decisione **D1**: richiederebbero un progetto GCP fatturabile, che
+nessuno studente ha garantito, e contraddirebbero il principio per cui il
+corso gira senza dipendenze esterne. Restano come teoria d'esame nel modulo
+di certificazione PMLE, che e' opzionale e dichiarato tale.
 
 ### Passo 6 — Preference learning
 

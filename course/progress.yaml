@@ -1,5 +1,5 @@
-course_status: milestones_0_to_5_authored_ready_for_learner_review
-current_milestone: milestone-5
+course_status: fasi_0_6_e_8_9_autorate_fase_7_mlops_non_costruita_in_attesa_di_learner_review_umana
+current_milestone: learner-review-umana
 modules:
   data-engineering:
     status: in_progress
@@ -142,6 +142,56 @@ modules:
           code: pass
           didactics: pass
           publish: pass
+      tfdata-performance:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. Registrata qui come planned perche' un id dichiarato e non tracciato era invisibile: non compariva ne' fra le lezioni fatte ne' fra le lacune."
+      data-validation:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. Registrata qui come planned perche' un id dichiarato e non tracciato era invisibile: non compariva ne' fra le lezioni fatte ne' fra le lacune."
   foundations:
     status: in_progress
     lessons:
@@ -332,6 +382,131 @@ modules:
           code: pass
           didactics: pass
           publish: pass
+      forward-pass:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. Registrata qui come planned perche' un id dichiarato e non tracciato era invisibile: non compariva ne' fra le lezioni fatte ne' fra le lacune."
+      losses-optimizers:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. Registrata qui come planned perche' un id dichiarato e non tracciato era invisibile: non compariva ne' fra le lezioni fatte ne' fra le lacune."
+      backprop-autodiff:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. Registrata qui come planned perche' un id dichiarato e non tracciato era invisibile: non compariva ne' fra le lezioni fatte ne' fra le lacune."
+      sequential-functional-api:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. Registrata qui come planned perche' un id dichiarato e non tracciato era invisibile: non compariva ne' fra le lezioni fatte ne' fra le lacune."
+      callbacks-checkpoints:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. Registrata qui come planned perche' un id dichiarato e non tracciato era invisibile: non compariva ne' fra le lezioni fatte ne' fra le lacune."
   text-embeddings:
     status: in_progress
     lessons:
@@ -1095,6 +1270,84 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: chiude la Fase 6. Salva/carica adapter con np.savez (4052 byte vs 32768 base, ~8x), round-trip output identico atol 1e-6, rango dai metadati (assert). Il notebook pulisce i propri file temporanei (adapter_memoria/ rimossa). Eseguito davvero."
+  mlops:
+    status: planned
+    lessons:
+      reproducible-project:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. La decisione D1 riduce il modulo mlops a un percorso breve eseguibile in locale, quindi diversi di questi id usciranno da course.yaml con WI-12. Fino ad allora restano visibili come planned invece che invisibili."
+      containers-artifacts:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. La decisione D1 riduce il modulo mlops a un percorso breve eseguibile in locale, quindi diversi di questi id usciranno da course.yaml con WI-12. Fino ad allora restano visibili come planned invece che invisibili."
+      local-training-pipeline:
+        status: planned
+        state_machine:
+          planned: done
+          researching: pending
+          evidence_review: pending
+          writing: pending
+          lab_build: pending
+          technical_review: pending
+          learner_review: pending
+          done: pending
+        artifacts:
+          research_pack: null
+          lesson: null
+          notebook: null
+          exercise: null
+          solution: null
+        quality_gates:
+          research: pending
+          lesson: pending
+          code: pending
+          didactics: pending
+          publish: pending
+        notes:
+          - "2026-08-09 (WI-11): dichiarata in course.yaml e mai costruita. La decisione D1 riduce il modulo mlops a un percorso breve eseguibile in locale, quindi diversi di questi id usciranno da course.yaml con WI-12. Fino ad allora restano visibili come planned invece che invisibili."
   preference-learning:
     status: in_progress
     lessons:
@@ -1706,7 +1959,7 @@ modules:
           publish: pending
         notes:
           - "2026-07-14: learner asked whether the PMLE module could be bilingual (IT/EN). Learner chose PMLE-module-only scope over whole-course translation via a clarifying question (main course's 15 lessons stay Italian-only for now). Translated all 7 pmle-*.md lessons (including pmle-07's four Mermaid diagrams, with node labels translated too) into docs/modules/en/, added as a parallel 'GCP PMLE Certification (English)' nav section in mkdocs.yml, no new mkdocs plugin dependency added (plain parallel directory instead of an i18n plugin, to avoid a new dependency for a first pass). Front matter ids suffixed -en to avoid colliding with the Italian originals. No separate English knowledge pack: EN lessons are 1:1 translations of already-reviewed IT content, same verified/needs_reverification status per claim, no new claims introduced in translation."
-last_updated: 2026-07-14
+last_updated: 2026-08-09
 notes:
   - Complete the vertical slice before scaling course generation.
   - Learner review requires human validation after local quality gates pass.
@@ -1745,3 +1998,7 @@ notes:
   - "2026-07-16: learner asked for a single notebook consolidating the whole main-course memory-building exercise (not the PMLE track) with a resource/cost estimate. Scoped via clarifying questions to: consolidate the 15 already-built lessons (not the still-planned embedding/Transformer/LoRA/capstone phases) plus local/Colab compute requirements (not cloud $ cost). Added notebooks/consolidato-memoria-lezioni-01-15.ipynb: regenerates the full data pipeline from raw synthetic CSVs through the final memory-type classifier end to end (Fase 1 cleaning/leakage-audit/feature-encoding, Fase 0 NumPy/gradient-descent/softmax baseline, Fase 2 Keras dense network with an overfitting demo and the regularized final architecture, Fase 3 start with tf.data and the TextVectorization bag-of-words model), condensing redundant re-demonstrations (e.g. Lesson 11's GradientTape rewrite, Lesson 14's tf.data rewrite) into brief illustrative snippets rather than retraining the same architecture repeatedly. Reproduces the same headline result as Lesson 15 (numeric features plateau ~60-65% validation accuracy, reading the actual memory text via bag-of-words lifts it to ~95%). Resource-estimate section uses numbers measured by actually executing the notebook in this session (55-58s wall time across two runs, 781 MB peak RAM, no GPU needed, ~3 GB disk for the TF/Keras environment), not theoretical guesses. Verified: ruff clean, and the notebook executes without errors both standalone and as part of the full `scripts/execute_notebooks.py` run across all 16 notebooks (~3m35s total)."
   - "2026-07-14: learner asked for concrete GCP product usage (not just names), specifically Feature Store setup, AutoSxS setup theory, Kubeflow-vs-Agent-Platform-Pipelines choice criteria with a concrete pipeline definition including feature extraction, and — the largest ask — a synthesis section building complete worked architectures end-to-end (an app to predict purchase, one to predict weather, AutoML flower classification), showing how to apply the theory including troubleshooting (overfitting/underfitting) and MLOps for both traditional and generative AI. Deepened pmle-02 (Feature Store entity-type/online-offline/point-in-time-correctness mechanics; AutoSxS setup ingredients and autorater calibration) and pmle-05 (Kubeflow Pipelines SDK worked pipeline definition with a validate/extract-features/train/evaluate/conditional-deploy DAG; explicit Kubeflow-vs-Agent-Platform-Pipelines selection criteria). Added a new lesson pmle-07-architetture-end-to-end, explicitly marked as a synthesis add-on outside the exam guide's six-domain structure (not a literal exam section, research gate not_applicable): three worked architectures (tabular purchase-propensity classifier with an overfitting diagnosis via a constructed AUC-by-iteration table; weather-forecasting regression with lag features and an underfitting diagnosis via a constructed MAE comparison, plus a note on expected seasonal drift; AutoML flower image classifier with a per-class confusion matrix exposing class-imbalance and an edge-vs-cloud deployment decision), a consolidated troubleshooting playbook table, and a traditional-ML-vs-generative-AI (LLMOps) MLOps comparison table. Registered in course.yaml/mkdocs.yml/docs/modules/index.md with a full knowledge pack (evidence.yaml/concepts/apis/pitfalls/examples/references), all needs_reverification general knowledge reusing only product names already verified in pmle-01..06."
   - "2026-08-05: synchronized README.md, docs/index.md, and course/progress.yaml top-level metadata with COURSE_FACTORY_SPEC.md Section 9 (Gate E — Publish). All 60 core lessons and PMLE certification tracks are authored and pass local quality gates; learner_review status preserved across individual lessons pending human evaluation."
+  - "2026-08-09 (WI-11): riallineati course.yaml e progress.yaml a cio' che esiste davvero. Prima: 84 lezioni dichiarate in course.yaml, 68 tracciate qui, 17 dichiarate e non tracciate — quei 17 id non comparivano ne' fra le lezioni fatte ne' fra le lacune, quindi erano invisibili in entrambe le direzioni. Ora ogni id dichiarato e' tracciato: le 2 di data-engineering (tfdata-performance, data-validation), le 5 di keras-dnn (forward-pass, losses-optimizers, backprop-autodiff, sequential-functional-api, callbacks-checkpoints) e le 10 di mlops sono registrate come planned, con artefatti null e gate pending, cioe' dichiarate mancanti invece che assenti."
+  - "2026-08-09 (WI-11): lo status di modulo in course.yaml tornava a discriminare. foundations, data-engineering e keras-dnn erano planned pur essendo scritti e pubblicati, la stessa etichetta che portava mlops, che invece e' genuinamente vuoto: ora i primi tre sono in_progress e solo mlops resta planned. course_status non dice piu' milestones_0_to_5_authored_ready_for_learner_review, che contraddiceva il syllabus a nove fasi piu' capstone, e current_milestone e' learner-review-umana: nessuna learner review umana risulta ancora depositata in reports/reviews/, ed e' un gate non delegabile."
+  - "2026-08-09 (WI-11): i tre gate che la SDD segnalava come sopravvalutati non lo sono piu', e la ragione e' che le decisioni sono state prese. code: pass sulle lezioni Gemma dipendeva da WI-1, che e' done; didactics: pass sulle lezioni senza esercizio dipendeva da D2, che ha dichiarato legittimo il tipo di lezione di sola lettura; research: pass sui topic con il solo evidence.yaml dipendeva da D3, che ha emendato la spec rendendo obbligatorio quel file e raccomandati gli altri cinque. Nessun gate resta a dichiarare uno stato che un controllo misurabile contraddice."
+  - "2026-08-09 (WI-11): aggiunto scripts/check_course_consistency.py, la parte 'optional, recommended' dell'item. Riporta id dichiarati e non tracciati, tracciati e non dichiarati, artefatti tracciati che non esistono, pagine pubblicate che nessuna lezione dichiara, e lezioni a learner_review o done con un gate non pass. Non e' un gate di CI, per scelta dell'autore del corso: serve a non ripetere a mano l'audit che ha prodotto la SDD. Oggi riporta 'OK: nothing to reconcile'. pmle-en-translations resta tracciata come deliverable e non come lezione — sono le sette traduzioni EN delle pagine PMLE, che non hanno un id di lezione proprio — e lo script la elenca a parte invece di contarla come drift."

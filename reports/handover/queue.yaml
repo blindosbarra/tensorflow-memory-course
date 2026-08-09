@@ -306,7 +306,7 @@ items:
   - id: WI-9
     title: "Fissare i seed nei 21 notebook non deterministici"
     priority: P2
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -321,11 +321,41 @@ items:
     notes: >-
       Dove la lezione insegna la non-determinismo (lezione-20, etichette
       K-Means) va mantenuta e resa esplicita, non eliminata con un seed.
+      2026-08-09: fatto, senza modifiche ai notebook, perche' la premessa
+      dell'item non regge piu'. Verificato call site per call site su tutti e
+      61 i notebook: non resta nessuna sorgente di casualita' senza seed. Delle
+      21 lezioni elencate nella SDD, cinque (34, 35, 36, 41, 56 — le lezioni
+      Gemma) non hanno affatto call site casuali, e tutte le altre hanno ogni
+      sito seminato. Gli unici quattro casi che un grep segnala come non
+      seminati (lezioni 31, 32, 33, 40) sono `np.random.default_rng(seed)` dove
+      `seed` e' un parametro di funzione con default numerico: seminati, solo
+      invisibili a una regex. La riga di inventario della SDD contava i
+      notebook che contengono la stringa "seed", che e' un test piu' debole di
+      quanto sembri.
+      Criterio di accettazione verificato davvero: due run completi
+      consecutivi, 61/61 entrambi, `git status --porcelain` vuoto dopo
+      ciascuno.
+      Attenzione per chi tocchera' il classificatore: models/ e' in
+      .gitignore, quindi models/memory_type_classifier.keras NON e' coperto
+      dal controllo su git status, e il criterio "identical committed
+      artifacts" non lo raggiunge. Verificato a parte, ed e' un caso che
+      inganna: il file .keras e' un archivio zip e il suo sha256 cambia a ogni
+      run per i timestamp interni, anche quando l'addestramento e'
+      deterministico. Confrontando invece i pesi (`get_weights()`) l'hash e'
+      identico fra due esecuzioni. Non leggere un hash di file diverso come
+      non-determinismo. Il file lo scrivono lezione-12-overfitting e il
+      notebook consolidato (non la lezione 54, come dice la SDD), ed entrambi
+      chiamano keras.utils.set_random_seed.
+      Secondo criterio ("ogni cella intenzionalmente non seminata porta un
+      commento che spiega perche'") vacuo: non esistono celle simili. La
+      lezione 20 usa KMeans(random_state=42, n_init=10) e discute la
+      permutazione delle etichette a parole, che e' il comportamento che la
+      SDD indicava come esemplare.
 
   - id: WI-10
     title: "Rendere portabile il notebook consolidato (Windows/macOS)"
     priority: P2
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -336,11 +366,27 @@ items:
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
     expect: "61/61; nessun import non condizionale di `resource`"
     verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
+    notes: >-
+      2026-08-09: fatto. La misura di RAM sta ora in una funzione
+      picco_ram_mb() che protegge l'import di `resource` con try/except
+      ModuleNotFoundError e restituisce None su Windows, dove quel modulo non
+      esiste; la cella stampa "non disponibile su questa piattaforma" invece di
+      fallire. Corretta anche l'unita': ru_maxrss e' in kilobyte su Linux ma in
+      byte su macOS, e il vecchio commento "KB -> MB su Linux" documentava
+      l'errore invece di risolverlo — su macOS il numero era sbagliato di un
+      fattore 1024. I tre rami sono stati eseguiti singolarmente per
+      verificarli, incluso quello Windows simulando ModuleNotFoundError.
+      Verificato: gate rapido sul notebook consolidato, poi run completo
+      61/61 con exit 0 e albero pulito a parte la patch stessa. Nessun altro
+      import non condizionale di `resource` nel repository.
+      Nota per chi tocca questo notebook: scripts/execute_notebooks.py esegue
+      senza riscrivere il file, quindi le celle non deterministiche (tempo,
+      RAM) non sporcano l'albero.
 
   - id: WI-11
     title: "Riallineare course.yaml e progress.yaml alla realta'"
     priority: P2
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -351,11 +397,33 @@ items:
       - "uv run ruff check ."
     expect: "conteggi dichiarati/tracciati/presenti riconciliati"
     verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
+    notes: >-
+      2026-08-09: fatto. I 17 id dichiarati e non tracciati (2 data-engineering,
+      5 keras-dnn, 10 mlops) sono ora registrati in progress.yaml come planned,
+      con artefatti null e gate pending: dichiarati mancanti invece che
+      invisibili. foundations, data-engineering e keras-dnn passano da planned a
+      in_progress in course.yaml, cosi' lo status torna a distinguerli da mlops,
+      che e' l'unico genuinamente vuoto. course_status e current_milestone non
+      contraddicono piu' il syllabus e dicono apertamente che manca la learner
+      review umana. I tre gate che la SDD dava per sopravvalutati sono retti
+      dalle decisioni prese nel frattempo: code dipendeva da WI-1 (done),
+      didactics da D2, research da D3.
+      Aggiunto scripts/check_course_consistency.py (la parte "optional,
+      recommended" dell'item), che oggi riporta "OK: nothing to reconcile".
+      Non e' un gate di CI, per scelta dell'autore del corso.
+      Una nota per chi legge i conteggi: dichiarate 84, tracciate 85. La
+      differenza e' pmle-en-translations, che traccia le sette traduzioni EN
+      delle pagine PMLE come deliverable e non come lezione — non ha un id di
+      lezione in course.yaml e non deve averlo. Lo script la elenca a parte
+      invece di contarla come drift.
+      Verificato: ruff (verify dell'item), piu' mypy, pytest 8 passed,
+      mkdocs build --strict, build_references.py --check e
+      next_work_item.py --check, tutti pass.
 
   - id: WI-12
     title: "Risolvere il modulo mlops e il requisito Vertex AI"
     priority: P3
-    status: todo
+    status: in_progress
     blocked_by: []
     depends_on: []
     files:
@@ -367,11 +435,49 @@ items:
       - "uv run mkdocs build --strict"
     expect: "nessun id di lezione dichiarato senza decisione registrata"
     verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
+    notes: >-
+      2026-08-09: fatta la meta' decisa, resta aperta quella che non lo e'.
+      FATTO, tutto sotto D1. I sette id cloud (vertex-ai-training,
+      vertex-ai-pipelines, registry-deployment, batch-online-inference,
+      model-evaluation, monitoring-drift, cost-cleanup-security) sono usciti da
+      course.yaml e da progress.yaml; il modulo mlops resta dichiarato con i tre
+      id locali (reproducible-project, containers-artifacts,
+      local-training-pipeline), planned, e cambia titolo in "Packaging e
+      pipeline locale". COURSE_FACTORY_SPEC.md non chiede piu' "almeno una
+      pipeline Vertex AI documentata e testabile" ma una pipeline di training
+      riproducibile in locale; il Passo 5 del processo operativo perde registry,
+      deploy gestito e cost guardrails; l'elenco delle dipendenze dice che il
+      Cloud SDK non e' installato ne' richiesto. docs/syllabus.md non elenca
+      piu' le sette lezioni cloud e dichiara apertamente che la Fase 7 e'
+      l'unica ancora da scrivere.
+      Verificato: mkdocs build --strict (il verify dell'item), ruff,
+      build_references.py --check e check_course_consistency.py, che riporta
+      "OK: nothing to reconcile" con 77 dichiarate e 78 tracciate (la
+      differenza e' il deliverable pmle-en-translations).
+      BLOCCATO, e non da un errore. Il secondo mezzo dell'item — "decide the 7
+      missing data-engineering/keras-dnn lessons" (tfdata-performance,
+      data-validation, forward-pass, losses-optimizers, backprop-autodiff,
+      sequential-functional-api, callbacks-checkpoints) — non ha una decisione
+      registrata. La SDD scrive che toglierli e' "likely more honest" perche'
+      quei temi sono gia' insegnati dentro le lezioni 10-14, ma una
+      raccomandazione non e' una risposta e le decisioni appartengono
+      all'autore del corso. Oggi i sette id restano dichiarati e tracciati come
+      planned, quindi visibili come lacuna: e' lo stato onesto in attesa della
+      decisione, non una scelta implicita. Serve una D4.
+      Non serve invece scrivere le tre lezioni mlops per chiudere l'item: i
+      criteri di accettazione parlano di decisioni registrate e di una spec che
+      dichiara solo requisiti che il repository intende soddisfare, non di
+      lezioni consegnate. Scriverle e' lavoro di contenuto a se' stante.
+      Osservazione fuori scope: COURSE_FACTORY_SPEC.md 7.6 (ruolo Exercise
+      Designer) chiede ancora "test automatici" e "soluzione separata", cioe'
+      il modello smontato da 3fa5799 e da D2 e gia' corretto in
+      templates/lesson.md con WI-8. E' la stessa classe di residuo, in una
+      sezione che questo item non tocca.
 
   - id: WI-13
     title: "Estrarre i componenti del capstone in src/memory_ai/ con test"
     priority: P3
-    status: todo
+    status: in_progress
     blocked_by: []
     depends_on: []
     files:
@@ -394,3 +500,48 @@ items:
       Lavoro grande. Se una iterazione non basta, spezzalo per componente
       (schema, classificatore, importance, embedding, retrieval, grafo,
       pipeline) e registra il progresso in notes prima di fermarti.
+      2026-08-09, prima fetta: estratti i quattro componenti che non hanno
+      bisogno del corpus di training, cioe' quelli che si possono testare con
+      il solo ambiente base.
+        - src/memory_ai/schema.py: MemoryRecord come dataclass congelata e
+          annotata, con validate() che restituisce l'elenco dei problemi invece
+          di sollevare (la lezione 52 stampa i record non validi, un validatore
+          che sollevasse fermerebbe il notebook sul primo esempio sbagliato).
+        - src/memory_ai/text.py: tokenize, extract_entities, extract_relations.
+        - src/memory_ai/importance.py: il punteggio composito della lezione 25,
+          piu' importance_breakdown() che restituisce i tre termini separati,
+          cosi' un punteggio sorprendente si spiega guardando quale termine lo
+          ha prodotto.
+        - src/memory_ai/embedding.py: embed hashing a norma 1, cosine_similarity
+          e MemorySearchIndex per la ricerca per similarita'.
+      Test: 49 passano (erano 8), ruff pulito, mypy strict pulito su 7 file.
+      L'estrazione e' stata verificata per PARITA', non a occhio: le funzioni
+      del pacchetto sono state confrontate con le implementazioni dei notebook
+      su 222 testi, incluso l'intero datasets/processed/memory_train.csv, con
+      zero differenze su entita', relazioni, importanza, tokenizzazione ed
+      embedding. Le asserzioni della lezione 58 sono riprodotte dal pacchetto.
+      Una tentazione a cui NON cedere, gia' provata e annullata: de-duplicare
+      le entita' in extract_entities. Sembra una correzione ovvia ("Marco met
+      Marco" non sono due entita') ma importance.py conta quel risultato,
+      quindi cambierebbe in silenzio i punteggi che le lezioni stampano. Un
+      refactor di estrazione deve preservare il comportamento; se la
+      de-duplicazione va fatta, e' una decisione dell'autore del corso e va
+      fatta in un item suo, aggiornando le lezioni che mostrano i numeri.
+      RESTA DA FARE:
+        - classificatore di tipo (lezione 54): serve il corpus, quindi va
+          deciso se il pacchetto lo addestra al volo o carica parametri
+          salvati. E' la ragione per cui non e' in questa fetta.
+        - grafo di entita' e relazioni (lezione 55, NetworkX) e retrieval
+          ibrido (lezione 28): entrambi richiedono l'extra ml.
+        - la classe MemoryAILab che assembla la pipeline (lezione 58), che
+          dipende dal classificatore.
+        - ricablare i notebook capstone perche' importino dal pacchetto invece
+          di ridefinire. Attenzione al vincolo della SDD: le lezioni che
+          costruiscono un componente DA ZERO devono continuare a costruirlo —
+          si estrae il componente finito, non si sostituisce la didattica con
+          un import.
+      Il criterio "la pipeline gira end to end dal solo src/memory_ai/" non e'
+      quindi ancora soddisfatto, ed e' per questo che l'item resta in_progress.
+      Il gate completo (verify) non e' stato eseguito in questa fetta perche'
+      nessun notebook e' stato toccato; e' stato eseguito il verify_fast, che
+      e' quello che copre le modifiche fatte.
