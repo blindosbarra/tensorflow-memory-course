@@ -585,3 +585,41 @@ items:
       Il gate completo (verify) non e' stato eseguito in questa fetta perche'
       nessun notebook e' stato toccato; e' stato eseguito il verify_fast, che
       e' quello che copre le modifiche fatte.
+
+  - id: WI-14
+    title: "Riportare in docs/modules/*.md le fonti citate solo nei notebook (31-60)"
+    priority: P2
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - docs/modules/
+      - docs/references.md
+    verify_fast:
+      - "uv run python scripts/build_references.py --check"
+    verify:
+      - "uv run python scripts/build_references.py --check"
+      - "uv run mkdocs build --strict"
+    verify_env: "uv sync (base): nessun extra ml, nessuna esecuzione di notebook"
+    expect: "--check passa senza rigenerare; ogni fonte citata in un notebook 31-60 compare nella pagina della sua lezione e quindi in docs/references.md"
+    notes: >-
+      Aperto il 2026-08-09 durante la revisione del segmento 34-36 di WI-6.
+      docs/references.md e' generato da scripts/build_references.py a partire
+      dalle sezioni "## Fonti" di docs/modules/*.md. WI-6 sta aggiungendo fonti
+      primarie ai notebook e agli evidence.yaml, ma non alle pagine del sito:
+      quelle fonti non raggiungono quindi la pagina aggregata. Oggi riguarda le
+      12 fonti nuove delle lezioni 32-33 e 34-36, e crescera' a ogni segmento
+      fino alla 60.
+      Il disallineamento e' silenzioso per costruzione: --check confronta
+      references.md con docs/modules/, e finche' nessuno dei due cambia il gate
+      passa. Non e' un bug di build_references.py, e' una fonte che non gli
+      arriva mai.
+      L'osservazione era stata registrata nelle note di WI-6 e rimandata "a chi
+      lavorera' WI-4", ma WI-4 e' done: nessuna iterazione la raccoglierebbe
+      piu'. E' la ragione per cui e' un item suo.
+      Da fare a valle di WI-6, o almeno rileggendo le sue note per sapere quali
+      lezioni sono state toccate: prendere le fonti dalla sezione "Fonti
+      primarie" dei notebook e dagli evidence.yaml, aggiungerle alla sezione
+      "## Fonti" della pagina corrispondente in docs/modules/, e rigenerare.
+      Non inventare fonti e non promuovere lo stato di verifica di una claim:
+      qui si copiano riferimenti gia' registrati, non se ne creano.

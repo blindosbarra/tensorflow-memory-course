@@ -28,33 +28,34 @@ claims:
     source_url: "https://keras.io/keras_hub/presets/"
     source_title: "KerasHub Models and Presets"
     publisher: "Keras documentation"
-    accessed_at: "2026-08-09"
+    accessed_at: null
     primary_source: true
-    evidence_note: "La guida ufficiale distingue preset di architettura e preset con pesi e documenta from_preset."
-    status: verified
+    evidence_note: "Struttura dei preset KerasHub dalla conoscenza pre-addestramento: la pagina non e' stata aperta (keras.io bloccato dal proxy di egress il 2026-08-09), quindi needs_reverification come le altre claim su questa API."
+    status: needs_reverification
   - id: gemma-task-model-contract
     claim: "GemmaCausalLM is a causal language-model task wrapper around GemmaBackbone and exposes generation while accepting a compatible preprocessor."
     importance: major
     source_url: "https://keras.io/keras_hub/api/models/gemma/gemma_causal_lm/"
     source_title: "GemmaCausalLM model"
     publisher: "Keras documentation"
-    accessed_at: "2026-08-09"
+    accessed_at: null
     primary_source: true
-    evidence_note: "L'API ufficiale elenca backbone, preprocessor, from_preset e generate nel contratto della classe."
-    status: verified
+    evidence_note: "Contratto della classe dalla conoscenza pre-addestramento: la pagina API non e' stata aperta (keras.io bloccato dal proxy), quindi needs_reverification."
+    status: needs_reverification
   - id: gemma-model-card-selection
     claim: "Selecting a Gemma preset for an application also requires considering intended use, limitations and deployment context rather than treating successful loading as evidence of task suitability."
     importance: major
     source_url: "https://ai.google.dev/gemma/docs/core/model_card"
     source_title: "Gemma model card"
     publisher: "Google AI for Developers"
-    accessed_at: "2026-08-09"
+    accessed_at: null
     primary_source: true
-    evidence_note: "La model card ufficiale separa intended use, limitations, evaluation e deployment considerations."
-    status: verified
+    evidence_note: "Struttura tipica di una model card: la pagina non e' stata aperta (ai.google.dev bloccato dal proxy), quindi needs_reverification. Il principio - caricare non significa essere adatti - non dipende dalla fonte."
+    status: needs_reverification
 review:
   reviewer: claude
   decision: pass
   notes:
     - "The Gemma/KerasHub cells in notebooks/lezione-34-keras-hub.ipynb are NOT executed in this environment (package + gated multi-GB weights unavailable through the proxy). The notebook runs in CI because model cells are guarded and skipped. API shown is the real KerasHub interface from pre-training knowledge, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2 and logged in course/research_gaps.md. The executable project cell (preset registry + scegli_preset) genuinely runs and asserts."
-    - "2026-08-09: ampliata la teoria su preset, separazione backbone/preprocessor/task model e selezione applicativa; fonti primarie registrate nello stesso commit del notebook."
+    - "2026-08-09: ampliata la teoria su preset, separazione backbone/preprocessor/task model e selezione applicativa; fonti registrate nello stesso commit del notebook."
+    - "2026-08-09, correzione: le tre claim aggiunte quel giorno erano marcate verified con accessed_at, mentre le claim preesistenti sulla stessa API restavano needs_reverification e questa stessa nota diceva 'not verified live'. Due verdetti opposti sulla stessa fonte nello stesso file. keras.io e ai.google.dev risultano bloccati dal proxy di egress, quindi l'accesso non e' dimostrabile: riportate a needs_reverification e accessed_at azzerato. Chi avra' rete apra le pagine e promuova le claim, senza dimenticare quelle vecchie."

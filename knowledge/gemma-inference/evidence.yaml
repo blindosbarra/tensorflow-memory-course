@@ -28,20 +28,20 @@ claims:
     source_url: "https://keras.io/keras_hub/api/models/gemma/gemma_causal_lm/"
     source_title: "GemmaCausalLM model"
     publisher: "Keras documentation"
-    accessed_at: "2026-08-09"
+    accessed_at: null
     primary_source: true
-    evidence_note: "La documentazione ufficiale definisce generate e specifica che max_length include il prompt."
-    status: verified
+    evidence_note: "Semantica di generate e di max_length dalla conoscenza pre-addestramento: la pagina API non e' stata aperta (keras.io bloccato dal proxy), quindi needs_reverification. E' esattamente il tipo di dettaglio che cambia fra versioni."
+    status: needs_reverification
   - id: kerashub-sampler-contract
     claim: "KerasHub separates model logits from token selection through sampler objects, including greedy, random and temperature samplers."
     importance: critical
     source_url: "https://keras.io/keras_hub/api/samplers/"
     source_title: "Samplers API"
     publisher: "Keras documentation"
-    accessed_at: "2026-08-09"
+    accessed_at: null
     primary_source: true
-    evidence_note: "L'indice API ufficiale descrive il contratto dei sampler e le strategie disponibili."
-    status: verified
+    evidence_note: "Contratto dei sampler dalla conoscenza pre-addestramento: l'indice API non e' stato aperto (keras.io bloccato dal proxy), quindi needs_reverification."
+    status: needs_reverification
   - id: temperature-rescaling
     claim: "Temperature rescales logits before softmax; lower temperatures sharpen and higher temperatures flatten the resulting categorical distribution."
     importance: major
@@ -57,4 +57,5 @@ review:
   decision: pass
   notes:
     - "Gemma cells in notebooks/lezione-35-inferenza-gemma.ipynb are guarded and NOT executed here (gated weights). The .generate()/.compile(sampler=...) API is real KerasHub, marked needs_reverification per 3.2 and logged in course/research_gaps.md. The executable project cell (rule-based entity extractor fallback) genuinely runs and asserts, so the system works without the model."
-    - "2026-08-09: ampliata la teoria su ciclo autoregressivo, sampler, limiti di generazione e contratti della pipeline; fonti primarie registrate insieme al testo."
+    - "2026-08-09: ampliata la teoria su ciclo autoregressivo, sampler, limiti di generazione e contratti della pipeline; fonti registrate insieme al testo."
+    - "2026-08-09, correzione: generation-length-contract e kerashub-sampler-contract erano marcate verified con accessed_at pur riguardando la stessa API KerasHub che questa nota dichiara non verificabile qui. keras.io risulta bloccato dal proxy di egress, quindi sono tornate a needs_reverification con accessed_at azzerato. Resta verified temperature-rescaling: arXiv:1503.02531 e' un documento canonico e stabile, non documentazione di API versionata."
