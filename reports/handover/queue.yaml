@@ -288,6 +288,23 @@ items:
       indicando cella, riga e l'escape da cui probabilmente deriva. La SDD 4.3
       ora lo dice esplicitamente: mai scrivere LaTeX attraverso uno strato che
       interpreta gli escape.
+      2026-08-09: completato il segmento 43-45. Approfonditi il confronto
+      LoRA/full fine-tuning con il riscontro reale RoBERTa/GLUE del
+      repository ufficiale LoRA, il vantaggio del merge in eval per il
+      task-switching in inferenza, e la convenzione (prompt, chosen,
+      rejected) dei dataset di preferenza documentata da TRL. arxiv.org e'
+      risultato bloccato dal proxy in questa sessione: le tre fonti nuove
+      usano solo sorgenti raggiungibili (github.com/microsoft/LoRA,
+      github.com/huggingface/trl), aperte davvero in questa sessione; le
+      fonti arXiv gia' presenti nei pack non sono state ripromosse a
+      verified. Tre nuove affermazioni registrate nei rispettivi
+      evidence.yaml nello stesso commit del testo; le tre lezioni sono
+      tornate a technical_review. Il gate rapido sui tre notebook e il gate
+      completo dei 61 notebook sono passati dopo `uv sync --extra dev
+      --extra ml`; git status vuoto dopo il run completo (i dataset del run
+      parziale erano gia' stati ripristinati con `git checkout -- datasets/`
+      prima del run completo). Restano da approfondire le lezioni 46-60,
+      sempre registrando evidenze e testo nello stesso commit.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"

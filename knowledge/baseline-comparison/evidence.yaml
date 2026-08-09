@@ -12,8 +12,20 @@ claims:
     primary_source: true
     evidence_note: "The LoRA paper's premise is that the adaptation update is low-rank; the exact-match-at-sufficient-rank behavior is demonstrated numerically in the notebook (rank-3 true update: LoRA r>=3 reaches loss 0.0, matching full fine-tuning). Marked needs_reverification for the primary-source network check per 3.2."
     status: needs_reverification
+  - id: lora-matches-full-ft-on-glue
+    claim: "On RoBERTa base and the GLUE benchmark, LoRA trains only 0.8M parameters versus 125M for full fine-tuning (about 0.6% of the trainable parameters) while matching or exceeding full fine-tuning quality: the official results table reports an average GLUE score of 87.24 for LoRA versus 86.40 for full fine-tuning."
+    importance: major
+    source_url: "https://github.com/microsoft/LoRA"
+    source_title: "LoRA: Low-Rank Adaptation of Large Language Models — official repository (results table)"
+    publisher: "Microsoft Research"
+    published_or_updated: null
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "README ufficiale letto in questa sessione (arxiv.org e' bloccato dal proxy): tabella RoBERTa base / GLUE, 125M vs 0.8M parametri addestrati, media GLUE 86.40 (full FT) vs 87.24 (LoRA). Conferma su un compito reale cio' che il notebook mostra su un compito sintetico a rango noto."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "notebooks/lezione-43-baseline-comparison.ipynb is FULLY executed this session. The true update is constructed to be rank 3. Measured losses: full fine-tuning 0.0 (384 params); LoRA r=1 -> 9.22, r=2 -> 3.13, r=3 -> 0.0 (120 params), r=4/r=8 -> 0.0. scegli_rango correctly picks the smallest sufficient rank (r=3) under a 0.05 threshold. All numbers are genuine outputs; the earlier draft used a full-rank random update (where LoRA legitimately cannot match full FT) and was corrected to a low-rank update so the comparison honestly reflects LoRA's premise."
+    - "2026-08-09 (WI-6, segmento 43-45): la teoria della lezione aggiunge il confronto reale RoBERTa/GLUE del repository ufficiale LoRA, letto in questa sessione perche' arxiv.org e' bloccato dal proxy. Nessuna cella di codice toccata."
