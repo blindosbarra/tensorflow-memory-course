@@ -1,6 +1,6 @@
 ---
 lesson_id: evaluation-generative
-reviewed_at: 2026-07-18
+reviewed_at: 2026-08-09
 claims:
   - id: field-level-prf
     claim: "Extraction quality can be measured with set-based precision, recall and F1 over the extracted items: precision = TP/(TP+FP), recall = TP/(TP+FN), F1 = 2PR/(P+R), where TP/FP/FN are counted by comparing predicted entities against a gold set."
@@ -22,6 +22,17 @@ claims:
     primary_source: false
     evidence_note: "The calibration caveat is a widely-held evaluation principle presented didactically, not a claim tied to a specific paper in this pass. Flagged for reverification against a primary source (e.g. an LLM-as-judge study) before marking done."
     status: needs_reverification
+  - id: judge-protocol
+    claim: "LLM-as-a-judge is an explicit evaluation protocol: a judge model receives a response and a rubric or comparison prompt, then emits a score or preference; agreement with human preferences must be measured rather than assumed."
+    importance: major
+    source_url: "https://github.com/lm-sys/FastChat/blob/main/fastchat/llm_judge/README.md"
+    source_title: "FastChat LLM Judge"
+    publisher: "LMSYS Org"
+    published_or_updated: null
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "Aperto il repository primario: documenta valutazione single-answer, pairwise e calcolo dell'agreement. Il notebook usa il protocollo solo come concetto, senza chiamate a modelli esterni."
+    status: verified
 review:
   reviewer: claude
   decision: pass
