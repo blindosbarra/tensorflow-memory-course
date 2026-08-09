@@ -23,13 +23,20 @@ on the sentinel:
 
     SENTINEL: PICK <id>          an item was selected, work it
     SENTINEL: ALL-DONE           the queue is finished
-    SENTINEL: NOTHING-ACTIONABLE everything left waits on a human decision
+    SENTINEL: NOTHING-ACTIONABLE nothing can be worked; the reasons follow
     SENTINEL: QUEUE-MALFORMED    the queue file is unusable
     SENTINEL: QUEUE-MISSING      the queue file is not there at all
     SENTINEL: BOARD / CHECK-OK   informational modes
 
 No sentinel line at all means this script did not run. That is an
 environment problem, never a statement about the work.
+
+An item left `in_progress` is offered again, and first among its priority.
+The procedure asks an iteration that cannot finish a large item to split it
+and leave the remainder in `notes`; a picker that then skips `in_progress`
+turns that instruction into a way to lose work permanently. It did, on
+2026-08-09: WI-6 and WI-13 both had a written remainder and the loop reported
+NOTHING-ACTIONABLE with no open decision to point at. See SDD section 6.4.
 """
 
 from __future__ import annotations
@@ -48,6 +55,12 @@ VALID_STATUS = frozenset({"todo", "in_progress", "done", "blocked", "cancelled"}
 # decided against the item; it must never be offered again, and it must not
 # keep the loop from reporting ALL-DONE.
 CLOSED_STATUS = frozenset({"done", "cancelled"})
+# Statuses that still carry work, and can therefore be offered. `in_progress`
+# belongs here: AGENT_LOOP.md tells an iteration that an item is too big to
+# split it, leave it `in_progress` with the remainder in `notes`, and stop —
+# "the next iteration picks up from the note". Excluding it from selection is
+# what made that instruction a dead end on 2026-08-09 (SDD, section 6.4).
+OPEN_STATUS = frozenset({"todo", "blocked", "in_progress"})
 
 
 def sentinel(name: str) -> None:
@@ -132,27 +145,78 @@ def unmet_dependencies(item: dict[str, Any], by_id: dict[str, dict[str, Any]]) -
     ]
 
 
+def waiting_on(
+    queue: dict[str, Any], item: dict[str, Any], by_id: dict[str, dict[str, Any]]
+) -> list[str]:
+    """Why this item is not offerable, in plain words, one reason per entry.
+
+    Used only when nothing is actionable, and it must never guess: a stop
+    message that blames a decision nobody is waiting on sends the author
+    looking for a question that does not exist. If an item is held by nothing,
+    say exactly that — it means the picker refused work it should have offered.
+    """
+
+    reasons = [f"decision {name}" for name in unresolved_decisions(queue, item)]
+    for dep in unmet_dependencies(item, by_id):
+        status = (by_id.get(dep) or {}).get("status", "unknown")
+        if status == "cancelled":
+            reasons.append(f"{dep}, which is cancelled and will never be done (dead dependency)")
+        else:
+            reasons.append(f"{dep} ({status})")
+    if not reasons:
+        reasons.append(
+            "nothing at all — it should have been offered. This is a bug in this "
+            "script, not a state the author has to resolve; report it."
+        )
+    return reasons
+
+
 def actionable(queue: dict[str, Any]) -> list[dict[str, Any]]:
-    """Items that can be started right now, most important first."""
+    """Items that can be worked right now, most important first.
+
+    Priority decides first: a P0 that nobody has touched still outranks a P2
+    somebody started. Within one priority, an item already `in_progress` comes
+    first, so a split item is finished before another one is opened — half-done
+    work in the queue is work nobody can review.
+    """
 
     items: list[dict[str, Any]] = queue["items"]
     by_id = {item["id"]: item for item in items}
     ready = [
         item
         for item in items
-        if item.get("status") in {"todo", "blocked"}
+        if item.get("status") in OPEN_STATUS
         and not unresolved_decisions(queue, item)
         and not unmet_dependencies(item, by_id)
     ]
-    return sorted(ready, key=lambda item: PRIORITY_ORDER.index(item["priority"]))
+    return sorted(
+        ready,
+        key=lambda item: (
+            PRIORITY_ORDER.index(item["priority"]),
+            0 if item.get("status") == "in_progress" else 1,
+        ),
+    )
 
 
 def describe(item: dict[str, Any]) -> str:
     """Render the picked item as the instructions for one loop iteration."""
 
+    resumed = item.get("status") == "in_progress"
     lines = [
-        f"NEXT: {item['id']} [{item['priority']}] {item['title']}",
+        f"{'RESUME' if resumed else 'NEXT'}: {item['id']} [{item['priority']}] {item['title']}",
         "",
+    ]
+    if resumed:
+        lines += [
+            "An earlier iteration claimed this item and stopped before finishing it.",
+            "Read its `notes` below first: that is the handover, and it says what is",
+            "already done and what remains. If the notes say nothing about progress,",
+            "check `git log --oneline -5` for a commit naming this item — no commit",
+            "and a clean tree means the iteration died before doing anything, so the",
+            "item is simply unstarted. Never build on a dirty tree you did not make.",
+            "",
+        ]
+    lines += [
         "Read the specification for this item in:",
         f"  reports/SDD-remediation-2026-08-06.md  (section {item['id']})",
         "",
@@ -171,7 +235,8 @@ def describe(item: dict[str, Any]) -> str:
     if item.get("verify_env"):
         lines += ["", f"Environment needed: {item['verify_env']}"]
     if item.get("notes"):
-        lines += ["", f"Note: {item['notes'].strip()}"]
+        label = "Note (handover from the previous iteration)" if resumed else "Note"
+        lines += ["", f"{label}: {item['notes'].strip()}"]
     return "\n".join(lines)
 
 
@@ -185,9 +250,7 @@ def board(queue: dict[str, Any]) -> str:
     lines = [f"{'ID':<6} {'PRI':<4} {'STATUS':<12} REASON / TITLE"]
     for item in items:
         reasons: list[str] = []
-        if item["id"] not in ready_ids and item.get("status") not in (
-            CLOSED_STATUS | {"in_progress"}
-        ):
+        if item["id"] not in ready_ids and item.get("status") not in CLOSED_STATUS:
             waiting = unresolved_decisions(queue, item)
             missing = unmet_dependencies(item, by_id)
             if waiting:
@@ -227,30 +290,48 @@ def main() -> int:
         print(board(queue))
         return 0
 
-    stale = [item for item in queue["items"] if item.get("status") == "in_progress"]
-    if stale:
-        ids = ", ".join(item["id"] for item in stale)
-        print(f"WARNING: left in_progress by an earlier iteration: {ids}")
-        print("Check git log for a commit referencing it. If none, reset it to 'todo'.")
+    ready = actionable(queue)
+    ready_ids = {item["id"] for item in ready}
+
+    # An `in_progress` item that is also offerable needs no warning: it is in
+    # the queue and will be picked. One that is *not* offerable is stranded —
+    # claimed work nobody can reach.
+    stranded = [
+        item
+        for item in queue["items"]
+        if item.get("status") == "in_progress" and item["id"] not in ready_ids
+    ]
+    if stranded:
+        ids = ", ".join(item["id"] for item in stranded)
+        print(f"WARNING: in_progress but not offerable: {ids}")
+        print("Something blocks them; see --board. Claimed work nobody can reach.")
         print()
 
-    ready = actionable(queue)
     if not ready:
-        remaining = [
-            item for item in queue["items"] if item.get("status") not in CLOSED_STATUS
-        ]
+        items: list[dict[str, Any]] = queue["items"]
+        by_id = {item["id"]: item for item in items}
+        remaining = [item for item in items if item.get("status") not in CLOSED_STATUS]
         if not remaining:
             sentinel("ALL-DONE")
             print("All work items are done.")
             return 2
         sentinel("NOTHING-ACTIONABLE")
-        print("Nothing is actionable. Every remaining item waits on a human decision.")
+        print("Nothing is actionable. Every remaining item, and what it waits on:")
+        print()
+        for item in remaining:
+            print(f"  {item['id']}: {'; '.join(waiting_on(queue, item, by_id))}")
         print()
         print(board(queue))
-        print()
         decisions = (queue.get("meta") or {}).get("decisions") or {}
-        for name, decision in decisions.items():
-            if decision.get("status") != "resolved":
+        open_decisions = {
+            name: decision
+            for name, decision in decisions.items()
+            if decision.get("status") != "resolved"
+        }
+        if open_decisions:
+            print()
+            print("Open decisions — the course author's to take, never the loop's:")
+            for name, decision in open_decisions.items():
                 print(f"{name}: {decision.get('question')}")
                 print(f"    suggested: {decision.get('recommendation')}")
         return 2

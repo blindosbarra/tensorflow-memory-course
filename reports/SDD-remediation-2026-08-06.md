@@ -1158,6 +1158,53 @@ An instruction whose success condition is unreachable will report failure or
 manufacture progress. Neither is useful. Ask for the eight, or resolve the
 three decisions first.
 
+### 6.4 The same shape again — `in_progress` was a one-way door (2026-08-09)
+
+An iteration on 2026-08-09 ran the preflight and stopped on
+`SENTINEL: NOTHING-ACTIONABLE`, reporting that everything left waited on a
+human decision. Nothing did: D1-D4 were resolved, and the stop message
+printed no question because there was none to print.
+
+What was actually left was WI-6 and WI-13, both `in_progress`, both carrying
+a written remainder in `notes` — lessons 34-60 for one, the classifier, the
+graph, the retrieval and the pipeline for the other. `AGENT_LOOP.md` section 4
+tells an iteration that cannot finish a large item to do exactly that: split
+it, record the remainder, leave the status `in_progress`, stop, and let the
+next iteration pick up from the note. `actionable()` in
+`scripts/next_work_item.py` selected `todo` and `blocked` only. The status
+the procedure asked for was the one status that removed the item from
+circulation.
+
+Two iterations had followed the instruction correctly, and the queue was left
+with no reachable work and eight days of real work still in it. Nothing was
+lost, because the notes were good; but nothing would ever have been picked up
+either, and the loop would have gone on paying the cost of a full preflight
+to report a false completion.
+
+This is the third occurrence of the failure mode in 6.1 — an environment or a
+state the control signal cannot express, collapsing into "nothing to do":
+
+| | The state | What the signal could say |
+|---|---|---|
+| 2026-08-07 | script absent | exit 2 = "all done" |
+| 2026-08-08 | sandbox with no `origin` | "cannot confirm freshness" = stop |
+| 2026-08-09 | item split, work remaining | not `todo` = not offerable |
+
+The fix has three parts. The picker offers `in_progress` items, first among
+their priority, so a split item is finished before another is opened. It
+prints `RESUME` rather than `NEXT` and labels the notes as the handover, so
+continuing is distinguishable from restarting. And when it does stop, it
+prints per item what that item waits on — a decision by name, a dependency by
+id and status, a *cancelled* dependency called out as dead, or "nothing at
+all", which reports itself as a bug in the picker rather than a question the
+author has to answer. `tests/test_next_work_item.py` pins all of it.
+
+The rule, stated once for whoever writes the next piece of loop machinery:
+**any state the procedure instructs an agent to produce, the tooling must be
+able to consume.** A procedure and its tooling that disagree do not raise an
+error; the tooling wins, quietly, and its silence is indistinguishable from
+success.
+
 ---
 
 ## 7. Decisions — RESOLVED 2026-08-07
@@ -1279,6 +1326,19 @@ satisfy this section — ask it for the eight unblocked items, then decide.
 ---
 
 ## 10. Change log
+
+### 1.2 — 2026-08-09 (the loop could not resume its own work)
+
+- **Section 6.4 records the third instance of the 6.1 failure mode**: the
+  picker never offered an item left `in_progress`, which is precisely the
+  state the procedure asks for when an item is split across iterations. The
+  loop reported "nothing actionable" with two started items and no open
+  decision.
+- **`scripts/next_work_item.py` offers `in_progress` items**, first among
+  their priority, prints `RESUME` for them, and — when it does stop — names
+  per item what it waits on instead of blaming a decision by default.
+- **`tests/test_next_work_item.py`** covers the selection rules, the stop
+  messages, and that the shipped queue is not in that deadlock.
 
 ### 1.1 — 2026-08-07 (convergence)
 
