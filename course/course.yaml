@@ -93,20 +93,21 @@ modules:
       - baseline-comparison
       - adapter-packaging
 
+  # D1 (2026-08-07): il modulo si riduce a un percorso breve eseguibile in
+  # locale. I sette id cloud (vertex-ai-training, vertex-ai-pipelines,
+  # registry-deployment, batch-online-inference, model-evaluation,
+  # monitoring-drift, cost-cleanup-security) sono usciti da qui: una pipeline
+  # Vertex AI *testabile* richiederebbe un progetto GCP fatturabile, che
+  # contraddice il principio per cui il corso gira senza dipendenze esterne.
+  # La teoria cloud resta nel modulo di certificazione PMLE. Evaluation e
+  # monitoring restano insegnati dalle lezioni capstone 57 e 59.
   - id: mlops
-    title: Pipeline, deploy e monitoring
+    title: Packaging e pipeline locale
     status: planned
     lessons:
       - reproducible-project
       - containers-artifacts
       - local-training-pipeline
-      - vertex-ai-training
-      - vertex-ai-pipelines
-      - registry-deployment
-      - batch-online-inference
-      - model-evaluation
-      - monitoring-drift
-      - cost-cleanup-security
 
   - id: preference-learning
     title: Feedback e preference training
