@@ -1,6 +1,6 @@
 ---
 lesson_id: keras-hub
-reviewed_at: 2026-07-18
+reviewed_at: 2026-08-09
 claims:
   - id: kerashub-from-preset
     claim: "KerasHub distributes pretrained model presets that are loaded with a from_preset(...) classmethod on a task model such as GemmaCausalLM, which loads the backbone, tokenizer, and task head together."
@@ -22,8 +22,39 @@ claims:
     primary_source: true
     evidence_note: "Standard KerasHub API structure (Backbone vs *CausalLM/*Classifier task models). Not verified live; needs_reverification."
     status: needs_reverification
+  - id: preset-configuration-and-weights
+    claim: "A KerasHub preset is a saved model configuration and, when available, pretrained weights; from_preset reconstructs the compatible model rather than training it from scratch."
+    importance: critical
+    source_url: "https://keras.io/keras_hub/presets/"
+    source_title: "KerasHub Models and Presets"
+    publisher: "Keras documentation"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "La guida ufficiale distingue preset di architettura e preset con pesi e documenta from_preset."
+    status: verified
+  - id: gemma-task-model-contract
+    claim: "GemmaCausalLM is a causal language-model task wrapper around GemmaBackbone and exposes generation while accepting a compatible preprocessor."
+    importance: major
+    source_url: "https://keras.io/keras_hub/api/models/gemma/gemma_causal_lm/"
+    source_title: "GemmaCausalLM model"
+    publisher: "Keras documentation"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "L'API ufficiale elenca backbone, preprocessor, from_preset e generate nel contratto della classe."
+    status: verified
+  - id: gemma-model-card-selection
+    claim: "Selecting a Gemma preset for an application also requires considering intended use, limitations and deployment context rather than treating successful loading as evidence of task suitability."
+    importance: major
+    source_url: "https://ai.google.dev/gemma/docs/core/model_card"
+    source_title: "Gemma model card"
+    publisher: "Google AI for Developers"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "La model card ufficiale separa intended use, limitations, evaluation e deployment considerations."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "The Gemma/KerasHub cells in notebooks/lezione-34-keras-hub.ipynb are NOT executed in this environment (package + gated multi-GB weights unavailable through the proxy). The notebook runs in CI because model cells are guarded and skipped. API shown is the real KerasHub interface from pre-training knowledge, marked needs_reverification per COURSE_FACTORY_SPEC.md 3.2 and logged in course/research_gaps.md. The executable project cell (preset registry + scegli_preset) genuinely runs and asserts."
+    - "2026-08-09: ampliata la teoria su preset, separazione backbone/preprocessor/task model e selezione applicativa; fonti primarie registrate nello stesso commit del notebook."
