@@ -258,6 +258,15 @@ items:
       a technical_review. Il gate rapido sui tre notebook e il gate completo
       dei 61 notebook sono passati. Restano da approfondire le lezioni 37-60,
       sempre registrando evidenze e testo nello stesso commit.
+      2026-08-09: completato il segmento 37-39. Approfonditi la scala di
+      valutazione generativa e il protocollo LLM-as-judge, il contratto Keras
+      di freezing e fine-tuning, e i trade-off matematici e operativi di LoRA.
+      Tre nuove affermazioni sono state registrate nei rispettivi evidence.yaml
+      nello stesso commit del testo; le tre lezioni sono tornate a
+      technical_review. Il gate rapido sui tre notebook e il gate completo dei
+      61 notebook sono passati dopo `uv sync --extra dev --extra ml`; albero
+      pulito rispetto ai dataset rigenerati. Restano da approfondire le lezioni
+      40-60, sempre registrando evidenze e testo nello stesso commit.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"

@@ -1,6 +1,6 @@
 ---
 lesson_id: transfer-learning-freezing
-reviewed_at: 2026-07-18
+reviewed_at: 2026-08-09
 claims:
   - id: freezing-definition
     claim: "Freezing a layer's weights means its gradients are not applied during training, so those parameters stay unchanged while only the remaining (trainable) parameters are updated."
@@ -22,6 +22,17 @@ claims:
     primary_source: true
     evidence_note: "The LoRA paper motivates parameter-efficient adaptation by the cost of full fine-tuning of large models. Catastrophic forgetting is a widely documented phenomenon. Not verified live; needs_reverification."
     status: needs_reverification
+  - id: transfer-workflow-and-trainable-state
+    claim: "In the Keras transfer-learning workflow, pretrained layers are frozen before a new trainable head is fitted; changing the trainable state requires recompiling a compiled model, and BatchNormalization has inference/training behavior that requires special care during fine-tuning."
+    importance: major
+    source_url: "https://github.com/keras-team/keras-io/blob/master/guides/transfer_learning.py"
+    source_title: "Transfer learning & fine-tuning"
+    publisher: "Keras"
+    published_or_updated: "2023-06-25"
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "Aperto il sorgente ufficiale della guida Keras. Il testo distingue stato trainable e training/inference e prescrive compile dopo modifiche a trainable."
+    status: verified
 review:
   reviewer: claude
   decision: pass
