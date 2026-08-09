@@ -15,8 +15,8 @@ sources:
 
 > **La lezione si segue nel notebook**
 > `notebooks/lezione-11-dentro-il-training.ipynb`. Questa pagina e' il
-> riassunto di riferimento. Consolida le lezioni pianificate
-> `model-fit-under-the-hood` e `backprop-autodiff`.
+> riassunto di riferimento. Copre anche backpropagation e autodiff, che
+> erano dichiarati come lezione a se' e non lo sono piu' (D4).
 
 ## Cosa saprai fare
 

@@ -32,8 +32,8 @@ Le pagine di questo sito sono i riassunti di riferimento.
 
 Il percorso minimo mantiene le lezioni necessarie a produrre e valutare il
 Memory AI Lab locale: `python-numpy-refresh`, `vectors-matrices-tensors`, tutte
-le lezioni `data-engineering`, `perceptron-dense-layer`, `losses-optimizers`,
-`backprop-autodiff`, `sequential-functional-api`, `evaluation-calibration`,
+le lezioni `data-engineering`, `perceptron-dense-layer`,
+`model-fit-under-the-hood`, `evaluation-calibration`,
 `tokenization-vocabulary`, `sentence-embeddings`, `cosine-similarity`,
 `retrieval-metrics`, `memory-schema`, `importance-scoring`,
 `entity-event-relations`, `graph-memory-networkx`, `hybrid-retrieval`,
@@ -61,7 +61,7 @@ con controllo di shape, loss e gradiente.
 
 Lezioni: `data-cleaning-01-missing-values`, `duplicates-types-outliers`,
 `train-validation-test`, `data-leakage`, `categorical-encoding-scaling`,
-`tfdata-basics`, `tfdata-performance`, `data-validation`.
+`tfdata-basics`.
 
 Obiettivi misurabili: diagnosticare e pulire dati senza nascondere modifiche;
 creare split disgiunti; prevenire leakage; costruire e misurare una pipeline
@@ -70,9 +70,8 @@ eseguibile e report delle decisioni.
 
 ## Fase 2 — Keras e reti neurali dense (4,5 ore)
 
-Lezioni: `perceptron-dense-layer`, `forward-pass`, `losses-optimizers`,
-`backprop-autodiff`, `sequential-functional-api`, `model-fit-under-the-hood`,
-`regularization-dropout`, `callbacks-checkpoints`, `evaluation-calibration`.
+Lezioni: `perceptron-dense-layer`, `model-fit-under-the-hood`,
+`regularization-dropout`, `evaluation-calibration`.
 
 Obiettivi misurabili: costruire una DNN, spiegare forward/backward pass,
 confrontare loss e optimizer, diagnosticare overfitting e calibrazione.

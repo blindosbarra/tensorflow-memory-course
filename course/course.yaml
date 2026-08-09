@@ -26,21 +26,14 @@ modules:
       - data-leakage
       - categorical-encoding-scaling
       - tfdata-basics
-      - tfdata-performance
-      - data-validation
 
   - id: keras-dnn
     title: Keras e reti neurali dense
     status: in_progress
     lessons:
       - perceptron-dense-layer
-      - forward-pass
-      - losses-optimizers
-      - backprop-autodiff
-      - sequential-functional-api
       - model-fit-under-the-hood
       - regularization-dropout
-      - callbacks-checkpoints
       - evaluation-calibration
 
   - id: text-embeddings
