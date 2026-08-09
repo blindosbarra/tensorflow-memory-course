@@ -154,8 +154,6 @@ Funzioni minime:
 │       └── references.md
 ├── notebooks/
 ├── examples/
-├── exercises/
-├── solutions/
 ├── datasets/
 │   ├── raw/
 │   ├── processed/
