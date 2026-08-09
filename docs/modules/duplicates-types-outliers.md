@@ -105,7 +105,8 @@ spiegata. Nella Parte 4 il progetto riceve un nuovo batch di memorie.
    falsi duplicati?
 3. Quale traccia serve per valutare l'effetto del clipping?
 
-Le risposte commentate sono in `solutions/duplicates-types-outliers.md`.
+Le risposte commentate sono nel notebook della lezione, nella sezione Quiz:
+apri il blocco «Apri le risposte» dopo aver provato a rispondere.
 
 ## Esercizio
 

@@ -109,7 +109,8 @@ riga per riga. Nella Parte 4 applichi la stessa policy al progetto del corso.
 2. Quale controllo faresti prima di scegliere media o mediana?
 3. Perche' il flag di imputazione va creato prima di `fillna`?
 
-Le risposte commentate sono in `solutions/data-cleaning-01-missing-values.md`.
+Le risposte commentate sono nel notebook della lezione, nella sezione Quiz:
+apri il blocco «Apri le risposte» dopo aver provato a rispondere.
 
 ## Esercizio
 

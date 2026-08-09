@@ -263,7 +263,7 @@ items:
   - id: WI-8
     title: "Ritirare exercises/, solutions/ e templates/lesson.md obsoleti"
     priority: P2
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -280,6 +280,28 @@ items:
       templates/lesson.md e' il pezzo importante: descrive ancora il modello
       precedente a 3fa5799 (starter .py + test dedicati). Un agente che lo
       seguisse ricostruirebbe l'impianto cancellato.
+      2026-08-09: fatto. exercises/ e solutions/ cancellate (15+15 file, solo
+      lezioni 1-15): la scelta di cancellare invece di spostare sotto docs/ e'
+      quella indicata dalla SDD, perche' i notebook portano gia' esercizio e
+      soluzione. I due rimandi a solutions/*.md nelle pagine pubblicate ora
+      puntano alla sezione Quiz del notebook, dove le risposte stanno davvero
+      in un blocco <details>. templates/lesson.md riscritto sul modello attuale:
+      i due tipi di lezione fissati da D2 (1-30 con esercizio, 31-60 di sola
+      lettura), la struttura reale del notebook e della pagina docs/modules/,
+      l'obbligo di registrare le evidenze nello stesso commit del testo, e una
+      nota storica che dice esplicitamente di non ricostruire l'impianto
+      starter/test. Rimosse exercises/ e solutions/ anche dall'albero dei
+      sorgenti in COURSE_FACTORY_SPEC.md, che altrimenti sarebbe rimasto a
+      descrivere cartelle inesistenti. Verificato: mkdocs build --strict pass,
+      nessun riferimento a exercises/ o solutions/ resta sotto docs/ o nella
+      spec; build_references.py --check, next_work_item.py --check, ruff e
+      pytest (8 passed) invariati.
+      Osservazione fuori scope: prompts/content-rework.md descrive ancora il
+      modello starter .py + tests/exercises/ (righe 104-105). E' un prompt
+      datato di un thread del 2026-07-11, non un template attivo, quindi non
+      l'ho toccato — ma e' la stessa classe di rischio che rendeva urgente
+      templates/lesson.md. Se prompts/ va trattata come istruzioni vive,
+      serve un item nuovo.
 
   - id: WI-9
     title: "Fissare i seed nei 21 notebook non deterministici"
