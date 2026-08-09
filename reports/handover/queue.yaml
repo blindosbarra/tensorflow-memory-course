@@ -201,7 +201,7 @@ items:
   - id: WI-6
     title: "Alzare la densita' teorica delle lezioni 31-60"
     priority: P2
-    status: todo
+    status: in_progress
     blocked_by: []
     depends_on: []
     files:
@@ -216,6 +216,12 @@ items:
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
     expect: "61/61; ogni claim nuovo ha una fonte primaria in evidence.yaml"
     verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
+    notes: >-
+      Segmento lezioni 31-33 completato il 2026-08-08: approfonditi
+      self-attention, blocco Transformer e generazione autoregressiva; aggiunte
+      le fonti primarie nei notebook. Gate rapido sui tre notebook e run
+      completo dei 61 notebook superati, con albero pulito salvo i file della
+      patch. Restano da approfondire le lezioni 34-60.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
