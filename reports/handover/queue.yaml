@@ -355,7 +355,7 @@ items:
   - id: WI-10
     title: "Rendere portabile il notebook consolidato (Windows/macOS)"
     priority: P2
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -366,6 +366,22 @@ items:
       - "TF_CPP_MIN_LOG_LEVEL=3 uv run python scripts/execute_notebooks.py"
     expect: "61/61; nessun import non condizionale di `resource`"
     verify_env: "uv sync --extra dev --extra ml (~600 MB: TensorFlow, KerasHub)"
+    notes: >-
+      2026-08-09: fatto. La misura di RAM sta ora in una funzione
+      picco_ram_mb() che protegge l'import di `resource` con try/except
+      ModuleNotFoundError e restituisce None su Windows, dove quel modulo non
+      esiste; la cella stampa "non disponibile su questa piattaforma" invece di
+      fallire. Corretta anche l'unita': ru_maxrss e' in kilobyte su Linux ma in
+      byte su macOS, e il vecchio commento "KB -> MB su Linux" documentava
+      l'errore invece di risolverlo — su macOS il numero era sbagliato di un
+      fattore 1024. I tre rami sono stati eseguiti singolarmente per
+      verificarli, incluso quello Windows simulando ModuleNotFoundError.
+      Verificato: gate rapido sul notebook consolidato, poi run completo
+      61/61 con exit 0 e albero pulito a parte la patch stessa. Nessun altro
+      import non condizionale di `resource` nel repository.
+      Nota per chi tocca questo notebook: scripts/execute_notebooks.py esegue
+      senza riscrivere il file, quindi le celle non deterministiche (tempo,
+      RAM) non sporcano l'albero.
 
   - id: WI-11
     title: "Riallineare course.yaml e progress.yaml alla realta'"
