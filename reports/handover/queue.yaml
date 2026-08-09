@@ -477,7 +477,7 @@ items:
   - id: WI-13
     title: "Estrarre i componenti del capstone in src/memory_ai/ con test"
     priority: P3
-    status: todo
+    status: in_progress
     blocked_by: []
     depends_on: []
     files:
@@ -500,3 +500,48 @@ items:
       Lavoro grande. Se una iterazione non basta, spezzalo per componente
       (schema, classificatore, importance, embedding, retrieval, grafo,
       pipeline) e registra il progresso in notes prima di fermarti.
+      2026-08-09, prima fetta: estratti i quattro componenti che non hanno
+      bisogno del corpus di training, cioe' quelli che si possono testare con
+      il solo ambiente base.
+        - src/memory_ai/schema.py: MemoryRecord come dataclass congelata e
+          annotata, con validate() che restituisce l'elenco dei problemi invece
+          di sollevare (la lezione 52 stampa i record non validi, un validatore
+          che sollevasse fermerebbe il notebook sul primo esempio sbagliato).
+        - src/memory_ai/text.py: tokenize, extract_entities, extract_relations.
+        - src/memory_ai/importance.py: il punteggio composito della lezione 25,
+          piu' importance_breakdown() che restituisce i tre termini separati,
+          cosi' un punteggio sorprendente si spiega guardando quale termine lo
+          ha prodotto.
+        - src/memory_ai/embedding.py: embed hashing a norma 1, cosine_similarity
+          e MemorySearchIndex per la ricerca per similarita'.
+      Test: 49 passano (erano 8), ruff pulito, mypy strict pulito su 7 file.
+      L'estrazione e' stata verificata per PARITA', non a occhio: le funzioni
+      del pacchetto sono state confrontate con le implementazioni dei notebook
+      su 222 testi, incluso l'intero datasets/processed/memory_train.csv, con
+      zero differenze su entita', relazioni, importanza, tokenizzazione ed
+      embedding. Le asserzioni della lezione 58 sono riprodotte dal pacchetto.
+      Una tentazione a cui NON cedere, gia' provata e annullata: de-duplicare
+      le entita' in extract_entities. Sembra una correzione ovvia ("Marco met
+      Marco" non sono due entita') ma importance.py conta quel risultato,
+      quindi cambierebbe in silenzio i punteggi che le lezioni stampano. Un
+      refactor di estrazione deve preservare il comportamento; se la
+      de-duplicazione va fatta, e' una decisione dell'autore del corso e va
+      fatta in un item suo, aggiornando le lezioni che mostrano i numeri.
+      RESTA DA FARE:
+        - classificatore di tipo (lezione 54): serve il corpus, quindi va
+          deciso se il pacchetto lo addestra al volo o carica parametri
+          salvati. E' la ragione per cui non e' in questa fetta.
+        - grafo di entita' e relazioni (lezione 55, NetworkX) e retrieval
+          ibrido (lezione 28): entrambi richiedono l'extra ml.
+        - la classe MemoryAILab che assembla la pipeline (lezione 58), che
+          dipende dal classificatore.
+        - ricablare i notebook capstone perche' importino dal pacchetto invece
+          di ridefinire. Attenzione al vincolo della SDD: le lezioni che
+          costruiscono un componente DA ZERO devono continuare a costruirlo —
+          si estrae il componente finito, non si sostituisce la didattica con
+          un import.
+      Il criterio "la pipeline gira end to end dal solo src/memory_ai/" non e'
+      quindi ancora soddisfatto, ed e' per questo che l'item resta in_progress.
+      Il gate completo (verify) non e' stato eseguito in questa fetta perche'
+      nessun notebook e' stato toccato; e' stato eseguito il verify_fast, che
+      e' quello che copre le modifiche fatte.
