@@ -306,7 +306,7 @@ items:
   - id: WI-9
     title: "Fissare i seed nei 21 notebook non deterministici"
     priority: P2
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -321,6 +321,36 @@ items:
     notes: >-
       Dove la lezione insegna la non-determinismo (lezione-20, etichette
       K-Means) va mantenuta e resa esplicita, non eliminata con un seed.
+      2026-08-09: fatto, senza modifiche ai notebook, perche' la premessa
+      dell'item non regge piu'. Verificato call site per call site su tutti e
+      61 i notebook: non resta nessuna sorgente di casualita' senza seed. Delle
+      21 lezioni elencate nella SDD, cinque (34, 35, 36, 41, 56 — le lezioni
+      Gemma) non hanno affatto call site casuali, e tutte le altre hanno ogni
+      sito seminato. Gli unici quattro casi che un grep segnala come non
+      seminati (lezioni 31, 32, 33, 40) sono `np.random.default_rng(seed)` dove
+      `seed` e' un parametro di funzione con default numerico: seminati, solo
+      invisibili a una regex. La riga di inventario della SDD contava i
+      notebook che contengono la stringa "seed", che e' un test piu' debole di
+      quanto sembri.
+      Criterio di accettazione verificato davvero: due run completi
+      consecutivi, 61/61 entrambi, `git status --porcelain` vuoto dopo
+      ciascuno.
+      Attenzione per chi tocchera' il classificatore: models/ e' in
+      .gitignore, quindi models/memory_type_classifier.keras NON e' coperto
+      dal controllo su git status, e il criterio "identical committed
+      artifacts" non lo raggiunge. Verificato a parte, ed e' un caso che
+      inganna: il file .keras e' un archivio zip e il suo sha256 cambia a ogni
+      run per i timestamp interni, anche quando l'addestramento e'
+      deterministico. Confrontando invece i pesi (`get_weights()`) l'hash e'
+      identico fra due esecuzioni. Non leggere un hash di file diverso come
+      non-determinismo. Il file lo scrivono lezione-12-overfitting e il
+      notebook consolidato (non la lezione 54, come dice la SDD), ed entrambi
+      chiamano keras.utils.set_random_seed.
+      Secondo criterio ("ogni cella intenzionalmente non seminata porta un
+      commento che spiega perche'") vacuo: non esistono celle simili. La
+      lezione 20 usa KMeans(random_state=42, n_init=10) e discute la
+      permutazione delle etichette a parole, che e' il comportamento che la
+      SDD indicava come esemplare.
 
   - id: WI-10
     title: "Rendere portabile il notebook consolidato (Windows/macOS)"
