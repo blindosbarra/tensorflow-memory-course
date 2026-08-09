@@ -41,9 +41,14 @@ Work one item from the remediation queue.
       that. The only hard rule is: never commit or push to `master`.
 1. Run: uv run python scripts/next_work_item.py
    Key on the SENTINEL line it prints, not on the exit code:
-     SENTINEL: PICK <id>           → work that item
+     SENTINEL: PICK <id>           → work that item. If it prints RESUME
+       instead of NEXT, the item was split by an earlier iteration: its
+       `notes` are the handover and say what is left. Continue it, do not
+       restart it.
      SENTINEL: ALL-DONE            → stop, report success
-     SENTINEL: NOTHING-ACTIONABLE  → stop, report the open decisions
+     SENTINEL: NOTHING-ACTIONABLE  → stop and report the reason it prints
+       per item. If a line says an item waits on "nothing at all", that is a
+       bug in the picker, not a question for the author: report it as such.
      SENTINEL: QUEUE-MALFORMED     → fix the queue file and stop
      SENTINEL: QUEUE-MISSING       → see step 0; stop
      no SENTINEL line at all       → the script did not run. This is an
@@ -110,6 +115,11 @@ Set the item's `status` to `in_progress` in `reports/handover/queue.yaml`
 before you start. This is what lets a later iteration tell the difference
 between "not started" and "abandoned halfway".
 
+`in_progress` does not take an item out of circulation: the picker offers it
+again, and first among items of its priority, so a split item is finished
+before a new one is opened. What carries the meaning is the item's `notes` —
+they are the only thing the next iteration has.
+
 ### 4. Implement
 
 Only the item you picked. If you notice something else wrong, do not fix it:
@@ -121,6 +131,10 @@ If the item turns out to be bigger than one iteration (WI-6, WI-12 and WI-13
 all are), split it: complete a coherent piece, record what remains in the item's
 `notes`, leave the status `in_progress`, commit, and stop. The next iteration
 picks up from the note.
+
+Write that note for someone who was not there and will read nothing else.
+State what is done, what remains, and any trap you found — an unwritten
+remainder is a remainder nobody will do.
 
 ### 5. Verify
 
@@ -223,14 +237,20 @@ WI-8 rewrites it.
 
 ## Recovering a crashed iteration
 
-If the picker warns that an item was left `in_progress`:
+A `RESUME` header tells you an item was left `in_progress`. Usually that was
+deliberate — a split, with the remainder in `notes` — and you just continue.
+If the notes say nothing about progress, treat it as a crash:
 
 1. Check whether a commit references it: `git log --oneline -5`.
 2. If a commit exists and its verification passed, set the item to `done`.
 3. If no commit exists and `git status` is clean, the iteration died before
-   doing anything: set it back to `todo`.
+   doing anything: work it from the top, as if it were `todo`.
 4. If no commit exists and the tree is dirty, inspect the diff. Either finish
    it or revert it — do not build on top of an unknown partial state.
+
+`WARNING: in_progress but not offerable` is a different and worse case: an
+item is claimed *and* held by a decision or a dependency, so nobody can reach
+it. Report it — that is stranded work, not work in flight.
 
 ---
 
@@ -250,25 +270,29 @@ The loop should stop, and say so, when:
 
 ## Current state at handover
 
-Re-verified against the working tree on **2026-08-07**, after the decisions
-were taken.
+Re-read from `queue.yaml` on **2026-08-09**. Ask the picker rather than this
+table — the picker is generated from the state, the table is a copy of it.
 
 | | |
 |---|---|
-| Done and verified | WI-1, WI-2, WI-7 |
+| Done and verified | WI-1, WI-2, WI-3, WI-4, WI-7, WI-8, WI-9, WI-10, WI-11, WI-12 |
 | Cancelled by decision D2 | WI-5 |
-| Ready now — nothing blocks any of them | WI-3, WI-4, WI-6, WI-8, WI-9, WI-10, WI-11, WI-12, WI-13 |
+| Started, with a written remainder | WI-6, WI-13 |
 
-**No item is waiting on a human any more.** D1, D2 and D3 are resolved, so
-the picker will keep offering work until all nine remaining items are done.
-Suggested order is simply the picker's: P1 first (WI-3, WI-4), then the P2
-group, then P3.
+**No item is waiting on a human.** D1-D4 are resolved, so the picker keeps
+offering work until the last two items are finished.
 
-Two of the nine are large and will not fit one iteration — **WI-6** (raise
-theory depth across 30 notebooks) and **WI-12** (write the reduced `mlops`
-path decided in D1). Split them as section 4 describes: complete a coherent
-piece, record what remains in the item's `notes`, leave it `in_progress`,
-commit, stop.
+Both remaining items were split and carry their remainder in `notes`:
+
+- **WI-6** — lessons 31-33 are deepened and their evidence is recorded;
+  **34-60 remain**. The acceptance criterion is that the evidence lands in
+  `knowledge/*/evidence.yaml` in the *same commit* as the lesson text, not
+  afterwards.
+- **WI-13** — schema, text, importance and embedding are extracted and tested
+  for parity against the notebooks; the type classifier, the entity graph,
+  the hybrid retrieval, the `MemoryAILab` pipeline and the notebook rewiring
+  **remain**. Read the note before touching it: it records one refactor that
+  was tried and deliberately reverted.
 
 Baseline now: `ruff`, `mypy src`, `pytest` and `mkdocs build --strict` all
 pass, and `scripts/execute_notebooks.py` reports **61/61** with a clean
@@ -293,6 +317,33 @@ The fix is the content-based fallback in step 0b: freshness is a property of
 the queue, which is in the repository, so it can always be checked without a
 network or a remote. Prefer a check on something you already have over a
 check on something the environment might not provide.
+
+## A status the picker did not read
+
+On **2026-08-09** an iteration ran the preflight, got
+`SENTINEL: NOTHING-ACTIONABLE`, and stopped — correctly, by the instruction.
+The message said "every remaining item waits on a human decision" and then
+listed no decision, because none was open: D1-D4 were all resolved. The two
+remaining items, WI-6 and WI-13, were `in_progress` with their remainders
+written out in `notes`, exactly as section 4 asks.
+
+`actionable()` selected `todo` and `blocked` only. So the procedure's own way
+of handling an item too big for one iteration — leave it `in_progress`, write
+the remainder, stop — produced an item the picker would never offer again.
+Follow the instruction twice and the queue empties itself of reachable work
+while the work is still there.
+
+This is the third instance of one shape, after the exit code and the
+freshness check: **a signal that cannot represent a legitimate state, and
+defaults to "stop".** In each case the loop reported an absence of work that
+was really an absence of vocabulary. The picker now offers `in_progress`
+items first among their priority, and when it does stop it prints, per item,
+what that item is actually waiting on — including "nothing at all", which
+names itself as a bug in the picker rather than a question for the author.
+
+The rule this leaves: **any state the procedure tells an agent to produce,
+the tooling must be able to consume.** When the two disagree the tooling
+wins silently, and the silence looks like completion.
 
 ## What the first attempt taught us
 
