@@ -306,3 +306,29 @@ Conseguenza: i sette id escono da `course.yaml` e da `progress.yaml`; il
 syllabus non li elenca piu' nel percorso minimo ne' nelle Fasi 1 e 2; le tre
 pagine che li citavano come "lezioni pianificate" ora dicono che l'argomento
 e' coperto li' dentro. Chiude la seconda meta' di WI-12.
+
+### D5 — Classificatore di tipo in `src/memory_ai/`: **addestrarlo al volo**
+
+L'estrazione dei componenti del capstone (WI-13) si e' fermata prima del
+classificatore di tipo della lezione 54 perche' e' l'unico componente che ha
+bisogno del corpus. La scelta e' che il pacchetto lo **addestri all'uso** da
+`datasets/processed/memory_train.csv`, senza parametri salvati nel repo.
+
+Motivazione: il costo che rendeva la domanda aperta non c'e'. Il
+classificatore e' NumPy puro — bag-of-words dal solo train, softmax
+regression, 300 passi a `lr` e `lam` fissi partendo da pesi a zero — quindi
+non richiede l'extra `ml`, gira in millisecondi su ~15 KB di corpus gia'
+committato, ed e' **deterministico**: due addestramenti danno gli stessi
+parametri. E' la proprieta' che permette di verificare l'estrazione per
+parita' col notebook, come e' gia' stato fatto per schema, testo, importanza
+ed embedding.
+
+L'alternativa — committare `W`, `b` e il vocabolario — avrebbe introdotto un
+artefatto generato che diverge in silenzio dal corpus: chi tocca
+`memory_train.csv` lascia indietro i parametri e nessun gate se ne accorge.
+E' la stessa classe di problema di uno stato che il tooling non sa leggere.
+
+Conseguenza per WI-13: `fit()` esplicito, mai addestramento all'import; il
+path del corpus e' un parametro con default, non un path assoluto. La
+lezione 54 continua a costruire il classificatore da zero — si estrae il
+componente finito, non si sostituisce la didattica con un import.
