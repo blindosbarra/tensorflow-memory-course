@@ -305,6 +305,22 @@ items:
       parziale erano gia' stati ripristinati con `git checkout -- datasets/`
       prima del run completo). Restano da approfondire le lezioni 46-60,
       sempre registrando evidenze e testo nello stesso commit.
+      2026-08-10: completato il segmento 46-48. Approfondite le coppie
+      chosen/rejected con i requisiti di igiene del dataset documentati da
+      TRL (campi chosen/rejected, filtro dei pareggi, margine come metrica),
+      la loss Bradley-Terry del reward model nella formulazione esatta del
+      RewardTrainer di TRL, e il vantaggio pratico di DPO (niente
+      campionamento dal modello linguistico) dal DPOTrainer di TRL.
+      arxiv.org resta bloccato dal proxy in questa sessione: le tre fonti
+      nuove usano solo `github.com/huggingface/trl`, aperto davvero in
+      questa sessione; le fonti arXiv gia' presenti nei pack (InstructGPT,
+      DPO) non sono state ripromosse a verified. Tre nuove affermazioni
+      registrate nei rispettivi evidence.yaml nello stesso commit del
+      testo; le tre lezioni sono tornate a technical_review. Il gate
+      rapido sui tre notebook e il gate completo dei 61 notebook sono
+      passati; git status vuoto dopo il run completo. Restano da
+      approfondire le lezioni 49-60, sempre registrando evidenze e testo
+      nello stesso commit.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"

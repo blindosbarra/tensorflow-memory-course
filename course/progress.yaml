@@ -1214,15 +1214,15 @@ modules:
           - "2026-07-18: apre la Fase 7. Dataclass Feedback + validatore (assoluto vs relativo). Accetta 1 valido, scarta 4 rotti con motivo. Eseguito davvero. Cita InstructGPT (needs_reverification)."
           - "2026-08-09 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       chosen-rejected-data:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/chosen-rejected-data/
@@ -1238,16 +1238,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: coppie chosen/rejected dai 61 memory di tipo preference (40 coppie, margine minimo, scartate coppie a testo identico). Check bias lunghezza (chosen piu' lunga 60%) segnalato onestamente. Eseguito sui dati reali."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       reward-functions:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/reward-functions/
@@ -1263,16 +1264,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: reward model Bradley-Terry in NumPy. Esperimento CONTROLLATO: recupera la reward vera w* a coseno 0.995, accuratezza 0.84 (limitata dal rumore). Prima stesura usava feature testuali deboli e falliva (0.32 < caso): sostituita invece di sopravvalutare feature deboli. Eseguito davvero."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       dpo-intuition:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/dpo-intuition/
@@ -1288,6 +1290,7 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: loss DPO in NumPy. Da reference (margine 0) -> loss 0.6931->0.4202, margine 0->1.30, 100% coppie chosen>rejected. Reward implicito log pi_theta - log pi_ref. Cita Rafailov 2023 (needs_reverification). Eseguito davvero."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       preference-tuning:
         status: learner_review
         state_machine:
