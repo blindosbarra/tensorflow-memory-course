@@ -1055,15 +1055,15 @@ modules:
           - "2026-07-18: quantizzazione int8 ESEGUITA (262144->65540 byte, 4x, errore rel 0.0113); QLoRA all'avvio == base quantizzata (assert); tabella memoria 32/16/8/4-bit con check 4-bit=1/8 fp32. QLoRA (Dettmers 2023) needs_reverification. Nessun peso di modello reale quantizzato: matrice random come stand-in dichiarato."
           - "2026-08-09 (WI-6): teoria approfondita e nuove affermazioni registrate nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       baseline-comparison:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/baseline-comparison/
@@ -1079,16 +1079,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: full FT vs LoRA su update di RANGO 3. Misurato: full 0.0 (384 param); LoRA r=1->9.22, r=2->3.13, r=3->0.0 (120 param), r>=3 plateau. scegli_rango sceglie r=3 sotto soglia 0.05. Correzione onesta: prima stesura usava update a rango pieno (LoRA non puo' eguagliare) -> cambiato a rango basso per riflettere la premessa di LoRA. Eseguito davvero."
+          - "2026-08-09 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       adapter-packaging:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/adapter-packaging/
@@ -1104,6 +1105,7 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: chiude la Fase 6. Salva/carica adapter con np.savez (4052 byte vs 32768 base, ~8x), round-trip output identico atol 1e-6, rango dai metadati (assert). Il notebook pulisce i propri file temporanei (adapter_memoria/ rimossa). Eseguito davvero."
+          - "2026-08-09 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
   mlops:
     status: planned
     lessons:
@@ -1186,15 +1188,15 @@ modules:
     status: in_progress
     lessons:
       feedback-schema:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/feedback-schema/
@@ -1210,16 +1212,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: apre la Fase 7. Dataclass Feedback + validatore (assoluto vs relativo). Accetta 1 valido, scarta 4 rotti con motivo. Eseguito davvero. Cita InstructGPT (needs_reverification)."
+          - "2026-08-09 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       chosen-rejected-data:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/chosen-rejected-data/
@@ -1235,16 +1238,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: coppie chosen/rejected dai 61 memory di tipo preference (40 coppie, margine minimo, scartate coppie a testo identico). Check bias lunghezza (chosen piu' lunga 60%) segnalato onestamente. Eseguito sui dati reali."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       reward-functions:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/reward-functions/
@@ -1260,16 +1264,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: reward model Bradley-Terry in NumPy. Esperimento CONTROLLATO: recupera la reward vera w* a coseno 0.995, accuratezza 0.84 (limitata dal rumore). Prima stesura usava feature testuali deboli e falliva (0.32 < caso): sostituita invece di sopravvalutare feature deboli. Eseguito davvero."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       dpo-intuition:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/dpo-intuition/
@@ -1285,16 +1290,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: loss DPO in NumPy. Da reference (margine 0) -> loss 0.6931->0.4202, margine 0->1.30, 100% coppie chosen>rejected. Reward implicito log pi_theta - log pi_ref. Cita Rafailov 2023 (needs_reverification). Eseguito davvero."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       preference-tuning:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/preference-tuning/
@@ -1310,16 +1316,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: DPO su una politica lineare (softmax). Generalizza: accuratezza su coppie NUOVE 0.79-0.84, allineamento con preferenza vera coseno 0.974. Costante softmax si cancella nella differenza. Eseguito davvero."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       rlhf-rlaif-overview:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/rlhf-rlaif-overview/
@@ -1335,16 +1342,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: RLHF vs RLAIF (chi etichetta) vs DPO (come si ottimizza). Giudice AI con rumore: accordo umano 0.87/0.81/0.69/0.39; politica DPO da giudice buono allineamento 0.964, da scadente -0.167. Eseguito davvero. Cita Constitutional AI/InstructGPT (needs_reverification)."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       online-learning-risks:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/online-learning-risks/
@@ -1360,6 +1368,7 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: chiude la Fase 7. Reward hacking/Goodhart: U rovesciata, qualita' vera picco al passo 29, proxy sale fino a 59; early stopping sull'obiettivo vero ferma a 29. Prima stesura lineare non faceva calare il vero: corretta a obiettivo distanza-dal-target reale. Cita Gao et al. 2022 (needs_reverification). Eseguito davvero."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
   capstone:
     status: in_progress
     lessons:

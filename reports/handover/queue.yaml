@@ -288,6 +288,62 @@ items:
       indicando cella, riga e l'escape da cui probabilmente deriva. La SDD 4.3
       ora lo dice esplicitamente: mai scrivere LaTeX attraverso uno strato che
       interpreta gli escape.
+      2026-08-09: completato il segmento 43-45. Approfonditi il confronto
+      LoRA/full fine-tuning con il riscontro reale RoBERTa/GLUE del
+      repository ufficiale LoRA, il vantaggio del merge in eval per il
+      task-switching in inferenza, e la convenzione (prompt, chosen,
+      rejected) dei dataset di preferenza documentata da TRL. arxiv.org e'
+      risultato bloccato dal proxy in questa sessione: le tre fonti nuove
+      usano solo sorgenti raggiungibili (github.com/microsoft/LoRA,
+      github.com/huggingface/trl), aperte davvero in questa sessione; le
+      fonti arXiv gia' presenti nei pack non sono state ripromosse a
+      verified. Tre nuove affermazioni registrate nei rispettivi
+      evidence.yaml nello stesso commit del testo; le tre lezioni sono
+      tornate a technical_review. Il gate rapido sui tre notebook e il gate
+      completo dei 61 notebook sono passati dopo `uv sync --extra dev
+      --extra ml`; git status vuoto dopo il run completo (i dataset del run
+      parziale erano gia' stati ripristinati con `git checkout -- datasets/`
+      prima del run completo). Restano da approfondire le lezioni 46-60,
+      sempre registrando evidenze e testo nello stesso commit.
+      2026-08-10: completato il segmento 46-48. Approfondite le coppie
+      chosen/rejected con i requisiti di igiene del dataset documentati da
+      TRL (campi chosen/rejected, filtro dei pareggi, margine come metrica),
+      la loss Bradley-Terry del reward model nella formulazione esatta del
+      RewardTrainer di TRL, e il vantaggio pratico di DPO (niente
+      campionamento dal modello linguistico) dal DPOTrainer di TRL.
+      arxiv.org resta bloccato dal proxy in questa sessione: le tre fonti
+      nuove usano solo `github.com/huggingface/trl`, aperto davvero in
+      questa sessione; le fonti arXiv gia' presenti nei pack (InstructGPT,
+      DPO) non sono state ripromosse a verified. Tre nuove affermazioni
+      registrate nei rispettivi evidence.yaml nello stesso commit del
+      testo; le tre lezioni sono tornate a technical_review. Il gate
+      rapido sui tre notebook e il gate completo dei 61 notebook sono
+      passati; git status vuoto dopo il run completo. Restano da
+      approfondire le lezioni 49-60, sempre registrando evidenze e testo
+      nello stesso commit.
+      2026-08-10: completato il segmento 49-51. Approfondito il significato
+      delle metriche loggate dal DPOTrainer di TRL (rewards/accuracies,
+      rewards/margins) rispetto a quelle calcolate dal notebook 49, la
+      tassonomia online/offline dei trainer TRL come secondo riscontro
+      dell'asse RL-vs-diretto gia' insegnato nella lezione 50, e il rischio
+      strutturale di sottodeterminazione del reward model Bradley-Terry con
+      la mitigazione center_rewards_coefficient documentata da TRL per la
+      lezione 51. arxiv.org resta bloccato dal proxy in questa sessione: le
+      tre fonti nuove usano solo `github.com/huggingface/trl` (pagine
+      dpo_trainer.md, index.md, reward_trainer.md), aperte davvero in questa
+      sessione; le fonti arXiv gia' presenti nei pack (DPO, Constitutional
+      AI, InstructGPT, Gao et al. 2022) non sono state ripromosse a
+      verified. Tre nuove affermazioni registrate nei rispettivi
+      evidence.yaml nello stesso commit del testo; le tre lezioni sono
+      tornate a technical_review. Trappola trovata e corretta: l'ultima riga
+      di ogni cella "Teoria essenziale" non terminava con \n (convenzione
+      nbformat), quindi appendere il nuovo paragrafo subito dopo fondeva i
+      due paragrafi senza riga vuota; corretto aggiungendo \n alla vecchia
+      ultima riga prima di appendere, verificato contro il diff del commit
+      del segmento 46-48. Il gate rapido sui tre notebook e il gate completo
+      dei 61 notebook sono passati; git status vuoto dopo il run completo.
+      Restano da approfondire le lezioni 52-60 (modulo capstone), sempre
+      registrando evidenze e testo nello stesso commit.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
@@ -402,6 +458,24 @@ items:
       lezione 20 usa KMeans(random_state=42, n_init=10) e discute la
       permutazione delle etichette a parole, che e' il comportamento che la
       SDD indicava come esemplare.
+      2026-08-10, osservazione durante la verifica di WI-6 (non corretta qui,
+      fuori scope): un run completo ha lasciato `git status` sporco su
+      datasets/processed/softmax_baseline_W.npy e
+      softmax_baseline_b.npy (scritti da lezione-09-loss.ipynb, non toccata
+      da WI-6), con una differenza di 2.22e-16 (1 ULP in float64) rispetto al
+      committato. Riprodotto isolando `--only lezione-09-loss`: la deriva
+      c'e' anche da sola, quindi non e' un'interazione con altre lezioni.
+      Il seed e' impostato (coerente con la chiusura di WI-9), ma
+      un'operazione BLAS a valle (probabile riduzione multi-thread non
+      associativa in virgola mobile) introduce rumore all'ultimo bit. Troppo
+      piccolo per essere un bug nella teoria del corso, ma contraddice il
+      criterio "due run completi consecutivi lasciano git status vuoto" con
+      cui WI-9 e' stato chiuso il 2026-08-09: quella verifica non l'ha
+      incontrato, quindi o e' intermittente o dipende dall'ambiente
+      (thread count BLAS). Ripristinato con `git checkout -- datasets/`
+      prima di committare il lavoro di WI-6. Chi riapre WI-9 dovrebbe fissare
+      il numero di thread BLAS (es. OMP_NUM_THREADS=1) o usare un'operazione
+      associativa, non solo il seed di numpy.
 
   - id: WI-10
     title: "Rendere portabile il notebook consolidato (Windows/macOS)"

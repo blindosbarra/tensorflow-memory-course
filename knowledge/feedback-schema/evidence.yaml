@@ -12,8 +12,20 @@ claims:
     primary_source: true
     evidence_note: "InstructGPT collects human rankings/comparisons of model outputs to train a reward model. The consistency advantage of comparisons is a widely stated rationale. NOT verified live this session; needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
     status: needs_reverification
+  - id: preference-triple-format
+    claim: "The de facto standard format for preference datasets in the RLHF/DPO tooling ecosystem is a triple of (prompt, chosen, rejected): a prompt plus the two completions being compared, with the chosen one being the preferred completion and the rejected one the dispreferred completion."
+    importance: major
+    source_url: "https://github.com/huggingface/trl/blob/main/docs/source/dataset_formats.md"
+    source_title: "TRL documentation — Dataset formats (preference datasets)"
+    publisher: "Hugging Face"
+    published_or_updated: null
+    accessed_at: "2026-08-09"
+    primary_source: true
+    evidence_note: "Documentazione TRL letta in questa sessione (arxiv.org e' bloccato dal proxy): 'A preference dataset is used for tasks where the model is trained to choose between two or more possible completions to the same prompt', con i campi richiesti prompt/chosen/rejected e l'esempio {'prompt': 'The sky is', 'chosen': ' blue.', 'rejected': ' green.'}. Il campo rispetto_a del notebook codifica la stessa tripla (memory_id = chosen, rispetto_a = rejected)."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "notebooks/lezione-45-feedback-schema.ipynb is fully executed this session: the Feedback dataclass + validator run, correctly accepting 1 valid feedback and rejecting 4 malformed ones each with an explicit reason. Pure Python/dataclasses, no external model."
+    - "2026-08-09 (WI-6, segmento 43-45): la teoria aggiunge la convenzione (prompt, chosen, rejected) della documentazione TRL, letta in questa sessione, a supporto del campo rispetto_a. Nessuna cella di codice toccata."

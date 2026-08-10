@@ -12,8 +12,20 @@ claims:
     primary_source: true
     evidence_note: "InstructGPT trains a reward model with a pairwise logistic (Bradley-Terry) loss over human comparisons. The Bradley-Terry model (Bradley & Terry, 1952) is the classical pairwise-comparison model. NOT verified live; needs_reverification per 3.2."
     status: needs_reverification
+  - id: trl-bradley-terry-loss
+    claim: "TRL's reward trainer implements exactly the Bradley-Terry pairwise-comparison model, p(y+ succ y- | x) = sigmoid(r(x,y+) - r(x,y-)), trained by minimizing the negative log-likelihood of the observed preferences, L(theta) = -E[log sigmoid(r_theta(x,y+) - r_theta(x,y-))]."
+    importance: major
+    source_url: "https://github.com/huggingface/trl/blob/main/docs/source/reward_trainer.md"
+    source_title: "TRL documentation — Reward trainer"
+    publisher: "Hugging Face"
+    published_or_updated: null
+    accessed_at: "2026-08-10"
+    primary_source: true
+    evidence_note: "Documentazione TRL letta in questa sessione (arxiv.org e' bloccato dal proxy): 'Under the Bradley-Terry model (Bradley & Terry, 1952), the probability that y+ is preferred over y- given a reward function r is p(y+ succ y- | x) = sigma(r(x,y+) - r(x,y-))', con la loss definita come la log-verosimiglianza negativa delle preferenze osservate. Formula identica a quella implementata nel notebook."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "notebooks/lezione-47-reward-functions.ipynb is fully executed this session as a CONTROLLED experiment: a known ground-truth reward w* generates noisy pairwise labels, and the Bradley-Terry-trained reward recovers w* to cosine 0.995 with pairwise accuracy 0.84 (capped below 1.0 by label noise). An earlier draft tried to predict importance from weak textual features (length/strong-words) and honestly failed (accuracy 0.32, worse than chance); it was replaced by the controlled setup rather than overstating weak features. Documented in course/research_gaps.md."
+    - "2026-08-10 (WI-6, segmento 46-48): la teoria aggiunge la formula esatta della loss Bradley-Terry della documentazione TRL, letta in questa sessione. Nessuna cella di codice toccata."

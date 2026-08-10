@@ -12,8 +12,20 @@ claims:
     primary_source: true
     evidence_note: "DPO applies to a parametric policy; the log-ratio difference cancels the partition function. Generalization to unseen inputs is a property of parametric models. NOT verified live; needs_reverification per 3.2."
     status: needs_reverification
+  - id: trl-dpo-logged-metrics
+    claim: "TRL's DPOTrainer logs rewards/accuracies, defined as the proportion of examples where the implicit reward for the chosen completion is higher than that for the rejected completion, and rewards/margins, the average implicit reward margin between the chosen and rejected completions — the same two quantities this lesson's notebook computes as accuratezza() and margine_dpo()."
+    importance: minor
+    source_url: "https://github.com/huggingface/trl/blob/main/docs/source/dpo_trainer.md"
+    source_title: "TRL documentation — DPO trainer"
+    publisher: "Hugging Face"
+    published_or_updated: null
+    accessed_at: "2026-08-10"
+    primary_source: true
+    evidence_note: "Documentazione TRL letta in questa sessione (arxiv.org e' bloccato dal proxy), sezione 'Logged metrics': 'rewards/accuracies: The proportion of examples where the implicit reward for the chosen completion is higher than that for the rejected completion.' e 'rewards/margins: The average implicit reward margin between the chosen and rejected completions.' Confermato che il notebook non ha inventato le sue metriche: sono le stesse che TRL traccia in produzione."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "notebooks/lezione-49-preference-tuning.ipynb is fully executed this session: a linear policy is DPO-tuned from noisy preference pairs; accuracy on held-out UNSEEN pairs is 0.79-0.84 and the tuned policy aligns with the true preference direction at cosine 0.974. Real outputs; the softmax-constant cancellation is stated and used, not hand-waved."
+    - "2026-08-10 (WI-6, segmento 49-51): la teoria aggiunge il riscontro fra le metriche del notebook (accuratezza, margine_dpo) e le metriche loggate dal DPOTrainer di TRL. Nessuna cella di codice toccata."
