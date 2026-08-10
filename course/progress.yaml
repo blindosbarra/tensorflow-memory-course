@@ -1373,15 +1373,15 @@ modules:
     status: in_progress
     lessons:
       capstone-architecture:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/capstone-architecture/
@@ -1397,16 +1397,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: apre la Fase 8. MemoryRecord dataclass + validatore + scheletro pipeline con componenti stub e orchestratore; smoke test end-to-end. Eseguito davvero."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       capstone-dataset:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/capstone-dataset/
@@ -1422,16 +1423,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: dataset validato train/val/test 212/19/14 (scartata 1 riga type=unknown), importanza clip [0,1], assert no-leakage id test vs train. Eseguito sui dati reali."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       capstone-classifier:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/capstone-classifier/
@@ -1447,6 +1449,7 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: bag-of-words (vocab 64 solo train) + softmax NumPy; batte la maggioranza (0.68 val). Val accuracy alta ma val piccolo (19 righe): cautela dichiarata nel docs, non sovra-interpretata. Eseguito davvero."
+          - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       capstone-embedding-graph:
         status: learner_review
         state_machine:

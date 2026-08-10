@@ -344,6 +344,36 @@ items:
       dei 61 notebook sono passati; git status vuoto dopo il run completo.
       Restano da approfondire le lezioni 52-60 (modulo capstone), sempre
       registrando evidenze e testo nello stesso commit.
+      2026-08-10: completato il segmento 52-54 (apertura del modulo
+      capstone). Approfondito il pattern stub/orchestratore della lezione 52
+      con la motivazione ufficiale ("Convenience and encapsulation") di
+      Pipeline in scikit-learn, il controllo di non-leakage della lezione 53
+      con la voce "Safety" della stessa pagina piu' una spiegazione del
+      perche' il leakage sia un errore silenzioso, e la baseline di
+      maggioranza della lezione 54 con DummyClassifier(strategy=
+      'most_frequent') di scikit-learn piu' il collegamento del termine di
+      regolarizzazione L2 gia' nel codice alla Lezione 12. Un blog personale
+      (martinfowler.com) era stato preso in considerazione per la lezione 52
+      e scartato su indicazione del committente: per le fonti tracciate si
+      usa solo documentazione ufficiale di libreria, mai un blog. arxiv.org
+      resta bloccato dal proxy in questa sessione; le tre fonti nuove usano
+      solo `github.com/scikit-learn/scikit-learn` (compose.rst,
+      model_evaluation.rst), aperte davvero in questa sessione. Tre nuove
+      affermazioni registrate nei rispettivi evidence.yaml nello stesso
+      commit del testo; le tre lezioni sono tornate a technical_review.
+      Osservazione fuori scope, non corretta qui (vedi item nuovo in coda):
+      i tre pack di questo segmento avevano gia' una claim "main" con una
+      fonte poco pertinente (Attention Is All You Need per un'affermazione
+      di architettura software) o mai verificata live; segnalato, non
+      auditato, perche' WI-6 aggiunge fonti a nuove affermazioni, non
+      corregge quelle esistenti. Le lezioni 52-54 partivano piu' leggere
+      (352/267/273 parole) delle fette precedenti: un solo paragrafo le
+      avrebbe lasciate sotto lo standard raggiunto (447/369/346); per 53 e
+      54 aggiunto un secondo paragrafo tecnico, senza fonte esterna nuova,
+      per arrivare a 461/422 parole. Il gate rapido sui tre notebook e il
+      gate completo dei 61 notebook sono passati; git status vuoto dopo il
+      run completo. Restano da approfondire le lezioni 55-60, sempre
+      registrando evidenze e testo nello stesso commit.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
@@ -727,3 +757,52 @@ items:
       "## Fonti" della pagina corrispondente in docs/modules/, e rigenerare.
       Non inventare fonti e non promuovere lo stato di verifica di una claim:
       qui si copiano riferimenti gia' registrati, non se ne creano.
+
+  - id: WI-15
+    title: "Rivedere le citazioni deboli o non pertinenti nei research pack del capstone"
+    priority: P3
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - knowledge/capstone-architecture/evidence.yaml
+      - knowledge/capstone-dataset/evidence.yaml
+      - knowledge/capstone-classifier/evidence.yaml
+      - knowledge/capstone-embedding-graph/evidence.yaml
+      - knowledge/capstone-gemma-lora/evidence.yaml
+      - knowledge/capstone-pipeline/evidence.yaml
+    verify_fast:
+      - "uv run python -c \"import yaml,glob; [yaml.safe_load(open(f)) for f in glob.glob('knowledge/capstone-*/evidence.yaml')]\""
+    verify:
+      - "uv run pytest tests/test_schema.py"
+    verify_env: "uv sync --extra dev (nessun extra ml necessario: nessuna esecuzione di notebook)"
+    expect: "ogni claim critical/major nei pack capstone-* ha una fonte primaria topicamente pertinente al claim, con status coerente con quanto e' stato letto davvero"
+    notes: >-
+      Aperto il 2026-08-10 durante il segmento 52-54 di WI-6. La claim
+      "main" di knowledge/capstone-architecture/evidence.yaml (sul pattern
+      stub/orchestratore e contratto di output) cita "Attention Is All You
+      Need" (Vaswani et al., 2017) come source_url — un paper sui
+      Transformer, senza relazione con l'affermazione sull'architettura
+      software del capstone. Le claim "main" di capstone-dataset e
+      capstone-classifier citano pagine scikit-learn topicamente piu'
+      pertinenti (cross_validation.html, linear_model.html) ma restano
+      needs_reverification: non risultano mai state aperte in una sessione
+      (accessed_at 2026-07-18, la stessa data di reviewed_at del pack, senza
+      nota di apertura reale).
+      Non corretto durante il segmento 52-54: WI-6 aggiunge fonti a nuove
+      affermazioni introdotte nel testo, non audita le claim esistenti — sono
+      due criteri di accettazione diversi. Le tre nuove claim aggiunte in
+      quel commit (sklearn-pipeline-composability, sklearn-pipeline-leakage-
+      safety, sklearn-dummy-majority-baseline) usano fonti scikit-learn
+      pertinenti e aperte davvero in quella sessione; sono un esempio di
+      cosa dovrebbe diventare anche la claim "main" di ciascun pack.
+      Chi prende questo item: (1) per capstone-architecture, sostituire o
+      affiancare la fonte Vaswani con qualcosa di davvero pertinente
+      all'affermazione (es. la stessa motivazione Pipeline gia' aggiunta
+      come seconda claim, promossa a fonte primaria della claim "main"
+      invece che di una satellite); (2) per gli altri pack capstone-*
+      (incluse le lezioni 55-60, non ancora riviste da WI-6 al momento in
+      cui questo item e' stato aperto), aprire davvero le fonti scikit-learn
+      gia' citate e aggiornare accessed_at e status a verified solo se il
+      contenuto le supporta, altrimenti sostituirle. Non promuovere mai uno
+      status a verified senza aver aperto la pagina in quella sessione.
