@@ -215,7 +215,7 @@ items:
   - id: WI-6
     title: "Alzare la densita' teorica delle lezioni 31-60"
     priority: P2
-    status: in_progress
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -400,11 +400,38 @@ items:
       datasets/processed/ (queste tre lezioni non scrivono file condivisi);
       git status vuoto dopo il run completo. Le lezioni 55-57 partivano molto
       piu' leggere delle fette precedenti (60/62/54 parole): con due paragrafi
-      a fonte primaria per lezione si arriva a 293/224/225 parole. Restano da
-      approfondire le lezioni 58-60 (chiusura del modulo capstone): nota per
-      chi le riprende, la lezione 60 non ha una cella "## Teoria essenziale"
-      (ha "## Il lab al lavoro", 33 parole) — verificare con l'autore del
-      corso come trattarla prima di applicarle lo stesso pattern.
+      a fonte primaria per lezione si arriva a 293/224/225 parole.
+      2026-08-11 (stessa iterazione): completato anche il segmento 58-60,
+      chiudendo l'intera fetta 55-60 richiesta. Lezione 58 (pipeline): la
+      distinzione ufficiale scikit-learn fra stima di probabilita' e
+      decisione a soglia, collegata a `should_store = imp >= self.soglia`.
+      Lezione 59 (monitoring): la formula PSI e le soglie 0.10/0.25
+      ("costanti di Lewis") verificate su arXiv:2307.11878 — arxiv.org, sempre
+      bloccato dal proxy nelle sessioni precedenti di WI-6, era raggiungibile
+      in questa sessione (verificato con una richiesta di controllo). Lezione
+      60 (demo): non ha una cella "## Teoria essenziale" (ha "## Il lab al
+      lavoro", la sua cella di teoria equivalente, estesa allo stesso modo);
+      collegato il controllo di deduplicazione per memory_id alla definizione
+      standard di idempotenza di RFC 7231 §4.2.2. Tre nuove affermazioni
+      registrate nei rispettivi evidence.yaml nello stesso commit del testo;
+      le tre lezioni sono tornate a technical_review. Gate rapido sui tre
+      notebook (nessuno sporca datasets/processed/) e gate completo 61/61
+      passati; la stessa deriva in virgola mobile di lezione 9 gia'
+      documentata su WI-9 (softmax_baseline_W.npy/b.npy, 1 ULP) e' riapparsa
+      ed e' stata ripristinata con git checkout -- datasets/ prima del
+      commit — non e' un errore di WI-6. Le lezioni 58-60 arrivano a
+      221/306/215 parole nella cella di teoria, in linea con lo standard.
+      Con questo segmento l'intera fetta 31-60 dichiarata dal titolo
+      dell'item e' stata approfondita con fonti primarie verificate
+      (confermato anche sul totale del markdown per notebook, non solo sulla
+      cella di teoria: le lezioni 31-60 vanno oggi da 393 a 898 parole
+      totali, contro un mediano di 1085 per le lezioni 1-30 misurato nella
+      SDD — le lezioni piu' leggere sono quelle di integrazione del
+      capstone, gia' notato come atteso in questa e nelle fette precedenti).
+      Vedi reports/plans/WI-6-lezioni-55-60.md per il riepilogo completo
+      dell'iterazione e l'osservazione fuori scope su WI-15 (claim "main"
+      preesistenti con fonti poco pertinenti in capstone-pipeline e
+      capstone-demo, non corrette qui). Item chiuso.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
