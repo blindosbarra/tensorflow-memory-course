@@ -782,28 +782,76 @@ items:
       (*: il conteggio di riferimento include tutti i test del repo, non
       solo quelli di src/memory_ai/, per questo il totale precedente citato
       qui e' piu' alto delle 49 della prima fetta.)
-      RESTA DA FARE:
-        - grafo di entita' e relazioni (lezione 55, NetworkX) e retrieval
-          ibrido (lezione 28): entrambi richiedono l'extra ml. Nota per chi
-          riprende: in QUESTO ambiente l'extra ml risultava gia' installato
-          (tensorflow 2.20.0, keras-hub 0.29.1, networkx 3.6.1) - verificalo
-          di nuovo nel tuo, non dare per scontato che manchi.
-        - la classe MemoryAILab che assembla la pipeline (lezione 58), che
-          dipende dal classificatore (ora disponibile) e dal grafo/retrieval
-          (non ancora estratti).
-        - ricablare i notebook capstone perche' importino dal pacchetto invece
-          di ridefinire, classificatore incluso: la lezione 54 va lasciata
-          COSI' COM'E' (costruisce il classificatore da zero, che e' il punto
-          della lezione), e' il notebook 58/60 che dovrebbe poter importare
-          TypeClassifier invece di ridefinirlo. Attenzione al vincolo della
-          SDD: le lezioni che costruiscono un componente DA ZERO devono
-          continuare a costruirlo - si estrae il componente finito, non si
-          sostituisce la didattica con un import.
-      Il criterio "la pipeline gira end to end dal solo src/memory_ai/" non e'
-      quindi ancora soddisfatto, ed e' per questo che l'item resta in_progress.
-      Il gate completo (verify) non e' stato eseguito in questa fetta perche'
-      nessun notebook e' stato toccato; e' stato eseguito il verify_fast, che
-      e' quello che copre le modifiche fatte.
+      CORREZIONE alla fetta precedente: la nota "grafo di entita' e
+      relazioni (lezione 55, NetworkX) e retrieval ibrido (lezione 28):
+      entrambi richiedono l'extra ml" era sbagliata, verificato leggendo
+      per intero le lezioni 55, 57, 58, 59, 60 e 28. La lezione 55 e'
+      esplicitamente Python puro/NumPy: costruisce il grafo come lista di
+      adiacenza (dizionario di insiemi) e lo dice nel proprio testo
+      ("non e' una rinuncia a networkx... solo per evitare la dipendenza
+      opzionale") - non importa networkx, non serve l'extra ml. La
+      lezione 28 ("retrieval ibrido") non e' nemmeno una lezione capstone
+      (e' nel curriculum di base, fuori dal glob notebooks/lezione-5*.ipynb
+      di questo item) e MemoryAILab non la usa: ne' lei ne' il grafo di
+      networkx entrano nella pipeline di 58/60, che si limita a
+      classificazione + entita'/relazioni + importanza. Utile per chi
+      riprende: non fidarti di una nota di handover su "cosa serve" senza
+      rileggere la lezione citata, qui la nota stessa era la trappola.
+      2026-08-11, terza fetta: estratta la pipeline MemoryAILab (lezione
+      58/60), che soddisfa il criterio di accettazione "la pipeline gira
+      end to end dal solo src/memory_ai/".
+        - src/memory_ai/pipeline.py: MemoryAILab assembla classificatore
+          (ora disponibile), estrazione entita'/relazioni e importanza -
+          tutti gia' estratti nelle fette precedenti - in MemoryRecord.
+          Il costruttore addestra il proprio TypeClassifier (stessa scelta
+          di design della lezione: `lab = MemoryAILab()` funziona subito,
+          esattamente come nel notebook), il che resta "esplicito" nel
+          senso di D5 perche' avviene alla creazione del lab, chiamata
+          dall'utente, non all'import del modulo. process() e' idempotente
+          in memory_id (lezione 60: rieseguire la stessa memoria non la
+          duplica in archive).
+      Test: tests/test_pipeline.py, 8 nuovi (141 totali, erano 133). La
+      verifica di parita' e' in
+      test_matches_lesson_60_on_its_own_example_stream: reimplementa le
+      celle della lezione 60 in modo indipendente da memory_ai.pipeline e
+      confronta ogni campo di ogni record (type, entities, relations,
+      importance, should_store, embedding_dim) sulle quattro memorie
+      d'esempio della lezione, zero differenze; confermato anche a mano
+      fuori dai test eseguendo le celle della lezione 60 cosi' come sono
+      nel notebook. Confermato anche l'end-to-end da solo src/memory_ai/:
+      `from memory_ai.pipeline import MemoryAILab; MemoryAILab().process(...)`
+      funziona senza toccare alcun notebook. ruff pulito, mypy strict
+      pulito su 9 file (erano 8).
+      RESTA DA FARE (solo il ricablaggio dei notebook - i componenti sono
+      tutti estratti):
+        - ricablare i notebook capstone perche' importino dal pacchetto
+          invece di ridefinire. Le lezioni 54, 55, 56 COSTRUISCONO un
+          componente da zero (classificatore, embedding+entita'+grafo,
+          Gemma+LoRA) e vanno lasciate COSI' COME SONO - e' il vincolo
+          della SDD, si estrae il componente finito, non si sostituisce la
+          didattica con un import. Le lezioni 57 (valutazione), 58
+          (pipeline), 59 (monitoring) e 60 (demo) invece NON costruiscono
+          nulla da zero: ridefiniscono lo stesso identico preambolo
+          (classificatore+embedding+entita'+relazioni+importanza, ~50
+          righe copiate e incollate) solo per *usare* i componenti gia'
+          costruiti nelle lezioni precedenti - sono il caso esatto
+          descritto nel Problem statement della SDD ("codice copiato da
+          cella a cella, senza test") e i candidati naturali per
+          l'import. Trappola per chi rica blera 58/60: MemoryRecord.to_dict()
+          include anche la chiave "topics" (sempre [] qui, il capstone non
+          la popola), che il dizionario ridefinito nel notebook non ha -
+          l'assert `set(record.keys()) == attesi` della lezione 58 (cella
+          5) andrebbe aggiornato per includere "topics", non e' un bug del
+          pacchetto. Questa fetta e' quella che tocca notebook: va
+          eseguito il gate completo (execute_notebooks.py, ~15 min) prima
+          di segnare l'item done, non solo il verify_fast.
+      Il criterio "la pipeline gira end to end dal solo src/memory_ai/" e'
+      ora soddisfatto (vedi sopra), ma l'item resta in_progress perche' il
+      "Required change" della SDD include esplicitamente il ricablaggio dei
+      notebook, non ancora fatto. Il gate completo (verify) non e' stato
+      eseguito in questa fetta perche' nessun notebook e' stato toccato;
+      e' stato eseguito il verify_fast, che e' quello che copre le
+      modifiche fatte.
 
   - id: WI-14
     title: "Riportare in docs/modules/*.md le fonti citate solo nei notebook (31-60)"
