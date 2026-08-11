@@ -703,7 +703,7 @@ items:
   - id: WI-13
     title: "Estrarre i componenti del capstone in src/memory_ai/ con test"
     priority: P3
-    status: in_progress
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -852,6 +852,59 @@ items:
       eseguito in questa fetta perche' nessun notebook e' stato toccato;
       e' stato eseguito il verify_fast, che e' quello che copre le
       modifiche fatte.
+      2026-08-11, quarta fetta (ultima): ricablate le lezioni 57, 58, 59, 60
+      perche' importino da src/memory_ai invece di ridefinire il preambolo.
+      Le lezioni 54, 55, 56 non sono state toccate, come richiesto.
+        - Cella 2 di ciascuna lezione (57, 58, 59, 60): non ridefinisce piu'
+          classificatore/embedding/entita'/relazioni/importanza, importa da
+          memory_ai.classifier/.embedding/.text/.importance. Ogni notebook
+          importa SOLO cio' che usa a valle (lezione 59, ad es., importa solo
+          TypeClassifier perche' il monitoraggio guarda solo la
+          distribuzione dei tipi predetti - niente embedding/entita' li').
+          Il classificatore resta addestrato dentro la cella (TypeClassifier
+          ().fit(...)), mai all'import, per lo stesso vincolo D5 gia' fissato
+          per il pacchetto.
+        - Cella 3 di lezione 58 e lezione 60 (dove la lezione COSTRUISCE la
+          classe MemoryAILab assemblando i pezzi - questa e' didattica, non
+          preambolo copiato, e resta): process() ora costruisce un
+          `memory_ai.schema.MemoryRecord` e restituisce `record.to_dict()`
+          invece di un dict scritto a mano. E' questa la fonte della
+          trappola "topics" gia' annotata nella fetta precedente: verificata
+          leggendo il codice, non solo sulla parola. `to_dict()` include
+          sempre la chiave "topics" (una lista vuota, perche' il lab non la
+          popola), quindi l'assert sul set di chiavi nella cella 5 di
+          lezione 58 ora include "topics" nell'insieme atteso.
+      Verifica di parita': i quattro notebook sono stati rieseguiti per
+      intero (kernel reale, non a occhio) e l'output stampato confrontato
+      cella per cella con quello committato prima della fetta - identico
+      in ogni numero (accuratezza 0.93, P@3 0.80, F1 1.00 in lezione 57; PSI
+      0.038/6.779 in lezione 59; importanze e archiviazione in lezione 60),
+      con l'unica differenza prevista: la chiave "topics": [] in piu' nei
+      record JSON stampati da lezione 58 e 60. ruff pulito, mypy strict
+      pulito su 9 file, 141 test verdi (invariati: questa fetta non tocca
+      src/memory_ai/). Gate completo eseguito: 61/61 notebook,
+      `git status --porcelain` pulito dopo il run sui quattro file toccati
+      da questo item.
+      SCOPERTA fuori scope, annotata invece di corretta (AGENT_LOOP.md,
+      "se noti qualcos'altro di rotto non aggiustarlo"): il run completo ha
+      lasciato sporchi anche `datasets/processed/softmax_baseline_W.npy` e
+      `softmax_baseline_b.npy`, scritti dalla lezione 9 (letti dalle lezioni
+      10 e 12) - notebook completamente fuori dal glob di questo item
+      (lezione-5*/lezione-60). Lo scarto e' 2.22e-16 (1 ULP), coerente con
+      non-associativita' floating-point di un matmul BLAS multi-thread, non
+      con codice non deterministico: la lezione 9 non e' nemmeno tra le 21
+      lezioni che WI-9 elenca come prive di seed. Ripristinati con
+      `git checkout -- datasets/processed/softmax_baseline_*.npy` perche'
+      fuori scope. Nota per chi riprende: questo contraddice la nota di
+      chiusura di WI-9 ("due run completi consecutivi, git status pulito
+      dopo ciascuno") - o l'ambiente di quella verifica aveva un threading
+      BLAS diverso da questo, o il flake e' comparso dopo. Non ho aperto un
+      nuovo item per non eccedere lo scope di questa fetta; verificare se
+      si ripete su un secondo run completo prima di aprirne uno.
+      Criteri di accettazione WI-13 tutti soddisfatti: pipeline end-to-end
+      da solo src/memory_ai/ (fetta precedente), mypy strict pulito, ogni
+      componente estratto ha test, i notebook 54-56 continuano a insegnare
+      la costruzione da zero. Item done.
 
   - id: WI-14
     title: "Riportare in docs/modules/*.md le fonti citate solo nei notebook (31-60)"
