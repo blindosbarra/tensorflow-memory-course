@@ -215,7 +215,7 @@ items:
   - id: WI-6
     title: "Alzare la densita' teorica delle lezioni 31-60"
     priority: P2
-    status: in_progress
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -344,6 +344,94 @@ items:
       dei 61 notebook sono passati; git status vuoto dopo il run completo.
       Restano da approfondire le lezioni 52-60 (modulo capstone), sempre
       registrando evidenze e testo nello stesso commit.
+      2026-08-10: completato il segmento 52-54 (apertura del modulo
+      capstone). Approfondito il pattern stub/orchestratore della lezione 52
+      con la motivazione ufficiale ("Convenience and encapsulation") di
+      Pipeline in scikit-learn, il controllo di non-leakage della lezione 53
+      con la voce "Safety" della stessa pagina piu' una spiegazione del
+      perche' il leakage sia un errore silenzioso, e la baseline di
+      maggioranza della lezione 54 con DummyClassifier(strategy=
+      'most_frequent') di scikit-learn piu' il collegamento del termine di
+      regolarizzazione L2 gia' nel codice alla Lezione 12. Un blog personale
+      (martinfowler.com) era stato preso in considerazione per la lezione 52
+      e scartato su indicazione del committente: per le fonti tracciate si
+      usa solo documentazione ufficiale di libreria, mai un blog. arxiv.org
+      resta bloccato dal proxy in questa sessione; le tre fonti nuove usano
+      solo `github.com/scikit-learn/scikit-learn` (compose.rst,
+      model_evaluation.rst), aperte davvero in questa sessione. Tre nuove
+      affermazioni registrate nei rispettivi evidence.yaml nello stesso
+      commit del testo; le tre lezioni sono tornate a technical_review.
+      Osservazione fuori scope, non corretta qui (vedi item nuovo in coda):
+      i tre pack di questo segmento avevano gia' una claim "main" con una
+      fonte poco pertinente (Attention Is All You Need per un'affermazione
+      di architettura software) o mai verificata live; segnalato, non
+      auditato, perche' WI-6 aggiunge fonti a nuove affermazioni, non
+      corregge quelle esistenti. Le lezioni 52-54 partivano piu' leggere
+      (352/267/273 parole) delle fette precedenti: un solo paragrafo le
+      avrebbe lasciate sotto lo standard raggiunto (447/369/346); per 53 e
+      54 aggiunto un secondo paragrafo tecnico, senza fonte esterna nuova,
+      per arrivare a 461/422 parole. Il gate rapido sui tre notebook e il
+      gate completo dei 61 notebook sono passati; git status vuoto dopo il
+      run completo. Restano da approfondire le lezioni 55-60, sempre
+      registrando evidenze e testo nello stesso commit.
+      2026-08-11: completato il segmento 55-57. Approfondito il perche'
+      `E @ q` su vettori normalizzati e' esattamente la similarita' coseno
+      (definizione scikit-learn) e il perche' il grafo a dizionario di
+      insiemi della lezione 55 replica la stessa struttura interna che
+      NetworkX stesso usa (dizionario di dizionari, motivata per grafi
+      sparsi); la firma ufficiale KerasHub di
+      `GemmaBackbone.enable_lora(rank, target_layer_names)` per la lezione
+      56 (quali layer adatta, cosa fa `rank=4` nella cella guardata); la
+      definizione ufficiale scikit-learn dell'F1 come media armonica di
+      precisione e richiamo per la lezione 57, con la spiegazione del perche'
+      le tre metriche del report (accuratezza, Precision@k, F1) non sono
+      intercambiabili. Quattro nuove affermazioni registrate nei rispettivi
+      evidence.yaml nello stesso commit del testo (scikit-learn.org e
+      keras.io, tutte aperte e verificate live in questa sessione; arxiv.org
+      non necessario per questa fetta); le tre lezioni sono tornate a
+      technical_review. Trappola trovata e corretta durante la scrittura (non
+      arrivata al commit): la funzione di append usata per il primo tentativo
+      aggiungeva la riga vuota di separazione DOPO un paragrafo la cui ultima
+      riga non terminava con \n, producendo un solo a-capo invece di una vera
+      riga vuota fra paragrafi; corretto imponendo che ogni paragrafo passato
+      alla funzione termini gia' con \n (con un assert), verificato contro il
+      diff prima di procedere. Il gate rapido sui tre notebook e il gate
+      completo dei 61 notebook sono passati; il run parziale non ha sporcato
+      datasets/processed/ (queste tre lezioni non scrivono file condivisi);
+      git status vuoto dopo il run completo. Le lezioni 55-57 partivano molto
+      piu' leggere delle fette precedenti (60/62/54 parole): con due paragrafi
+      a fonte primaria per lezione si arriva a 293/224/225 parole.
+      2026-08-11 (stessa iterazione): completato anche il segmento 58-60,
+      chiudendo l'intera fetta 55-60 richiesta. Lezione 58 (pipeline): la
+      distinzione ufficiale scikit-learn fra stima di probabilita' e
+      decisione a soglia, collegata a `should_store = imp >= self.soglia`.
+      Lezione 59 (monitoring): la formula PSI e le soglie 0.10/0.25
+      ("costanti di Lewis") verificate su arXiv:2307.11878 — arxiv.org, sempre
+      bloccato dal proxy nelle sessioni precedenti di WI-6, era raggiungibile
+      in questa sessione (verificato con una richiesta di controllo). Lezione
+      60 (demo): non ha una cella "## Teoria essenziale" (ha "## Il lab al
+      lavoro", la sua cella di teoria equivalente, estesa allo stesso modo);
+      collegato il controllo di deduplicazione per memory_id alla definizione
+      standard di idempotenza di RFC 7231 §4.2.2. Tre nuove affermazioni
+      registrate nei rispettivi evidence.yaml nello stesso commit del testo;
+      le tre lezioni sono tornate a technical_review. Gate rapido sui tre
+      notebook (nessuno sporca datasets/processed/) e gate completo 61/61
+      passati; la stessa deriva in virgola mobile di lezione 9 gia'
+      documentata su WI-9 (softmax_baseline_W.npy/b.npy, 1 ULP) e' riapparsa
+      ed e' stata ripristinata con git checkout -- datasets/ prima del
+      commit — non e' un errore di WI-6. Le lezioni 58-60 arrivano a
+      221/306/215 parole nella cella di teoria, in linea con lo standard.
+      Con questo segmento l'intera fetta 31-60 dichiarata dal titolo
+      dell'item e' stata approfondita con fonti primarie verificate
+      (confermato anche sul totale del markdown per notebook, non solo sulla
+      cella di teoria: le lezioni 31-60 vanno oggi da 393 a 898 parole
+      totali, contro un mediano di 1085 per le lezioni 1-30 misurato nella
+      SDD — le lezioni piu' leggere sono quelle di integrazione del
+      capstone, gia' notato come atteso in questa e nelle fette precedenti).
+      Vedi reports/plans/WI-6-lezioni-55-60.md per il riepilogo completo
+      dell'iterazione e l'osservazione fuori scope su WI-15 (claim "main"
+      preesistenti con fonti poco pertinenti in capstone-pipeline e
+      capstone-demo, non corrette qui). Item chiuso.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"
@@ -727,3 +815,52 @@ items:
       "## Fonti" della pagina corrispondente in docs/modules/, e rigenerare.
       Non inventare fonti e non promuovere lo stato di verifica di una claim:
       qui si copiano riferimenti gia' registrati, non se ne creano.
+
+  - id: WI-15
+    title: "Rivedere le citazioni deboli o non pertinenti nei research pack del capstone"
+    priority: P3
+    status: todo
+    blocked_by: []
+    depends_on: []
+    files:
+      - knowledge/capstone-architecture/evidence.yaml
+      - knowledge/capstone-dataset/evidence.yaml
+      - knowledge/capstone-classifier/evidence.yaml
+      - knowledge/capstone-embedding-graph/evidence.yaml
+      - knowledge/capstone-gemma-lora/evidence.yaml
+      - knowledge/capstone-pipeline/evidence.yaml
+    verify_fast:
+      - "uv run python -c \"import yaml,glob; [yaml.safe_load(open(f)) for f in glob.glob('knowledge/capstone-*/evidence.yaml')]\""
+    verify:
+      - "uv run pytest tests/test_schema.py"
+    verify_env: "uv sync --extra dev (nessun extra ml necessario: nessuna esecuzione di notebook)"
+    expect: "ogni claim critical/major nei pack capstone-* ha una fonte primaria topicamente pertinente al claim, con status coerente con quanto e' stato letto davvero"
+    notes: >-
+      Aperto il 2026-08-10 durante il segmento 52-54 di WI-6. La claim
+      "main" di knowledge/capstone-architecture/evidence.yaml (sul pattern
+      stub/orchestratore e contratto di output) cita "Attention Is All You
+      Need" (Vaswani et al., 2017) come source_url — un paper sui
+      Transformer, senza relazione con l'affermazione sull'architettura
+      software del capstone. Le claim "main" di capstone-dataset e
+      capstone-classifier citano pagine scikit-learn topicamente piu'
+      pertinenti (cross_validation.html, linear_model.html) ma restano
+      needs_reverification: non risultano mai state aperte in una sessione
+      (accessed_at 2026-07-18, la stessa data di reviewed_at del pack, senza
+      nota di apertura reale).
+      Non corretto durante il segmento 52-54: WI-6 aggiunge fonti a nuove
+      affermazioni introdotte nel testo, non audita le claim esistenti — sono
+      due criteri di accettazione diversi. Le tre nuove claim aggiunte in
+      quel commit (sklearn-pipeline-composability, sklearn-pipeline-leakage-
+      safety, sklearn-dummy-majority-baseline) usano fonti scikit-learn
+      pertinenti e aperte davvero in quella sessione; sono un esempio di
+      cosa dovrebbe diventare anche la claim "main" di ciascun pack.
+      Chi prende questo item: (1) per capstone-architecture, sostituire o
+      affiancare la fonte Vaswani con qualcosa di davvero pertinente
+      all'affermazione (es. la stessa motivazione Pipeline gia' aggiunta
+      come seconda claim, promossa a fonte primaria della claim "main"
+      invece che di una satellite); (2) per gli altri pack capstone-*
+      (incluse le lezioni 55-60, non ancora riviste da WI-6 al momento in
+      cui questo item e' stato aperto), aprire davvero le fonti scikit-learn
+      gia' citate e aggiornare accessed_at e status a verified solo se il
+      contenuto le supporta, altrimenti sostituirle. Non promuovere mai uno
+      status a verified senza aver aperto la pagina in quella sessione.

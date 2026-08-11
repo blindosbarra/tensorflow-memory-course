@@ -12,8 +12,20 @@ claims:
     primary_source: true
     evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
     status: needs_reverification
+  - id: sklearn-pipeline-leakage-safety
+    claim: "scikit-learn documents 'Safety' as one of the explicit purposes of Pipeline: pipelines help avoid leaking statistics from the test data into the trained model during cross-validation, by ensuring the same samples are used to train the transformers and predictors — the same reasoning behind this lesson's explicit id-disjoint check between train and test."
+    importance: minor
+    source_url: "https://github.com/scikit-learn/scikit-learn/blob/main/doc/modules/compose.rst"
+    source_title: "scikit-learn documentation — Pipeline: chaining estimators"
+    publisher: "scikit-learn"
+    published_or_updated: null
+    accessed_at: "2026-08-10"
+    primary_source: true
+    evidence_note: "Documentazione scikit-learn letta in questa sessione (fonte ufficiale della libreria, non un blog), voce 'Safety': 'Pipelines help avoid leaking statistics from your test data into the trained model in cross-validation, by ensuring that the same samples are used to train the transformers and predictors.' Il notebook non usa sklearn.Pipeline, applica lo stesso principio a mano con un assert isdisjoint sugli id."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Interamente eseguibile sui dati reali del corso; numeri (212/19/14, 1 scartata) sono output reali. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-53-capstone-dataset.ipynb this session, not invented."
+    - "2026-08-10 (WI-6, segmento 52-54): la teoria aggiunge la motivazione 'Safety' di Pipeline in scikit-learn per il controllo di leakage gia' presente nel notebook. Nessuna cella di codice toccata."

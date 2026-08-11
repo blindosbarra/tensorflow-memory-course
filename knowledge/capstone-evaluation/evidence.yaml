@@ -12,8 +12,20 @@ claims:
     primary_source: true
     evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
     status: needs_reverification
+  - id: f1-harmonic-mean-precision-recall
+    claim: "The F-measure (F1 when beta=1) is a weighted harmonic mean of precision and recall, F1 = 2 * (precision * recall) / (precision + recall); the harmonic mean is used instead of the arithmetic mean because it penalizes a large imbalance between precision and recall more strongly."
+    importance: minor
+    source_url: "https://scikit-learn.org/stable/modules/model_evaluation.html"
+    source_title: "scikit-learn documentation — Precision, recall and F-measures"
+    publisher: "scikit-learn"
+    published_or_updated: null
+    accessed_at: "2026-08-11"
+    primary_source: true
+    evidence_note: "Documentazione scikit-learn letta in questa sessione (fonte ufficiale della libreria, non un blog): definisce l'F-measure come media armonica pesata di precisione e richiamo, con F1 = 2*prec*rec/(prec+rec) per beta=1. Il notebook calcola esattamente questa formula (`prec`, `rec`, poi `f1`) sul gold set di relazioni."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Interamente eseguibile; metriche reali sul test set. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-57-capstone-valutazione.ipynb this session, not invented."
+    - "2026-08-11 (WI-6, segmento 55-57): la teoria aggiunge la definizione ufficiale scikit-learn dell'F1 come media armonica di precisione e richiamo, verificata live in questa sessione, e spiega perche' le tre metriche del report (accuratezza, Precision@k, F1) non sono intercambiabili. Nessuna cella di codice toccata. Nota: la claim gia' esistente in questo pack (capstone-evaluation-main) resta needs_reverification e non e' stata auditata: fuori scope, WI-6 aggiunge fonti a nuove affermazioni."
