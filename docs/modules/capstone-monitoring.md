@@ -35,3 +35,4 @@ Il passo 59 aggiunge `monitor(batch)`: oltre soglia si raccoglie nuovo feedback 
 ## Fonti
 
 - scikit-learn, *Metrics and scoring* — <https://scikit-learn.org/stable/modules/model_evaluation.html>
+- Yurdakul e Naranjo, *The Population Resemblance Statistic: A Chi-Square Measure of Fit for Banking*, arXiv:2307.11878 — <https://arxiv.org/abs/2307.11878>

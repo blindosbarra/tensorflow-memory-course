@@ -46,3 +46,4 @@ del preference training.
 ## Fonti
 
 - Ouyang et al., *InstructGPT*, 2022 — <https://arxiv.org/abs/2203.02155>
+- Hugging Face, *documentazione TRL, formati dei dataset* — <https://github.com/huggingface/trl/blob/main/docs/source/dataset_formats.md>

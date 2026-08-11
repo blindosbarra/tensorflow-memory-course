@@ -35,3 +35,4 @@ Il passo 53 produce il dataset pulito e validato, pronto per tutti i componenti.
 ## Fonti
 
 - scikit-learn, *Cross-validation* — <https://scikit-learn.org/stable/modules/cross_validation.html>
+- scikit-learn, *documentazione, Pipeline* — <https://github.com/scikit-learn/scikit-learn/blob/main/doc/modules/compose.rst>

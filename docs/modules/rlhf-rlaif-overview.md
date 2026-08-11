@@ -47,3 +47,4 @@ qualita' contro un campione umano.
 
 - Bai et al., *Constitutional AI*, 2022 — <https://arxiv.org/abs/2212.08073>
 - Ouyang et al., *InstructGPT*, 2022 — <https://arxiv.org/abs/2203.02155>
+- Hugging Face, *documentazione TRL, indice dei trainer* — <https://github.com/huggingface/trl/blob/main/docs/source/index.md>

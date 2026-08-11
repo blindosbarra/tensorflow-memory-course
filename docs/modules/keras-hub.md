@@ -57,3 +57,6 @@ che, dato il fabbisogno (multilingua o no), restituisce il preset adatto — con
 ## Fonti
 
 - *KerasHub* — <https://keras.io/keras_hub/>
+- *KerasHub Models and Presets* — <https://keras.io/keras_hub/presets/>
+- *API `GemmaCausalLM`* — <https://keras.io/keras_hub/api/models/gemma/gemma_causal_lm/>
+- *Gemma model card* (Google AI for Developers) — <https://ai.google.dev/gemma/docs/core/model_card>

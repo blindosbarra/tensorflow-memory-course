@@ -37,3 +37,4 @@ Il passo 56 fornisce `estrai_relazioni`, l'ultimo componente-contenuto del recor
 ## Fonti
 
 - Keras documentation, *Gemma models — KerasHub* — <https://keras.io/keras_hub/api/models/gemma/>
+- Keras documentation, *KerasHub, GemmaBackbone.enable_lora* — <https://keras.io/keras_hub/api/models/gemma/gemma_backbone/>

@@ -78,3 +78,5 @@ della Lezione 35.
 
 - Vaswani et al., *Attention Is All You Need*, 2017 — <https://arxiv.org/abs/1706.03762>
 - *numpy.random.Generator.choice* — <https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html>
+- Hinton, Vinyals e Dean, *Distilling the Knowledge in a Neural Network*, 2015 — <https://arxiv.org/abs/1503.02531>
+- NumPy, *Random Generator* (`default_rng`) — <https://numpy.org/doc/stable/reference/random/generator.html>

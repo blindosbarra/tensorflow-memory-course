@@ -54,3 +54,7 @@ estratti) senza alcun modello. Cosi' il sistema funziona sempre.
 ## Fonti
 
 - *Gemma models — KerasHub* — <https://keras.io/keras_hub/api/models/gemma/>
+- *API `GemmaCausalLM.generate`* — <https://keras.io/keras_hub/api/models/gemma/gemma_causal_lm/>
+- *API dei sampler KerasHub* — <https://keras.io/keras_hub/api/samplers/>
+- Vaswani et al., *Attention Is All You Need*, 2017 — <https://arxiv.org/abs/1706.03762>
+- Hinton, Vinyals e Dean, *Distilling the Knowledge in a Neural Network* (softmax con temperatura), 2015 — <https://arxiv.org/abs/1503.02531>

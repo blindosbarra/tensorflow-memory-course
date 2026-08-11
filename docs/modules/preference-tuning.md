@@ -43,3 +43,4 @@ accuratezza train e generalizzazione.
 ## Fonti
 
 - Rafailov et al., *DPO*, 2023 — <https://arxiv.org/abs/2305.18290>
+- Hugging Face, *documentazione TRL, DPO trainer* — <https://github.com/huggingface/trl/blob/main/docs/source/dpo_trainer.md>

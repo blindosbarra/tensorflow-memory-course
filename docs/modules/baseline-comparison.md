@@ -66,3 +66,4 @@ quando si adatta il modello del progetto.
 ## Fonti
 
 - Hu et al., *LoRA*, 2021 — <https://arxiv.org/abs/2106.09685>
+- Microsoft Research, *LoRA — repository ufficiale (tabella dei risultati)* — <https://github.com/microsoft/LoRA>

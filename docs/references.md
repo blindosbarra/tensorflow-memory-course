@@ -83,39 +83,66 @@ Tutte le fonti citate dalle lezioni, raggruppate per modulo.
 
 ## transformers-gemma
 
-- Vaswani et al., *Attention Is All You Need*, 2017 — <https://arxiv.org/abs/1706.03762> (attention-intuition, self-attention-math, transformer-block, tokenizer-generation)
+- Vaswani et al., *Attention Is All You Need*, 2017 — <https://arxiv.org/abs/1706.03762> (attention-intuition, self-attention-math, transformer-block, tokenizer-generation, gemma-inference)
 - *numpy.exp* — <https://numpy.org/doc/stable/reference/generated/numpy.exp.html> (attention-intuition)
+- Ba, Kiros e Hinton, *Layer Normalization*, 2016 — <https://arxiv.org/abs/1607.06450> (transformer-block)
 - *numpy.random.Generator.choice* — <https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.choice.html> (tokenizer-generation)
+- Hinton, Vinyals e Dean, *Distilling the Knowledge in a Neural Network*, 2015 — <https://arxiv.org/abs/1503.02531> (tokenizer-generation, gemma-inference)
+- NumPy, *Random Generator* (`default_rng`) — <https://numpy.org/doc/stable/reference/random/generator.html> (tokenizer-generation)
 - *KerasHub* — <https://keras.io/keras_hub/> (keras-hub)
+- *KerasHub Models and Presets* — <https://keras.io/keras_hub/presets/> (keras-hub)
+- *API `GemmaCausalLM`* — <https://keras.io/keras_hub/api/models/gemma/gemma_causal_lm/> (keras-hub, gemma-inference)
+- *Gemma model card* (Google AI for Developers) — <https://ai.google.dev/gemma/docs/core/model_card> (keras-hub)
 - *Gemma models — KerasHub* — <https://keras.io/keras_hub/api/models/gemma/> (gemma-inference)
+- *API dei sampler KerasHub* — <https://keras.io/keras_hub/api/samplers/> (gemma-inference)
 - *json — JSON encoder and decoder* — <https://docs.python.org/3/library/json.html> (structured-output)
+- *JSON standard, RFC 8259* (IETF) — <https://www.rfc-editor.org/rfc/rfc8259> (structured-output)
+- *JSON Schema: validazione* — <https://json-schema.org/draft/2020-12/json-schema-validation.html> (structured-output)
 - *Metrics and scoring* (scikit-learn) — <https://scikit-learn.org/stable/modules/model_evaluation.html> (evaluation-generative)
+- *FastChat — LLM Judge* (LMSYS Org) — <https://github.com/lm-sys/FastChat/blob/main/fastchat/llm_judge/README.md> (evaluation-generative)
 
 ## lora
 
 - *Transfer learning & fine-tuning* (Keras) — <https://keras.io/guides/transfer_learning/> (transfer-learning-freezing)
 - Hu et al., *LoRA*, 2021 — <https://arxiv.org/abs/2106.09685> (transfer-learning-freezing, lora-math, lora-from-scratch, gemma-lora, baseline-comparison, adapter-packaging)
+- *Keras — Transfer learning & fine-tuning* (codice sorgente della guida) — <https://github.com/keras-team/keras-io/blob/master/guides/transfer_learning.py> (transfer-learning-freezing)
 - *numpy.linalg.svd* — <https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html> (lora-math)
+- Microsoft Research, *LoRA: Low-Rank Adaptation of Large Language Models* (repository ufficiale) — <https://github.com/microsoft/LoRA> (lora-math, lora-from-scratch, baseline-comparison, adapter-packaging)
+- Microsoft Research, *LoRA reference implementation — loralib/layers.py* — <https://github.com/microsoft/LoRA/blob/main/loralib/layers.py> (lora-from-scratch)
 - *Gemma models — KerasHub* — <https://keras.io/keras_hub/api/models/gemma/> (gemma-lora)
+- Keras team, *sorgente `Backbone.enable_lora` di KerasHub* — <https://github.com/keras-team/keras-hub/blob/master/keras_hub/src/models/backbone.py> (gemma-lora)
 - Dettmers et al., *QLoRA*, 2023 — <https://arxiv.org/abs/2305.14314> (qlora-concepts)
 - *numpy.round* — <https://numpy.org/doc/stable/reference/generated/numpy.round.html> (qlora-concepts)
+- Dettmers et al., *QLoRA — repository ufficiale* — <https://github.com/artidoro/qlora> (qlora-concepts)
 
 ## preference-learning
 
 - Ouyang et al., *InstructGPT*, 2022 — <https://arxiv.org/abs/2203.02155> (feedback-schema, chosen-rejected-data, reward-functions, rlhf-rlaif-overview)
+- Hugging Face, *documentazione TRL, formati dei dataset* — <https://github.com/huggingface/trl/blob/main/docs/source/dataset_formats.md> (feedback-schema)
+- Hugging Face, *documentazione TRL, reward trainer* — <https://github.com/huggingface/trl/blob/main/docs/source/reward_trainer.md> (chosen-rejected-data, reward-functions, online-learning-risks)
 - Rafailov et al., *DPO*, 2023 — <https://arxiv.org/abs/2305.18290> (dpo-intuition, preference-tuning)
+- Hugging Face, *documentazione TRL, DPO trainer* — <https://github.com/huggingface/trl/blob/main/docs/source/dpo_trainer.md> (dpo-intuition, preference-tuning)
 - Bai et al., *Constitutional AI*, 2022 — <https://arxiv.org/abs/2212.08073> (rlhf-rlaif-overview)
+- Hugging Face, *documentazione TRL, indice dei trainer* — <https://github.com/huggingface/trl/blob/main/docs/source/index.md> (rlhf-rlaif-overview)
 - Gao et al., *Reward Model Overoptimization*, 2022 — <https://arxiv.org/abs/2210.10760> (online-learning-risks)
 
 ## capstone
 
 - Vaswani et al., 2017, *Attention Is All You Need* — <https://arxiv.org/abs/1706.03762> (capstone-architecture, capstone-embedding-graph)
+- scikit-learn, *documentazione, Pipeline* — <https://github.com/scikit-learn/scikit-learn/blob/main/doc/modules/compose.rst> (capstone-architecture, capstone-dataset)
 - scikit-learn, *Cross-validation* — <https://scikit-learn.org/stable/modules/cross_validation.html> (capstone-dataset)
 - scikit-learn, *Logistic regression* — <https://scikit-learn.org/stable/modules/linear_model.html> (capstone-classifier)
+- scikit-learn, *documentazione, model evaluation* — <https://github.com/scikit-learn/scikit-learn/blob/main/doc/modules/model_evaluation.rst> (capstone-classifier)
+- scikit-learn, *Pairwise metrics — cosine similarity* — <https://scikit-learn.org/stable/modules/metrics.html> (capstone-embedding-graph)
+- NetworkX, *Introduction* (rappresentazione del grafo) — <https://networkx.org/documentation/stable/reference/introduction.html> (capstone-embedding-graph)
 - Keras documentation, *Gemma models — KerasHub* — <https://keras.io/keras_hub/api/models/gemma/> (capstone-gemma-lora)
+- Keras documentation, *KerasHub, GemmaBackbone.enable_lora* — <https://keras.io/keras_hub/api/models/gemma/gemma_backbone/> (capstone-gemma-lora)
 - scikit-learn, *Metrics and scoring* — <https://scikit-learn.org/stable/modules/model_evaluation.html> (capstone-evaluation, capstone-monitoring)
 - Hu et al., 2021, *LoRA: Low-Rank Adaptation* — <https://arxiv.org/abs/2106.09685> (capstone-pipeline)
+- scikit-learn, *Tuning the decision threshold for classification* — <https://scikit-learn.org/stable/modules/classification_threshold.html> (capstone-pipeline)
+- Yurdakul e Naranjo, *The Population Resemblance Statistic: A Chi-Square Measure of Fit for Banking*, arXiv:2307.11878 — <https://arxiv.org/abs/2307.11878> (capstone-monitoring)
 - Rafailov et al., 2023, *Direct Preference Optimization* — <https://arxiv.org/abs/2305.18290> (capstone-demo)
+- IETF, *RFC 7231 §4.2.2, Idempotent Methods* — <https://www.rfc-editor.org/rfc/rfc7231> (capstone-demo)
 
 ## gcp-ml-certification
 

@@ -77,3 +77,4 @@ e dimensione del riassunto. E' l'architettura che modelli come **Gemma**
 ## Fonti
 
 - Vaswani et al., *Attention Is All You Need*, 2017 — <https://arxiv.org/abs/1706.03762>
+- Ba, Kiros e Hinton, *Layer Normalization*, 2016 — <https://arxiv.org/abs/1607.06450>

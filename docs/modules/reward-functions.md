@@ -47,3 +47,4 @@ accuratezza e allineamento con la reward vera.
 ## Fonti
 
 - Ouyang et al., *InstructGPT*, 2022 — <https://arxiv.org/abs/2203.02155>
+- Hugging Face, *documentazione TRL, reward trainer* — <https://github.com/huggingface/trl/blob/main/docs/source/reward_trainer.md>
