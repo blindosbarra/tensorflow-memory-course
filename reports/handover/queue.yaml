@@ -781,7 +781,7 @@ items:
   - id: WI-14
     title: "Riportare in docs/modules/*.md le fonti citate solo nei notebook (31-60)"
     priority: P2
-    status: todo
+    status: done
     blocked_by: []
     depends_on: []
     files:
@@ -815,6 +815,24 @@ items:
       "## Fonti" della pagina corrispondente in docs/modules/, e rigenerare.
       Non inventare fonti e non promuovere lo stato di verifica di una claim:
       qui si copiano riferimenti gia' registrati, non se ne creano.
+      2026-08-11: fatto, ora che WI-6 ha coperto l'intera fetta 31-60. Per
+      ognuna delle 30 lezioni la fonte "vera" e' l'unione degli URL citati nel
+      notebook (celle "## Fonti" quando presenti, altrimenti la riga "Fonte/i
+      primaria/e" della cella di teoria) e degli URL in
+      knowledge/<id>/evidence.yaml; confrontata contro gli URL gia' presenti
+      nella sezione "## Fonti" di docs/modules/<id>.md. Ventisette lezioni
+      avevano almeno una fonte mancante (le lezioni 31 e 57 erano gia'
+      complete); aggiunta una riga per ciascuna, con la descrizione copiata
+      dal notebook quando disponibile (es. le celle "## Fonti" gia' scritte
+      delle lezioni 32-33 e 37-39) o da source_title/publisher
+      dell'evidence.yaml quando la fonte non compare nel testo del notebook
+      (es. keras_hub/presets/ per la lezione 34, citata solo nel pack). Nessuna
+      fonte nuova inventata e nessuno stato di verifica promosso: le claim
+      restano needs_reverification/verified come nei pack. Rigenerato con
+      `uv run python scripts/build_references.py` (114 fonti da 10 moduli,
+      prima 102) e verificato che `--check` passi pulito. Gate completo
+      (`--check` + `uv run mkdocs build --strict`) passato. Nessun extra ml
+      necessario, nessun notebook eseguito o modificato.
 
   - id: WI-15
     title: "Rivedere le citazioni deboli o non pertinenti nei research pack del capstone"

@@ -58,3 +58,5 @@ malformato.
 ## Fonti
 
 - *json — JSON encoder and decoder* — <https://docs.python.org/3/library/json.html>
+- *JSON standard, RFC 8259* (IETF) — <https://www.rfc-editor.org/rfc/rfc8259>
+- *JSON Schema: validazione* — <https://json-schema.org/draft/2020-12/json-schema-validation.html>

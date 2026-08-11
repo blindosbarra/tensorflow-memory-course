@@ -35,3 +35,5 @@ Il passo 55 fornisce `rappresenta(testo)` (embedding_dim + entities) per la pipe
 ## Fonti
 
 - Vaswani et al., 2017, *Attention Is All You Need* — <https://arxiv.org/abs/1706.03762>
+- scikit-learn, *Pairwise metrics — cosine similarity* — <https://scikit-learn.org/stable/modules/metrics.html>
+- NetworkX, *Introduction* (rappresentazione del grafo) — <https://networkx.org/documentation/stable/reference/introduction.html>

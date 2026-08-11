@@ -61,3 +61,4 @@ numeri coerenti.
 
 - *Transfer learning & fine-tuning* (Keras) — <https://keras.io/guides/transfer_learning/>
 - Hu et al., *LoRA*, 2021 — <https://arxiv.org/abs/2106.09685>
+- *Keras — Transfer learning & fine-tuning* (codice sorgente della guida) — <https://github.com/keras-team/keras-io/blob/master/guides/transfer_learning.py>

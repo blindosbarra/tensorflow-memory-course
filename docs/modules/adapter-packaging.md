@@ -58,3 +58,4 @@ sopra un'unica base.
 ## Fonti
 
 - Hu et al., *LoRA*, 2021 — <https://arxiv.org/abs/2106.09685>
+- Microsoft Research, *LoRA — repository ufficiale (README)* — <https://github.com/microsoft/LoRA>

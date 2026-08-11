@@ -60,3 +60,4 @@ quando adatteremo il classificatore di memorie.
 
 - Hu et al., *LoRA*, 2021 — <https://arxiv.org/abs/2106.09685>
 - *numpy.linalg.svd* — <https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html>
+- Microsoft Research, *LoRA: Low-Rank Adaptation of Large Language Models* (repository ufficiale) — <https://github.com/microsoft/LoRA>

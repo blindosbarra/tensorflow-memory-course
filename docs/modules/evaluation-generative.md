@@ -59,3 +59,4 @@ ne accorge.
 ## Fonti
 
 - *Metrics and scoring* (scikit-learn) — <https://scikit-learn.org/stable/modules/model_evaluation.html>
+- *FastChat — LLM Judge* (LMSYS Org) — <https://github.com/lm-sys/FastChat/blob/main/fastchat/llm_judge/README.md>

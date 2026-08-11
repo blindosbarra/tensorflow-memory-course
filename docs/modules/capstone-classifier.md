@@ -35,3 +35,4 @@ Il passo 54 fornisce `classifica_tipo`, il primo componente reale della pipeline
 ## Fonti
 
 - scikit-learn, *Logistic regression* — <https://scikit-learn.org/stable/modules/linear_model.html>
+- scikit-learn, *documentazione, model evaluation* — <https://github.com/scikit-learn/scikit-learn/blob/main/doc/modules/model_evaluation.rst>

@@ -63,3 +63,4 @@ piccoli e portabili (Lezione 44) e la qualita' va confrontata con una baseline
 
 - *Gemma models — KerasHub* — <https://keras.io/keras_hub/api/models/gemma/>
 - Hu et al., *LoRA*, 2021 — <https://arxiv.org/abs/2106.09685>
+- Keras team, *sorgente `Backbone.enable_lora` di KerasHub* — <https://github.com/keras-team/keras-hub/blob/master/keras_hub/src/models/backbone.py>

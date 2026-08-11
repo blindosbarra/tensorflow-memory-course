@@ -48,3 +48,4 @@ qualita' vera (misurata su un hold-out umano fidato) smette di salire.
 ## Fonti
 
 - Gao et al., *Reward Model Overoptimization*, 2022 — <https://arxiv.org/abs/2210.10760>
+- Hugging Face, *documentazione TRL, reward trainer* — <https://github.com/huggingface/trl/blob/main/docs/source/reward_trainer.md>

@@ -62,3 +62,4 @@ Il passo 42 aggiunge `memoria_pesi(n_parametri, bit)`: decide se un modello
 
 - Dettmers et al., *QLoRA*, 2023 — <https://arxiv.org/abs/2305.14314>
 - *numpy.round* — <https://numpy.org/doc/stable/reference/generated/numpy.round.html>
+- Dettmers et al., *QLoRA — repository ufficiale* — <https://github.com/artidoro/qlora>

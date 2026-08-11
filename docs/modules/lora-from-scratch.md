@@ -58,3 +58,5 @@ corrette. E' il mattone che la Lezione 41 innesterebbe dentro Gemma.
 ## Fonti
 
 - Hu et al., *LoRA*, 2021 — <https://arxiv.org/abs/2106.09685>
+- Microsoft Research, *LoRA: Low-Rank Adaptation of Large Language Models* (repository ufficiale) — <https://github.com/microsoft/LoRA>
+- Microsoft Research, *LoRA reference implementation — loralib/layers.py* — <https://github.com/microsoft/LoRA/blob/main/loralib/layers.py>

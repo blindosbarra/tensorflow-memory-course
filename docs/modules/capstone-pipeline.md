@@ -35,3 +35,4 @@ Il passo 58 e' l'obiettivo del corso: il Memory AI Lab funzionante end-to-end.
 ## Fonti
 
 - Hu et al., 2021, *LoRA: Low-Rank Adaptation* — <https://arxiv.org/abs/2106.09685>
+- scikit-learn, *Tuning the decision threshold for classification* — <https://scikit-learn.org/stable/modules/classification_threshold.html>

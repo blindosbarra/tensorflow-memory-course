@@ -35,3 +35,4 @@ Il passo 60 chiude il corso: dal CSV grezzo (Fase 1) a un Memory AI Lab che puli
 ## Fonti
 
 - Rafailov et al., 2023, *Direct Preference Optimization* — <https://arxiv.org/abs/2305.18290>
+- IETF, *RFC 7231 §4.2.2, Idempotent Methods* — <https://www.rfc-editor.org/rfc/rfc7231>

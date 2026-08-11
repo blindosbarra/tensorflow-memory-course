@@ -35,3 +35,4 @@ Il passo 52 fissa il contratto e lo scheletro; i componenti hanno firme stabili,
 ## Fonti
 
 - Vaswani et al., 2017, *Attention Is All You Need* — <https://arxiv.org/abs/1706.03762>
+- scikit-learn, *documentazione, Pipeline* — <https://github.com/scikit-learn/scikit-learn/blob/main/doc/modules/compose.rst>
