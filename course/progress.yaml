@@ -1451,15 +1451,15 @@ modules:
           - "2026-07-18: bag-of-words (vocab 64 solo train) + softmax NumPy; batte la maggioranza (0.68 val). Val accuracy alta ma val piccolo (19 righe): cautela dichiarata nel docs, non sovra-interpretata. Eseguito davvero."
           - "2026-08-10 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       capstone-embedding-graph:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/capstone-embedding-graph/
@@ -1475,16 +1475,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: embedding deterministico (48d) + retrieval coseno + entita' a regole + grafo come lista di adiacenza in Python puro (evita networkx, extra opzionale). Elena nodo piu' connesso (grado 5). Eseguito davvero."
+          - "2026-08-11 (WI-6): teoria approfondita e due nuove affermazioni registrate nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       capstone-gemma-lora:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/capstone-gemma-lora/
@@ -1500,16 +1501,17 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: relazioni (source,type,target) via Gemma+LoRA GUARDATA (needs_reverification) + fallback a regole eseguito davvero (Marco,visited,Glasgow). Vedi research_gaps.md."
+          - "2026-08-11 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       capstone-evaluation:
-        status: learner_review
+        status: technical_review
         state_machine:
           planned: done
           researching: done
           evidence_review: done
           writing: done
           lab_build: done
-          technical_review: done
-          learner_review: in_progress
+          technical_review: in_progress
+          learner_review: pending
           done: pending
         artifacts:
           research_pack: knowledge/capstone-evaluation/
@@ -1525,6 +1527,7 @@ modules:
           publish: pass
         notes:
           - "2026-07-18: report offline sul test set - classificatore 0.93 (n=14), retrieval P@3 0.80, relazioni F1 1.00 (gold piccolo); soglie come guardie di regressione. Eseguito davvero."
+          - "2026-08-11 (WI-6): teoria approfondita e nuova affermazione registrata nel research pack nello stesso commit; codice invariato. Stato riportato a technical_review."
       capstone-pipeline:
         status: learner_review
         state_machine:

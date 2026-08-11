@@ -374,6 +374,37 @@ items:
       gate completo dei 61 notebook sono passati; git status vuoto dopo il
       run completo. Restano da approfondire le lezioni 55-60, sempre
       registrando evidenze e testo nello stesso commit.
+      2026-08-11: completato il segmento 55-57. Approfondito il perche'
+      `E @ q` su vettori normalizzati e' esattamente la similarita' coseno
+      (definizione scikit-learn) e il perche' il grafo a dizionario di
+      insiemi della lezione 55 replica la stessa struttura interna che
+      NetworkX stesso usa (dizionario di dizionari, motivata per grafi
+      sparsi); la firma ufficiale KerasHub di
+      `GemmaBackbone.enable_lora(rank, target_layer_names)` per la lezione
+      56 (quali layer adatta, cosa fa `rank=4` nella cella guardata); la
+      definizione ufficiale scikit-learn dell'F1 come media armonica di
+      precisione e richiamo per la lezione 57, con la spiegazione del perche'
+      le tre metriche del report (accuratezza, Precision@k, F1) non sono
+      intercambiabili. Quattro nuove affermazioni registrate nei rispettivi
+      evidence.yaml nello stesso commit del testo (scikit-learn.org e
+      keras.io, tutte aperte e verificate live in questa sessione; arxiv.org
+      non necessario per questa fetta); le tre lezioni sono tornate a
+      technical_review. Trappola trovata e corretta durante la scrittura (non
+      arrivata al commit): la funzione di append usata per il primo tentativo
+      aggiungeva la riga vuota di separazione DOPO un paragrafo la cui ultima
+      riga non terminava con \n, producendo un solo a-capo invece di una vera
+      riga vuota fra paragrafi; corretto imponendo che ogni paragrafo passato
+      alla funzione termini gia' con \n (con un assert), verificato contro il
+      diff prima di procedere. Il gate rapido sui tre notebook e il gate
+      completo dei 61 notebook sono passati; il run parziale non ha sporcato
+      datasets/processed/ (queste tre lezioni non scrivono file condivisi);
+      git status vuoto dopo il run completo. Le lezioni 55-57 partivano molto
+      piu' leggere delle fette precedenti (60/62/54 parole): con due paragrafi
+      a fonte primaria per lezione si arriva a 293/224/225 parole. Restano da
+      approfondire le lezioni 58-60 (chiusura del modulo capstone): nota per
+      chi le riprende, la lezione 60 non ha una cella "## Teoria essenziale"
+      (ha "## Il lab al lavoro", 33 parole) — verificare con l'autore del
+      corso come trattarla prima di applicarle lo stesso pattern.
 
   - id: WI-7
     title: "Allineare README e docs/index.md alla realta'"

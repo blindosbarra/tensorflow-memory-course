@@ -12,8 +12,31 @@ claims:
     primary_source: true
     evidence_note: "Integration lesson of the capstone; the cited source anchors the reused technique. NOT verified live this session (network not tested); needs_reverification per COURSE_FACTORY_SPEC.md 3.2."
     status: needs_reverification
+  - id: cosine-similarity-normalized-dot-product
+    claim: "Cosine similarity is the L2-normalized dot product of two vectors, k(x, y) = xy^T / (||x|| ||y||); L2 normalization projects vectors onto the unit sphere so their dot product is exactly the cosine of the angle between them, which is why it is a popular choice for computing document similarity when vectors are represented in normalized form."
+    importance: minor
+    source_url: "https://scikit-learn.org/stable/modules/metrics.html"
+    source_title: "scikit-learn documentation — Pairwise metrics, Affinities and Kernels (cosine_similarity)"
+    publisher: "scikit-learn"
+    published_or_updated: null
+    accessed_at: "2026-08-11"
+    primary_source: true
+    evidence_note: "Documentazione scikit-learn letta in questa sessione (fonte ufficiale della libreria, non un blog): la pagina definisce k(x,y) = xy^T / (||x||||y||), spiega che la normalizzazione L2 proietta sulla sfera unitaria rendendo il prodotto scalare il coseno dell'angolo, e la descrive come scelta popolare per la similarita' di documenti. Il notebook calcola `E @ q` con vettori gia' normalizzati da `embed`, lo stesso principio."
+    status: verified
+  - id: networkx-adjacency-dict-of-dicts
+    claim: "NetworkX represents a graph's adjacency structure internally as a Python dictionary of dictionaries (the outer dict keyed by node, inner dicts keyed by neighboring nodes), a design chosen because it allows fast addition, deletion and lookup of nodes and neighbors, preferred over list-based structures for fast lookup with sparse storage."
+    importance: minor
+    source_url: "https://networkx.org/documentation/stable/reference/introduction.html"
+    source_title: "NetworkX documentation — Introduction (graph data structure)"
+    publisher: "NetworkX"
+    published_or_updated: null
+    accessed_at: "2026-08-11"
+    primary_source: true
+    evidence_note: "Documentazione NetworkX letta in questa sessione (fonte ufficiale della libreria, non un blog): descrive l'adiacenza come dizionario di dizionari, scelta per lookup veloci su grafi sparsi rispetto a liste/matrici dense. Il notebook non usa networkx (dipendenza opzionale evitata) ma replica a mano lo stesso principio con un dizionario di insiemi."
+    status: verified
 review:
   reviewer: claude
   decision: pass
   notes:
     - "Interamente eseguibile; evita `networkx` (extra opzionale) usando una lista di adiacenza. All numbers quoted in the docs page are genuine outputs from executing notebooks/lezione-55-capstone-embedding-grafo.ipynb this session, not invented."
+    - "2026-08-11 (WI-6, segmento 55-57): la teoria aggiunge il riscontro fra `E @ q` e la definizione ufficiale di similarita' coseno normalizzata (scikit-learn), e fra la struttura a dizionario di insiemi del notebook e la rappresentazione interna del grafo di NetworkX (dizionario di dizionari), entrambe verificate live in questa sessione. Nessuna cella di codice toccata. Nota: la claim gia' esistente in questo pack (capstone-embedding-graph-main) resta needs_reverification e non e' stata auditata: fuori scope, WI-6 aggiunge fonti a nuove affermazioni."
