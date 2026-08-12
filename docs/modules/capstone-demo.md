@@ -1,6 +1,6 @@
 ---
 id: capstone-demo
-title: Demo: il Memory AI Lab al lavoro
+title: "Demo: il Memory AI Lab al lavoro"
 module: capstone
 status: learner_review
 estimated_minutes: 28

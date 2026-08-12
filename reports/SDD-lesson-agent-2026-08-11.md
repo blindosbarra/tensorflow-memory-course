@@ -1,8 +1,12 @@
 # SDD — Interactive lesson-companion agent (Google ADK, multi-agent)
 
-Status as of 2026-08-11: **design + API research complete, no code written
-yet.** This document is the handover for whoever resumes tomorrow (a fresh
-session with no memory of this conversation).
+Status as of 2026-08-12 (end of session 2): **all six pipeline steps
+implemented and unit-tested; the five-agent `Workflow` builds and validates
+correctly; nothing has been run against a real Gemini call yet — no
+`GOOGLE_API_KEY` was available in this sandbox this session.** Section 7 is
+the handover for whoever resumes with that key available: it has the exact
+one-line command to run and what to check. This document is written for a
+fresh session with no memory of this conversation.
 
 This is a **new feature track, independent of the remediation queue**
 (`reports/handover/queue.yaml`, `reports/SDD-remediation-2026-08-06.md`,
@@ -62,6 +66,13 @@ Asked and answered via `AskUserQuestion`, in order:
 - Network egress confirmed reachable from this sandbox: `pypi.org` (200)
   and `generativelanguage.googleapis.com` (404 on `/`, i.e. TLS+DNS work —
   a real request needs the API key) both responded.
+- **2026-08-12 update:** `google-adk>=2.6` is now a proper
+  `lesson-agent` optional-dependency group in `pyproject.toml` (installed
+  version resolved: 2.6.3, matching the exploration build). Installed via
+  `uv sync --extra dev --extra ml --extra lesson-agent` (all three extras
+  together, so the `ml`/`dev` tooling used elsewhere in the repo — pytest,
+  tensorflow, etc. — doesn't get dropped from `.venv`; a bare `uv sync
+  --extra lesson-agent` uninstalls everything not in that one group).
 - No `GOOGLE_API_KEY` is set in this environment yet.
 - Confirmed by grepping the repo: there is **no existing** Vertex AI/ADK/
   Gemini-API integration anywhere in `src/`, `scripts/`, or config. The
@@ -175,60 +186,179 @@ self-contained HTML file out. Six nodes, wired as a `Workflow`:
    with charts (matplotlib, following the `dataviz` skill's guidance —
    load it before writing any chart code) built from data actually present
    in the notebook where possible (real printed metrics) rather than
-   decorative filler. Writes to
-   `docs/lezioni-interattive/lezione-NN.html` (proposed path — confirm
-   naming against `docs/modules/` conventions before implementing) and
-   commits it like any other repo file.
+   decorative filler. **Confirmed 2026-08-12:** writes to
+   `docs/lezioni-interattive/<lesson_id>.html`, using the lesson's slug
+   (e.g. `capstone-pipeline.html`), not `lezione-NN.html` — this matches
+   how `docs/modules/*.md` is named and survives notebook renumbering
+   (§4 confirmed notebook numbers and doc slugs have already drifted apart
+   once in this course's history). Commits it like any other repo file.
 
-Not decided yet, resolve while implementing:
-- Whether `math_agent`/`code_agent`/`writer_agent` return plain text or a
-  Pydantic `output_schema` (structured output is more reliable for
-  `render_html` to consume mechanically — leans toward yes, but adds a
-  schema per agent to design).
-- Exact instructions/system prompt for each of the 5 agents — none
-  written yet.
-- Exact repo layout: proposal is `src/lesson_agent/` (mirrors
-  `src/memory_ai/`'s package convention) with a CLI entry point
-  `scripts/generate_lesson_doc.py <lezione-id>`, but this wasn't checked
-  against `pyproject.toml`'s `[tool.hatch.build.targets.wheel] packages`
-  list (currently only `src/memory_ai`) — would need a second package
-  entry, or nest under `src/memory_ai/` some other way; pick one
-  deliberately, don't default silently.
-- Whether this needs its own test suite under `tests/` (the repo's `pytest`
-  gate runs `tests/` unconditionally — an ADK agent test that makes a real
-  Gemini API call would make `uv run pytest` flaky/networked/costly unless
-  mocked or explicitly excluded; decide this before adding any test that
-  touches the LLM).
+Decided 2026-08-12 (session 2), resolving the three open questions above:
 
-## 6. Resume checklist for tomorrow
+- **Structured output: yes, Pydantic `output_schema` for every LLM agent**
+  (`gather_info_agent`, `math_agent`, `code_agent`, `writer_agent`,
+  `validator_agent`). Plain text would force `render_html`/downstream
+  agents to re-parse free text; a schema per agent is more upfront work
+  but keeps the pipeline mechanical and testable. Schemas live in
+  `src/lesson_agent/schemas.py`.
+- **Repo layout: `src/lesson_agent/` confirmed**, added to
+  `pyproject.toml`'s `[tool.hatch.build.targets.wheel] packages` list
+  alongside `src/memory_ai` (was `["src/memory_ai"]`, now
+  `["src/memory_ai", "src/lesson_agent"]`). CLI entry point:
+  `scripts/generate_lesson_doc.py <lezione-id>`, mirroring how other
+  one-off scripts in `scripts/` already sit outside the package and import
+  from `src/`.
+- **Test strategy: LLM-touching tests are skipped by default, not
+  excluded from `testpaths`.** The repo's `pytest` gate (`testpaths =
+  ["tests"]`) keeps running unconditionally — no new pytest config, no
+  separate marker registration. Instead:
+  - `tests/test_lesson_agent_read_notebook.py` and
+    `tests/test_lesson_agent_render_html.py` are plain unit tests (no
+    network, no API key) and always run.
+  - Any test that drives an `Agent`/`Workflow` through a real Gemini call
+    is decorated
+    `@pytest.mark.skipif(not os.environ.get("GOOGLE_API_KEY"),
+    reason="requires GOOGLE_API_KEY (real Gemini call)")` — so `uv run
+    pytest` stays deterministic and free in CI/sandboxes without the key,
+    while a dev with the key locally still exercises them. No dedicated
+    `tests/lesson_agent/` subdirectory: the existing `tests/` layout is
+    flat (one file per module), so new files follow that convention with
+    a `test_lesson_agent_` prefix rather than introducing the repo's first
+    test subpackage.
 
-1. Add `google-adk` as a new optional-dependency group in
-   `pyproject.toml` (pattern already exists for `ml`), e.g.:
-   ```toml
-   [project.optional-dependencies]
-   lesson-agent = ["google-adk>=2.6"]
-   ```
-   then `uv sync --extra lesson-agent` (regenerates `uv.lock`).
-2. Set `GOOGLE_API_KEY` in the shell (user-provided, outside any committed
-   file) before attempting a real run.
-3. Decide the two open layout questions in §5 (package location, test
-   strategy) — they're cheap to decide once, expensive to redo after code
-   exists.
-4. Implement `read_notebook` and `render_html` first — they need no API
-   key and are the easiest to get right and test in isolation.
-5. Write the three simplest agent instructions (`gather_info_agent`,
-   `math_agent`, `code_agent`) and wire the `Workflow` through step 4 of
-   §5 (the `JoinNode`); confirm one real end-to-end LLM call works before
-   adding `writer_agent`/`validator_agent` on top.
-6. Validate end to end on **one** lesson before generalizing — lezione-58
-   is a reasonable first target (already deeply familiar from WI-13,
-   small, and its `MemoryAILab` assembly is a good test of the code/math
-   agents against real content).
-7. Only after a human has looked at that one generated HTML page and is
-   happy with it, decide whether/how to batch the rest.
+## 6. Resume checklist for tomorrow (2026-08-11 version — see §7 for what
+actually happened)
 
-## 7. Change log
+1. ~~Add `google-adk` as a new optional-dependency group in
+   `pyproject.toml`~~ **Done 2026-08-12.**
+2. ~~Set `GOOGLE_API_KEY` in the shell~~ **Still not done** — no key was
+   available in this sandbox in session 2 either. This is now the one
+   blocking item; see §7.
+3. ~~Decide the two open layout questions in §5~~ **Done 2026-08-12**, see
+   the "Decided 2026-08-12" block in §5.
+4. ~~Implement `read_notebook` and `render_html` first~~ **Done
+   2026-08-12** — `src/lesson_agent/read_notebook.py`,
+   `src/lesson_agent/render_html.py`, both unit-tested without an API key.
+5. ~~Write the three simplest agent instructions ... confirm one real
+   end-to-end LLM call works before adding `writer_agent`/`validator_agent`
+   on top~~ **Partially done, deviated from plan:** all five agents were
+   written together in `src/lesson_agent/agents.py` (see its module
+   docstring for the session-state data-flow model this required
+   reverse-engineering from source — not something the 2026-08-11 API
+   notes in §4 covered). The graph builds and validates
+   (`tests/test_lesson_agent_agents.py::test_build_workflow_graph_shape`,
+   passes with no API key). **The "confirm one real call works" step
+   itself could not run** — no key. This is the single highest-risk
+   unknown left: the session-state templating mechanism (`{lesson_context}`
+   etc. in `instruction`, `output_key` writes) is reverse-engineered from
+   reading `_llm_agent_wrapper.py`/`llm_agent.py` source, not verified
+   against a live call. It may not work as reasoned. See §7.
+6. **Not done** — needs a live run first (see item 2/5 above).
+7. **Not done** — depends on 6.
+
+## 7. Session 2 (2026-08-12) — what was built, and the exact next step
+
+**Branch note:** this session ran on `claude/wi-15-capstone-citations`
+(confirmed with the user via `AskUserQuestion` — that branch was already
+fully merged into `master`, and the branch name suggested in an earlier
+handover note, `claude/remediation-queue-item-bz0inh`, belongs to the
+unrelated remediation track (this document's intro says this feature is
+independent of that queue). If you resume in a different
+sandbox/session, check you're on the same branch or ask which one to use —
+don't assume.
+
+### Files added
+
+- `src/lesson_agent/__init__.py` (empty)
+- `src/lesson_agent/constants.py` — `MODEL = "gemini-3.6-flash"`, single
+  source of truth (§2.5).
+- `src/lesson_agent/read_notebook.py` — `read_lesson_context` +
+  `format_context_for_agent`. Pure, no LLM. Finds the doc page via
+  `deliverables:` in frontmatter (not filename parsing — see its
+  docstring for why). **Fixed two pre-existing YAML bugs while building
+  this**: `docs/modules/capstone-pipeline.md` and
+  `docs/modules/capstone-demo.md` had unquoted `title: X: Y` frontmatter,
+  invalid YAML (unquoted `: ` in a block scalar reads as a nested
+  mapping). Quoted both titles; no content change.
+- `src/lesson_agent/render_html.py` — `render_html` / `write_lesson_html`.
+  Pure, no LLM. `extract_numeric_series` looks for a printed JSON list of
+  same-shaped records to chart; returns `None` (no chart section) when a
+  notebook only prints one record — which is lezione-58's actual shape,
+  confirmed by hand-eyeballing the rendered PNG in this session (a
+  synthetic 3-item series; real chart choice/colors follow the `dataviz`
+  skill's reference palette, light mode only).
+- `src/lesson_agent/schemas.py` — the five agents' `output_schema`
+  Pydantic models (`InfoBrief`, `MathExplanation`, `CodeWalkthrough`,
+  `WriterOutput`, `ValidatorOutput`).
+- `src/lesson_agent/agents.py` — the five `Agent`s + `build_workflow()`.
+  **Read its module docstring before touching this file** — it documents
+  the session-state data-flow model (`{placeholder}` in `instruction`,
+  `output_key`, seeded `create_session(state=...)`) reverse-engineered
+  from `google-adk==2.6.3` source this session, since no bundled example
+  covers it and the 2026-08-11 API notes (§4) didn't either.
+- `scripts/generate_lesson_doc.py` — the CLI entry point. Exits with code
+  2 and a clear message if `GOOGLE_API_KEY` is unset (verified: does not
+  crash, does not prompt).
+- `tests/test_lesson_agent_read_notebook.py`,
+  `tests/test_lesson_agent_render_html.py`,
+  `tests/test_lesson_agent_agents.py` — 16 tests total, all pass without
+  an API key; one (`test_generate_lesson_doc_lezione_58`) is `skipif`'d on
+  a missing `GOOGLE_API_KEY` and was never actually run this session.
+- `pyproject.toml` — `lesson-agent` optional-dependency group, both
+  packages in `[tool.hatch.build.targets.wheel]`.
+
+Full repo `uv run pytest` (`--extra dev --extra ml --extra lesson-agent`):
+**156 passed, 1 skipped**, at the end of this session.
+
+### What is genuinely unverified
+
+Everything in `agents.py` is built from reading ADK source, not from
+running it. Three things could plausibly be wrong on the first live
+attempt:
+
+1. Whether `{lesson_context}` / `{info_brief}` / etc. placeholders in
+   `instruction` actually get resolved from session state the way the
+   `llm_agent.py` docstring says (this session did not find a working
+   executable example to confirm against, only the docstring's claim and
+   the general ADK templating convention).
+2. Whether `output_schema` + Gemini Flash reliably returns JSON that
+   `validate_schema` can parse on the first try (no retry/repair logic is
+   wired in yet — a `RetryConfig` exists on nodes per §4 but is unused
+   here).
+3. Whether `session.state["writer"]` / `["validator"]` are actually
+   present and shaped as `WriterOutput`/`ValidatorOutput` expect once the
+   real run finishes — `model_validate` will raise clearly if not, which
+   is the intended fail-fast behavior, but it hasn't fired in anger yet.
+
+### Exact next step (needs `GOOGLE_API_KEY`)
+
+```
+export GOOGLE_API_KEY=...   # user-provided, outside any committed file
+uv run python scripts/generate_lesson_doc.py capstone-pipeline
+```
+
+Watch stderr for `[<node_name>] evento ricevuto` lines — confirms which
+nodes actually ran and in what order. On success it prints `Scritto:
+docs/lezioni-interattive/capstone-pipeline.html`; open that file and read
+it. If it fails, the traceback will point at one of the three unverified
+points above — start there, not by re-deriving the ADK API from scratch
+(§4 and `agents.py`'s docstring already did that work).
+
+Once one lesson's page reads well to a human, decide whether/how to batch
+the other 60 (§5, "Initial scope" decision — still not revisited).
+
+## 8. Change log
 
 - **2026-08-11** — Initial write-up. Requirements gathered via
   `AskUserQuestion` (§2), ADK API verified against installed source (§4),
   pipeline designed (§5). No code written.
+- **2026-08-12** — Session 2. Implemented all six pipeline steps (§7):
+  `read_notebook`, `render_html`, `schemas`, `agents`/`Workflow`, the CLI
+  script, and tests for all of it (156 passed, 1 skipped in the full repo
+  suite). Resolved both open design questions from §5. Fixed two
+  pre-existing YAML frontmatter bugs found while building `read_notebook`.
+  Reverse-engineered the ADK session-state data-flow model from source
+  (`agents.py` docstring). **Blocked on `GOOGLE_API_KEY`**: not available
+  in this sandbox, so nothing in `agents.py`/`generate_lesson_doc.py` has
+  run against a real Gemini call — see §7 for the exact next command and
+  the three specific things most likely to break on first contact.

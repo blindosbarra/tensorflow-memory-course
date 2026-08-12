@@ -1,6 +1,6 @@
 ---
 id: capstone-pipeline
-title: La pipeline: MemoryAILab
+title: "La pipeline: MemoryAILab"
 module: capstone
 status: learner_review
 estimated_minutes: 28
