@@ -13,9 +13,11 @@ elenca cosa resta da fare.
 Conclusione anticipata: il confine attuale e' quasi interamente **voluto**, non
 accidentale, ed e' il prodotto di due decisioni esplicite e opposte prese in
 momenti diversi (sotto). Non e' stata trovata nessuna lezione la cui
-implementazione inline produca oggi un risultato diverso da `src/`. L'unico
-problema reale trovato e' un pezzo di `src/` orfano (nessun notebook lo usa),
-non una lezione da correggere.
+implementazione inline produca oggi un risultato diverso da `src/`. Il problema
+reale trovato non e' un modulo orfano da eliminare (prima stesura di questo
+piano, corretta in questa stessa iterazione dopo aver eseguito il codice
+invece di leggerlo soltanto — vedi sotto): e' che il percorso di verifica
+documentato per quel modulo non e' collegato a nessun gate automatico.
 
 ## La regola (una volta sola)
 
@@ -67,8 +69,8 @@ e la regola non si applica (vedi nota sotto la tabella).
 
 | Lezione | Modulo `src/` corrispondente | Decisione | Stato attuale | Nota |
 |---|---|---|---|---|
-| 01 dati-mancanti | `data_cleaning.py` | teach-inline | **conforme** | vedi "caso orfano" sotto: il modulo esiste ma non e' piu' importato da nessuno dal 2026-07-12 |
-| 02 duplicati-tipi-outlier | `data_quality.py` | teach-inline | **conforme** | idem |
+| 01 dati-mancanti | `data_cleaning.py` (via `examples/data_cleaning_missing_values.py`) | teach-inline | **conforme** | il notebook insegna inline; `src/`+`examples/` e' l'implementazione di riferimento separata, per scelta documentata in README — vedi sotto |
+| 02 duplicati-tipi-outlier | `data_quality.py` (via `examples/duplicates_types_outliers.py`) | teach-inline | **conforme** | idem |
 | 18 cosine-similarity | `embedding.py` (proprieta' matematica, non la funzione) | teach-inline | **conforme** | lezione 18 stabilisce la proprieta' "vettori unitari -> coseno = prodotto scalare" che `embedding.py` usa; non e' la stessa implementazione, e' il prerequisito matematico |
 | 25 importance-scoring | `importance.py` | teach-inline | **conforme** | |
 | 52 capstone-architettura | `schema.py` (`MemoryRecord`) | teach-inline | **conforme** | definisce lo stub che 54-58 riempiono |
@@ -122,30 +124,52 @@ oggi un output diverso da `src/`. La coda "correggere una lezione per
 iterazione, a partire dai casi di deriva reale" e' quindi **vuota**: non c'e'
 nessuna lezione da correggere per questo motivo.
 
-## Il problema reale trovato: moduli orfani
+## Il problema reale trovato: `examples/` non e' collegato a nessun gate
 
-`src/memory_ai/data_cleaning.py` e `data_quality.py` esistono, hanno test
-dedicati (`tests/test_data_cleaning.py`, `tests/test_data_quality.py`) e
-passano `mypy`/`ruff`/`pytest` — ma **nessun notebook li importa**, ne' la
-lezione 01/02 (che correttamente insegna inline, per la decisione 1 sopra) ne'
-il capstone (`pipeline.py` dichiara nel proprio docstring che
-`MemoryAILab.process` non ne ha bisogno).
+**Correzione rispetto alla prima stesura di questo piano (stessa iterazione,
+prima del commit).** La prima stesura chiamava `data_cleaning.py` e
+`data_quality.py` "moduli orfani" da ritirare, basandosi solo su una `grep`
+che non li trovava importati da nessun notebook. Prima di agire su quella
+conclusione ho letto `README.md` (riga 118): *"I moduli `examples/` e
+`src/memory_ai/` sono implementazione di riferimento della pipeline, non
+materiale di studio."* Quella riga e' stata scritta nel commit `b24eb16`,
+**lo stesso giorno e poche ore dopo** `3fa5799` (quello che ha reso i notebook
+autosufficienti) — non e' un residuo dimenticato, e' la decisione presa
+subito dopo per spiegare perche' `src/memory_ai/` e `examples/` restano nel
+repository nonostante i notebook non li importino piu'. `examples/data_cleaning_missing_values.py`
+e `examples/duplicates_types_outliers.py` chiamano esattamente
+`data_cleaning.py`/`data_quality.py`: il collegamento esiste, e' solo fuori
+dai notebook.
 
-Origine: `data_cleaning.py` (2026-07-10) e `data_quality.py` (2026-07-11) sono
-stati scritti **prima** di `3fa5799` (2026-07-12), quando le lezioni 01/02
-importavano ancora da `memory_ai`. Il commit che ha reso i notebook
-autosufficienti ha aggiornato i notebook ma non ha rimosso i moduli
-`src/` ne' i loro test: sono un residuo del modello a libreria condivisa che
-il corso ha deliberatamente lasciato.
+Eseguito `uv run python examples/data_cleaning_missing_values.py` per
+verificare che sia ancora vivo (non solo documentato): gira, e riscrive
+`datasets/processed/memory_events_clean.csv`. **Trappola**: quel file e'
+condiviso con le lezioni 01-05 (il "progetto che cresce"), quindi eseguire
+lo script lo ha sporcato con un contenuto diverso da quello atteso dalle
+lezioni successive — ripristinato subito con `git checkout --` prima di
+qualunque commit, come richiede la sezione "Verifica" di `AGENT_LOOP.md` per
+i run parziali. Il contenuto che lo script produce (4 righe, da
+`memory_events_raw.csv` isolato) e quello committato in `memory_events_clean.csv`
+(6 righe) non coincidono a prima vista, ma non e' deriva: il file committato
+e' il prodotto della catena lezione 01 -> 02 (-> 05), lo script riproduce
+solo il primo anello in isolamento. Confrontato l'anello giusto — sullo
+stesso `memory_events_raw.csv`, `clean_memory_records` scarta `mem_004` e
+`mem_005` (campo critico mancante: `text` e `timestamp` rispettivamente nel
+CSV grezzo) esattamente come la cella inline della lezione 01, che usa lo
+stesso criterio (`CRITICI_MEMORIA`, imputazione `type` a costante
+`"unknown"`, `importance` a mediana). Nessuna divergenza di comportamento
+trovata.
 
-Controllo di merito: la logica inline della lezione 01 (colonne critiche
-`memory_id`/`text`/`timestamp`, `type` imputato con la costante `"unknown"`,
-`importance` imputata con la mediana) coincide oggi con quella di
-`clean_memory_records` — non e' rotta, e' semplicemente non collegata. Ma
-niente lo garantisce per il futuro: i test del modulo verificano il modulo
-contro se stesso (valori attesi scritti a mano), non contro il notebook, quindi
-una futura modifica alla lezione 01/02 potrebbe divergere da `data_cleaning.py`/
-`data_quality.py` senza che nessun gate se ne accorga.
+Il problema reale non e' quindi "codice morto da eliminare": e' che questo
+percorso — `examples/*.py` che invoca `src/memory_ai/data_cleaning.py` /
+`data_quality.py` come implementazione di riferimento delle lezioni 01/02 —
+non e' eseguito da **nessun test, nessun CI, nessuno script di verifica**
+(controllato: nessuna occorrenza di `examples/` in `tests/`, `.github/` o
+`scripts/`). `reports/evaluation/*.json`, l'output dichiarato di questi
+script, non e' stato rigenerato dal 2026-07-11 — da prima del cambio di
+formato dei notebook. E' un ramo del repository che il README promette
+funzionante e che *e'* ancora funzionante, ma solo perche' nessuno lo ha
+ancora rotto, non perche' qualcosa lo impedirebbe.
 
 ## Nessun controllo di parita' e' automatizzato
 
@@ -161,21 +185,29 @@ lo segnalo qui perche' un'iterazione futura possa deciderne la necessita'.
 
 ## Coda di lavoro per le iterazioni successive
 
-Non ci sono lezioni da correggere (vedi sopra: zero derive trovate). Le
-azioni rimaste sono sul confine stesso, non sul contenuto delle lezioni:
+Non ci sono lezioni da correggere (vedi sopra: zero derive trovate) e non ci
+sono moduli da ritirare (vedi sopra: `data_cleaning.py`/`data_quality.py` sono
+la implementazione di riferimento documentata, non codice morto). Le azioni
+rimaste sono sulla verificabilita' del confine, non sul suo contenuto:
 
-1. **Ritirare `src/memory_ai/data_cleaning.py`, `data_quality.py` e i loro
-   test** — codice morto rispetto a qualunque notebook, residuo di un modello
-   di corso che non esiste piu' dal 2026-07-12. Alternativa scartata:
-   ricollegarli alla lezione 01/02 riaprirebbe il modello a starter-file che
-   l'allievo ha chiesto di rimuovere — non farlo senza una nuova decisione
-   esplicita dell'autore del corso.
+1. Aggiungere `examples/data_cleaning_missing_values.py` e
+   `examples/duplicates_types_outliers.py` a un gate eseguibile (`pytest` con
+   `subprocess`, o una riga in `scripts/`), cosi' che "implementazione di
+   riferimento" smetta di dipendere dal fatto che nessuno l'ha ancora rotta.
+   Lo script deve girare su un file temporaneo, non su
+   `datasets/processed/memory_events_clean.csv` (condiviso con le lezioni
+   01-05) — la trappola incontrata in questa iterazione va evitata dal gate
+   stesso, non solo documentata.
 2. *(Facoltativo, non bloccante)* valutare se aggiungere un controllo di
    parita' automatizzato fra le otto lezioni "origine" e i moduli
    corrispondenti di `src/`, cosi' che un futuro edit di codice a una di
    quelle lezioni fallisca un gate invece di dipendere da un messaggio di
    commit onesto. Da proporre come nuovo item, non da costruire qui.
 
-Con l'item 1 completato, la Priorita' A di questo loop e' esaurita: il
-confine libreria/corso e' documentato, verificato lezione per lezione, e
-l'unico scostamento reale e' stato messo in coda.
+Nessuno dei due item e' un "fix a una lezione" nel senso in cui la Priorita' A
+del loop lo intendeva — sono manutenzione del confine, non correzioni di
+contenuto. Con la scoperta che non esiste nessuna lezione da correggere e
+nessun modulo da ritirare, la Priorita' A e' de facto chiusa: il confine
+libreria/corso e' documentato, verificato lezione per lezione (eseguendo il
+codice, non solo leggendolo), e gli unici due item rimasti sono manutenzione
+opzionale della verificabilita', non debito accumulato.
