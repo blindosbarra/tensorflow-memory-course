@@ -7,6 +7,7 @@ from pathlib import Path
 from lesson_agent.read_notebook import LessonContext, NotebookCell
 from lesson_agent.render_html import (
     ChartSeries,
+    _markdown_to_html,
     extract_numeric_series,
     render_html,
     write_lesson_html,
@@ -85,6 +86,45 @@ def test_render_html_includes_sections_and_validator_report() -> None:
     assert "Bozza sostanzialmente corretta." in out
     assert "https://example.org/paper" in out
     assert "<!doctype html>" in out.lower()
+
+
+def test_render_html_includes_mathjax_for_latex_formulas() -> None:
+    # Regression: dry-run on lezione-58 (2026-08-13) showed raw
+    # `$$should_store = (I \ge \tau)$$` on the page — python-markdown does
+    # not render LaTeX, and no MathJax script was included.
+    ctx = _context((NotebookCell(cell_type="code", source="x", output_text="ok"),))
+    out = render_html(ctx, _writer(), _validator())
+
+    assert "MathJax" in out
+    assert "tex-mml-chtml.js" in out
+
+
+def test_markdown_to_html_unflattens_repeated_inline_list_markers() -> None:
+    # Regression: the same dry-run showed a writer-produced list rendered
+    # as literal " - item - item" text mid-paragraph because there was no
+    # newline before each marker — python-markdown only opens a list block
+    # after a blank line.
+    text = (
+        "Sostituisce gli stub con: - Primo punto (Lezione 54) "
+        "- Secondo punto (Lezione 55) - Terzo punto (Lezione 56)"
+    )
+
+    out = _markdown_to_html(text)
+
+    assert "<ul>" in out
+    assert out.count("<li>") == 3
+    assert " - Secondo punto" not in out
+
+
+def test_markdown_to_html_leaves_single_dash_alone() -> None:
+    # A lone mid-sentence dash is far more likely a real aside than a
+    # flattened list — must not be split into a spurious one-item list.
+    text = "Il modello Flash - rapido ma piu' generico - va guidato con esempi concreti."
+
+    out = _markdown_to_html(text)
+
+    assert "<ul>" not in out
+    assert "Flash - rapido" in out
 
 
 def test_render_html_embeds_chart_when_series_found() -> None:

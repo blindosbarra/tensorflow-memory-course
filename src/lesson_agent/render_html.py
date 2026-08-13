@@ -28,6 +28,7 @@ from datetime import date
 import html as html_module
 import io
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -145,7 +146,39 @@ def _render_chart_png(series: ChartSeries) -> bytes:
     return buf.getvalue()
 
 
+_INLINE_LIST_MARKER = re.compile(r"(?<!\n)(?<!^)( - | \d+\. )")
+
+
+def _unflatten_inline_lists(text: str) -> str:
+    """Break list markers that landed mid-paragraph onto their own line.
+
+    LLM structured output regularly writes list content as one JSON string
+    with no `\\n` before each `- item` / `1. item` marker (seen live on
+    lezione-58's writer output — see the 2026-08-13 dry-run report). Python-
+    markdown only recognizes a list item at the start of a line, so an
+    un-split marker renders as a literal dash or number in running prose
+    instead of a bulleted/numbered list. This is a rendering-side
+    workaround, not a prompt fix: it makes `_markdown_to_html` robust to
+    that failure mode regardless of what the model does.
+    """
+
+    if len(_INLINE_LIST_MARKER.findall(text)) < 3:
+        # A mid-sentence " - " pair reads as a real aside ("X - note - Y")
+        # about as often as it reads as a flattened 2-item list, so that
+        # count is not a safe signal either way. 3+ repeats of the marker
+        # is the actual signature of a collapsed list — an aside doesn't
+        # do that.
+        return text
+    # A blank line (not just `\n`) before every item: python-markdown only
+    # opens a list block after a blank line — a single `\n` gets swallowed
+    # into the paragraph as lazy continuation, and HTML collapses that
+    # whitespace on render, so the dash/number would still show up as a
+    # literal character with no visible line break at all.
+    return _INLINE_LIST_MARKER.sub(lambda m: "\n\n" + m.group(1).strip() + " ", text)
+
+
 def _markdown_to_html(text: str) -> str:
+    text = _unflatten_inline_lists(text)
     return str(_markdown.markdown(text, extensions=["fenced_code", "tables"]))
 
 
@@ -227,6 +260,10 @@ def render_html(
 <meta charset="utf-8">
 <title>{title}</title>
 <style>{_STYLE}</style>
+<script>
+MathJax = {{ tex: {{ inlineMath: [['\\\\(', '\\\\)']], displayMath: [['$$', '$$']] }} }};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 <header>
