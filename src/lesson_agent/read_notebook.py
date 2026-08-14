@@ -26,9 +26,16 @@ from typing import Any
 import nbformat
 import yaml
 
-NOTEBOOKS_DIR = Path("notebooks")
-MODULES_DIR = Path("docs/modules")
-KNOWLEDGE_DIR = Path("knowledge")
+from lesson_agent.settings import REPO_ROOT
+
+# Anchored to the repo, not to the current working directory. These used to be
+# relative (`Path("notebooks")`), which worked because the only caller was a
+# CLI you ran from the repo root — the GUI is started by learners from wherever
+# their shell happens to be, and a relative default would silently resolve to
+# nothing.
+NOTEBOOKS_DIR = REPO_ROOT / "notebooks"
+MODULES_DIR = REPO_ROOT / "docs" / "modules"
+KNOWLEDGE_DIR = REPO_ROOT / "knowledge"
 
 # The frontmatter block: everything between the first two `---` lines.
 _FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n?(.*)", re.S)
@@ -64,6 +71,19 @@ class LessonContext:
     evidence: dict[str, Any] | None  # parsed evidence.yaml, or None if the pack is missing
 
 
+def read_notebook_json(notebook_path: Path) -> Any:
+    """Parse a notebook to nbformat's dict-like node.
+
+    A one-line wrapper only because `nbformat.read` ships no annotations, so
+    under `strict` mypy every call site is a `no-untyped-call` error. Keeping
+    the suppression in exactly one place is better than sprinkling it, and
+    better than the status quo — this error was failing `uv run mypy src` on
+    `master` before the GUI existed.
+    """
+
+    return nbformat.read(notebook_path, as_version=4)  # type: ignore[no-untyped-call]
+
+
 def _cell_text(value: str | list[str]) -> str:
     """nbformat stores cell source/output text as either a str or a list of lines."""
 
@@ -86,7 +106,7 @@ def _cell_output(cell: dict[str, Any]) -> tuple[str, bool]:
     return "".join(parts), has_figure
 
 
-def _parse_frontmatter(doc_path: Path) -> tuple[dict[str, Any], str]:
+def parse_frontmatter(doc_path: Path) -> tuple[dict[str, Any], str]:
     text = doc_path.read_text(encoding="utf-8")
     match = _FRONTMATTER_RE.match(text)
     if not match:
@@ -106,7 +126,7 @@ def find_lesson_doc(notebook_path: Path, modules_dir: Path = MODULES_DIR) -> Pat
         text = doc_path.read_text(encoding="utf-8")
         if not _FRONTMATTER_RE.match(text):
             continue  # e.g. docs/modules/index.md, a hand-written page with no frontmatter
-        front, _ = _parse_frontmatter(doc_path)
+        front, _ = parse_frontmatter(doc_path)
         deliverables = front.get("deliverables") or []
         if any(name in deliverable for deliverable in deliverables):
             return doc_path
@@ -129,10 +149,10 @@ def read_lesson_context(
     """
 
     doc_path = find_lesson_doc(notebook_path, modules_dir)
-    front, body = _parse_frontmatter(doc_path)
+    front, body = parse_frontmatter(doc_path)
     lesson_id = front.get("id", doc_path.stem)
 
-    notebook = nbformat.read(notebook_path, as_version=4)
+    notebook = read_notebook_json(notebook_path)
     cells = []
     for cell in notebook["cells"]:
         source = _cell_text(cell.get("source", ""))

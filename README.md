@@ -6,13 +6,15 @@ engineering e Memory AI Lab.
 ## Avvio locale
 
 ```bash
-uv sync --extra dev
+uv sync --extra dev --extra gui
 uv run ruff check .
 uv run mypy src
 uv run pytest
 uv run python scripts/execute_notebooks.py
 uv run mkdocs build --strict
 ```
+
+Per l'app di studio, vedi [L'app di studio](#lapp-di-studio-consigliata).
 
 `docs/references.md` e' **generata**: raccoglie le sezioni `## Fonti` di tutte
 le lezioni. Non si modifica a mano — si aggiunge la fonte nella lezione e si
@@ -65,7 +67,52 @@ il notebook lo dice e prosegue con il fallback.
 
 Leggi [`COURSE_FACTORY_SPEC.md`](COURSE_FACTORY_SPEC.md).
 
-## Come si studia
+## L'app di studio (consigliata)
+
+Il modo piu' semplice per seguire il corso e' l'interfaccia grafica:
+
+```bash
+uv sync --extra dev --extra gui
+uv run streamlit run app/streamlit_app.py
+```
+
+Si apre su <http://localhost:8501> e mette in un unico posto le tre cose che
+prima erano sparse:
+
+- **Il tuo profilo** (barra laterale) — livello, dimestichezza con matematica
+  e Python, quanto vuoi che sia approfondito, il tuo background e i tuoi
+  obiettivi. **Ogni agente legge questo profilo prima di scrivere**: cambia il
+  livello, rigenera un documento, e il testo cambia davvero. Prima esisteva un
+  solo studente immaginario, uguale per tutti.
+- **Il percorso** — le 70 lezioni per modulo, con **il tuo** avanzamento
+  (`.learner/progress.json`, git-ignored). E' un'altra cosa rispetto a
+  `course/progress.yaml`, che dice a che punto sono gli autori del corso.
+- **La lezione** — il notebook renderizzato in sola lettura (celle, output
+  reali, grafici) con **il tutor accanto**: gli fai una domanda su cio' che
+  non hai capito e ti risponde basandosi su quella lezione. Ogni cella di
+  codice ha un pulsante "chiedi al tutor". Da qui parte anche la generazione
+  del documento della lezione, e "Apri in Jupyter" ti passa il notebook per
+  eseguirlo davvero.
+
+### La chiave API
+
+Tutor e generazione documenti chiamano Gemini (Google AI Studio) e servono
+una `GOOGLE_API_KEY`. Puoi incollarla nel pannello **Impostazioni** della
+barra laterale — finisce in un `.env` git-ignored, mai in un commit — oppure
+esportarla prima di avviare l'app:
+
+```bash
+export GOOGLE_API_KEY=...            # da https://aistudio.google.com/apikey
+```
+
+**Senza chiave l'app funziona lo stesso**: leggi i notebook, gestisci il
+percorso, prendi appunti. Solo il tutor e la generazione dei documenti sono
+disattivati, con un messaggio che dice cosa manca.
+
+Il modello e' `gemini-3.6-flash`; per cambiarlo senza toccare il codice,
+metti `LESSON_AGENT_MODEL=...` nel `.env` e riavvia l'app.
+
+## Come si studia (senza l'app)
 
 Ogni lezione e' **un notebook autosufficiente** in `notebooks/`: si apre e si
 esegue, senza terminale, pytest o altri strumenti. Tutte le lezioni hanno
@@ -87,7 +134,7 @@ il progetto: il Memory AI Lab costruito dall'inizio alla fine.
 Per aprire un notebook in locale:
 
 ```bash
-uv sync --extra dev
+uv sync --extra dev --extra gui   # `gui` porta con se' jupyterlab
 uv run jupyter lab notebooks/
 ```
 

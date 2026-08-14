@@ -9,3 +9,9 @@ __pycache__/
 *.py[cod]
 site/
 models/
+
+# API keys for the lesson-agent (Google AI Studio). Never commit these.
+.env
+# The learner's own profile, progress and notes (GUI). Personal, not course
+# state — course/progress.yaml is the committed, authoring-side one.
+.learner/
