@@ -40,8 +40,9 @@ import matplotlib.pyplot as plt  # noqa: E402 (backend must be set first)
 
 from lesson_agent.read_notebook import LessonContext
 from lesson_agent.schemas import ValidatorOutput, WriterOutput
+from lesson_agent.settings import REPO_ROOT
 
-OUTPUT_DIR = Path("docs/lezioni-interattive")
+OUTPUT_DIR = REPO_ROOT / "docs" / "lezioni-interattive"
 
 # dataviz skill reference palette (references/palette.md), light mode only.
 _SURFACE = "#fcfcfb"

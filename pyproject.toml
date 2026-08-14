@@ -11,6 +11,7 @@ dependencies = [
   "nbclient",
   "nbformat",
   "ipykernel",
+  "markdown",
   "mkdocs",
   "mkdocs-material",
   "pyyaml",
@@ -26,6 +27,15 @@ ml = [
 
 lesson-agent = [
   "google-adk>=2.6",
+]
+
+gui = [
+  "google-adk>=2.6",
+  "streamlit>=1.40",
+  # The GUI renders notebooks read-only and hands execution to Jupyter Lab
+  # ("Apri in Jupyter"). Not previously declared anywhere, even though the
+  # README already told learners to run `uv run jupyter lab notebooks/`.
+  "jupyterlab>=4.0",
 ]
 
 dev = [

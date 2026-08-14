@@ -362,3 +362,97 @@ the other 60 (§5, "Initial scope" decision — still not revisited).
   in this sandbox, so nothing in `agents.py`/`generate_lesson_doc.py` has
   run against a real Gemini call — see §7 for the exact next command and
   the three specific things most likely to break on first contact.
+
+---
+
+## 9. Session 3 (2026-08-14) — personalisation + GUI
+
+Asked by the user: the repo "seems just a collection of python notebooks and
+a useless agent"; make the agents adapt to the learner's **level** and
+**doubt**, and put everything behind a **GUI**.
+
+The verdict was largely fair, and worth writing down so it isn't
+re-discovered: §5's pipeline was a *batch document generator*. It had one
+hardcoded audience (`math_agent`'s "uno studente che sa programmare ma non
+ha una formazione matematica avanzata"), no channel for a question, a
+report-only validator with no revision loop, and a single CLI argument as
+its entire interface.
+
+### 9.1 Decisions (asked via `AskUserQuestion`, do not re-litigate)
+
+1. **LLM backend:** stay on Google AI Studio + `google-adk`. The alternative
+   offered (rewrite the agent layer on the Anthropic SDK for a better
+   conversational loop) was declined.
+2. **GUI stack:** Streamlit. Pure Python, one dependency, matches the repo's
+   toolchain.
+3. **Notebooks in the GUI:** rendered **read-only**, with "Apri in Jupyter"
+   handing execution to Jupyter Lab. The app never executes learner code, so
+   it cannot wedge on a cell that trains a model.
+
+### 9.2 What was built
+
+- `profile.py` — `LearnerProfile` (level, math/Python comfort, depth,
+  background, goals, known topics). Levels render as *behavioural
+  instructions*, not adjectives: "do not assume they have seen a gradient
+  before" moves output far more than "the student is a beginner".
+- **Personalisation rides session state, not agent factories.** Two new
+  placeholders, `{learner_profile}` and `{learner_focus}`, are seeded at
+  `create_session` exactly like `{lesson_context}` (§4's mechanism). The
+  graph is still built once; the *session* carries who it is for. All five
+  agents read both.
+- `tutor.py` — the missing doubt channel. A single `Agent` (no
+  `output_schema`; the answer is prose) on a persistent ADK session, so
+  follow-ups resolve against prior turns. Grounded in the lesson, and
+  required to *label* anything it answers from outside the material.
+- `runner.py` — one `run_lesson_pipeline` shared by CLI and GUI, so the
+  seeding cannot drift between them.
+- `catalog.py` — joins `course.yaml` + `docs/modules/*.md` frontmatter +
+  the learner's own `.learner/progress.json`. Learner progress is
+  deliberately **not** `course/progress.yaml`: that one is authoring state.
+- `notebook_view.py` — notebook cells for reading (images kept, errors
+  distinguished from stdout), separate from the LLM path so prompts stay cheap.
+- `settings.py` — key from env **or** a git-ignored `.env`, model
+  overridable via `LESSON_AGENT_MODEL`, and `check_readiness()` so the GUI
+  disables agent buttons with a reason instead of failing on click.
+- `async_bridge.py` — one long-lived event loop for the process. `asyncio.run`
+  per click would close the loop that a `TutorSession`'s runner and its
+  `google.genai` client are bound to, breaking the *second* question.
+- `app/streamlit_app.py` — profile sidebar, syllabus, lesson view (notebook
+  and tutor side by side, each in its own scrolling pane), document
+  generation with a per-node progress line, notes, generated-docs browser.
+
+### 9.3 Repo bugs found and fixed on the way
+
+- `markdown` was imported by `render_html.py` but declared nowhere — a fresh
+  `uv sync` produced a broken renderer.
+- `jupyterlab` was never a dependency, so the README's own
+  `uv run jupyter lab notebooks/` failed on a fresh environment.
+- `uv run mypy src` was **already failing on `master`** (`nbformat.read` is
+  untyped under `strict`). Now green, via the single `read_notebook_json`
+  wrapper.
+- `NOTEBOOKS_DIR`/`MODULES_DIR`/`KNOWLEDGE_DIR`/`OUTPUT_DIR` were relative
+  paths, i.e. correct only when the process was started from the repo root.
+  A GUI is launched from wherever the learner's shell is; they are now
+  anchored to `REPO_ROOT`.
+
+### 9.4 Still blocked, unchanged from §7
+
+**No `GOOGLE_API_KEY` was available this session either.** Everything that
+does not need one is verified: 203 tests pass, ruff and mypy are clean, and
+the GUI is exercised headlessly through `streamlit.testing.v1.AppTest` on
+every page and on three shapes of lesson. **No Gemini call has ever been
+made** — the tutor and the generation button are still first-contact code.
+`test_lesson_agent_runner.py::test_every_agent_placeholder_is_seeded_or_produced_upstream`
+exists to catch the most likely first-contact failure (an unseeded
+placeholder) without spending a call.
+
+§7's three unverified points still stand, plus one more: whether ADK emits
+partial events for the tutor agent, which `TutorSession.ask` already
+handles by skipping `event.partial`.
+
+## 10. Change log (continued)
+
+- **2026-08-14** — Session 3. Learner profile threaded through all five
+  agents via session state; conversational tutor added; Streamlit GUI built;
+  CLI reduced to a wrapper over the shared runner. Four pre-existing repo
+  bugs fixed (§9.3). Still no real Gemini call (§9.4).

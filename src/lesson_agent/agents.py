@@ -35,6 +35,25 @@ actually run `math_agent`/`code_agent` in parallel and wait for both
 (`JoinNode`) before `writer_agent`, i.e. they encode *execution order*,
 while state carries the *payloads*.
 
+## Personalisation (added 2026-08-14)
+
+Two more state keys ride the same mechanism, which is why this module has
+no per-learner agent factories — the graph is built once and the *session*
+carries who it is being built for:
+
+- `{learner_profile}` — the briefing from `profile.LearnerProfile.briefing()`.
+  Until this existed, `math_agent` hardcoded the only audience the course
+  had ("uno studente che sa programmare ma non ha una formazione matematica
+  avanzata") and every learner got byte-identical output.
+- `{learner_focus}` — the specific doubt the learner typed before asking for
+  the document, or a sentinel saying there isn't one. This is what makes a
+  regenerated document *different* from the previous one instead of a retry.
+
+Both are seeded at `create_session(state=...)` by the caller
+(`scripts/generate_lesson_doc.py` and the Streamlit app both go through
+`run_lesson_pipeline`). Placeholders are mandatory in ADK: a missing state
+key raises at call time, so `run_lesson_pipeline` always seeds both keys.
+
 ## Why `read_notebook`/`render_html` are not `Workflow` nodes
 
 The original section-5 sketch put all six steps in one `Workflow`. In
@@ -56,7 +75,7 @@ from __future__ import annotations
 from google.adk import Agent, Workflow
 from google.adk.workflow import JoinNode
 
-from lesson_agent.constants import MODEL
+from lesson_agent.settings import model_name
 from lesson_agent.schemas import (
     CodeWalkthrough,
     InfoBrief,
@@ -64,6 +83,10 @@ from lesson_agent.schemas import (
     ValidatorOutput,
     WriterOutput,
 )
+
+# Resolved once, at import: `constants.MODEL` is the pin, `LESSON_AGENT_MODEL`
+# (env or `.env`) overrides it. See `settings.model_name`.
+MODEL = model_name()
 
 gather_info_agent = Agent(
     name="gather_info_agent",
@@ -74,6 +97,11 @@ gather_info_agent = Agent(
         "ed estrai i punti di teoria essenziali, in ordine logico. Segnala in "
         "`open_questions` qualunque affermazione del notebook che non sia "
         "supportata da una fonte nella sezione 'Fonti verificate'.\n\n"
+        "Scegli e ordina i punti in base a chi sta studiando: cio' che per "
+        "questo studente e' gia' noto va richiamato in una riga, cio' che per "
+        "lui e' nuovo va messo per primo e scomposto.\n\n"
+        "{learner_profile}\n\n"
+        "## Dubbio dichiarato dallo studente\n{learner_focus}\n\n"
         "{lesson_context}"
     ),
     output_schema=InfoBrief,
@@ -87,8 +115,7 @@ math_agent = Agent(
         "Sei un tutor di matematica per un corso di machine learning. Nel "
         "materiale della lezione qui sotto, individua ogni formula "
         "(esplicita o implicita nel codice, es. una soglia o una funzione di "
-        "punteggio) e spiegala in modo che uno studente che sa programmare "
-        "ma non ha una formazione matematica avanzata la capisca. Se la "
+        "punteggio) e spiegala al livello dello studente descritto sotto. Se la "
         "lezione non contiene formule, restituisci una lista vuota in "
         "`formulas_latex` e dillo esplicitamente in `explanation`.\n\n"
         "Usa SEMPRE il valore reale che compare nel codice o nel suo output "
@@ -101,6 +128,8 @@ math_agent = Agent(
         "questa lezione — non gonfiare l'explanation con un blocco intero "
         "per un fatto banale (es. un bound che viene solo verificato da un "
         "assert, non calcolato).\n\n"
+        "{learner_profile}\n\n"
+        "## Dubbio dichiarato dallo studente\n{learner_focus}\n\n"
         "{lesson_context}"
     ),
     output_schema=MathExplanation,
@@ -112,10 +141,11 @@ code_agent = Agent(
     model=MODEL,
     instruction=(
         "Sei un tutor di programmazione Python. Nel materiale della lezione "
-        "qui sotto, spiega le celle di codice concetto per concetto, per uno "
-        "studente che conosce Python ma non necessariamente le librerie "
-        "usate. Cita l'output reale delle celle quando è presente, non "
-        "inventarne uno.\n\n"
+        "qui sotto, spiega le celle di codice concetto per concetto, al "
+        "livello dello studente descritto sotto. Cita l'output reale delle "
+        "celle quando è presente, non inventarne uno.\n\n"
+        "{learner_profile}\n\n"
+        "## Dubbio dichiarato dallo studente\n{learner_focus}\n\n"
         "{lesson_context}"
     ),
     output_schema=CodeWalkthrough,
@@ -141,6 +171,12 @@ writer_agent = Agent(
         "Formatta gli elenchi puntati/numerati con un a-capo reale prima di "
         "ogni voce (`\\n- voce`, non `... : - voce - voce` sulla stessa "
         "riga) — sono liste markdown vere, non prosa con dei trattini.\n\n"
+        "Adatta taglio, lunghezza e vocabolario allo studente descritto qui "
+        "sotto. Se lo studente ha dichiarato un dubbio, il documento deve "
+        "rispondergli esplicitamente: dedicagli una sezione con un titolo che "
+        "riprende la sua domanda, invece di lasciare la risposta sparsa.\n\n"
+        "{learner_profile}\n\n"
+        "## Dubbio dichiarato dallo studente\n{learner_focus}\n\n"
         "## Materiale originale della lezione\n{lesson_context}\n\n"
         "## Brief di teoria\n{info_brief}\n\n"
         "## Spiegazione matematica\n{math}\n\n"
@@ -161,6 +197,14 @@ validator_agent = Agent(
         "notebook. Questa è una revisione di sola segnalazione: NON "
         "riscrivere la bozza, elenca solo i problemi trovati (o dichiara "
         "che non ce ne sono) e dai una valutazione complessiva breve.\n\n"
+        "Verifica anche l'adeguatezza allo studente descritto sotto: segnala "
+        "come `warning` un passaggio che dà per scontato qualcosa che questo "
+        "studente non sa ancora, e come `info` una spiegazione che gli "
+        "rispiega cose che ha già dichiarato di conoscere. Se lo studente "
+        "aveva un dubbio, controlla che la bozza gli risponda davvero e "
+        "segnalalo come `error` se non lo fa.\n\n"
+        "{learner_profile}\n\n"
+        "## Dubbio dichiarato dallo studente\n{learner_focus}\n\n"
         "## Materiale originale della lezione\n{lesson_context}\n\n"
         "## Bozza da revisionare\n{writer}"
     ),
