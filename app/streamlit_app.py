@@ -228,6 +228,11 @@ def render_settings_panel() -> settings.AgentReadiness:
 # --------------------------------------------------------------------------
 
 
+def _open_lesson(lesson_id: str) -> None:
+    st.session_state.selected_lesson = lesson_id
+    st.session_state.page = PAGE_STUDIA
+
+
 def render_percorso(modules: list[catalog.Module]) -> None:
     progress = get_progress()
     # Unwritten lessons are shown in the syllabus but must not inflate the
@@ -284,15 +289,14 @@ def render_percorso(modules: list[catalog.Module]) -> None:
                     meta.append("solo teoria")
                 col_meta.caption(" · ".join(meta) if meta else "")
 
-                if col_button.button(
+                col_button.button(
                     "Apri",
                     key=f"open-{lesson.lesson_id}",
                     use_container_width=True,
                     disabled=not lesson.is_published,
-                ):
-                    st.session_state.selected_lesson = lesson.lesson_id
-                    st.session_state.page = PAGE_STUDIA
-                    st.rerun()
+                    on_click=_open_lesson,
+                    args=(lesson.lesson_id,),
+                )
 
 
 # --------------------------------------------------------------------------

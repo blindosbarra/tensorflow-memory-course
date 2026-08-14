@@ -55,6 +55,15 @@ def test_percorso_page_renders() -> None:
     assert {"Lezioni completate", "In corso", "Moduli"} <= labels
 
 
+def test_open_lesson_from_percorso_navigates_to_studia() -> None:
+    app = _run()
+    open_btn = next(b for b in app.button if (b.key or "").startswith("open-") and not b.disabled)
+    open_btn.click().run()
+    assert not app.exception, [str(e.value) for e in app.exception]
+    assert app.session_state["page"] == "🎓 Studia"
+    assert app.tabs, "la vista lezione ha delle schede"
+
+
 def test_studia_page_renders_a_notebook() -> None:
     app = _run("🎓 Studia")
     assert app.tabs, "la vista lezione ha delle schede"
